@@ -14,6 +14,7 @@ xsf（Xoen's Simple Framework）是一个开源的简约的游戏开发框架。
 `The whole project is based on MIT open source protocol, please feel free to eat.`
 
 整个项目基于MIT开源协议，请放心食用。
+
 `All English instructions are translated by Youdao Translator.Take your time.`
 
 所有英文说明由有道翻译翻译而来，将就看。
