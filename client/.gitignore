@@ -5,3 +5,5 @@ Logs/
 Library/
 *.sln
 UserSettings/
+*.csproj
+obj/
