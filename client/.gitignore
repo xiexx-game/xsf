@@ -7,3 +7,5 @@ Library/
 UserSettings/
 *.csproj
 obj/
+Log/
+Logs/
