@@ -3,9 +3,9 @@
 
 xsf（Xoen's Simple Framework）是一个开源的简约的游戏开发框架。对于很多小型企业或者小组织来说，游戏框架是最不值得花时间去做的一个轮子，我期望可以提供一个简单的游戏开发基础框架，包含客户端和服务端双端的框架。
 
-`The client is based on Unity3D (2021.3) and xlua, while the server is based on C++ and lua. You can adjust and delete the corresponding modules as needed. I may also provide a Go-based server framework in the future if I have time.`
+`The client is based on Unity3D (2021.3) and xlua(v2.1.16 with ndk r21b), while the server is based on C++ and lua. You can adjust and delete the corresponding modules as needed. I may also provide a Go-based server framework in the future if I have time.`
 
-客户端是建立在Unity3D（2021.3）和xlua的基础上，而服务器是建立在C++和lua的基础上。你可以根据需要自行调整和删减对应的模块。后续有时间的话，我可能还会提供一个基于go的服务器框架。
+客户端是建立在Unity3D（2021.3）和xlua(v2.1.16 with ndk r21b)的基础上，而服务器是建立在C++和lua的基础上。你可以根据需要自行调整和删减对应的模块。后续有时间的话，我可能还会提供一个基于go的服务器框架。
 
 `In retrospect, I have been in the industry for more than 10 years, and so far, no project has been successful, but I still have not given up and continue to move forward. So that's one of the reasons I open source in the first place, so that you can spend more time making game content, rather than building the underlying framework. In comparison, I think game content development is worth spending more time on.`
 

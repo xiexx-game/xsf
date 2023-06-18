@@ -20,6 +20,8 @@ public static class XSF
         Log("XSF.Init start");
 
         XSFUpdate.Instance.Init();
+        XSFCoroutine.Instance.Init();
+        XSFUpdate.Instance.Init();
     }
 
     public static void Release()
