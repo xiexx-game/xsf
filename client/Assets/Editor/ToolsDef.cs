@@ -12,4 +12,6 @@ public enum XSFMenuID
 {
     None = 0,
     UpdateAASGroup,     // 刷新aas资源组
+
+    ExportSchema,           // 导出配置
 }

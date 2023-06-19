@@ -17,8 +17,23 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 1dfad73e8e580f94a8d395b78b8f9202
   m_SerializeEntries:
+  - m_GUID: 85ff192ad8b83874b9f5430ec45e0210
+    m_Address: Global
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - scp
+  - m_GUID: 7ea966d019c48ce4cafc771255b8abc6
+    m_Address: Item
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - scp
   - m_GUID: d5d94d02abb50834eb553f3bbccdaa90
     m_Address: Load
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - scp
+  - m_GUID: 5573b9eb7e72966458e624037df7c803
+    m_Address: TestData
     m_ReadOnly: 0
     m_SerializedLabels:
     - scp

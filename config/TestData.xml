@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <data info="this is a test xml data" >
+        <d name="d1" value="1" />
+        <d name="d2" value="1" />
+    </data>
+</root>

@@ -67,13 +67,13 @@ public static class AASTools
         foreach (var item in kv)
         {
             //将每一条配置进行分组处理
-            AddsDirAssetsToGroup(m_Settings, item.Key, item.Value.ToArray());
+            AddDirAssetsToGroup(m_Settings, item.Key, item.Value.ToArray());
         }
 
         UnityEngine.Debug.Log("AAS groups fresh done ...");
     }
 
-    private static void AddsDirAssetsToGroup(AddressableAssetSettings settings, string groupName, AASConfig[] configs)
+    private static void AddDirAssetsToGroup(AddressableAssetSettings settings, string groupName, AASConfig[] configs)
     {
         var group = settings.FindGroup(groupName);
         if (group == null)
