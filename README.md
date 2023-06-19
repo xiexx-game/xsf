@@ -1,4 +1,4 @@
-# xsf
+# xsf(Xoen's Simple Framework) is an open source, minimalist game development framework 一个开源的简约的游戏开发框架
 `xsf (Xoen's Simple Framework) is an open source, minimalist game development framework. For many small businesses or organizations, a game framework is the last thing they need to spend their time on. I wanted to provide a simple infrastructure for game development, both client-side and server-side.`
 
 xsf（Xoen's Simple Framework）是一个开源的简约的游戏开发框架。对于很多小型企业或者小组织来说，游戏框架是最不值得花时间去做的一个轮子，我期望可以提供一个简单的游戏开发基础框架，包含客户端和服务端双端的框架。
