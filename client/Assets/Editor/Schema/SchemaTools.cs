@@ -15,7 +15,7 @@ using System;
 
 public static class SchemaTools
 {
-    [MenuItem("XSFTools/导出配置", false, (int)XSFMenuID.ExportSchema)]
+    [MenuItem("XSFTools/Export Schema", false, (int)XSFMenuID.ExportSchema)]
     public static void ExportSchema()
     {
         XmlNodeList list = DoExport();
@@ -110,9 +110,6 @@ public static class SchemaTools
 
                 sCSCreate += $"\t\t\tcase SchemaID.{sName}: return new Schema{sName}();\n";
 
-                XSFEditorUtil.ReplaceContentByTag(sCSHelperFile, "SCHEMA_ID_BEGIN", "SCHEMA_ID_END", sCSID);
-                XSFEditorUtil.ReplaceContentByTag(sCSHelperFile, "SCHEMA_BEGIN", "SCHEMA_END", sCSCreate);
-
                 string sStructHead = $"public class {sStructName}";
                 string sStructContent = File.ReadAllText(sCSStructFile);
                 if(!sStructContent.Contains(sStructHead)) 
@@ -135,9 +132,10 @@ public static class SchemaTools
             {
                 DoGoCode(sName, nType);
             }
-
         }
 
+        XSFEditorUtil.ReplaceContentByTag(sCSHelperFile, "SCHEMA_ID_BEGIN", "SCHEMA_ID_END", sCSID);
+        XSFEditorUtil.ReplaceContentByTag(sCSHelperFile, "SCHEMA_BEGIN", "SCHEMA_END", sCSCreate);
         XSFEditorUtil.ReplaceContentByTag(sCSIndexFile, "CSV_INDEX_BEGIN", "CSV_INDEX_END", sCSIndex);
     }
 
