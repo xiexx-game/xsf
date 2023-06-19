@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Scp
+  m_EditorClassIdentifier: 
+  m_GroupName: Scp
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 1dfad73e8e580f94a8d395b78b8f9202
+  m_SerializeEntries:
+  - m_GUID: d5d94d02abb50834eb553f3bbccdaa90
+    m_Address: Load
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - scp
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: fc082288655110246813ff8eb26b01f0, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: f11a0f87edb437b408de74279a685170, type: 2}
+    - {fileID: 11400000, guid: f346912bcb7de6b469591a08a882fbd2, type: 2}

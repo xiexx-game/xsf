@@ -56,6 +56,11 @@ public sealed class XSFMain : MonoSingleton<XSFMain>
                     break;
             }
         }
+        catch (XSFSchemaLoadException e)
+        {
+            XSF.LogError($"Main.Update catch schema exception, message={e.Message}, stack=\n{e.StackTrace}");
+            m_nStatus = MainStatus.Error;
+        }
         catch (Exception e)
         {
             XSF.LogError($"Main.Update catch exception, message={e.Message}, stack=\n{e.StackTrace}");

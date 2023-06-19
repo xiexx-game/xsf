@@ -200,4 +200,7 @@ public static class XSF
 
     // 当前UTC时间，单位毫秒
     public static ulong CurrentMS => (ulong)(DateTime.Now - DateFrom).TotalMilliseconds;
+
+    public const uint LUA_EVENT_ID = 1;
+    public const uint SCHEMA_EVENT_ID = 2;
 }

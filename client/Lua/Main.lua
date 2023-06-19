@@ -18,7 +18,7 @@ end
 
 
 function OnUpdate()
-    xsf_log("Main.OnUpdate", CS.UnityEngine.Time.deltaTime)
+    --xsf_log("Main.OnUpdate", CS.UnityEngine.Time.deltaTime)
 end
 
 

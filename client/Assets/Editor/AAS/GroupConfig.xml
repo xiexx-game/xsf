@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <dir folder="Lua" group="Lua" extension="*.bytes" label="lua" />
+  <dir folder="Scp" group="Scp" extension="*.csv,*.xml" label="scp" />
+</root>
