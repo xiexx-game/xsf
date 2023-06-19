@@ -22,6 +22,7 @@ public static class XSF
         XSFUpdate.Instance.Init();
         XSFCoroutine.Instance.Init();
         XSFUpdate.Instance.Init();
+        XSFLua.Instance.Init();
     }
 
     public static void Release()

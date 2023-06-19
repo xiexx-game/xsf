@@ -100,6 +100,25 @@ namespace XLua
                 }
 #endif
 
+                LuaAPI.lua_pushstdcallcfunction(rawL, XSFStaticLuaCallbacks.XSFLog);
+                if (0 != LuaAPI.xlua_setglobal(rawL, "xsf_log"))
+                {
+                    throw new Exception("call xlua_setglobal fail!");
+                }
+
+                LuaAPI.lua_pushstdcallcfunction(rawL, XSFStaticLuaCallbacks.XSFLogError);
+                if (0 != LuaAPI.xlua_setglobal(rawL, "xsf_error"))
+                {
+                    throw new Exception("call xlua_setglobal fail!");
+                }
+
+                LuaAPI.lua_pushstdcallcfunction(rawL, XSFStaticLuaCallbacks.XSFLogWarn);
+                if (0 != LuaAPI.xlua_setglobal(rawL, "xsf_warn"))
+                {
+                    throw new Exception("call xlua_setglobal fail!");
+                }
+
+
                 //template engine lib register
                 TemplateEngine.LuaTemplate.OpenLib(rawL);
 

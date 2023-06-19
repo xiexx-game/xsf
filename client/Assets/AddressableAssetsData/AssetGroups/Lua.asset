@@ -10,13 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: Default Local Group
+  m_Name: Lua
   m_EditorClassIdentifier: 
-  m_GroupName: Default Local Group
+  m_GroupName: Lua
   m_Data:
     m_SerializedData: []
   m_GUID: 8607bed21db23ed499ba36cf2bc40387
-  m_SerializeEntries: []
+  m_SerializeEntries:
+  - m_GUID: e903f92d6b4c50646938a5018a7bf1ca
+    m_Address: main
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: fc082288655110246813ff8eb26b01f0, type: 2}
   m_SchemaSet:
