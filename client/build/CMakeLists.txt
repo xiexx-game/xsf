@@ -113,6 +113,7 @@ else ( )
 endif ( )
 
 set ( XLUA_CORE
+    pb.c
     i64lib.c
     xlua.c
 )
