@@ -80,6 +80,7 @@ public static class SchemaTools
 
     static string sCSStructFile = Application.dataPath + "/Scripts/Schema/SchemaStructs.cs";
     static string sCSHelperFile = Application.dataPath + "/Scripts/Schema/GameSchemaHelper.cs";
+    static string sCSIndexFile = Application.dataPath + "/Scripts/Schema/SchemaIndex.cs"; 
 
     private static void DoCode(XmlNodeList nodeList)
     {
@@ -137,7 +138,6 @@ public static class SchemaTools
 
         }
 
-        string sCSIndexFile = Application.dataPath + "/Scripts/Schema/SchemaIndex.cs"; 
         XSFEditorUtil.ReplaceContentByTag(sCSIndexFile, "CSV_INDEX_BEGIN", "CSV_INDEX_END", sCSIndex);
     }
 
@@ -195,6 +195,18 @@ public static class SchemaTools
             }
 
             XSFEditorUtil.ReplaceContentByTag(sCSVCodeFile, "_CSV_LIST_BEGIN_", "_CSV_LIST_END_", sListContent);
+
+            if(name == "Global")
+            {
+                string sGlobalID = "";
+                for(int i = 3; i < lines.Length; ++i)
+                {
+                    string [] datas = lines[i].Split(',');
+                    sGlobalID += $"\t{datas[(int)CSVIndex.ScpGlobal_enumDef]} = {datas[(int)CSVIndex.ScpGlobal_id]},\t\t//{datas[(int)CSVIndex.ScpGlobal_desc]}\n";
+                }
+
+                XSFEditorUtil.ReplaceContentByTag(sCSIndexFile, "GLOBAL_ID_START", "GLOBAL_ID_END", sGlobalID);
+            }
 
         }
         else
