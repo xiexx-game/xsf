@@ -2,4 +2,5 @@
 <root>
   <dir folder="Lua" group="Lua" extension="*.bytes" label="lua" />
   <dir folder="Scp" group="Scp" extension="*.csv,*.xml" label="scp" />
+  <dir folder="UI/Atlas" group="Atlas" extension="*.spriteatlas" label="" />
 </root>

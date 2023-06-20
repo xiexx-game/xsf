@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////////////////////
 //
-// 文件：Assets\XSF\Edtor\RectTransformEditor.cs
+// 文件：Assets\XSF\Edtor\UI\RectTransformEditor.cs
 // 作者：Xoen Xie
 // 时间：2023/06/16
 // 描述：UI工具
