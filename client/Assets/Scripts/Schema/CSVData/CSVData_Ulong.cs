@@ -58,5 +58,17 @@ public sealed class CSVData_Ulong : CSVData
             return "ulong";
         }
     }
+
+    public override string GetLuaCode(string name) 
+    {
+        if(string.IsNullOrEmpty(name))
+        {
+            return ulValue.ToString();
+        }
+        else
+        {
+            return $"{name} = {ulValue}";
+        }
+    }
 #endif
 }

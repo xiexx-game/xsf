@@ -62,6 +62,11 @@ public class CSVData : ICSVData
             return "";
         }
     }
+
+    public virtual string GetLuaCode(string name) 
+    {
+        return "";
+    }
 #endif
 
     private static CSVData[] m_Datas;

@@ -58,5 +58,18 @@ public sealed class CSVData_Int : CSVData
             return "int";
         }
     }
+
+    public override string GetLuaCode(string name) 
+    {
+        if(string.IsNullOrEmpty(name))
+        {
+            return iValue.ToString();
+        }
+        else
+        {
+            return $"{name} = {iValue}";
+        }
+        
+    }
 #endif
 }

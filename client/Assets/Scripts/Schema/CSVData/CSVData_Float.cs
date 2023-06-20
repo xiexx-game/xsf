@@ -58,5 +58,18 @@ public sealed class CSVData_Float : CSVData
             return "float";
         }
     }
+
+    public override string GetLuaCode(string name) 
+    {
+        if(string.IsNullOrEmpty(name))
+        {
+            return fValue.ToString();
+        }
+        else 
+        {
+            return $"{name} = {fValue}";
+        }
+        
+    }
 #endif
 }

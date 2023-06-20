@@ -55,5 +55,17 @@ public sealed class CSVData_Bool : CSVData
             return "bool";
         }
     }
+
+    public override string GetLuaCode(string name) 
+    {
+        if(string.IsNullOrEmpty(name))
+        {
+            return bValue.ToString().ToLower();
+        }
+        else
+        {
+            return $"{name} = {bValue.ToString().ToLower()}";
+        }
+    }
 #endif
 }

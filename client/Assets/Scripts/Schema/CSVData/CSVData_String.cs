@@ -44,5 +44,18 @@ public sealed class CSVData_String : CSVData
             return "string";
         }
     }
+
+    public override string GetLuaCode(string name) 
+    {
+        if(string.IsNullOrEmpty(name))
+        {
+            return $"\"{sValue}\"";
+        }
+        else
+        {
+            return $"{name} = \"{sValue}\"";
+        }
+        
+    }
 #endif
 }
