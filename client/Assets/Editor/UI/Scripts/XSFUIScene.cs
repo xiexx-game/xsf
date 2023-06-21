@@ -66,7 +66,7 @@ public class XSFUIScene : MonoBehaviour
             Handles.BeginGUI();
 
             GUI.color = Color.green;
-            if (GUI.Button(new Rect(0, Screen.height - 80, 80, 30), "Export"))
+            if (GUI.Button(new Rect(10, Screen.height - 80, 80, 30), "Export"))
             {
                 string path = ExportUIPrefab();
                 if (!string.IsNullOrEmpty(path))
@@ -74,7 +74,7 @@ public class XSFUIScene : MonoBehaviour
             }
 
             GUI.color = Color.white;
-            if (GUI.Button(new Rect(90, Screen.height - 80, 120, 30), "Add Export Node"))
+            if (GUI.Button(new Rect(100, Screen.height - 80, 120, 30), "Add Export Node"))
             {
                 AddUIExportNode();
                 Event.current.Use();
