@@ -11,9 +11,15 @@
 using System;
 using UnityEngine;
 using System.Diagnostics;
+using System.Collections.Generic;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 public static class XSF
 {
+    private static Queue<GameObject> AASGoList;
+    private static Queue<AsyncOperationHandle> AASHandleList;
+
     public static void Init()
     {
         XSFLog.Instance.Init();
@@ -23,6 +29,16 @@ public static class XSF
         XSFCoroutine.Instance.Init();
         XSFUpdate.Instance.Init();
         XSFLua.Instance.Init();
+    }
+
+    public static void ReleaseAASGo(GameObject gameObject)
+    {
+        AASGoList.Enqueue(gameObject);
+    }
+
+    public static void ReleaseAASHandle(AsyncOperationHandle handle)
+    {
+        AASHandleList.Enqueue(handle);
     }
 
     public static void Release()
@@ -44,6 +60,18 @@ public static class XSF
     public static void Update()
     {
         XSFUpdate.Instance.Update();
+
+        if(AASGoList.Count > 0) {
+            GameObject go = AASGoList.Dequeue();
+            Addressables.ReleaseInstance(go);
+        }
+
+        if(AASHandleList.Count > 0) {
+            AsyncOperationHandle Handle = AASHandleList.Dequeue();
+            if(Handle.IsValid()) {
+                Addressables.Release(Handle);
+            }
+        }
     }
 
     public static void FixedUpdate()

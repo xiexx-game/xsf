@@ -80,6 +80,8 @@ public sealed class XSFSchema : Singleton<XSFSchema>, IUpdateNode
         XSF.Log("XSFSchema.OnAssetsLoadDone all scp assets load done ....");
 
         StartLoadSchema();
+
+        XSF.ReleaseAASHandle(m_LoadHandle);
     }
 
     // 开始加载配置

@@ -7,8 +7,11 @@
 -- 说明：
 --
 --------------------------------------------------------------------------
+XSF = {}
 
-local pb = require "pb"
+require "Common.GlobalDef"
+require "Common.Class"
+local XSFUpdate = require "Base.XSFUpdate"
 
 -- lua main 函数
 local function main()
@@ -18,7 +21,7 @@ end
 
 
 function OnUpdate()
-    xsf_log("Main.OnUpdate", CS.UnityEngine.Time.deltaTime)
+    XSFUpdate:OnUpdate()
 end
 
 

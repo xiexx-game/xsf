@@ -2,6 +2,13 @@
 
 <linker>
 
+	<assembly fullname="Assembly-CSharp">
+	    <type fullname="AASUtil" preserve="all"/>
+		<type fullname="LuaUtil" preserve="all"/>
+		<type fullname="UIUtil" preserve="all"/>
+		
+	</assembly>
+
 	<assembly fullname="mscorlib">
 	    <type fullname="System.Array" preserve="all"/>
 		<type fullname="System.Object" preserve="all"/>

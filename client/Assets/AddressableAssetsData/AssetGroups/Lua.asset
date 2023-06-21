@@ -17,8 +17,48 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 8607bed21db23ed499ba36cf2bc40387
   m_SerializeEntries:
+  - m_GUID: d35b444d46f41b041ad0fa7a4d6dce5c
+    m_Address: common.class
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: 23abb291158f8c148b403eb6b1b81b64
+    m_Address: ui.ui
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: 221f69c637ff5bf4aab2629fda289219
+    m_Address: schema.schemaitem
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: b121ad270fec33b4b8e570834454d902
+    m_Address: common.globaldef
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: e2dfc55af08221e48b8002d67e1a6ddb
+    m_Address: ui.uibase
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: 1fee514f5832b0a49a4ea69a3650cfa8
+    m_Address: ui.uirefreshid
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
   - m_GUID: e903f92d6b4c50646938a5018a7bf1ca
     m_Address: main
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: 9b90900c9968f1d4a93c3582f5d29cd7
+    m_Address: base.xsfupdate
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: 948cf5d1c8e966d4cbd928e2cc18bf10
+    m_Address: schema.schemaglobal
     m_ReadOnly: 0
     m_SerializedLabels:
     - lua

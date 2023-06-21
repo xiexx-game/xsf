@@ -41,3 +41,33 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: UILevel1
+    uniqueID: 954304963
+    locked: 0
+  - name: UILevel2
+    uniqueID: 3125615821
+    locked: 0
+  - name: UILevel3
+    uniqueID: 3657809285
+    locked: 0
+  - name: UILevel4
+    uniqueID: 835589853
+    locked: 0
+  - name: UILevel5
+    uniqueID: 3080958693
+    locked: 0
+  - name: UILevel6
+    uniqueID: 3542645107
+    locked: 0
+  - name: UILevel7
+    uniqueID: 1085898589
+    locked: 0
+  - name: UILevel8
+    uniqueID: 479123897
+    locked: 0
+  - name: UILoading
+    uniqueID: 2865539075
+    locked: 0
+  - name: UITop
+    uniqueID: 2251103869
+    locked: 0

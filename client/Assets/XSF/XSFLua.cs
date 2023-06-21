@@ -82,10 +82,7 @@ public sealed class XSFLua : Singleton<XSFLua>, IUpdateNode
 
         Start();
 
-        if (m_LoadHandle.IsValid())
-            Addressables.Release(m_LoadHandle);
-
-        m_LoadHandle = default;
+        XSF.ReleaseAASHandle(m_LoadHandle);
     }
 
 

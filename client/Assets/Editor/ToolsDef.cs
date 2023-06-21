@@ -16,4 +16,6 @@ public enum XSFMenuID
     ExportSchema,           // 导出配置
 
     CreateUIScene,          // 创建UI编辑场景
+
+    ExportLuaFiles,         // 导出Lua文件
 }
