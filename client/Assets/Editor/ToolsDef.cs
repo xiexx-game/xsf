@@ -14,4 +14,6 @@ public enum XSFMenuID
     UpdateAASGroup,     // 刷新aas资源组
 
     ExportSchema,           // 导出配置
+
+    CreateUIScene,          // 创建UI编辑场景
 }
