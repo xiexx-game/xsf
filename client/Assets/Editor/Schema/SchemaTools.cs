@@ -25,6 +25,15 @@ public static class SchemaTools
         DoCode(list);
     }
 
+    
+    [MenuItem("XSFTools/Set Localization/Clear", false, (int)XSFMenuID.Localization_Clear)]
+    public static void Localization_Clear()
+    {
+        PlayerPrefs.SetString(XSFLocalization.Instance.LOCAL_PREFS, "");
+        Debug.Log("Clear Localization");
+        XSFLocalization.Instance.Init();
+    }
+
     [MenuItem("XSFTools/Set Localization/English", false, (int)XSFMenuID.Localization_En)]
     public static void Localization_En()
     {

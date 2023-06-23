@@ -19,6 +19,7 @@ public enum XSFMenuID
 
     ExportLuaFiles,         // 导出Lua文件
 
+    Localization_Clear,     
     Localization_En,
     Localization_Ch,
 }

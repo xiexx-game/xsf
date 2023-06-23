@@ -58,7 +58,18 @@ public class XSFLocalization : Singleton<XSFLocalization>
     private void InitLocalization(string str)
     {
         if(string.IsNullOrEmpty(str)) {
-            SetLanguage((int)XSFLanguage.Chinese);
+            switch(Application.systemLanguage)
+            {
+            case SystemLanguage.Chinese:
+            case SystemLanguage.ChineseSimplified:
+                SetLanguage((int)XSFLanguage.Chinese);
+                break;
+
+            default:  
+                SetLanguage((int)XSFLanguage.English);
+                break;
+            }
+            
             return;
         }
 
