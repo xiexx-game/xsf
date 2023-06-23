@@ -15,6 +15,11 @@ public class _SCHEMA_NAME_ : ISchema
 {
     public _SCP_NAME_ mData { get; private set; }
 
+    public string GetSchemaName(string name)
+    {
+        return name;
+    }
+
     public bool OnSchemaLoad(ISchemaReader reader)
     {
         mData = new _SCP_NAME_();

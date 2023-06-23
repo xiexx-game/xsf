@@ -14,6 +14,11 @@ public class SchemaItem : ISchema
 {
     private Dictionary<uint, ScpItem> m_Datas;
 
+    public string GetSchemaName(string name)
+    {
+        return name;
+    }
+
     public bool OnSchemaLoad(ISchemaReader reader)
     {
         m_Datas = new Dictionary<uint, ScpItem>();

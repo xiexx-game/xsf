@@ -25,10 +25,12 @@ public static class XSF
         XSFLog.Instance.Init();
         Log("XSF.Init start");
 
+        XSFLocalization.Instance.Init();
         XSFUpdate.Instance.Init();
         XSFCoroutine.Instance.Init();
         XSFUpdate.Instance.Init();
         XSFLua.Instance.Init();
+        XSFSchema.Instance.StartLoad(new GameSchemaHelper());
 
         AASGoList = new Queue<GameObject>();
         AASHandleList = new Queue<AsyncOperationHandle>();

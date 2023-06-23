@@ -15,6 +15,11 @@ public class SchemaTestData : ISchema
 {
     public ScpTestData mData { get; private set; }
 
+    public string GetSchemaName(string name)
+    {
+        return name;
+    }
+    
     public bool OnSchemaLoad(ISchemaReader reader)
     {
         mData = new ScpTestData();

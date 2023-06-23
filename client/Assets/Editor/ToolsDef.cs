@@ -18,4 +18,7 @@ public enum XSFMenuID
     CreateUIScene,          // 创建UI编辑场景
 
     ExportLuaFiles,         // 导出Lua文件
+
+    Localization_En,
+    Localization_Ch,
 }

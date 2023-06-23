@@ -40,6 +40,9 @@ public enum CSVIndex
 	ScpItem_param4 = 6,
 	ScpItem_param5 = 7,
 
+	ScpLanguage_key = 0,
+	ScpLanguage_value = 1,
+
 //CSV_INDEX_END
 }
 

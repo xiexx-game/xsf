@@ -10,6 +10,8 @@
 
 public interface ISchema
 {
+    string GetSchemaName(string name);
+
     bool OnSchemaLoad(ISchemaReader reader);
 };
 
@@ -20,6 +22,8 @@ public interface ISchemaHelper
     int MaxID { get; }
 
     ICSVData GetData(int type);
+
+    string GetLocalText(string key);
 }
 
 public interface ICSVData

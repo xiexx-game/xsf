@@ -30,6 +30,11 @@ public sealed class SchemaLoad : ISchema
 
     public int ID { get { return 0; } }
 
+    public string GetSchemaName(string name)
+    {
+        return name;
+    }
+
     public bool OnSchemaLoad(ISchemaReader reader)
     {
         m_LoadInfos = new List<SchemaLoadInfo>();

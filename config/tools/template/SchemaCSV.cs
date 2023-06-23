@@ -15,6 +15,11 @@ public class _SCHEMA_NAME_ : ISchema
     //private Dictionary<uint, _SCP_NAME_> m_Datas;
     //private _SCP_NAME_ [] m_Datas;
 
+    public string GetSchemaName(string name)
+    {
+        return name;
+    }
+
     public bool OnSchemaLoad(ISchemaReader reader)
     {
         //m_Datas = new Dictionary<uint, _SCP_NAME_>();

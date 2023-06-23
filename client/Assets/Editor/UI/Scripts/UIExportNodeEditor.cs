@@ -12,7 +12,7 @@ public class UIExportNodeEditor : Editor
     List<string> _strs;
     List<string> _nsStrs;
 
-    public void OnEnable()
+    private void OnEnable()
     {
         _target = target as UIExportNode;
         _strs = new List<string>();

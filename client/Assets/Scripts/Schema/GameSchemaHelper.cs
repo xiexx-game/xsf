@@ -17,7 +17,8 @@ public enum SchemaID
 //SCHEMA_ID_BEGIN
 	Global = 1,
 	Item = 2,
-	TestData = 3,
+	Language = 4,
+	TestData = 5,
 //SCHEMA_ID_END
 
     Max,
@@ -25,6 +26,10 @@ public enum SchemaID
 
 public class GameSchemaHelper : ISchemaHelper
 {
+#if UNITY_EDITOR
+    SchemaLanguage m_Schema;
+#endif
+
     public ISchema Get(int nId)
     {
         switch ((SchemaID)nId)
@@ -32,6 +37,7 @@ public class GameSchemaHelper : ISchemaHelper
             //SCHEMA_BEGIN
 			case SchemaID.Global: return new SchemaGlobal();
 			case SchemaID.Item: return new SchemaItem();
+			case SchemaID.Language: return new SchemaLanguage();
 			case SchemaID.TestData: return new SchemaTestData();
 			//SCHEMA_END
             default:
@@ -44,5 +50,10 @@ public class GameSchemaHelper : ISchemaHelper
     public ICSVData GetData(int type)
     {
         return CSVData.GetData(type);
+    }
+
+    public string GetLocalText(string key)
+    {
+        return XSFSchema.Instance.Get<SchemaLanguage>((int)SchemaID.Language).Get(key);
     }
 }

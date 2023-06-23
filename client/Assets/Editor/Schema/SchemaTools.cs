@@ -25,6 +25,22 @@ public static class SchemaTools
         DoCode(list);
     }
 
+    [MenuItem("XSFTools/Set Localization/English", false, (int)XSFMenuID.Localization_En)]
+    public static void Localization_En()
+    {
+        PlayerPrefs.SetString(XSFLocalization.Instance.LOCAL_PREFS, "English");
+        Debug.Log("Set Localization: English");
+        XSFLocalization.Instance.Init();
+    }
+
+    [MenuItem("XSFTools/Set Localization/Chinese", false, (int)XSFMenuID.Localization_Ch)]
+    public static void Localization_Ch()
+    {
+        PlayerPrefs.SetString(XSFLocalization.Instance.LOCAL_PREFS, "Chinese");
+        Debug.Log("Set Localization: Chinese");
+        XSFLocalization.Instance.Init();
+    }
+
     private static XmlNodeList DoExport()
     {
         string sToolDir = Application.dataPath + "/../../config/tools/bin/";

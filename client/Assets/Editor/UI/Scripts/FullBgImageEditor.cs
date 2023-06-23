@@ -19,7 +19,7 @@ public class FullBgImageEditor : Editor
  
         FullBgImage image = (FullBgImage)target;
  
-        if(GUILayout.Button("预览")) {
+        if(GUILayout.Button("Preview")) {
  
             image.UpdateFit();
         }

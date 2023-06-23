@@ -45,5 +45,14 @@ public class ScpTestData
 //ScpTestData_START
 //ScpTestData_END
 }
+
+//多语言配置
+public class ScpLanguage
+{
+//ScpLanguage_START
+	public string sKey;	//键
+	public string sValue;	//值
+//ScpLanguage_END
+}
 // SCHEMA_STRUCT
 // 不要删除上面的标签，自动生成代码需要用到

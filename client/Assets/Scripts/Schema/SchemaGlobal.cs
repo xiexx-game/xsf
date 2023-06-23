@@ -14,6 +14,11 @@ public class SchemaGlobal : ISchema
 {
     private ScpGlobal [] m_Datas;
 
+    public string GetSchemaName(string name)
+    {
+        return name;
+    }
+
     public bool OnSchemaLoad(ISchemaReader reader)
     {
         CSVReader csv = reader as CSVReader;

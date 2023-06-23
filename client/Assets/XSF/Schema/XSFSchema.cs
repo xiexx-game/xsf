@@ -141,6 +141,15 @@ public sealed class XSFSchema : Singleton<XSFSchema>, IUpdateNode
     // 找到配置对应的配置对象进行配置加载
     public void LoadWithSchema(int nID, string sName, SchemaType nType)
     {
+        if (nID != m_SchemaLoad.ID)
+        {
+            m_SchemaList[nID] = Helper.Get(nID);
+        }
+
+        sName = m_SchemaList[nID].GetSchemaName(sName);
+
+        XSF.Log("XSFSchema.LoadWithSchema load schema, name=" + sName);
+
         string sContent = null;
 
 #if UNITY_EDITOR
@@ -171,10 +180,6 @@ public sealed class XSFSchema : Singleton<XSFSchema>, IUpdateNode
         }
 #endif
 
-        if (nID != m_SchemaLoad.ID)
-        {
-            m_SchemaList[nID] = Helper.Get(nID);
-        }
 
         LoadWithReader(m_SchemaList[nID], nType, sContent);
     }
