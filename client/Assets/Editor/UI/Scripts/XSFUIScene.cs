@@ -134,6 +134,8 @@ public class XSFUIScene : MonoBehaviour
         }
 
         AssetDatabase.Refresh();
+
+        ExportUICode(finnalObj, UIName);
         //*/
 
         return path;
@@ -157,5 +159,106 @@ public class XSFUIScene : MonoBehaviour
 
         node.Name = obj.name;
         node.Comp = typeof(GameObject).Name;
+    }
+
+    struct LuaFun
+    {
+        public string head;
+        public string fun;
+    }
+
+    private static void ExportUICode(GameObject gameObject, string name)
+    {
+        List<LuaFun> funList = new List<LuaFun>();
+        string code = "";
+
+        UIExportNode[] nodes = gameObject.GetComponentsInChildren<UIExportNode>(true);
+
+        for (int i = 0; i < nodes.Length; ++i)
+        {
+            string path = GetHierarchy(nodes[i].gameObject, name);
+
+            if (nodes[i].Comp == "GameObject")
+            {
+                code += $"\t-- {nodes[i].Describe}\n\tself.{nodes[i].Name} = self.RootT:Find(\"{path}\").gameObject\n";
+
+                if (nodes[i].NeedClick)
+                {
+                    code += $"\tCS.UIUtil.SetClick( self.{nodes[i].Name}, self:On{nodes[i].Name}Click())\n";
+
+                    LuaFun cf;
+                    cf.head = $"function {name}:On{nodes[i].Name}Click()";
+                    cf.fun =
+                        $"-- {nodes[i].Describe}\nfunction {name}:On{nodes[i].Name}Click()\n\tlocal function f( go )\n\n\tend\n\treturn f\nend\n\n";
+                    funList.Add(cf);
+                }
+            }
+            else
+            {
+                code += $"\t-- {nodes[i].Describe}\n\tself.{nodes[i].Name} = self.RootT:Find(\"{path}\"):GetComponent(typeof(CS.{nodes[i].Namespace}.{nodes[i].Comp}))\n";
+            }
+
+            DestroyImmediate(nodes[i], true);
+        }
+
+        string luaFile = Application.dataPath + $"/../Lua/UI/Windows/{name}.lua";
+        string luaTemplate = Application.dataPath + "/Editor/UI/UITemplate.lua";
+
+        if (!File.Exists(luaFile))
+        {
+            Debug.Log("Create UI Lua file, name=" + luaFile);
+            string sContent = File.ReadAllText(luaTemplate);
+
+            sContent = sContent.Replace("_UI_NAME_", name);
+            System.DateTime currentDateTime = System.DateTime.Now;
+            string date = currentDateTime.ToShortDateString();
+            sContent = sContent.Replace("_LUA_DATE_", date);
+
+            File.WriteAllText(luaFile, sContent);
+        }
+
+        XSFEditorUtil.ReplaceContentByTag(luaFile, "UI_INIT_BEGIN", "UI_INIT_END", code);
+
+        string[] content = File.ReadAllLines(luaFile);
+        
+        for (int i = funList.Count - 1; i >= 0; i--)
+        {
+            for (int J = 0; J < content.Length; ++J)
+            {
+                if (content[J].Contains(funList[i].head))
+                {
+                    funList.RemoveAt(i);
+                    break;
+                }
+            }
+        }
+
+        if (funList.Count > 0)
+        {
+            string codeFunc = "";
+            for (int i = 0; i < funList.Count; ++i)
+            {
+                codeFunc += funList[i].fun;
+            }
+
+            XSFEditorUtil.AppendFileByTag(luaFile, "UI_FUNC_REPLACE", codeFunc);
+        }
+    }
+
+    static string GetHierarchy(GameObject obj, string name)
+    {
+        if (obj == null) return "";
+        string path = obj.name;
+
+        while (obj.transform.parent != null)
+        {
+            obj = obj.transform.parent.gameObject;
+            if (obj.name != name)
+            {
+                path = obj.name + "/" + path;
+            }
+        }
+
+        return path;
     }
 }

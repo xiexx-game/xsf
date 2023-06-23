@@ -62,6 +62,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - lua
+  - m_GUID: 03ff8626763e85244bffcba70bd706c3
+    m_Address: ui.windows.uitest
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: fc082288655110246813ff8eb26b01f0, type: 2}
   m_SchemaSet:

@@ -35,8 +35,6 @@ public static class AASUtil
             {
                 XSF.LogError("AASUtil.LoadUI error, name=" + name);
             }
-
-            XSF.ReleaseAASHandle(handle);
         };
     }
 

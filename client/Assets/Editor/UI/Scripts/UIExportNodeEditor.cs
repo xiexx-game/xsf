@@ -7,9 +7,46 @@ public class UIExportNodeEditor : Editor
 {
     private UIExportNode _target;
 
+    private int _selectedIndex;
+
+    List<string> _strs;
+    List<string> _nsStrs;
+
     public void OnEnable()
     {
         _target = target as UIExportNode;
+        _strs = new List<string>();
+        _nsStrs = new List<string>();
+
+        _strs.Add("GameObject");
+        _nsStrs.Add("UnityEngine");
+
+        _selectedIndex = -1;
+
+        Component[] comps = _target.GetComponents<Component>();
+        for (int i = 0; i < comps.Length; i++)
+        {
+            System.Type type = comps[i].GetType();
+
+            _strs.Add(type.Name);
+            _nsStrs.Add(type.Namespace);
+        }
+
+        for(int i = 0; i < _strs.Count; i ++)
+        {
+            if(_strs[i] == _target.Comp)
+            {   
+                _selectedIndex = i;
+            }
+        }
+
+        if(_selectedIndex == -1)
+        {
+            _selectedIndex = 0;
+            _target.Comp = _strs[0];
+            _target.Namespace = _nsStrs[0];
+            EditorUtility.SetDirty(_target);
+        }
     }
 
     public override void OnInspectorGUI()
@@ -21,41 +58,33 @@ public class UIExportNodeEditor : Editor
             EditorUtility.SetDirty(_target);
         }
 
-        Component[] comps = _target.GetComponents<Component>();
-    
-        int index = -1;
-        List<string> strs = new List<string>();
-        strs.Add("GameObject");
-        for (int i = 0; i < comps.Length; i++)
+        int nOldIndex = _selectedIndex;
+        _selectedIndex = EditorGUILayout.Popup("Export Class", _selectedIndex, _strs.ToArray());
+
+        if(nOldIndex != _selectedIndex) 
         {
-            System.Type type = comps[i].GetType();
-
-            if (type == _target.GetType()) continue;
-
-            strs.Add(type.Name);
-
-            if (_target.Comp == type.Name)
-                index = strs.Count - 1;
-        }
-
-        if (index == -1)
-        {
-            index = 0;
-            _target.Comp = strs[0];
+            _target.Comp = _strs[_selectedIndex];
+            _target.Namespace = _nsStrs[_selectedIndex];
             EditorUtility.SetDirty(_target);
-        }
 
-        int newIndex = EditorGUILayout.Popup("Export Class", index, strs.ToArray());
-
-        if (newIndex != index)
-        {
-            _target.Comp = strs[newIndex];
-            EditorUtility.SetDirty(_target);
+            if(_target.Comp != "GameObject")
+            {
+                _target.NeedClick = false;
+                EditorUtility.SetDirty(_target);
+            }
         }
 
         bool b = EditorGUILayout.Toggle("Need Click Event", _target.NeedClick);
         if (b != _target.NeedClick)
         {
+            if(b)
+            {
+                if(_target.Comp != "GameObject") {
+                    b = false;
+                    Debug.LogWarning("Click Event need GameObject, please set [Export Class] as GameObject first.");
+                }
+            }
+
             _target.NeedClick = b;
             EditorUtility.SetDirty(_target);
         }
@@ -68,3 +97,4 @@ public class UIExportNodeEditor : Editor
         }         
     }
 }
+

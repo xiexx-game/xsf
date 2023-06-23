@@ -715,7 +715,7 @@ PlayerSettings:
   webGLThreadsSupport: 0
   webGLDecompressionFallback: 0
   scriptingDefineSymbols:
-    Standalone: XSF_DEBUG
+    Standalone: XSF_DEBUG;EXCEPTION_PAUSE
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend: {}

@@ -16,8 +16,8 @@ public class UIExportNode : MonoBehaviour
 {
     [Header("Node Name")]
     public string Name;
+    public string Namespace;
     public string Comp;
-    public Transform PathParent;
 
     [Header("Need Click")]
     public bool NeedClick;

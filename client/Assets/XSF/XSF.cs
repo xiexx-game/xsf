@@ -29,6 +29,9 @@ public static class XSF
         XSFCoroutine.Instance.Init();
         XSFUpdate.Instance.Init();
         XSFLua.Instance.Init();
+
+        AASGoList = new Queue<GameObject>();
+        AASHandleList = new Queue<AsyncOperationHandle>();
     }
 
     public static void ReleaseAASGo(GameObject gameObject)

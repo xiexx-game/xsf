@@ -46,7 +46,7 @@ function UI:OnUpdate()
 end
 
 function UI:GetByName( name )
-    return require("UI.View." .. name)
+    return require("UI.Windows." .. name)
 end
 
 function UI:Show(name)
@@ -55,6 +55,5 @@ function UI:Show(name)
 
     return ui
 end
-
 
 return UI

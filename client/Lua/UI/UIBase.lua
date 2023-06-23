@@ -12,6 +12,9 @@ local AASUtil = CS.AASUtil
 local UI = require "UI.UI"
 
 local MAX_REFRESH = 5
+local Quaternion = CS.UnityEngine.Quaternion
+local Vector3 = CS.UnityEngine.Vector3
+local Vector2 = CS.UnityEngine.Vector2
 
 local UIStatus = {
     None = 0,
@@ -82,8 +85,6 @@ end
 -------------------------------------------------------------------------------
 function UIBase:OnUILoadDone()
     local function f(go)
-        xsf_log("UIBase:OnUILoadDone start name=", self.Name)
-
         -- UI状态不正确
         if not self:IsLoading() then
             xsf_error("UIBase:OnUILoadDone status error", self.m_Status)
@@ -91,8 +92,8 @@ function UIBase:OnUILoadDone()
         end
 
         self.RootG = go
+        self.RootG.name = self.Name
         self.RootT = self.RootG.transform
-
         self.RootT:SetParent(UI.RootT, true)
 
         self.RootT.localRotation = Quaternion.identity
@@ -102,6 +103,8 @@ function UIBase:OnUILoadDone()
         local rt = self.RootT:GetComponent(typeof(CS.UnityEngine.RectTransform))
         rt.anchoredPosition = Vector2.zero
         rt.sizeDelta = Vector2.zero
+        rt.anchorMin = Vector2.zero
+        rt.anchorMax = Vector2.one
 
         self.RootT:SetAsLastSibling()
 
@@ -211,6 +214,7 @@ function UIBase:Update()
             -- 发送事件
             LuaUtil.FireEvent(XSF.EventID.UIShow, self.ShowEventObjID, nil, false)
         end
+
     elseif self.m_Status == UIStatus.Show then
         if self.m_RefreshQueue ~= nil then
             local count = #(self.m_RefreshQueue)

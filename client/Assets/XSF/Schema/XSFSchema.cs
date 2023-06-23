@@ -81,7 +81,8 @@ public sealed class XSFSchema : Singleton<XSFSchema>, IUpdateNode
 
         StartLoadSchema();
 
-        XSF.ReleaseAASHandle(m_LoadHandle);
+        Addressables.Release(m_LoadHandle);
+        m_LoadHandle = default;
     }
 
     // 开始加载配置
