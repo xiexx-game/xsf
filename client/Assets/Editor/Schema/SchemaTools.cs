@@ -52,7 +52,7 @@ public static class SchemaTools
 
     private static XmlNodeList DoExport()
     {
-        string sToolDir = Application.dataPath + "/../../config/tools/bin/";
+        string sToolDir = Application.dataPath + "/../../config/bin/";
         string sClientOutput = Application.dataPath + "/Scp/";
         string sServerOutput = Application.dataPath + "/../../server-cpp/bin/scp/";
 
@@ -172,7 +172,7 @@ public static class SchemaTools
     {
         if(nType == SchemaType.CSV)
         {
-            string sCSVTemplate = Application.dataPath + "/../../config/tools/template/SchemaCSV.cs";
+            string sCSVTemplate = Application.dataPath + "/../../config/template/SchemaCSV.cs";
             string sCSVFile = Application.dataPath + $"/Scp/{name}.csv";
             if(!File.Exists(sCSVFile))
             {
@@ -238,7 +238,7 @@ public static class SchemaTools
         }
         else
         {
-            string sCSVTemplate = Application.dataPath + "/../../config/tools/template/SchemaXML.cs";
+            string sCSVTemplate = Application.dataPath + "/../../config/template/SchemaXML.cs";
 
             string sSchemaName = $"Schema{name}";
             string sXMLCodeFile = Application.dataPath + $"/Scripts/Schema/{sSchemaName}.cs";
