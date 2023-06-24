@@ -22,4 +22,9 @@ public enum XSFMenuID
     Localization_Clear,     
     Localization_En,
     Localization_Ch,
+
+    PBExportAll,
+    PBExportCS,
+    PBExportLua,
+    PBExportCpp,
 }

@@ -16,7 +16,6 @@ public interface IUpdateNode
 
     void OnUpdate();
     void OnFixedUpdate() { }
-    void OnLateUpdate() { }
 }
 
 public sealed class XSFUpdate : Singleton<XSFUpdate>
@@ -67,18 +66,6 @@ public sealed class XSFUpdate : Singleton<XSFUpdate>
             if (m_UpdateList[i].IsUpdateWroking)
             {
                 m_UpdateList[i].OnFixedUpdate();
-            }
-        }
-    }
-
-
-    public void LateUpdate()
-    {
-        for (int i = 0; i < m_UpdateList.Count; ++i)
-        {
-            if (m_UpdateList[i].IsUpdateWroking)
-            {
-                m_UpdateList[i].OnLateUpdate();
             }
         }
     }

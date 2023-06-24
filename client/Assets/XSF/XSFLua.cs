@@ -20,6 +20,9 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 [CSharpCallLua]
 public delegate void LuaBaseFunc();
 
+[CSharpCallLua]
+public delegate void OnProtoLoadFunc(string name, byte[] data);
+
 public sealed class XSFLua : Singleton<XSFLua>, IUpdateNode
 {
     LuaEnv m_xlua;
@@ -30,6 +33,8 @@ public sealed class XSFLua : Singleton<XSFLua>, IUpdateNode
 
     LuaBaseFunc m_LuaStart;
 
+    OnProtoLoadFunc m_ProtoLoadedFun;
+
     AsyncOperationHandle<IList<TextAsset>> m_LoadHandle;
 
     private Dictionary<string, byte[]> m_LuaContent;
@@ -39,11 +44,9 @@ public sealed class XSFLua : Singleton<XSFLua>, IUpdateNode
         m_xlua = new LuaEnv();
         m_xlua.AddLoader(XSFLoader);
         m_xlua.AddBuildin("pb", Lua.LoadLuaProfobuf);
-
-        StartLoad();
     }
 
-    public void StartLoad()
+    public void LuaStart()
     {
 #if UNITY_EDITOR
         if (XSFConfig.Instance.LoadLuaInFiles)
@@ -61,6 +64,7 @@ public sealed class XSFLua : Singleton<XSFLua>, IUpdateNode
 #endif
     }
 
+#region LuaAssets
     void LoadLuaFromAAS()
     {
         XSF.Log("XSFLua.LoadLuaAssetsFromAAS start ....");
@@ -82,10 +86,41 @@ public sealed class XSFLua : Singleton<XSFLua>, IUpdateNode
 
         Start();
 
-        Addressables.Release(m_LoadHandle);
+        if(m_LoadHandle.IsValid())
+            Addressables.Release(m_LoadHandle);
+
         m_LoadHandle = default;
     }
+#endregion
 
+#region ProtoAssets
+    public void ProtoStart()
+    {
+        XSF.Log("XSFLua.ProtoStart start ....");
+        m_LoadHandle = Addressables.LoadAssetsAsync<TextAsset>("proto", OnPerProtoComplete, true);
+        m_LoadHandle.Completed += op => { OnProtoAssetsLoadDone(); };
+    }
+
+    private void OnPerProtoComplete(TextAsset text)
+    {
+        XSF.Log($"XSFLua.OnPerProtoComplete {text.name} loaded");
+        m_ProtoLoadedFun(text.name, text.bytes);
+    }
+
+    private void OnProtoAssetsLoadDone()
+    {
+        XSF.Log("XSFLua.OnProtoAssetsLoadDone all proto assets load done ....");
+
+        if(m_LoadHandle.IsValid())
+            Addressables.Release(m_LoadHandle);
+
+        m_LoadHandle = default;
+
+        XSFEvent.Instance.Fire(XSF.PROTO_EVENT_ID);
+
+        OnLuaOK();
+    }
+#endregion
 
     public void Release()
     {
@@ -99,7 +134,15 @@ public sealed class XSFLua : Singleton<XSFLua>, IUpdateNode
         m_xlua.DoString("require \"Main\"");
 
         m_xlua.Global.Get("OnUpdate", out m_LuaUpdate);
+        m_xlua.Global.Get("Start", out m_LuaStart);
+        m_xlua.Global.Get("OnProtoLoaded", out m_ProtoLoadedFun);
 
+        XSFEvent.Instance.Fire(XSF.LUA_EVENT_ID);
+    }
+
+    public void OnLuaOK()
+    {
+        m_LuaStart();
         XSFUpdate.Instance.Add(this);
     }
 

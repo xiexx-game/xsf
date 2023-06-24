@@ -1,0 +1,16 @@
+// server message id
+
+syntax = "proto3";
+
+package xsf_pb;
+
+
+// 客户端消息ID
+enum SMSGID
+{
+    Start = 1500;
+
+
+
+    Max = 2048;
+}

@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package xsf_pb;
+
+// client --> login 登录
+message Clt_L_Login {
+    uint32 account_id = 1;          // 账号ID
+}

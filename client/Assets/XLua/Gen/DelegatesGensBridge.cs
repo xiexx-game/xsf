@@ -106,6 +106,29 @@ namespace XLua
 #endif
 		}
         
+		public void __Gen_Delegate_Imp4(string p0, byte[] p1)
+		{
+#if THREAD_SAFE || HOTFIX_ENABLE
+            lock (luaEnv.luaEnvLock)
+            {
+#endif
+                RealStatePtr L = luaEnv.L;
+                int errFunc = LuaAPI.pcall_prepare(L, errorFuncRef, luaReference);
+                
+                LuaAPI.lua_pushstring(L, p0);
+                LuaAPI.lua_pushstring(L, p1);
+                
+                PCall(L, 2, 0, errFunc);
+                
+                
+                
+                LuaAPI.lua_settop(L, errFunc - 1);
+                
+#if THREAD_SAFE || HOTFIX_ENABLE
+            }
+#endif
+		}
+        
 		
 		public override Delegate GetDelegateByType(Type type)
 		{
@@ -128,6 +151,11 @@ namespace XLua
 		    if (type == typeof(LuaBaseFunc))
 			{
 			    return new LuaBaseFunc(__Gen_Delegate_Imp3);
+			}
+		
+		    if (type == typeof(OnProtoLoadFunc))
+			{
+			    return new OnProtoLoadFunc(__Gen_Delegate_Imp4);
 			}
 		
 		    return null;

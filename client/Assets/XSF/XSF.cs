@@ -28,9 +28,7 @@ public static class XSF
         XSFLocalization.Instance.Init();
         XSFUpdate.Instance.Init();
         XSFCoroutine.Instance.Init();
-        XSFUpdate.Instance.Init();
-        XSFLua.Instance.Init();
-        XSFSchema.Instance.StartLoad(new GameSchemaHelper());
+        XSFEvent.Instance.Init();
 
         AASGoList = new Queue<GameObject>();
         AASHandleList = new Queue<AsyncOperationHandle>();
@@ -82,11 +80,6 @@ public static class XSF
     public static void FixedUpdate()
     {
         XSFUpdate.Instance.FixedUpdate();
-    }
-
-    public static void LateUpdate()
-    {
-        XSFUpdate.Instance.LateUpdate();
     }
 
     [Conditional("XSF_DEBUG")]
@@ -236,4 +229,5 @@ public static class XSF
 
     public const uint LUA_EVENT_ID = 1;
     public const uint SCHEMA_EVENT_ID = 2;
+    public const uint PROTO_EVENT_ID = 3;
 }

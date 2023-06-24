@@ -4,4 +4,5 @@
   <dir folder="Scp" group="Scp" extension="*.csv,*.xml" label="scp" />
   <dir folder="UI/Atlas" group="Atlas" extension="*.spriteatlas" label="" />
   <dir folder="UI/Prefabs" group="UI" extension="*.prefab" label="" />
+  <dir folder="ProtoBytes" group="Proto" extension="*.bytes" label="proto" />
 </root>

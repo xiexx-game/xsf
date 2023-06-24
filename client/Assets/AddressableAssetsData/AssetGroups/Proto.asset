@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Proto
+  m_EditorClassIdentifier: 
+  m_GroupName: Proto
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 4877b8cf345a3f149a004856a2abce3c
+  m_SerializeEntries:
+  - m_GUID: e8f703a78b211ca4697ff2d251a8708c
+    m_Address: ClientLua
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - proto
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: fc082288655110246813ff8eb26b01f0, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: e1aa0ba08890094458ba3b21ab025f1c, type: 2}
+    - {fileID: 11400000, guid: e9da93e5e83f7e247bd7585e48e4e6e4, type: 2}
