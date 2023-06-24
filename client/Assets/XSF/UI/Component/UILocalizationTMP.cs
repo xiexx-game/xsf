@@ -31,4 +31,10 @@ public class UILocalizationTMP : MonoBehaviour
     {
         m_TMPText.text = XSFLocalization.Instance.GetText(Key);
     }
+
+    public void SetKey(string key)
+    {
+        Key = key;
+        UpdateText();
+    }
 }

@@ -21,9 +21,10 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(UILocalizationTMP);
-			Utils.BeginObjectRegister(type, L, translator, 0, 1, 1, 1);
+			Utils.BeginObjectRegister(type, L, translator, 0, 2, 1, 1);
 			
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "UpdateText", _m_UpdateText);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "SetKey", _m_SetKey);
 			
 			
 			Utils.RegisterFunc(L, Utils.GETTER_IDX, "Key", _g_get_Key);
@@ -89,6 +90,34 @@ namespace XLua.CSObjectWrap
                 {
                     
                     gen_to_be_invoked.UpdateText(  );
+                    
+                    
+                    
+                    return 0;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_SetKey(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                UILocalizationTMP gen_to_be_invoked = (UILocalizationTMP)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    string _key = LuaAPI.lua_tostring(L, 2);
+                    
+                    gen_to_be_invoked.SetKey( _key );
                     
                     
                     

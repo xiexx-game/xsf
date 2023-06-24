@@ -25,6 +25,8 @@ function UITest:OnInit()
 	-- Button1 click
 	self.Button1 = self.RootT:Find("Bottom/Button1").gameObject
 	CS.UIUtil.SetClick( self.Button1, self:OnButton1Click())
+	-- Btn1Text
+	self.Btn1Text = self.RootT:Find("Bottom/Button1/Text"):GetComponent(typeof(CS.UILocalizationTMP))
 	-- Button2 click
 	self.Button2 = self.RootT:Find("Bottom/Button2").gameObject
 	CS.UIUtil.SetClick( self.Button2, self:OnButton2Click())
@@ -43,6 +45,7 @@ end
 function UITest:OnButton1Click()
 	local function f( go )
         xsf_log("UITest:OnButton1Click")
+        self.Btn1Text:SetKey("login")
 	end
 	return f
 end
