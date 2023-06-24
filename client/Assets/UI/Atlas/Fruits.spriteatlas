@@ -6,7 +6,7 @@ SpriteAtlas:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Common
+  m_Name: Fruits
   serializedVersion: 2
   m_EditorData:
     serializedVersion: 2
@@ -33,18 +33,20 @@ SpriteAtlas:
     secondaryTextureSettings: {}
     variantMultiplier: 1
     packables:
-    - {fileID: 102900000, guid: d3be7212b0ed6024fb029c60e23104df, type: 3}
+    - {fileID: 102900000, guid: a943193109d171b439fbd262727e113e, type: 3}
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
-  - {fileID: 21300000, guid: fc8064f06b4bff746b9891e65b425f67, type: 3}
-  - {fileID: 21300000, guid: e45a79d89e8f83143bbdd96bbd6593e1, type: 3}
+  - {fileID: 21300000, guid: 8aee52a237ecbea4ca824c7f03fb18c5, type: 3}
+  - {fileID: 21300000, guid: 9113d3e6855021b41ab839b7945e66b3, type: 3}
+  - {fileID: 21300000, guid: 1703b56f50aa1e24291162ea4dc1750d, type: 3}
   m_PackedSpriteNamesToIndex:
-  - Circle - 256px
-  - white-block-bg
+  - Banana
+  - Apple
+  - Carrot
   m_RenderDataMap: {}
-  m_Tag: Common
+  m_Tag: Fruits
   m_IsVariant: 0
   m_IsPlaceholder: 0

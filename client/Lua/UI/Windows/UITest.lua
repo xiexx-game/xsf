@@ -51,13 +51,10 @@ end
 -- Button2 click
 function UITest:OnButton2Click()
 	local function f( go )
-        xsf_log("UITest:OnButton2Click")
+        local UI = require "UI.UI"
+        UI:Show("UIAtlasTest");
 	end
 	return f
-end
-
-function UITest:OnUpdate()
-    --xsf_log("UITest:OnUpdate")
 end
 
 --UI_FUNC_REPLACE

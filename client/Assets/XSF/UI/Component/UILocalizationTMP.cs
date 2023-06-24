@@ -23,7 +23,6 @@ public class UILocalizationTMP : MonoBehaviour
 
     void Awake()
     {
-        Debug.Log("UILocalizationTMP Awake");
         m_TMPText = gameObject.GetComponent<TextMeshProUGUI>();
         UpdateText();
     }

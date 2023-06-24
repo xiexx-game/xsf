@@ -6,6 +6,8 @@
 	    <type fullname="AASUtil" preserve="all"/>
 		<type fullname="LuaUtil" preserve="all"/>
 		<type fullname="UIUtil" preserve="all"/>
+		<type fullname="UIImageSwitcher" preserve="all"/>
+		<type fullname="UILocalizationTMP" preserve="all"/>
 		
 	</assembly>
 

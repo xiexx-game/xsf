@@ -31,6 +31,12 @@ namespace XLua.CSObjectWrap
             translator.DelayWrapLoader(typeof(UIUtil), UIUtilWrap.__Register);
         
         
+            translator.DelayWrapLoader(typeof(UIImageSwitcher), UIImageSwitcherWrap.__Register);
+        
+        
+            translator.DelayWrapLoader(typeof(UILocalizationTMP), UILocalizationTMPWrap.__Register);
+        
+        
             translator.DelayWrapLoader(typeof(System.Array), SystemArrayWrap.__Register);
         
         

@@ -195,7 +195,15 @@ public class XSFUIScene : MonoBehaviour
             }
             else
             {
-                code += $"\t-- {nodes[i].Describe}\n\tself.{nodes[i].Name} = self.RootT:Find(\"{path}\"):GetComponent(typeof(CS.{nodes[i].Namespace}.{nodes[i].Comp}))\n";
+                if(string.IsNullOrEmpty(nodes[i].Namespace))
+                {
+                    code += $"\t-- {nodes[i].Describe}\n\tself.{nodes[i].Name} = self.RootT:Find(\"{path}\"):GetComponent(typeof(CS.{nodes[i].Comp}))\n";
+                }
+                else
+                {
+                    code += $"\t-- {nodes[i].Describe}\n\tself.{nodes[i].Name} = self.RootT:Find(\"{path}\"):GetComponent(typeof(CS.{nodes[i].Namespace}.{nodes[i].Comp}))\n";
+                }
+                
             }
 
             DestroyImmediate(nodes[i], true);
