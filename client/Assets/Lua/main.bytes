@@ -12,9 +12,7 @@ XSF = {}
 require "Common.GlobalDef"
 require "Common.Class"
 local XSFUpdate = require "Base.XSFUpdate"
-
-local IsShow = false
-local time = 0
+local pb = require "pb"
 
 -- lua main 函数
 local function main()
@@ -26,16 +24,23 @@ local function main()
 end
 
 
-function OnUpdate()
-    XSFUpdate:OnUpdate()
+function Start()
+    local UI = require "UI.UI"
+    UI:Show("UITest")
+end
 
-    if not IsShow then
-        time = time + CS.UnityEngine.Time.deltaTime
-        if time > 3 then
-            IsShow = true
-            local UI = require "UI.UI"
-            UI:Show("UITest")
-        end
+
+function OnUpdate()
+
+end
+
+
+function OnProtoLoaded(name, data)
+    xsf_log("OnProtoLoaded name:", name)
+
+    local ret, info = pb.load(data)
+    if not ret then
+        xsf_error("pb load error:" .. info)
     end
 end
 

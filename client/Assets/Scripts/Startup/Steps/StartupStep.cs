@@ -21,6 +21,11 @@ public abstract class StartupStep : IEventSink
 {
     public abstract void Start();
 
+    public virtual void End()
+    {
+        
+    }
+
     public void Subscribe(EventID nEventID, uint nObjectID)
     {
         XSFEvent.Instance.Subscribe(this, (uint)nEventID, nObjectID);

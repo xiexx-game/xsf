@@ -15,15 +15,40 @@ MonoBehaviour:
   m_GroupName: Lua
   m_Data:
     m_SerializedData: []
-  m_GUID: 8607bed21db23ed499ba36cf2bc40387
+  m_GUID: 6c46a281871080d43b08e88814ceec1f
   m_SerializeEntries:
+  - m_GUID: 9b90900c9968f1d4a93c3582f5d29cd7
+    m_Address: base.xsfupdate
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
   - m_GUID: d35b444d46f41b041ad0fa7a4d6dce5c
     m_Address: common.class
     m_ReadOnly: 0
     m_SerializedLabels:
     - lua
-  - m_GUID: 23abb291158f8c148b403eb6b1b81b64
-    m_Address: ui.ui
+  - m_GUID: b121ad270fec33b4b8e570834454d902
+    m_Address: common.globaldef
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: e903f92d6b4c50646938a5018a7bf1ca
+    m_Address: main
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: 3f76a0bb42609194eaa4aa74aab62da7
+    m_Address: proto.cmessageid
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: 5305454815f98a6428cbb03f69829f94
+    m_Address: proto.common
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - lua
+  - m_GUID: 948cf5d1c8e966d4cbd928e2cc18bf10
+    m_Address: schema.schemaglobal
     m_ReadOnly: 0
     m_SerializedLabels:
     - lua
@@ -32,8 +57,8 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - lua
-  - m_GUID: b121ad270fec33b4b8e570834454d902
-    m_Address: common.globaldef
+  - m_GUID: 23abb291158f8c148b403eb6b1b81b64
+    m_Address: ui.ui
     m_ReadOnly: 0
     m_SerializedLabels:
     - lua
@@ -47,18 +72,8 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - lua
-  - m_GUID: e903f92d6b4c50646938a5018a7bf1ca
-    m_Address: main
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - lua
-  - m_GUID: 9b90900c9968f1d4a93c3582f5d29cd7
-    m_Address: base.xsfupdate
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - lua
-  - m_GUID: 948cf5d1c8e966d4cbd928e2cc18bf10
-    m_Address: schema.schemaglobal
+  - m_GUID: fdee06879cceaa04dafab43893c0aa3a
+    m_Address: ui.windows.uiatlastest
     m_ReadOnly: 0
     m_SerializedLabels:
     - lua
@@ -71,5 +86,5 @@ MonoBehaviour:
   m_Settings: {fileID: 11400000, guid: fc082288655110246813ff8eb26b01f0, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 9033707610c6fe74986aa381a5c3bffa, type: 2}
-    - {fileID: 11400000, guid: 6bd1bcdb6851b034db1919895882c390, type: 2}
+    - {fileID: 11400000, guid: 644ca2a5f053bf547be5ba56e5b9dd4e, type: 2}
+    - {fileID: 11400000, guid: d2bdba79af7545944ad92f554bca0afc, type: 2}
