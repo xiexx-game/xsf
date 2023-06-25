@@ -16,7 +16,7 @@ local pb = require "pb"
 
 -- lua main 函数
 local function main()
-    xsf_log("lua main start ...")
+    xsf_log("lua main start ... ")
     
     local UI = require "UI.UI"
     UI:Init()

@@ -48,6 +48,10 @@ public sealed class XSFMain : MonoSingleton<XSFMain>
                         XSF.Init();
                         XSFStartup.Instance.Init();
                         m_nStatus = MainStatus.Run;
+
+#if !UNITY_EDITOR
+                        Application.logMessageReceived += HandleLog;
+#endif
                     }
                     break;
 
@@ -71,6 +75,11 @@ public sealed class XSFMain : MonoSingleton<XSFMain>
             m_nStatus = MainStatus.Error;
 #endif
         }
+    }
+
+    void HandleLog(string logString, string stackTrace, LogType type)
+    {
+        XSFLog.Instance.Push(type, $"{logString}, trace={stackTrace}");
     }
 
     private void FixedUpdate()

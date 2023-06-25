@@ -12,6 +12,7 @@ public sealed class StartupStepLua : StartupStep
 {
     public override void Start()
     {
+        XSF.LogWarning("StartupStepLua Start");
         XSFLua.Instance.Init();
         XSFLua.Instance.LuaStart();
         Subscribe((EventID)XSF.LUA_EVENT_ID, 0);

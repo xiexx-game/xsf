@@ -85,7 +85,7 @@ public sealed class XSFStartup : Singleton<XSFStartup>, IUpdateNode
             if(m_Steps[(int)m_CurStepID].IsDone)
             {
                 m_Steps[(int)m_CurStepID].End();
-                
+
                 UI.SetProgress(m_fProgressValue);
                 m_CurStepID ++;
                 if(m_CurStepID >= StartupStepID.Max)

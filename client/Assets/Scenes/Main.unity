@@ -262,10 +262,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TargetFrameRate: 60
   ShowInfo: 0
-  LoadScpInFiles: 0
-  LoadLuaInFiles: 0
+  LoadScpInFiles: 1
+  LoadLuaInFiles: 1
   HeartbeatInterval: 0
-  AASUpdateOpen: 1
+  AASUpdateOpen: 0
 --- !u!224 &476425866 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8660678323553645887, guid: 25a29cfdfd3512c49b77d68b35cbe74a, type: 3}

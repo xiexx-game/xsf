@@ -16,9 +16,9 @@ MonoBehaviour:
   m_CachedHash:
     serializedVersion: 2
     Hash: 00000000000000000000000000000000
-  m_OptimizeCatalogSize: 0
+  m_OptimizeCatalogSize: 1
   m_BuildRemoteCatalog: 1
-  m_BundleLocalCatalog: 0
+  m_BundleLocalCatalog: 1
   m_CatalogRequestsTimeout: 10
   m_DisableCatalogUpdateOnStart: 1
   m_IgnoreUnsupportedFilesInBuild: 0
@@ -68,7 +68,7 @@ MonoBehaviour:
       - m_Id: 385f927857e23fd428744f312fc6ecf6
         m_Value: ServerData/[BuildTarget]
       - m_Id: 63835f20ff0ed1542be8d22b6a775790
-        m_Value: http://[PrivateIpAddress]:[HostingServicePort]/[BuildTarget]/[AASVersion]
+        m_Value: http://[PrivateIpAddress]:[HostingServicePort]/[AASVersion]/[BuildTarget]
       - m_Id: 740b7e08d3347d34cabb40d172f97624
         m_Value: 192.168.1.6
       - m_Id: d21550a0e9d06504eb3f8a4a80450eeb

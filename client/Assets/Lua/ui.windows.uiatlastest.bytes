@@ -41,7 +41,8 @@ end
 -- Button1
 function UIAtlasTest:OnButton1Click()
 	local function f( go )
-        self.Icon:SetImage("Fruits", "Banana")
+        self.Icon:SetImage("Fruits", "Carrot")
+        --self.Icon:SetImage("Fruits", "Banana")
 	end
 	return f
 end

@@ -129,15 +129,21 @@ public sealed class XSFLua : Singleton<XSFLua>, IUpdateNode
 
     private void Start()
     {
-        XSF.Log("XSFLua xlua start");
+        XSF.Log("XSFLua xlua Start");
 
         m_xlua.DoString("require \"Main\"");
+        XSF.Log("XSFLua xlua Start 1");
 
         m_xlua.Global.Get("OnUpdate", out m_LuaUpdate);
+        XSF.Log("XSFLua xlua Start 2");
         m_xlua.Global.Get("Start", out m_LuaStart);
+        XSF.Log("XSFLua xlua Start 3");
         m_xlua.Global.Get("OnProtoLoaded", out m_ProtoLoadedFun);
+        XSF.Log("XSFLua xlua Start 4");
 
         XSFEvent.Instance.Fire(XSF.LUA_EVENT_ID);
+
+        XSF.Log("XSFLua xlua Start end");
     }
 
     public void OnLuaOK()

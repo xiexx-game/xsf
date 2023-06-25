@@ -12,6 +12,7 @@ public sealed class StartupStepProto : StartupStep
 {
     public override void Start()
     {
+        XSF.LogWarning("StartupStepProto Start");
         XSFLua.Instance.ProtoStart();
         Subscribe((EventID)XSF.PROTO_EVENT_ID, 0);
     }
