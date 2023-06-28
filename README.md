@@ -11,6 +11,12 @@ xsf（Xoen's Simple Framework）是一个开源的简约的游戏开发框架。
 
 回想起来，我从业10多年，至今未有项目能大成，不过我仍未放弃，仍在往前不停。所以这也是我开源的一个初衷，期望你能有更多的时间花在游戏内容制作上，而不是在底层框架构建上。相比较而言，我认为游戏内容开发更值得花费更多的时间。
 
+`It should be noted that since there are now pure C# hot update solutions such as hybridclr, I have made a separate branch of lua support: xlua, and the main branch switches to the pure C# version. This requires you to integrate your hybridclr.`
+
+需要注意的是，因为现在有[hybridclr](https://github.com/focus-creative-games/hybridclr)这样的纯C#的热更新解决方案，所以我把支持lua的方式单独做了一个分支：xlua，main分支就切换纯C#版本了。这需要你自行集成hybridclr。
+
+
+
 `The whole project is based on MIT open source protocol, please feel free to eat.`
 
 整个项目基于MIT开源协议，请放心食用。

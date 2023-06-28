@@ -12,9 +12,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using XLua;
 
-[CSharpCallLua]
 public delegate void OnClickCallback(GameObject go);
 
 public class UIEventClick : MonoBehaviour, IPointerClickHandler

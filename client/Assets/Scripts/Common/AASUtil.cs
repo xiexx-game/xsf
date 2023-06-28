@@ -7,15 +7,11 @@
 // 说明：
 //
 //////////////////////////////////////////////////////////////////////////
-using XLua;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
-
-[CSharpCallLua]
 public delegate bool OnUILoadCall(GameObject go);
 
-[LuaCallCSharp]
 public static class AASUtil
 {
     public static void LoadUI(string name, OnUILoadCall callback)

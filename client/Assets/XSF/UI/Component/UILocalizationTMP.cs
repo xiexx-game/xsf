@@ -9,9 +9,7 @@
 //////////////////////////////////////////////////////////////////////////
 using UnityEngine;
 using TMPro;
-using XLua;
 
-[LuaCallCSharp]
 [ExecuteInEditMode]
 [RequireComponent(typeof(TextMeshProUGUI))]
 public class UILocalizationTMP : MonoBehaviour

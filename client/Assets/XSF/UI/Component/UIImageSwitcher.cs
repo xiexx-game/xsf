@@ -13,10 +13,7 @@ using UnityEngine.U2D;
 
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
-using XLua;
 
-
-[LuaCallCSharp]
 public class UIImageSwitcher : MonoBehaviour
 {
     private Image image;

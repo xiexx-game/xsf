@@ -12,8 +12,6 @@ public enum StartupStepID
     None = 0,
     AASUpdate,
     Schema,
-    Lua,
-    Proto,
     Max,
 }
 

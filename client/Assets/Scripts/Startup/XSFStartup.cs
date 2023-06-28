@@ -55,8 +55,6 @@ public sealed class XSFStartup : Singleton<XSFStartup>, IUpdateNode
 
         m_Steps[(int)StartupStepID.AASUpdate] = new StartupStepAASUpdate();
         m_Steps[(int)StartupStepID.Schema] = new StartupStepSchema();
-        m_Steps[(int)StartupStepID.Lua] = new StartupStepLua();
-        m_Steps[(int)StartupStepID.Proto] = new StartupStepProto();
 
         m_CurStepID = StartupStepID.AASUpdate;
         m_nCurStatus = RunStatus.Start;

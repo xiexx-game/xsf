@@ -18,8 +18,6 @@ public sealed class XSFConfig : MonoSingleton<XSFConfig>
 
     [Header("从文件加载配置")] public bool LoadScpInFiles;
 
-    [Header("从文件加载Lua")] public bool LoadLuaInFiles;
-
     [Header("网络心跳间隔（秒）")] public float HeartbeatInterval;
 
     [Header("是否开启资源更新")] public bool AASUpdateOpen;
@@ -34,7 +32,6 @@ public sealed class XSFConfig : MonoSingleton<XSFConfig>
 #else
         ShowInfo = false;
         LoadScpInFiles = false;
-        LoadLuaInFiles = false;
         AASUpdateOpen = true;
 #endif
         Application.targetFrameRate = TargetFrameRate;
@@ -71,12 +68,7 @@ public sealed class XSFConfig : MonoSingleton<XSFConfig>
 
     private void ShowInfoGUI()
     {
-        int nMem = 0;
-        if(XSFLua.Instance.XLua != null)
-        {
-            nMem = XSFLua.Instance.XLua.Memroy;
-        }
-        var content = $"FPS:{m_FPS}\nLua Mem:{nMem}KB";
+        var content = $"FPS:{m_FPS}";
         GUI.Label(m_Rect, content, m_FontStyle);
     }
 

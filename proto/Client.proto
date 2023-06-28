@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package xsf_pb;
+
+// client --> gate 握手请求
+message Clt_Gt_Handshake {
+
+}
+
+// gate --> client 握手反馈
+message Gt_Clt_Handshake {
+
+}
+
+// client --> gate 心跳 请求
+message Clt_Gt_Heartbeat {
+
+}
+
+// gate --> client 心跳 反馈
+message Gt_Clt_Heartbeat {
+
+}
+
+// client --> login 登录
+message Clt_L_Login {
+    uint32 account_id = 1;          // 账号ID
+}
