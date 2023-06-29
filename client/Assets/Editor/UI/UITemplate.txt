@@ -1,0 +1,28 @@
+//////////////////////////////////////////////////////////////////////////
+//
+// 文件：Assets\Scripts\UI\_UI_NAME_.cs
+// 作者：Xoen Xie
+// 时间：_LUA_DATE_
+// 描述：
+// 说明：
+//
+//////////////////////////////////////////////////////////////////////////
+using UnityEngine;
+using UnityEngine.UI;
+
+public sealed class _UI_NAME_ : UIBase
+{
+// UI_PROP_START
+// UI_PROP_END
+
+    public override string Name { get { return "_UI_NAME_"; } }
+
+    public override void OnInit()
+    {
+        // UI_INIT_START
+        // UI_INIT_END
+    }
+
+
+    // UI_FUNC_APPEND
+}

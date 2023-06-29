@@ -12,6 +12,7 @@ public enum EventID
 {
     AllStartupStepDone = 1000,
 
+    UITestShow = 10001,
 
 
     LuaEventID = 9000,

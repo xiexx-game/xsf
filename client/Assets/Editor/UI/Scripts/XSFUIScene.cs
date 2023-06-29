@@ -170,6 +170,7 @@ public class XSFUIScene : MonoBehaviour
     private static void ExportUICode(GameObject gameObject, string name)
     {
         List<LuaFun> funList = new List<LuaFun>();
+        string codeProp = "";
         string code = "";
 
         UIExportNode[] nodes = gameObject.GetComponentsInChildren<UIExportNode>(true);
@@ -178,56 +179,53 @@ public class XSFUIScene : MonoBehaviour
         {
             string path = GetHierarchy(nodes[i].gameObject, name);
 
+
+            codeProp += $"\tpublic {nodes[i].Comp} {nodes[i].Name} " + "{ get; private set; }\t" + $"// {nodes[i].Describe}\n";
+
             if (nodes[i].Comp == "GameObject")
             {
-                code += $"\t-- {nodes[i].Describe}\n\tself.{nodes[i].Name} = self.RootT:Find(\"{path}\").gameObject\n";
+                code += $"\t\t// {nodes[i].Describe}\n\t\t{nodes[i].Name} = RootT.Find(\"{path}\").gameObject;\n";
 
                 if (nodes[i].NeedClick)
                 {
-                    code += $"\tCS.UIUtil.SetClick( self.{nodes[i].Name}, self:On{nodes[i].Name}Click())\n";
+                    code += $"\t\tUIEventClick.Set({nodes[i].Name}, On{nodes[i].Name}Click);\n";
 
                     LuaFun cf;
-                    cf.head = $"function {name}:On{nodes[i].Name}Click()";
+                    cf.head = $"private void On{nodes[i].Name}Click(GameObject go)";
                     cf.fun =
-                        $"-- {nodes[i].Describe}\nfunction {name}:On{nodes[i].Name}Click()\n\tlocal function f( go )\n\n\tend\n\treturn f\nend\n\n";
+                        $"\t// {nodes[i].Describe}\n\t" 
+                        + cf.head + "\n\t{\n\n\t}\n\n";
                     funList.Add(cf);
                 }
             }
             else
             {
-                if(string.IsNullOrEmpty(nodes[i].Namespace))
-                {
-                    code += $"\t-- {nodes[i].Describe}\n\tself.{nodes[i].Name} = self.RootT:Find(\"{path}\"):GetComponent(typeof(CS.{nodes[i].Comp}))\n";
-                }
-                else
-                {
-                    code += $"\t-- {nodes[i].Describe}\n\tself.{nodes[i].Name} = self.RootT:Find(\"{path}\"):GetComponent(typeof(CS.{nodes[i].Namespace}.{nodes[i].Comp}))\n";
-                }
-                
+                code += $"\t\t// {nodes[i].Describe}\n\t\t{nodes[i].Name} = RootT.Find(\"{path}\").GetComponent<{nodes[i].Comp}>();\n";
             }
 
             DestroyImmediate(nodes[i], true);
         }
 
-        string luaFile = Application.dataPath + $"/../Lua/UI/Windows/{name}.lua";
-        string luaTemplate = Application.dataPath + "/Editor/UI/UITemplate.lua";
+        string csFile = Application.dataPath + $"/Scripts/UI/{name}.cs";
+        string csTemplate = Application.dataPath + "/Editor/UI/UITemplate.txt";
 
-        if (!File.Exists(luaFile))
+        if (!File.Exists(csFile))
         {
-            Debug.Log("Create UI Lua file, name=" + luaFile);
-            string sContent = File.ReadAllText(luaTemplate);
+            Debug.Log("Create UI cs file, name=" + csFile);
+            string sContent = File.ReadAllText(csTemplate);
 
             sContent = sContent.Replace("_UI_NAME_", name);
             System.DateTime currentDateTime = System.DateTime.Now;
             string date = currentDateTime.ToShortDateString();
             sContent = sContent.Replace("_LUA_DATE_", date);
 
-            File.WriteAllText(luaFile, sContent);
+            File.WriteAllText(csFile, sContent);
         }
 
-        XSFEditorUtil.ReplaceContentByTag(luaFile, "UI_INIT_BEGIN", "UI_INIT_END", code);
+        XSFEditorUtil.ReplaceContentByTag(csFile, "UI_PROP_START", "UI_PROP_END", codeProp);
+        XSFEditorUtil.ReplaceContentByTag(csFile, "UI_INIT_START", "UI_INIT_END", code);
 
-        string[] content = File.ReadAllLines(luaFile);
+        string[] content = File.ReadAllLines(csFile);
         
         for (int i = funList.Count - 1; i >= 0; i--)
         {
@@ -249,7 +247,7 @@ public class XSFUIScene : MonoBehaviour
                 codeFunc += funList[i].fun;
             }
 
-            XSFEditorUtil.AppendFileByTag(luaFile, "UI_FUNC_REPLACE", codeFunc);
+            XSFEditorUtil.AppendFileByTag(csFile, "UI_FUNC_APPEND", codeFunc);
         }
     }
 

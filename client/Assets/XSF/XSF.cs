@@ -18,7 +18,6 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 public static class XSF
 {
     private static Queue<GameObject> AASGoList;
-    private static Queue<AsyncOperationHandle> AASHandleList;
 
     public static void Init()
     {
@@ -31,17 +30,11 @@ public static class XSF
         XSFEvent.Instance.Init();
 
         AASGoList = new Queue<GameObject>();
-        AASHandleList = new Queue<AsyncOperationHandle>();
     }
 
     public static void ReleaseAASGo(GameObject gameObject)
     {
         AASGoList.Enqueue(gameObject);
-    }
-
-    public static void ReleaseAASHandle(AsyncOperationHandle handle)
-    {
-        AASHandleList.Enqueue(handle);
     }
 
     public static void Release()
@@ -67,13 +60,6 @@ public static class XSF
         if(AASGoList.Count > 0) {
             GameObject go = AASGoList.Dequeue();
             Addressables.ReleaseInstance(go);
-        }
-
-        if(AASHandleList.Count > 0) {
-            AsyncOperationHandle Handle = AASHandleList.Dequeue();
-            if(Handle.IsValid()) {
-                Addressables.Release(Handle);
-            }
         }
     }
 
@@ -227,7 +213,6 @@ public static class XSF
     // 当前UTC时间，单位毫秒
     public static ulong CurrentMS => (ulong)(DateTime.Now - DateFrom).TotalMilliseconds;
 
-    public const uint LUA_EVENT_ID = 1;
-    public const uint SCHEMA_EVENT_ID = 2;
-    public const uint PROTO_EVENT_ID = 3;
+    public const uint SCHEMA_EVENT_ID = 1;
+    public const uint UI_SHOW_EVENT_ID = 2;
 }

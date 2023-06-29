@@ -47,6 +47,7 @@ public sealed class XSFMain : MonoSingleton<XSFMain>
                     {
                         XSF.Init();
                         XSFStartup.Instance.Init();
+                        XSFUI.Instance.Init(new UIHelper());
                         m_nStatus = MainStatus.Run;
 
 #if !UNITY_EDITOR

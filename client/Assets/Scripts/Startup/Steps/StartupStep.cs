@@ -12,6 +12,7 @@ public enum StartupStepID
     None = 0,
     AASUpdate,
     Schema,
+    ShowFirstUI,
     Max,
 }
 

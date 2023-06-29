@@ -22,7 +22,7 @@ public static class AASUtil
             if (op.Status == AsyncOperationStatus.Succeeded)
             {
                 GameObject instance = op.Result;
-                if(callback(op.Result))
+                if(!callback(op.Result))
                 {
                     XSF.ReleaseAASGo(op.Result);
                 }
