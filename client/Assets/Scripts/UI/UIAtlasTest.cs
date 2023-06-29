@@ -38,6 +38,19 @@ public sealed class UIAtlasTest : UIBase
         // UI_INIT_END
     }
 
+    public override void OnRefresh(uint nFreshID, object data)
+    {
+        switch((UIRefreshID)nFreshID)
+        {
+        case UIRefreshID.UIAtlasTest_SetImage:
+            Icon.SetImage("Fruits", "Banana");
+            break;
+        }
+    }
+
+
+    // Button1
+    
 
 
 	// Button1

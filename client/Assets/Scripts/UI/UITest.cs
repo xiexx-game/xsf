@@ -56,7 +56,9 @@ public sealed class UITest : UIBase
 	// Button2 click
 	private void OnButton2Click(GameObject go)
 	{
-        XSFUI.Instance.Get<UIAtlasTest>((int)UIID.UIAtlasTest).Show();
+        var ui = XSFUI.Instance.Get<UIAtlasTest>((int)UIID.UIAtlasTest);
+        ui.Show();
+        ui.Refresh((uint)UIRefreshID.UIAtlasTest_SetImage, null);
 	}
     // UI_FUNC_APPEND
 }
