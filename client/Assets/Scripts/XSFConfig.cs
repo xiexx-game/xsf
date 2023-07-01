@@ -68,7 +68,7 @@ public sealed class XSFConfig : MonoSingleton<XSFConfig>
 
     private void ShowInfoGUI()
     {
-        var content = $"FPS:{m_FPS}";
+        var content = $"FPS:{m_FPS}\nRTT:{XSFNet.Instance.RTT}";
         GUI.Label(m_Rect, content, m_FontStyle);
     }
 

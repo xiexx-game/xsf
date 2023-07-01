@@ -10,6 +10,7 @@
 using UnityEditor;
 using UnityEngine;
 using System.IO;
+using System;
 
 public static class ProtoTools
 {
@@ -41,6 +42,10 @@ public static class ProtoTools
         }
 
         Debug.Log("Export to csharp done...");
+
+        CSCodeGen();
+
+        Debug.Log("csharp code gen done...");
     }
 
     [MenuItem("XSFTools/Proto/Export proto to cpp", false, (int)XSFMenuID.PBExportCpp)]
@@ -54,5 +59,79 @@ public static class ProtoTools
             $"--cpp_out={outputDir}  --proto_path=../../ CMessageID.proto", PROTOC_DIR);
 
         Debug.Log("Export to cpp done...");
+    }
+
+    private static void CSCodeGen()
+    {
+        string protoPath = Application.dataPath + "/../../proto/CMessageID.proto";
+        string codeTemplate = Application.dataPath + "/Editor/Proto/MSGTemplate.txt";
+        string TmpContent = File.ReadAllText(codeTemplate);
+
+        string [] lines = File.ReadAllLines(protoPath);
+
+        bool bGenCode = false;
+
+        string messagePoolStr = "";
+
+        for(int i = 0; i < lines.Length; i ++)
+        {
+            if(bGenCode)
+            {
+                if(lines[i].Contains("MESSAGE_ID_END"))
+                {
+                    break;
+                }
+
+                string rawMsgID = lines[i].Trim();
+
+                int index = rawMsgID.IndexOf("=");
+                if(index > 0)
+                {
+                    string msgID = rawMsgID.Substring(0, index-1);
+                    msgID = msgID.Trim();
+                    Debug.Log("Find Message ID:" + msgID); 
+
+                    string[] idParts = msgID.Split("_");
+                    string idName = "";
+                    for(int J = 0; J < idParts.Length; J++)
+                    {
+                        idName += XSFEditorUtil.FirstLetterToUpper(idParts[J].ToLower());
+                    }
+
+                    string Desc = "";
+                    int descIndex = rawMsgID.IndexOf("//");
+                    if(descIndex > 0)
+                    {
+                        Desc = rawMsgID.Substring(descIndex+2);
+                    }
+
+                    string codePath = Application.dataPath + $"/Scripts/Net/Messages/MSG_{msgID}.cs";
+                    if(!File.Exists(codePath))
+                    {
+                        string content = TmpContent.Replace("_MSG_NAME_", msgID);
+                        DateTime currentDateTime = DateTime.Now;
+                        string date = currentDateTime.ToShortDateString();
+                        content = content.Replace("_MSG_DATE_", date);
+                        content = content.Replace("_MSG_DESC_", Desc.Trim());
+
+                        
+                        content = content.Replace("_MSG_ID_NAME_", idName);
+                        File.WriteAllText(codePath, content);
+                    }
+
+                    messagePoolStr += $"\t\tm_MessagePool[(int)CMSGID.{idName}] = new MSG_{msgID}();\n";
+                }
+            }
+            else
+            {
+                if(lines[i].Contains("MESSAGE_ID_START"))
+                {
+                    bGenCode = true;
+                }
+            }
+        }
+
+        string codeMessagePool = Application.dataPath + "/Scripts/Net/MessagePool.cs";
+        XSFEditorUtil.ReplaceContentByTag(codeMessagePool, "MESSAGE_START", "MESSAGE_END", messagePoolStr);
     }
 }

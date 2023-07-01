@@ -12,6 +12,12 @@ public enum EventID
 {
     AllStartupStepDone = 1000,
 
+    NetConnecting,
+    NetConnected,
+    NetError,
+    NetHandshakeDone,
+
+
     UITestShow = 10001,
 
 

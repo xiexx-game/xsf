@@ -8,11 +8,14 @@ package xsf_pb;
 // 客户端消息ID
 enum CMSGID {
     None = 0;
+    //MESSAGE_ID_START
+    
     Clt_Gt_Handshake = 1;             // client --> gate 握手请求
     Gt_Clt_Handshake = 2;             // gate --> client 握手反馈
     Clt_Gt_Heartbeat = 3;             // client --> gate 心跳 请求
     Gt_Clt_Heartbeat = 4;             // gate --> client 心跳 反馈
     Clt_L_Login = 5;                  // client --> login 登录
-
+    
+    //MESSAGE_ID_END
     Max = 1024;
 }

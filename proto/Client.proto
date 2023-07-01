@@ -14,12 +14,13 @@ message Gt_Clt_Handshake {
 
 // client --> gate 心跳 请求
 message Clt_Gt_Heartbeat {
-
+    uint64 time = 1;    // 客户端发起心跳当前时间毫秒数
 }
 
 // gate --> client 心跳 反馈
 message Gt_Clt_Heartbeat {
-
+    uint64 client_time = 1; // 客户端发起心跳当前时间毫秒数
+    uint64 server_time = 2; // 服务器回复心跳当前时间毫秒数
 }
 
 // client --> login 登录

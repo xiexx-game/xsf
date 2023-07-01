@@ -1,0 +1,49 @@
+//////////////////////////////////////////////////////////////////////////
+// 
+// 文件：Assets\Scripts\Net\Messages\MSG__MSG_NAME_.cs
+// 作者：xiexx
+// 时间：_MSG_DATE_
+// 描述：_MSG_DESC_
+// 说明：
+//
+//////////////////////////////////////////////////////////////////////////
+
+using XsfPb;
+
+public sealed class MSG__MSG_NAME_ : IMessage
+{
+    public override CMSGID ID { get { return CMSGID._MSG_ID_NAME_; } }
+
+    private _MSG_NAME_ m_PB;
+    public _MSG_NAME_ mPB
+    {
+        get
+        {
+            if (m_PB == null)
+                m_PB = new _MSG_NAME_();
+
+            return m_PB;
+        }
+    }
+
+    public override void Export(XSFWriter writer)
+    {
+        // 写入PB数据
+        byte[] bytes = new byte[mPB.CalculateSize()];
+        mPB.WriteTo(new Google.Protobuf.CodedOutputStream(bytes));
+        writer.WriteBuffer(bytes);
+    }
+
+    public override void Import(byte[] data, int offset, int length)
+    {
+        m_PB = _MSG_NAME_.Parser.ParseFrom(data, offset, length);
+    }
+
+    // 消息处理接口
+    public override void Execute(NetClient client)
+    {
+        
+
+
+    }
+}

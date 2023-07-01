@@ -24,11 +24,10 @@ namespace XsfPb {
     static CMessageIDReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "ChBDTWVzc2FnZUlELnByb3RvEgZ4c2ZfcGIqlQEKBkNNU0dJRBIICgROb25l",
+            "ChBDTWVzc2FnZUlELnByb3RvEgZ4c2ZfcGIqhQEKBkNNU0dJRBIICgROb25l",
             "EAASFAoQQ2x0X0d0X0hhbmRzaGFrZRABEhQKEEd0X0NsdF9IYW5kc2hha2UQ",
             "AhIUChBDbHRfR3RfSGVhcnRiZWF0EAMSFAoQR3RfQ2x0X0hlYXJ0YmVhdBAE",
-            "Eg0KCEx1YVN0YXJ0EIACEhAKC0NsdF9MX0xvZ2luEIECEggKA01heBCACGIG",
-            "cHJvdG8z"));
+            "Eg8KC0NsdF9MX0xvZ2luEAUSCAoDTWF4EIAIYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::XsfPb.CMSGID), }, null));
@@ -41,6 +40,9 @@ namespace XsfPb {
   /// 客户端消息ID
   /// </summary>
   public enum CMSGID {
+    /// <summary>
+    ///MESSAGE_ID_START
+    /// </summary>
     [pbr::OriginalName("None")] None = 0,
     /// <summary>
     /// client --> gate 握手请求
@@ -59,13 +61,12 @@ namespace XsfPb {
     /// </summary>
     [pbr::OriginalName("Gt_Clt_Heartbeat")] GtCltHeartbeat = 4,
     /// <summary>
-    /// Lua消息ID起始值
-    /// </summary>
-    [pbr::OriginalName("LuaStart")] LuaStart = 256,
-    /// <summary>
     /// client --> login 登录
     /// </summary>
-    [pbr::OriginalName("Clt_L_Login")] CltLLogin = 257,
+    [pbr::OriginalName("Clt_L_Login")] CltLLogin = 5,
+    /// <summary>
+    ///MESSAGE_ID_END
+    /// </summary>
     [pbr::OriginalName("Max")] Max = 1024,
   }
 
