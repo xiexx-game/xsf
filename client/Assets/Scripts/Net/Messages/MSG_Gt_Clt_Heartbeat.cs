@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 // 
 // 文件：Assets\Scripts\Net\Messages\MSG_Gt_Clt_Heartbeat.cs
-// 作者：xiexx
+// 作者：Xoen Xie
 // 时间：2023/7/1
 // 描述： gate --> client 心跳 反馈
 // 说明：

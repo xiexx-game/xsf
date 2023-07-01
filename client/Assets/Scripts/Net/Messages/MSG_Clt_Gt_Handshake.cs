@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 // 
 // 文件：Assets\Scripts\Net\Messages\MSG_Clt_Gt_Handshake.cs
-// 作者：xiexx
+// 作者：Xoen Xie
 // 时间：2023/7/1
 // 描述：client --> gate 握手请求
 // 说明：
