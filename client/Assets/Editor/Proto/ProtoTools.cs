@@ -18,7 +18,7 @@ public static class ProtoTools
     static string PROTOC_DIR = Application.dataPath + "/../../proto/bin/win/";
     static string PROTOC = PROTOC_DIR + "protoc.exe";
 #else
-    static string protocDir = Application.dataPath + "/../../proto/bin/mac/";
+    static string PROTOC_DIR = Application.dataPath + "/../../proto/bin/mac/";
     static string PROTOC = PROTOC_DIR + "protoc";
 #endif
 
