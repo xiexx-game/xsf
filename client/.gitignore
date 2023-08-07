@@ -9,3 +9,6 @@ UserSettings/
 obj/
 Log/
 Logs/
+.DS_Store
+.vsconfig
+.vs/
