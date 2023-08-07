@@ -10,7 +10,7 @@ xsf（Xoen's Simple Framework）是一个开源的简约的游戏开发框架。
 
 `In the xlua branch, The client is built on Unity3D (2021.3) and [xlua(v2.1.16 with ndk) R21b)]and [lua - protobuf (0.4.0)], You can adjust and delete the corresponding modules as needed.`
 
-在xlua分支中，客户端是建立在Unity3D（2021.3）和[xlua(v2.1.16 with ndk r21b)](https://github.com/Tencent/xLua)以及[lua-protobuf(0.4.0)](https://github.com/starwing/lua-protobuf)的基础上。你可以根据需要自行调整和删减对应的模块。
+在xlua分支中，客户端是建立在Unity3D（2021.3 LTS）和[xlua(v2.1.16 with ndk r21b)](https://github.com/Tencent/xLua)以及[lua-protobuf(0.4.0)](https://github.com/starwing/lua-protobuf)的基础上。你可以根据需要自行调整和删减对应的模块。
 
 `Server framework this piece, I will provide a C++ based development framework, in this framework has developed three online projects, the underlying framework is very stable, can be assured to use, but also does not rule out the pit has not been discovered (conservative). In the future, I will provide a go based development framework.`
 
