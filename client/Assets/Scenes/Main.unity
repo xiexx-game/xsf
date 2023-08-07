@@ -210,6 +210,7 @@ GameObject:
   - component: {fileID: 364529245}
   - component: {fileID: 364529246}
   - component: {fileID: 364529247}
+  - component: {fileID: 364529248}
   m_Layer: 0
   m_Name: XSFMain
   m_TagString: Untagged
@@ -261,10 +262,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TargetFrameRate: 60
-  ShowInfo: 0
   LoadScpInFiles: 1
   HeartbeatInterval: 0
   AASUpdateOpen: 0
+--- !u!114 &364529248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364529244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc1ad249bc4fd472aa2fa81be3f382a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowInfo: 1
+  ShowLog: 0
+  ShowButton: 1
 --- !u!224 &476425866 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8660678323553645887, guid: 25a29cfdfd3512c49b77d68b35cbe74a, type: 3}

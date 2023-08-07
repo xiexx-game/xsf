@@ -109,6 +109,14 @@ public sealed class XSFLog : Singleton<XSFLog>
         m_ResetEvent.Set();
     }
 
+    public string [] GetAllLogs()
+    {
+        File.Copy(m_sLogFilePath, "./temp.log", true);
+        string [] lines = File.ReadAllLines("./temp.log");
+        File.Delete("./temp.log");
+        return lines;
+    }
+
     private void Run()
     {
         if (File.Exists(m_sLogFilePath))

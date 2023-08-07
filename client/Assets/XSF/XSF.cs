@@ -96,7 +96,7 @@ public static class XSF
 
         XSFLog.Instance.Push(LogType.Log, s);
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR || UNITY_LOG
         UnityEngine.Debug.Log(s);
 #endif
     }
@@ -105,7 +105,7 @@ public static class XSF
     {
         XSFLog.Instance.Push(LogType.Log, log);
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR || UNITY_LOG
         UnityEngine.Debug.Log(log);
 #endif
     }
@@ -115,7 +115,7 @@ public static class XSF
         var s = string.Format(format, args);
         XSFLog.Instance.Push(LogType.Warning, s);
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR || UNITY_LOG
         UnityEngine.Debug.LogWarning(s);
 #endif
     }
@@ -124,7 +124,7 @@ public static class XSF
     {
         XSFLog.Instance.Push(LogType.Warning, log);
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR || UNITY_LOG
         UnityEngine.Debug.LogWarning(log);
 #endif
     }
@@ -135,7 +135,7 @@ public static class XSF
 
         XSFLog.Instance.Push(LogType.Error, s);
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR || UNITY_LOG
         UnityEngine.Debug.LogError(s);
 #endif
     }
@@ -144,7 +144,7 @@ public static class XSF
     {
         XSFLog.Instance.Push(LogType.Error, log);
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR || UNITY_LOG
         UnityEngine.Debug.LogError(log);
 #endif
     }

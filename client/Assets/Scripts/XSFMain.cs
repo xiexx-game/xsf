@@ -60,6 +60,7 @@ public sealed class XSFMain : MonoSingleton<XSFMain>
                 case MainStatus.Run:
                     {
                         XSF.Update();
+                        XSF.Log(Time.deltaTime.ToString());
                     }
                     break;
             }
