@@ -43,13 +43,13 @@ public sealed class XSFSchema : Singleton<XSFSchema>, IUpdateNode
 #if UNITY_EDITOR
         if (XSFConfig.Instance.LoadScpInFiles)
         {
-            XSF.Log("XSFSchema.StartLoad Load in files");
+            Debug.Log("XSFSchema.StartLoad Load in files");
             StartLoadSchema();      // 从文件中直接加载配置
         }
         else
         {
 #endif
-            XSF.Log("XSFSchema.StartLoad Load in aas");
+            Debug.Log("XSFSchema.StartLoad Load in aas");
             LoadScpFromAAS();     // 先从AAS中加载配置资源
 
 #if UNITY_EDITOR
@@ -61,7 +61,7 @@ public sealed class XSFSchema : Singleton<XSFSchema>, IUpdateNode
     // 从AAS中加载配置资源
     void LoadScpFromAAS()
     {
-        XSF.Log("XSFSchema LoadScpFromAAS start");
+        Debug.Log("XSFSchema LoadScpFromAAS start");
         m_ScpContent = new Dictionary<string, string>();
 
         m_LoadHandle = Addressables.LoadAssetsAsync<TextAsset>("scp", OnPerComplete, true);
@@ -77,7 +77,7 @@ public sealed class XSFSchema : Singleton<XSFSchema>, IUpdateNode
     // 配置资源全部加载完了
     private void OnAssetsLoadDone()
     {
-        XSF.Log("XSFSchema.OnAssetsLoadDone all scp assets load done ....");
+        Debug.Log("XSFSchema.OnAssetsLoadDone all scp assets load done ....");
 
         StartLoadSchema();
 
@@ -131,7 +131,7 @@ public sealed class XSFSchema : Singleton<XSFSchema>, IUpdateNode
             }
 #endif
 
-            XSF.Log("All Schema Load done ...");
+            Debug.Log("All Schema Load done ...");
 
             XSFEvent.Instance.Fire(XSF.SCHEMA_EVENT_ID);
         }
@@ -148,7 +148,7 @@ public sealed class XSFSchema : Singleton<XSFSchema>, IUpdateNode
 
         sName = m_SchemaList[nID].GetSchemaName(sName);
 
-        XSF.Log("XSFSchema.LoadWithSchema load schema, name=" + sName);
+        Debug.Log("XSFSchema.LoadWithSchema load schema, name=" + sName);
 
         string sContent = null;
 

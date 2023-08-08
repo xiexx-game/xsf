@@ -8,6 +8,7 @@
 //
 //////////////////////////////////////////////////////////////////////////
 using System;
+using UnityEngine;
 
 public struct CSVIdCount
 {
@@ -50,7 +51,7 @@ public sealed class CSVData_IDAndCount : CSVData
         }
         catch (Exception)
         {
-            XSF.LogError($"CSVData_IDAndCount.Read error str={sData}, row={nRow}, col={nCol}");
+            Debug.LogError($"CSVData_IDAndCount.Read error str={sData}, row={nRow}, col={nCol}");
             throw;
         }
 

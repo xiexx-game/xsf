@@ -8,6 +8,7 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+using UnityEngine;
 using System.Collections.Generic;
 
 public class SchemaLanguage : ISchema
@@ -45,7 +46,7 @@ public class SchemaLanguage : ISchema
             //* 使用字典
             if (m_Datas.ContainsKey(scp.sKey))
             {
-                XSF.LogError("SchemaLanguage.OnSchemaLoad key exist, id=" + scp.sKey);
+                Debug.LogError("SchemaLanguage.OnSchemaLoad key exist, id=" + scp.sKey);
                 return false;
             }
 
@@ -67,13 +68,13 @@ public class SchemaLanguage : ISchema
         {
 #if UNITY_EDITOR
             if(UnityEngine.Application.isPlaying) {
-                XSF.LogError("SchemaLanguage.Get can not get local text, key=" + sKey);
+                Debug.LogError("SchemaLanguage.Get can not get local text, key=" + sKey);
             } else {
                 UnityEngine.Debug.LogError("SchemaLanguage.Get can not get local text, key=" + sKey);
             }
             
 #else
-            XSF.LogError("SchemaLanguage.Get can not get local text, key=" + sKey);
+            Debug.LogError("SchemaLanguage.Get can not get local text, key=" + sKey);
 #endif
             return sKey;
         }

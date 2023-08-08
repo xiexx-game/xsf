@@ -29,7 +29,7 @@ public static class AASUtil
             }
             else
             {
-                XSF.LogError("AASUtil.LoadUI error, name=" + name);
+                Debug.LogError("AASUtil.LoadUI error, name=" + name);
             }
         };
     }

@@ -76,7 +76,7 @@ public sealed class NetClient : INetHandler
     {
         if (m_Connection == null || !m_Connection.mIsConnected)
         {
-            XSF.LogError($"NetClient.SendMessage connection not connected, msg id={message.ID}");
+            Debug.LogError($"NetClient.SendMessage connection not connected, msg id={message.ID}");
             return;
         }
 
@@ -112,7 +112,7 @@ public sealed class NetClient : INetHandler
     {
         XSFEvent.Instance.Fire((uint)EventID.NetConnected, mID, null, true);
 
-        XSF.Log($"NetClient::OnConnected ip={m_sIP}, port={m_nPort}");
+        Debug.Log($"NetClient::OnConnected ip={m_sIP}, port={m_nPort}");
 
         // 连接成功发送握手消息
         SendHandshake();
@@ -126,7 +126,7 @@ public sealed class NetClient : INetHandler
 
         m_Reader.ReadUShort(out nMsgID);
 
-        XSF.Log($"NetClient OnRecv, msg id={nMsgID}");
+        Debug.Log($"NetClient OnRecv, msg id={nMsgID}");
 
         IMessage message = MessagePool.Instance.Get((XsfPb.CMSGID)nMsgID);
         message.Import(data, 2, data.Length - 2);
@@ -135,7 +135,7 @@ public sealed class NetClient : INetHandler
 
     public void OnError(NetError nErrorCode)
     {
-        XSF.LogError($"NetClient::OnError, 网络出错，错误码={nErrorCode}");
+        Debug.LogError($"NetClient::OnError, 网络出错，错误码={nErrorCode}");
 
         XSFEvent.Instance.Fire((uint)EventID.NetError, mID, (uint)nErrorCode, true);
     }

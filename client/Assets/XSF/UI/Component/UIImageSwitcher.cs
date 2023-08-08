@@ -56,7 +56,7 @@ public class UIImageSwitcher : MonoBehaviour
             }
             else
             {
-                XSF.LogError("UIImageSwitcher.OnAtlasLoaded sprite not found, name=" + m_sSpriteName);
+                Debug.LogError("UIImageSwitcher.OnAtlasLoaded sprite not found, name=" + m_sSpriteName);
             }
         }
     }

@@ -8,6 +8,7 @@
 //
 //////////////////////////////////////////////////////////////////////////
 using System;
+using UnityEngine;
 
 public sealed class CSVData_Ulong : CSVData
 {
@@ -29,7 +30,7 @@ public sealed class CSVData_Ulong : CSVData
         }
         catch (Exception)
         {
-            XSF.LogError($"CSVData_Uint.Read error str={sData}, row={nRow}, col={nCol}");
+            Debug.LogError($"CSVData_Uint.Read error str={sData}, row={nRow}, col={nCol}");
             throw;
         }
     }

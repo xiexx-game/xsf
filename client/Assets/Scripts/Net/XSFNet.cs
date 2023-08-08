@@ -8,6 +8,8 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+using UnityEngine;
+
 
 public sealed class XSFNet : Singleton<XSFNet>, IUpdateNode, IEventSink
 {
@@ -49,7 +51,7 @@ public sealed class XSFNet : Singleton<XSFNet>, IUpdateNode, IEventSink
     public NetClient CreateNetClient(string sIP, int nPort)
     {
         if (mClient != null) {
-            XSF.Log("CreateNetClient mClient.Release");
+            Debug.Log("CreateNetClient mClient.Release");
             mClient.Release();
         }
 
@@ -72,7 +74,7 @@ public sealed class XSFNet : Singleton<XSFNet>, IUpdateNode, IEventSink
     {
         if (mClient == null)
         {
-            XSF.LogWarning("NetManager.SendMessage mClient == null, message=" + message.ID);
+            Debug.LogWarning("NetManager.SendMessage mClient == null, message=" + message.ID);
             return;
         }
             

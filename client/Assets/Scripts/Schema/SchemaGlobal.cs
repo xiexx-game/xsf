@@ -9,6 +9,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System.Collections.Generic;
+using UnityEngine;
 
 public class SchemaGlobal : ISchema
 {
@@ -31,7 +32,7 @@ public class SchemaGlobal : ISchema
             scp.uId = (csv.GetData((int)CSVDataType.Uint, i, (int)CSVIndex.ScpGlobal_id) as CSVData_Uint).uValue;
             if(scp.uId != i + 1) 
             {
-                XSF.LogError($"SchemaGlobal.OnSchemaLoad index error, scp.uId:{scp.uId} != i:{i} + 1");
+                Debug.LogError($"SchemaGlobal.OnSchemaLoad index error, scp.uId:{scp.uId} != i:{i} + 1");
                 return false;
             }
 
@@ -54,7 +55,7 @@ public class SchemaGlobal : ISchema
     {
         if (nIndex >= m_Datas.Length)
         {
-            XSF.LogError(string.Format("SchemaGlobal.Get nIndex[{0}] >= m_Datas.Length[{1}]", nIndex, m_Datas.Length));
+            Debug.LogError(string.Format("SchemaGlobal.Get nIndex[{0}] >= m_Datas.Length[{1}]", nIndex, m_Datas.Length));
             return null;
         }
 

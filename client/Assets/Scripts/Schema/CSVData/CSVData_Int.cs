@@ -7,6 +7,7 @@
 // 说明：
 //
 //////////////////////////////////////////////////////////////////////////
+using UnityEngine;
 using System;
 
 public sealed class CSVData_Int : CSVData
@@ -29,7 +30,7 @@ public sealed class CSVData_Int : CSVData
         }
         catch (Exception)
         {
-            XSF.LogError($"CSVData_Int.Read error str={sData}, row={nRow}, col={nCol}");
+            Debug.LogError($"CSVData_Int.Read error str={sData}, row={nRow}, col={nCol}");
             throw;
         }
     }

@@ -71,11 +71,11 @@ public sealed class SchemaLoad : ISchema
         string sName = info.sName;
         SchemaType nType = info.nType;
 
-        XSF.Log("Start load, schema=" + sName);
+        Debug.Log("Start load, schema=" + sName);
 
         XSFSchema.Instance.LoadWithSchema(nID, sName, nType);
 
-        XSF.Log("Load schema done, schema=" + sName);
+        Debug.Log("Load schema done, schema=" + sName);
 
         if(m_LoadInfos.Count > 0)
             return true;

@@ -19,19 +19,19 @@ public sealed class StartupStepAASUpdate : StartupStep
 {
     public override void Start()
     {
-        XSF.LogWarning("StartupStepAASUpdate Start");
+        Debug.LogWarning("StartupStepAASUpdate Start");
 #if UNITY_EDITOR
         if (XSFConfig.Instance.AASUpdateOpen)
         {
 #endif
-            XSF.Log("StartupStepAASUpdate Start ..");
+            Debug.Log("StartupStepAASUpdate Start ..");
 
             StartUpdate();
 #if UNITY_EDITOR
         }
         else
         {
-            XSF.Log("StartupStepAASUpdate skip ..");
+            Debug.Log("StartupStepAASUpdate skip ..");
             IsDone = true;
         }
 #endif
@@ -41,14 +41,14 @@ public sealed class StartupStepAASUpdate : StartupStep
 
     private void StartUpdate()
     {
-        XSF.Log("StartUpdate Start ..");
+        Debug.Log("StartUpdate Start ..");
         catalogsToUpdate = new List<string>();
         
         checkForUpdateHandle = Addressables.CheckForCatalogUpdates(false);
         checkForUpdateHandle.Completed += op =>
         {
             catalogsToUpdate.AddRange(checkForUpdateHandle.Result);
-            XSF.Log("AASUpdate checkForUpdateHandle.Completed count=" + checkForUpdateHandle.Result.Count);
+            Debug.Log("AASUpdate checkForUpdateHandle.Completed count=" + checkForUpdateHandle.Result.Count);
 
             XSFCoroutine.Instance.StartCoroutine((int)CoroutineID.C0, AASUpdate());
         };
@@ -56,41 +56,41 @@ public sealed class StartupStepAASUpdate : StartupStep
 
     private AsyncOperationHandle<List<string>> checkForUpdateHandle;
     IEnumerator AASUpdate() {
-        XSF.Log("AASUpdate start catalogsToUpdate.Count=" + catalogsToUpdate.Count + ", result=" + checkForUpdateHandle.Result);
+        Debug.Log("AASUpdate start catalogsToUpdate.Count=" + catalogsToUpdate.Count + ", result=" + checkForUpdateHandle.Result);
         if (catalogsToUpdate.Count > 0) {
             AsyncOperationHandle<List<IResourceLocator>> updateHandle = Addressables.UpdateCatalogs(catalogsToUpdate, false);
 
             yield return updateHandle;
 
-            XSF.Log($"AASUpdate updateHandle.Status = {updateHandle.Status}");
+            Debug.Log($"AASUpdate updateHandle.Status = {updateHandle.Status}");
             if (updateHandle.Status == AsyncOperationStatus.Succeeded)
             {
                 List<IResourceLocator> locators = updateHandle.Result;
 
-                XSF.Log($"AASUpdate start locators count={locators.Count}");
+                Debug.Log($"AASUpdate start locators count={locators.Count}");
 
                 for(int i = 0; i < locators.Count; i ++)
                 {
-                    XSF.Log($"AASUpdate start download, keys={locators[i].LocatorId}");
+                    Debug.Log($"AASUpdate start download, keys={locators[i].LocatorId}");
                     AsyncOperationHandle<long> getDownloadSize = Addressables.GetDownloadSizeAsync(locators[i].Keys);
                     while(!getDownloadSize.IsDone)
                     {
-                        XSF.Log("AASUpdate wait getDownloadSize");
+                        Debug.Log("AASUpdate wait getDownloadSize");
                         yield return new WaitForSeconds(0.3f);
                     }
 
-                    XSF.Log($"AASUpdate download size={getDownloadSize.Result}, status={getDownloadSize.Status}");
+                    Debug.Log($"AASUpdate download size={getDownloadSize.Result}, status={getDownloadSize.Status}");
 
                     //If the download size is greater than 0, download all the dependencies.
                     if (getDownloadSize.Result > 0) {
                         AsyncOperationHandle downloadDependencies = Addressables.DownloadDependenciesAsync(locators[i].Keys);
                         while(!downloadDependencies.IsDone)
                         {
-                            XSF.Log("AASUpdate wait downloadDependencies");
+                            Debug.Log("AASUpdate wait downloadDependencies");
                             yield return new WaitForSeconds(0.3f);
                         }
 
-                        XSF.Log($"AASUpdate download done, keys={locators[i].Keys}");
+                        Debug.Log($"AASUpdate download done, keys={locators[i].Keys}");
                         Addressables.Release(downloadDependencies);
                     }
 
@@ -103,7 +103,7 @@ public sealed class StartupStepAASUpdate : StartupStep
 
         Addressables.Release(checkForUpdateHandle);
 
-        XSF.Log("AASUpdate end");
+        Debug.Log("AASUpdate end");
 
         IsDone = true;
     }

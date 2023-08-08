@@ -101,7 +101,7 @@ public class UIBase
             }
             else
             {
-                XSF.LogError("UIBase.LoadUI error, name=" + Name);
+                Debug.LogError("UIBase.LoadUI error, name=" + Name);
             }
         };
     }
@@ -145,7 +145,7 @@ public class UIBase
         case UIStatus.Hide:
         case UIStatus.Close:
         case UIStatus.None:
-            XSF.LogWarning("UIBase.Refresh can not fresh ui, please call Show() first, name=" + Name);
+            Debug.LogWarning("UIBase.Refresh can not fresh ui, please call Show() first, name=" + Name);
             return;
         }
 

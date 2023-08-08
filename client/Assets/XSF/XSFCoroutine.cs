@@ -36,7 +36,7 @@ public sealed class XSFCoroutine : Singleton<XSFCoroutine>
     {
         if(nID >= (int)CoroutineID.Max)
         {
-            XSF.LogError($"CoroutineMgr.StartCoroutine nID:{nID} >= CoroutineID.Max:{(int)CoroutineID.Max}");
+            Debug.LogError($"CoroutineMgr.StartCoroutine nID:{nID} >= CoroutineID.Max:{(int)CoroutineID.Max}");
             return null;
         }
 

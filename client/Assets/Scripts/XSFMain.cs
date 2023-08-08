@@ -50,39 +50,30 @@ public sealed class XSFMain : MonoSingleton<XSFMain>
                         XSFUI.Instance.Init(new UIHelper());
                         XSFNet.Instance.Init();
                         m_nStatus = MainStatus.Run;
-
-#if !UNITY_EDITOR
-                        Application.logMessageReceived += HandleLog;
-#endif
                     }
                     break;
 
                 case MainStatus.Run:
                     {
                         XSF.Update();
-                        XSF.Log(Time.deltaTime.ToString());
+                        Debug.Log(Time.deltaTime.ToString());
                     }
                     break;
             }
         }
         catch (XSFSchemaLoadException e)
         {
-            XSF.LogError($"Main.Update catch schema exception, message={e.Message}, stack=\n{e.StackTrace}");
+            Debug.LogError($"Main.Update catch schema exception, message={e.Message}, stack=\n{e.StackTrace}");
             m_nStatus = MainStatus.Error;
         }
         catch (Exception e)
         {
-            XSF.LogError($"Main.Update catch exception, message={e.Message}, stack=\n{e.StackTrace}");
+            Debug.LogError($"Main.Update catch exception, message={e.Message}, stack=\n{e.StackTrace}");
 
 #if EXCEPTION_PAUSE
             m_nStatus = MainStatus.Error;
 #endif
         }
-    }
-
-    void HandleLog(string logString, string stackTrace, LogType type)
-    {
-        XSFLog.Instance.Push(type, $"{logString}, trace={stackTrace}");
     }
 
     private void FixedUpdate()
@@ -100,7 +91,7 @@ public sealed class XSFMain : MonoSingleton<XSFMain>
         }
         catch (Exception e)
         {
-            XSF.LogError($"Main.FixedUpdate catch exception, message={e.Message}, stack=\n{e.StackTrace}");
+            Debug.LogError($"Main.FixedUpdate catch exception, message={e.Message}, stack=\n{e.StackTrace}");
 
 #if EXCEPTION_PAUSE
             m_nStatus = MainStatus.Error;

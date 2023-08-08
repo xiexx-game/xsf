@@ -8,6 +8,9 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+
+using UnityEngine;
+
 public sealed class XSFStartup : Singleton<XSFStartup>, IUpdateNode
 {
     public UIStartup UI { get; private set; }
@@ -64,7 +67,7 @@ public sealed class XSFStartup : Singleton<XSFStartup>, IUpdateNode
     public void OnAllStepDone()
     {
         m_bWorking = false;
-        XSF.Log("XSFStartup OnAllStepDone");
+        Debug.Log("XSFStartup OnAllStepDone");
         XSFEvent.Instance.Fire((uint)EventID.AllStartupStepDone);
     }
 

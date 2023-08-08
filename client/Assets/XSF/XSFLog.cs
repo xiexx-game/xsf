@@ -64,6 +64,21 @@ public sealed class XSFLog : Singleton<XSFLog>
         m_Thread = new Thread(new ThreadStart(Run));
         m_Thread.IsBackground = true;
         m_Thread.Start();
+
+        UnityEngine.Application.logMessageReceived += HandleLog;
+    }
+
+    void HandleLog(string logString, string stackTrace, LogType type)
+    {
+        if (type == LogType.Log || type == LogType.Warning)
+        {
+            Push(type, logString);
+        }
+        else
+        {
+            Push(type, $"{logString}, trace={stackTrace}");
+        }
+        
     }
 
     public string [] GetLogContent()
@@ -84,9 +99,8 @@ public sealed class XSFLog : Singleton<XSFLog>
 
     public void Release()
     {
-#if UNITY_EDITOR
         UnityEngine.Debug.LogWarning("Log Release ...");
-#endif
+
         m_bRun = false;
         m_ResetEvent.Set();
     }

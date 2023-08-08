@@ -8,11 +8,14 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+using UnityEngine;
+
+
 public sealed class StartupStepSchema : StartupStep
 {
     public override void Start()
     {
-        XSF.LogWarning("StartupStepSchema Start");
+        Debug.LogWarning("StartupStepSchema Start");
         XSFSchema.Instance.StartLoad(new GameSchemaHelper());
         Subscribe((EventID)XSF.SCHEMA_EVENT_ID, 0);
     }

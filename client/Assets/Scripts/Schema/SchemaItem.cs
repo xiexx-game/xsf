@@ -8,6 +8,7 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+using UnityEngine;
 using System.Collections.Generic;
 
 public class SchemaItem : ISchema
@@ -42,7 +43,7 @@ public class SchemaItem : ISchema
             //* 使用字典
             if (m_Datas.ContainsKey(scp.uId))
             {
-                XSF.LogError("SchemaItem.OnSchemaLoad key exist, id=" + scp.uId);
+                Debug.LogError("SchemaItem.OnSchemaLoad key exist, id=" + scp.uId);
                 return false;
             }
 

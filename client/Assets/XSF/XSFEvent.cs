@@ -77,7 +77,7 @@ public sealed class XSFEvent : Singleton<XSFEvent>, IUpdateNode
     {
         if (null == sink)
         {
-            XSF.LogError($"XSFEvent::Subscribe sink is null, nEventID={nEventID}, nObjectID={nObjectID}");
+            Debug.LogError($"XSFEvent::Subscribe sink is null, nEventID={nEventID}, nObjectID={nObjectID}");
             return false;
         }
 
@@ -165,7 +165,7 @@ public sealed class XSFEvent : Singleton<XSFEvent>, IUpdateNode
             var fCurTime = Time.realtimeSinceStartup;
             if (fCurTime - fTimeStart >= m_fTimeSkip)
             {
-                XSF.LogWarning("XSFEvent.Dispatch cost too much time, cost=" + (fCurTime - fTimeStart));
+                Debug.LogWarning("XSFEvent.Dispatch cost too much time, cost=" + (fCurTime - fTimeStart));
                 break;
             }
         }

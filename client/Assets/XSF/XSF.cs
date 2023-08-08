@@ -22,7 +22,7 @@ public static class XSF
     public static void Init()
     {
         XSFLog.Instance.Init();
-        Log("XSF.Init start");
+        UnityEngine.Debug.Log("XSF.Init start");
 
         XSFLocalization.Instance.Init();
         XSFUpdate.Instance.Init();
@@ -39,7 +39,7 @@ public static class XSF
 
     public static void Release()
     {
-        Log("XSF.Release start");
+        UnityEngine.Debug.Log("XSF.Release start");
 
         try
         {
@@ -47,7 +47,7 @@ public static class XSF
         }
         catch (Exception e)
         {
-            LogError($"XSF.Release catch exception, message={e.Message}, stack={e.StackTrace}");
+            UnityEngine.Debug.LogError($"XSF.Release catch exception, message={e.Message}, stack={e.StackTrace}");
         }
 
         XSFLog.Instance.Release();
@@ -71,82 +71,19 @@ public static class XSF
     [Conditional("XSF_DEBUG")]
     public static void DebugLog(string log)
     {
-        XSFLog.Instance.Push(LogType.Log, log);
         UnityEngine.Debug.Log(log);
     }
 
     [Conditional("XSF_DEBUG")]
     public static void DebugWarning(string log)
     {
-        XSFLog.Instance.Push(LogType.Warning, log);
         UnityEngine.Debug.LogWarning(log);
     }
 
     [Conditional("XSF_DEBUG")]
     public static void DebugError(string log)
     {
-        XSFLog.Instance.Push(LogType.Error, log);
         UnityEngine.Debug.LogError(log);
-    }
-
-
-    public static void Log(string format, params object[] args)
-    {
-        var s = string.Format(format, args);
-
-        XSFLog.Instance.Push(LogType.Log, s);
-
-#if UNITY_EDITOR || UNITY_LOG
-        UnityEngine.Debug.Log(s);
-#endif
-    }
-
-    public static void Log(string log)
-    {
-        XSFLog.Instance.Push(LogType.Log, log);
-
-#if UNITY_EDITOR || UNITY_LOG
-        UnityEngine.Debug.Log(log);
-#endif
-    }
-
-    public static void LogWarning(string format, params object[] args)
-    {
-        var s = string.Format(format, args);
-        XSFLog.Instance.Push(LogType.Warning, s);
-
-#if UNITY_EDITOR || UNITY_LOG
-        UnityEngine.Debug.LogWarning(s);
-#endif
-    }
-
-    public static void LogWarning(string log)
-    {
-        XSFLog.Instance.Push(LogType.Warning, log);
-
-#if UNITY_EDITOR || UNITY_LOG
-        UnityEngine.Debug.LogWarning(log);
-#endif
-    }
-
-    public static void LogError(string format, params object[] args)
-    {
-        var s = string.Format(format, args);
-
-        XSFLog.Instance.Push(LogType.Error, s);
-
-#if UNITY_EDITOR || UNITY_LOG
-        UnityEngine.Debug.LogError(s);
-#endif
-    }
-
-    public static void LogError(string log)
-    {
-        XSFLog.Instance.Push(LogType.Error, log);
-
-#if UNITY_EDITOR || UNITY_LOG
-        UnityEngine.Debug.LogError(log);
-#endif
     }
 
     /// <summary>

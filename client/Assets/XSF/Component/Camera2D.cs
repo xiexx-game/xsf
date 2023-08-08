@@ -35,7 +35,7 @@ public class Camera2D : MonoBehaviour
 
         float fCurAspectRatio = (float)Screen.width / (float)Screen.height;
 
-        XSF.Log($"width:{Screen.width}, height:{Screen.height}, fCurAspectRatio:{fCurAspectRatio}");
+        Debug.Log($"width:{Screen.width}, height:{Screen.height}, fCurAspectRatio:{fCurAspectRatio}");
 
         if (fCurAspectRatio < aspectRatio)
         {

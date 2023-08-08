@@ -12,6 +12,7 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 
+using UnityEngine;
 
 public class NetTcp
 {
@@ -102,10 +103,10 @@ public class NetTcp
 
     public bool Connect(string ip, int port)
     {
-        XSF.Log(string.Format("NetTcp.Connect Start Connect, ip={0}, port={1}", ip, port));
+        Debug.Log(string.Format("NetTcp.Connect Start Connect, ip={0}, port={1}", ip, port));
         if (m_nState == NetState.Connecting || m_nState == NetState.Connected)
         {
-            XSF.LogWarning($"NetTcp.Connect igone .... m_nState:{m_nState}");
+            Debug.LogWarning($"NetTcp.Connect igone .... m_nState:{m_nState}");
             return true;
         }
 
@@ -113,14 +114,14 @@ public class NetTcp
         {
             IPAddress[] address = Dns.GetHostAddresses(ip);
             for (int i = 0; i < address.Length; ++i)
-                XSF.Log(string.Format("NetTcp.Connect Address:{0}, AddressFamily:{1}", address[i].ToString(), address[i].AddressFamily));
+                Debug.Log(string.Format("NetTcp.Connect Address:{0}, AddressFamily:{1}", address[i].ToString(), address[i].AddressFamily));
 
             m_Socket = new Socket(address[0].AddressFamily, SocketType.Stream, ProtocolType.Tcp);
             m_Socket.BeginConnect(address[0], port, m_AsyncConnect, null);
         }
         catch (Exception e)
         {
-            XSF.LogError(string.Format("NetTcp.Connect caught exception, message={0}", e.Message));
+            Debug.LogError(string.Format("NetTcp.Connect caught exception, message={0}", e.Message));
 
             Close();
             PushEventError(NetError.Connect);
@@ -155,17 +156,17 @@ public class NetTcp
         {
             if (e.ErrorCode == (int)SocketError.WouldBlock)
             {
-                XSF.LogWarning("NetTcp::Send SocketError.WouldBlock");
+                Debug.LogWarning("NetTcp::Send SocketError.WouldBlock");
                 return true;
             }
 
-            XSF.LogError($"NetTcp::Send 1 caught a exception, error={e.ErrorCode}, message={e.Message}");
+            Debug.LogError($"NetTcp::Send 1 caught a exception, error={e.ErrorCode}, message={e.Message}");
             Close();
             PushEventError(NetError.Send);
         }
         catch (Exception e)
         {
-            XSF.LogError("NetTcp::Send 2 caught a exception, message:" + e.Message);
+            Debug.LogError("NetTcp::Send 2 caught a exception, message:" + e.Message);
             Close();
             PushEventError(NetError.Send);
         }
@@ -185,17 +186,17 @@ public class NetTcp
         {
             if (e.ErrorCode == (int)SocketError.WouldBlock)
             {
-                XSF.LogWarning("NetTcp::Receive SocketError.WouldBlock");
+                Debug.LogWarning("NetTcp::Receive SocketError.WouldBlock");
                 return;
             }
 
-            XSF.LogError($"NetTcp::Receive 1 caught a exception, error={e.ErrorCode}, message={e.Message}");
+            Debug.LogError($"NetTcp::Receive 1 caught a exception, error={e.ErrorCode}, message={e.Message}");
             Close();
             PushEventError(NetError.Recv);
         }
         catch (Exception e)
         {
-            XSF.LogError("NetTcp::Receive 2 caught a exception, message:" + e.Message);
+            Debug.LogError("NetTcp::Receive 2 caught a exception, message:" + e.Message);
             Close();
             PushEventError(NetError.Recv);
         }
@@ -223,7 +224,7 @@ public class NetTcp
         {
             try
             {
-                XSF.Log("NetTcp Close Shutdown");
+                Debug.Log("NetTcp Close Shutdown");
                 m_Socket.Shutdown(SocketShutdown.Both);
             }
             catch
@@ -233,7 +234,7 @@ public class NetTcp
 
             try
             {
-                XSF.Log("NetTcp Close Close");
+                Debug.Log("NetTcp Close Close");
                 m_Socket.Close();
             }
             catch
@@ -317,11 +318,11 @@ public class NetTcp
             m_Socket.EndConnect(iar);
             m_nState = NetState.Connected;
             PushEventConnected();
-            XSF.Log("NetTcp::OnEndConnect connected ...");
+            Debug.Log("NetTcp::OnEndConnect connected ...");
         }
         catch (Exception e)
         {
-            XSF.LogError("NetTcp::OnEndConnect caught a exception, message:" + e.Message);
+            Debug.LogError("NetTcp::OnEndConnect caught a exception, message:" + e.Message);
             Close();
             PushEventError(NetError.Connect);
             return;
@@ -342,17 +343,17 @@ public class NetTcp
         {
             if (e.ErrorCode == (int)SocketError.WouldBlock)
             {
-                XSF.LogWarning("NetTcp::OnEndSend SocketError.WouldBlock");
+                Debug.LogWarning("NetTcp::OnEndSend SocketError.WouldBlock");
                 return;
             }
 
-            XSF.LogError($"NetTcp::OnEndSend 1 caught a exception, error={e.ErrorCode}, message={e.Message}");
+            Debug.LogError($"NetTcp::OnEndSend 1 caught a exception, error={e.ErrorCode}, message={e.Message}");
             Close();
             PushEventError(NetError.Send);
         }
         catch (Exception e)
         {
-            XSF.LogError($"NetTcp::OnEndSend 2 caught a exception, message={e.Message}");
+            Debug.LogError($"NetTcp::OnEndSend 2 caught a exception, message={e.Message}");
             Close();
             PushEventError(NetError.Send);
         }
@@ -371,18 +372,18 @@ public class NetTcp
         {
             if (e.ErrorCode == (int)SocketError.WouldBlock)
             {
-                XSF.LogWarning("NetTcp::OnEndSend SocketError.WouldBlock");
+                Debug.LogWarning("NetTcp::OnEndSend SocketError.WouldBlock");
                 return;
             }
 
-            XSF.LogError($"NetTcp::OnEndReceive 1 caught a exception, error={e.ErrorCode}, message={e.Message}");
+            Debug.LogError($"NetTcp::OnEndReceive 1 caught a exception, error={e.ErrorCode}, message={e.Message}");
             Close();
             PushEventError(NetError.Recv);
             return;
         }
         catch (Exception e)
         {
-            XSF.LogError($"NetTcp::OnEndReceive 2 caught a exception, message={e.Message}");
+            Debug.LogError($"NetTcp::OnEndReceive 2 caught a exception, message={e.Message}");
             Close();
             PushEventError(NetError.Recv);
             return;

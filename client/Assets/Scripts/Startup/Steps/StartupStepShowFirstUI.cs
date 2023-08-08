@@ -8,11 +8,13 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+using UnityEngine;
+
 public sealed class StartupStepShowFirstUI : StartupStep
 {
     public override void Start()
     {
-        XSF.LogWarning("StartupStepShowFirstUI Start");
+        Debug.LogWarning("StartupStepShowFirstUI Start");
 
         Subscribe((EventID)XSF.UI_SHOW_EVENT_ID, (uint)EventID.UITestShow);
 

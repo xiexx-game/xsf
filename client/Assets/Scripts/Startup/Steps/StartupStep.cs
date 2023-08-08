@@ -7,6 +7,9 @@
 // 说明：
 //
 //////////////////////////////////////////////////////////////////////////
+
+using UnityEngine;
+
 public enum StartupStepID
 {
     None = 0,
@@ -37,7 +40,7 @@ public abstract class StartupStep : IEventSink
 
     public virtual bool OnLocalEvent(uint nEventID, uint nObjectID, object context)
     {
-        XSF.LogWarning($"RunStep.OnLocalEvent nEventID={nEventID}, nObjectID={nObjectID}");
+        Debug.LogWarning($"RunStep.OnLocalEvent nEventID={nEventID}, nObjectID={nObjectID}");
         IsDone = true;
         return false;
     }
