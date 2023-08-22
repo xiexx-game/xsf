@@ -55,7 +55,7 @@ public sealed class XSFLog : Singleton<XSFLog>
         DateTime now = DateTime.Now;
         m_sLogFilePath = string.Format("{0}/{1:D2}{2:D2}_{3:D2}{4:D2}{5:D2}.log", sLogDir, now.Month, now.Day, now.Hour, now.Minute, now.Second);
 #else
-        m_sLogFilePath = Application.persistentDataPath + "/running.log";
+        m_sLogFilePath = Application.persistentDataPath + "/running.html";
 #endif
 
         UnityEngine.Debug.Log(m_sLogFilePath);
@@ -125,9 +125,10 @@ public sealed class XSFLog : Singleton<XSFLog>
 
     public string [] GetAllLogs()
     {
-        File.Copy(m_sLogFilePath, "./temp.log", true);
-        string [] lines = File.ReadAllLines("./temp.log");
-        File.Delete("./temp.log");
+        string tempPath = Application.persistentDataPath + "/temp";
+        File.Copy(m_sLogFilePath, tempPath, true);
+        string [] lines = File.ReadAllLines(tempPath);
+        File.Delete(tempPath);
         return lines;
     }
 
@@ -149,18 +150,18 @@ public sealed class XSFLog : Singleton<XSFLog>
                 switch (node.type)
                 {
                     case LogType.Warning:
-                        writer.Write($"[WARN] {node.date} {node.message}\n");
+                        writer.Write($"[WARN] {node.date} {node.message}<br />\n");
                         WarnCount ++;
                         break;
 
                     case LogType.Error:
                         ErrorCount ++;
-                        writer.Write($"[ERROR] {node.date} {node.message}\n");
+                        writer.Write($"[ERROR] {node.date} {node.message}<br />\n");
                         break;
 
                     default:
                         InfoCount ++;
-                        writer.Write($"[INFO] {node.date} {node.message}\n");
+                        writer.Write($"[INFO] {node.date} {node.message}<br />\n");
                         break;
                 }
             }

@@ -27,6 +27,7 @@ public sealed class StartupStepAASUpdate : StartupStep
             Debug.Log("StartupStepAASUpdate Start ..");
 
             StartUpdate();
+            
 #if UNITY_EDITOR
         }
         else
@@ -45,12 +46,21 @@ public sealed class StartupStepAASUpdate : StartupStep
         catalogsToUpdate = new List<string>();
         
         checkForUpdateHandle = Addressables.CheckForCatalogUpdates(false);
+
         checkForUpdateHandle.Completed += op =>
         {
-            catalogsToUpdate.AddRange(checkForUpdateHandle.Result);
-            Debug.Log("AASUpdate checkForUpdateHandle.Completed count=" + checkForUpdateHandle.Result.Count);
+            if(checkForUpdateHandle.Status == AsyncOperationStatus.Succeeded)
+            {
+                catalogsToUpdate.AddRange(checkForUpdateHandle.Result);
+                Debug.Log("AASUpdate checkForUpdateHandle.Completed count=" + checkForUpdateHandle.Result.Count);
 
-            XSFCoroutine.Instance.StartCoroutine((int)CoroutineID.C0, AASUpdate());
+                XSFCoroutine.Instance.StartCoroutine((int)CoroutineID.C0, AASUpdate());
+            } 
+            else
+            {
+                Debug.LogError("StartupStepAASUpdate error, skip");
+                IsDone = true;
+            }
         };
     }
 

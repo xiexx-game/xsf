@@ -30,7 +30,6 @@ public sealed class XSFConfig : MonoSingleton<XSFConfig>
 #if UNITY_EDITOR
         
 #else
-        ShowInfo = false;
         LoadScpInFiles = false;
         AASUpdateOpen = true;
 #endif
