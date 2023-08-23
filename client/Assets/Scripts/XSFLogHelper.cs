@@ -56,15 +56,15 @@ public class XSFLogHelper : MonoSingleton<XSFLogHelper>
 
 
         m_LogErrorStyle = new GUIStyle();
-        m_LogErrorStyle.fontSize = 14;
+        m_LogErrorStyle.fontSize = 24;
         m_LogErrorStyle.normal.textColor = new Color32(255, 0, 0, 255);
 
         m_LogInfoStyle = new GUIStyle();
-        m_LogInfoStyle.fontSize = 14;
+        m_LogInfoStyle.fontSize = 24;
         m_LogInfoStyle.normal.textColor = new Color32(255, 255, 255, 255);
 
         m_LogWarnStyle = new GUIStyle();
-        m_LogWarnStyle.fontSize = 14;
+        m_LogWarnStyle.fontSize = 24;
         m_LogWarnStyle.normal.textColor = new Color32(255, 255, 0, 255);
 
         ShowRect = new Rect(90, 5, 80, 40);
