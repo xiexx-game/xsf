@@ -1,0 +1,17 @@
+//////////////////////////////////////////////////////////////////////////
+//
+// 文件：Assets/Scripts/Level/MonoTetrisObjects.cs
+// 作者：Xoen Xie
+// 时间：2023/06/21
+// 描述：关卡俄罗斯方块 Go 脚本
+// 说明：
+//
+//////////////////////////////////////////////////////////////////////////
+using UnityEngine;
+
+public class MonoTetrisObjects : MonoBehaviour
+{
+    public GameObject Playground;
+    public GameObject PreBlock;
+}
+

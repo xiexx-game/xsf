@@ -14,6 +14,9 @@ public enum UIID
 
     UITest,
     UIAtlasTest,
+    UISelect,
+    UILoading,
+    UIPlay,
 
     Max,
 }
@@ -28,6 +31,9 @@ public sealed class UIHelper : IUIHelper
         {
             case UIID.UITest:       return new UITest();
             case UIID.UIAtlasTest:  return new UIAtlasTest();
+            case UIID.UISelect:     return new UISelect();
+            case UIID.UILoading:    return new UILoading();
+            case UIID.UIPlay:       return new UIPlay();
             default: return null;
         }
     }

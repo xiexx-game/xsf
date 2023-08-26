@@ -59,7 +59,7 @@ public static class SchemaTools
         string sToolArg = $"ConfigSplit.py {sClientOutput} {sServerOutput}";
         Debug.Log(sToolArg);
 
-        XSFEditorUtil.StartProcess("python", sToolArg, sToolDir);
+        XSFEditorUtil.StartProcess("python3", sToolArg, sToolDir);
 
         string sConfigDir = Application.dataPath + "/../../config/";
 

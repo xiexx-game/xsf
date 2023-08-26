@@ -43,6 +43,11 @@ public enum CSVIndex
 	ScpLanguage_key = 0,
 	ScpLanguage_value = 1,
 
+	ScpLevelGame_id = 0,
+	ScpLevelGame_Name = 1,
+	ScpLevelGame_ShowUIs = 2,
+	ScpLevelGame_SceneObjects = 3,
+
 //CSV_INDEX_END
 }
 

@@ -46,7 +46,7 @@ public sealed class XSFUI : Singleton<XSFUI>, IUpdateNode
         m_ShowList.Add(ui);
     }
 
-    public T Get<T>(int id) where T : UIBase
+    public UIBase Get(int id)
     {
         if (id >= Helper.MaxID)
             return null;
@@ -54,9 +54,42 @@ public sealed class XSFUI : Singleton<XSFUI>, IUpdateNode
         if(m_UIs[id] == null)
             m_UIs[id] = Helper.GetUI(id);
 
-        return m_UIs[id] as T;
+        return m_UIs[id];
     }
 
+    public void ShowUI(int id)
+    {
+        if (id >= Helper.MaxID)
+            return;
+
+        if(m_UIs[id] == null)
+            m_UIs[id] = Helper.GetUI(id);
+
+        m_UIs[id].Show();
+    }
+
+    public void HideUI(int id)
+    {
+        if(m_UIs[id] != null)
+            m_UIs[id].Hide();
+    }
+
+    public bool IsUIShow(int id)
+    {
+        if (id >= Helper.MaxID)
+            return false;
+
+        if(m_UIs[id] == null)
+            return false;
+
+        return m_UIs[id].IsShow;
+    }
+
+    public void CloseUI(int id)
+    {
+        if(m_UIs[id] != null)
+            m_UIs[id].Close();
+    }
 
     public bool IsUpdateWroking { get { return true; } }
 
@@ -64,7 +97,7 @@ public sealed class XSFUI : Singleton<XSFUI>, IUpdateNode
     {
         for(int i = 0; i < m_ShowList.Count;)
         {
-            if(!m_ShowList[i].IsShow)
+            if(m_ShowList[i].NeedRemove)
             {
                 m_ShowList.RemoveAt(i);
             }

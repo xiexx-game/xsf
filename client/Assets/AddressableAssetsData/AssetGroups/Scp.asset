@@ -47,6 +47,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - scp
+  - m_GUID: 064ba1c558b8f4baab7c16952e105c31
+    m_Address: LevelGame
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - scp
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: fc082288655110246813ff8eb26b01f0, type: 2}
   m_SchemaSet:

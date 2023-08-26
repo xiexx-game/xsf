@@ -6,7 +6,7 @@ import importlib
 import os
 import sys
 
-import xlrd
+import openpyxl
 
 importlib.reload(sys)
 
@@ -34,47 +34,51 @@ def getFile(dir, suffix):
 # 打开excel
 def open_excel(file):
     try:
-        data = xlrd.open_workbook(file)
-        return data
+        wb = openpyxl.load_workbook(file)
+        #sheet_name = wb.sheetnames[0]
+        #return wb[sheet_name]
+        return wb
     except Exception as e:
-        print(str(e))
+        print("open_excel catch exception:" + str(e))
 
 
 # 根据索引获取Excel表格中的数据 参数:file：Excel文件路径, colnameindex：表头列名所在行的索引, by_index：表的索引
 def excel_table_byindex(sheet_data, order):
-    nrows = sheet_data.nrows  # 行数
-    ncols = sheet_data.ncols  # 列数
+    nrows = sheet_data.max_row  # 行数
+    ncols = sheet_data.max_column  # 列数
     rowlist = []
-    for rownum in range(2, nrows):
-        if sheet_data.cell(rownum, 0).value != "*":     # 该行未标记，不导出
-            continue
-        rowdata = sheet_data.row_values(rownum)
-        if rowdata:
-            collist = []
-            for i in range(1, ncols):
-                if sheet_data.cell(order, i).value != "*":      # 该列未标记，不导出
-                    continue
-                csv_data_type = sheet_data.cell(3, i).value.lower()
-                if rownum > 4:
-                    if csv_data_type == "uint" or csv_data_type == "int" or csv_data_type == "ulong":       # 如果是整形
-                        cell_value = str(rowdata[i])
-                        dot_index = cell_value.find('.')
-                        if dot_index != -1:
-                            first_cell_value = cell_value.split('.')[0]
-                            collist.append(first_cell_value)
-                        else:
-                            collist.append(cell_value)
-                    elif csv_data_type == "float":  # 如果是浮点数，只保留3位小数
-                        cell_value = str(rowdata[i])
-                        x_new = '{:.3f}'.format(float(cell_value))
-                        collist.append(str(x_new))
-                    else:
-                        collist.append(str(rowdata[i]))
-                else:
-                    collist.append(str(rowdata[i]))
 
-            if len(collist) > 0:
+    #print("excel_table_byindex", nrows, ncols)
+
+    for rowIndex in range(3, nrows+1):
+        if sheet_data.cell(rowIndex, 1).value != "*":     # 该行未标记，不导出
+            continue
+        
+        collist = []
+        for colIndex in range(2, ncols+1):
+            cell_value = sheet_data.cell(rowIndex, colIndex).value
+
+            #print("flag=", colIndex, order, sheet_data.cell(order, colIndex).value)
+            if sheet_data.cell(order, colIndex).value == "*":     # 该列标记，才导出
+                if rowIndex >= 6:
+                    #print(rowIndex, colIndex, cell_value)
+                    if cell_value is None:
+                        collist.append("")
+                    else:
+                        csv_data_type = sheet_data.cell(4, colIndex).value
+                        if csv_data_type == "uint" or csv_data_type == "int" or csv_data_type == "ulong":       # 如果是整形
+                            collist.append(str(cell_value))
+                        elif csv_data_type == "float":
+                            x_new = '{:.3f}'.format(float(cell_value))
+                            collist.append(str(x_new))
+                        else:
+                            collist.append(str(cell_value))
+                else:
+                    collist.append(str(cell_value))
+
+        if len(collist) > 0:
                 rowlist.append(collist)
+
     return rowlist
 
 
@@ -85,18 +89,14 @@ def savaToCSV(_file, _list, _path):
     content = ""
     # 生成文件内容
     for collist in _list:
-        for i in range(len(collist)):
-            v = collist[i]
-            vstr = ""
-            # print k,v
-            if isinstance(v, float) or isinstance(v, int):
-                vstr = str(int(v))
+        line = ""
+        for col in collist:
+            if len(line) <= 0:
+                line = col
             else:
-                vstr = v
-            if i > 0:
-                content = content + C_SPACE
-            content = content + vstr
-        content = content + C_END
+                line += C_SPACE + col 
+
+        content += line + C_END
 
     # 生成文件后缀
     fname = os.path.basename(_file).split('.')
@@ -118,15 +118,16 @@ def main():
         # 遍历文件生成csv
         for file in filelist:
             excel_data = open_excel(file)
-            for sheet_name in excel_data.sheet_names():
-                print("表单：", sheet_name)
-                sheet_data = excel_data.sheet_by_name(sheet_name)
-                datalist_Server = excel_table_byindex(sheet_data, 0)
-                datalist_Client = excel_table_byindex(sheet_data, 1)
-                if len(datalist_Client) > 0 and os.path.exists(OUT_PATH):
-                    savaToCSV(sheet_name, datalist_Client, OUT_PATH)
-                if len(datalist_Server) > 0 and os.path.exists(OUT_SERVER_PATH):
-                    savaToCSV(sheet_name, datalist_Server, OUT_SERVER_PATH)
+            sheet_name = excel_data.sheetnames[0]
+            #return wb[sheet_name]
+            print("表单：", sheet_name)
+            sheet_data = excel_data[sheet_name]
+            datalist_Server = excel_table_byindex(sheet_data, 1)
+            datalist_Client = excel_table_byindex(sheet_data, 2)
+            if len(datalist_Client) > 0 and os.path.exists(OUT_PATH):
+                savaToCSV(sheet_name, datalist_Client, OUT_PATH)
+            if len(datalist_Server) > 0 and os.path.exists(OUT_SERVER_PATH):
+                savaToCSV(sheet_name, datalist_Server, OUT_SERVER_PATH)
     else:
         print(u"没有找到任何excel文件！")
 

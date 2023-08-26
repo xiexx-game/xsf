@@ -17,9 +17,12 @@ public enum EventID
     NetError,
     NetHandshakeDone,
 
+    LoadingDone,
+}
 
+public enum EventObjectID
+{
     UITestShow = 10001,
-
-
-    LuaEventID = 9000,
+    UISelectShow,
+    UILoadingShow,
 }

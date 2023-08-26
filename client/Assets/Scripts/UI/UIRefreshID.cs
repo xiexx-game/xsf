@@ -13,4 +13,5 @@ public enum UIRefreshID
     None = 0,
     
     UIAtlasTest_SetImage,
+    AddProgress,
 }

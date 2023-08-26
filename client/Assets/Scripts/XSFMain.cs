@@ -49,6 +49,8 @@ public sealed class XSFMain : MonoSingleton<XSFMain>
                         XSFStartup.Instance.Init();
                         XSFUI.Instance.Init(new UIHelper());
                         XSFNet.Instance.Init();
+                        XSFGSManager.Instance.Init();
+                        Level.Instance.Init();
                         m_nStatus = MainStatus.Run;
                     }
                     break;

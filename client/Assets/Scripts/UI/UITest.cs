@@ -24,7 +24,7 @@ public sealed class UITest : UIBase
 
     public override string Name { get { return "UITest"; } }
 
-    public override uint EventObjID { get { return (uint)EventID.UITestShow; } }
+    public override uint EventObjID { get { return (uint)EventObjectID.UITestShow; } }
 
     public override void OnInit()
     {
@@ -56,7 +56,7 @@ public sealed class UITest : UIBase
 	// Button2 click
 	private void OnButton2Click(GameObject go)
 	{
-        var ui = XSFUI.Instance.Get<UIAtlasTest>((int)UIID.UIAtlasTest);
+        var ui = XSFUI.Instance.Get((int)UIID.UIAtlasTest);
         ui.Show();
         ui.Refresh((uint)UIRefreshID.UIAtlasTest_SetImage, null);
 	}

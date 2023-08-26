@@ -54,5 +54,16 @@ public class ScpLanguage
 	public string sValue;	//值
 //ScpLanguage_END
 }
+
+//关卡游戏
+public class ScpLevelGame
+{
+//ScpLevelGame_START
+	public uint uId;	//编号
+	public string sName;	//名称
+	public uint [] arShowUIs;	//显示UI
+	public string [] sarSceneObjects;	//场景资源
+//ScpLevelGame_END
+}
 // SCHEMA_STRUCT
 // 不要删除上面的标签，自动生成代码需要用到

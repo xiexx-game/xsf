@@ -16,8 +16,8 @@ public sealed class StartupStepShowFirstUI : StartupStep
     {
         Debug.LogWarning("StartupStepShowFirstUI Start");
 
-        Subscribe((EventID)XSF.UI_SHOW_EVENT_ID, (uint)EventID.UITestShow);
+        Subscribe((EventID)XSF.UI_SHOW_EVENT_ID, (uint)EventObjectID.UISelectShow);
 
-        XSFUI.Instance.Get<UITest>((int)UIID.UITest).Show();
+        XSFGSManager.Instance.mNextStateID = XSFGSID.Home;
     }
 }

@@ -27,7 +27,7 @@ public sealed class UIStartup
         m_UIRoot = XSFMain.Instance.UIStartup;
         m_UIRootT = m_UIRoot.transform;
 
-        m_Progress = m_UIRootT.Find("progress").GetComponent<Slider>();
+        m_Progress = m_UIRootT.Find("Progress").GetComponent<Slider>();
         m_Progress.value = 0;
         m_fTotal = 0;
         m_fCurProgress = 0;
@@ -49,12 +49,15 @@ public sealed class UIStartup
 
         m_fCurProgress += Time.deltaTime;
 
+        //Debug.LogError($"Update, m_fCurProgress={m_fCurProgress}, total={m_fTotal}");
+
         if(m_fCurProgress >= m_fTotal)
         {
             m_Progress.value = m_fTotal;
             m_bUpdate = false;
             if(m_fTotal > 1.0f)
             {
+                //Debug.LogError("111111111");
                 GameObject.Destroy(m_UIRoot);
                 m_UIRoot = null;
                 m_UIRootT = null;

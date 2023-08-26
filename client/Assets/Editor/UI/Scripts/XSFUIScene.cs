@@ -43,14 +43,16 @@ public class XSFUIScene : MonoBehaviour
     {
         string path = targetScene == null ? EditorSceneManager.GetActiveScene().path : targetScene.Value.path;
         if (string.IsNullOrEmpty(path))
+        {
             return false;
-
+        }
+            
+        
         if (!path.Contains("Editor/UI/Scenes"))
         {
             return false;
         }
             
-
         return true;
     }
 
@@ -66,7 +68,7 @@ public class XSFUIScene : MonoBehaviour
             Handles.BeginGUI();
 
             GUI.color = Color.green;
-            if (GUI.Button(new Rect(10, Screen.height - 80, 80, 30), "Export"))
+            if (GUI.Button(new Rect(10, 200, 120, 30), "Export"))
             {
                 string path = ExportUIPrefab();
                 if (!string.IsNullOrEmpty(path))
@@ -74,13 +76,14 @@ public class XSFUIScene : MonoBehaviour
             }
 
             GUI.color = Color.white;
-            if (GUI.Button(new Rect(100, Screen.height - 80, 120, 30), "Add Export Node"))
+
+            if (GUI.Button(new Rect(10, 240, 120, 30), "Add Export Node"))
             {
                 AddUIExportNode();
                 Event.current.Use();
             }
 
-            if (GUI.Button(new Rect(Screen.width - 130, Screen.height - 80, 120, 30), "Open Main Scene"))
+            if (GUI.Button(new Rect(10, 280, 120, 30), "Open Main Scene"))
             {
                 if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
                     return;

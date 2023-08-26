@@ -18,6 +18,7 @@ public enum CSVDataType
     Bool,       // 布尔值，配置为空为false， 1或者true时为true
     Array,      // 整形数组类型，配置为空无数据 num1:num2:num3
     IDAndCount, // ID和count组合，id1:count1|id2:count2|id3:count3
+    SArray,     // 字符串数组
     Max,
 }
 
@@ -89,6 +90,7 @@ public class CSVData : ICSVData
             case CSVDataType.Array:  m_Datas[nType] = new CSVData_Array();  break;
             case CSVDataType.String:  m_Datas[nType] = new CSVData_String();  break;
             case CSVDataType.IDAndCount:  m_Datas[nType] = new CSVData_IDAndCount();  break;
+            case CSVDataType.SArray:  m_Datas[nType] = new CSVData_SArray();  break;
 
             default: throw new XSFSchemaLoadException($"CSVData.GetData type error, type={nType}");
             }
@@ -114,6 +116,8 @@ public class CSVData : ICSVData
             type = CSVDataType.String;
         else if (name.ToLower().Equals("array"))
             type = CSVDataType.Array;
+        else if (name.ToLower().Equals("sarray"))
+            type = CSVDataType.SArray;
         else if (name.ToLower().Equals("iac"))
             type = CSVDataType.IDAndCount;
 

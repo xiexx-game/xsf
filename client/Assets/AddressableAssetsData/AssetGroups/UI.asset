@@ -27,6 +27,21 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - 
+  - m_GUID: da7590250df9c41ba9e5e109c0d4728a
+    m_Address: UILoading
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - 
+  - m_GUID: 5f7457ebbde4d489ea9e9c56f304b6e6
+    m_Address: UIPlay
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - 
+  - m_GUID: 7a39363e8661447e59efa2011bc621a6
+    m_Address: UISelect
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - 
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: fc082288655110246813ff8eb26b01f0, type: 2}
   m_SchemaSet:

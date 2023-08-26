@@ -36,7 +36,7 @@ public class _SCHEMA_NAME_ : ISchema
             /* 使用字典
             if (m_Datas.ContainsKey(scp.nID))
             {
-                XSF.LogError("_SCHEMA_NAME_.OnSchemaLoad key exist, id=" + scp.nID);
+                UnityEngine.Debug.LogError("_SCHEMA_NAME_.OnSchemaLoad key exist, id=" + scp.nID);
                 return false;
             }
 
@@ -65,7 +65,7 @@ public class _SCHEMA_NAME_ : ISchema
     {
         if (nIndex >= m_Datas.Length)
         {
-            XSF.LogError(string.Format("_SCHEMA_NAME_.Get nIndex[{0}] >= m_Datas.Length[{1}]", nIndex, m_Datas.Length));
+            UnityEngine.Debug.LogError(string.Format("_SCHEMA_NAME_.Get nIndex[{0}] >= m_Datas.Length[{1}]", nIndex, m_Datas.Length));
             return null;
         }
 
