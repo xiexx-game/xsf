@@ -20,6 +20,8 @@ public enum SchemaID
 	Language = 4,
 	TestData = 5,
 	LevelGame = 6,
+	Tetris = 7,
+	TetrisLevels = 8,
 //SCHEMA_ID_END
 
     Max,
@@ -41,6 +43,8 @@ public class GameSchemaHelper : ISchemaHelper
 			case SchemaID.Language: return new SchemaLanguage();
 			case SchemaID.TestData: return new SchemaTestData();
 			case SchemaID.LevelGame: return new SchemaLevelGame();
+			case SchemaID.Tetris: return new SchemaTetris();
+			case SchemaID.TetrisLevels: return new SchemaTetrisLevels();
 			//SCHEMA_END
             default:
                 throw new XSFSchemaLoadException($"GameSchemaHelper.Get schema id error, id={nId}");

@@ -97,25 +97,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5dde611137a704ae7878d133b568d838, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Yellow:
-    serializedVersion: 2
-    rgba: 4278278653
-  Green:
-    serializedVersion: 2
-    rgba: 4287076421
-  Blue:
-    serializedVersion: 2
-    rgba: 4291519045
-  Cyan:
-    serializedVersion: 2
-    rgba: 4289214197
-  Red:
-    serializedVersion: 2
-    rgba: 4282859462
-  Hide:
-    serializedVersion: 2
-    rgba: 16777215
-  PreShow:
-    serializedVersion: 2
-    rgba: 4278278653
+  Yellow: {r: 0.9921569, g: 0.34901962, b: 0.003921569, a: 1}
+  Green: {r: 0.23806885, g: 0.735849, b: 0, a: 1}
+  Blue: {r: 0, g: 0.34117648, b: 0.89019614, a: 1}
+  Cyan: {r: 1, g: 0, b: 0.7957287, a: 1}
+  Red: {r: 0.7843138, g: 0.003921569, b: 0, a: 1}
+  PreShow: {r: 0.9921569, g: 0.34901962, b: 0.003921569, a: 1}
   Image: {fileID: 7164181300217985494}
+  ShimmerColor: {r: 1, g: 1, b: 1, a: 0}
+  ShimmerSpeed: 10
+  DisappearSpeed: 10
+  DisappearEvent: 0.7
+  ColorIndex: 0

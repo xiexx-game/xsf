@@ -12,11 +12,13 @@ using UnityEngine;
 public class Level : Singleton<Level>, IEventSink
 {
     private LevelGame[] m_Games;
-    private LevelGame m_Current;
+    public LevelGame Current { get; private set;}
     public void Init()
     {
         m_Games = new LevelGame[(int)LevelGameType.Max];
         m_Games[(int)LevelGameType.Tetris] = new LevelGameTetris();
+        m_Games[(int)LevelGameType.Snake] = new LevelGameTetris();
+        m_Games[(int)LevelGameType.PacMan] = new LevelGameTetris();
 
         for(int i = 0; i < (int)LevelGameType.Max; i++)
         {
@@ -29,29 +31,30 @@ public class Level : Singleton<Level>, IEventSink
     {
         set
         {
-            m_Current = m_Games[(int)value];
+            Current = m_Games[(int)value];
+            Current.GameSocre = 0;
         }
     }
 
     public void Load()
     {
         XSFEvent.Instance.Subscribe(this, (uint)EventID.LoadingDone, 0);
-        m_Current.Load();
+        Current.Load();
     }
 
     public void Enter()
     {
-        m_Current.Enter();
+        Current.Enter();
     }
 
     public void Exit()
     {
-        m_Current.Exit();
+        Current.Exit();
     }
 
     public void OnUpdate()
     {
-        m_Current.OnUpdate();
+        Current.OnUpdate();
     }
 
     public bool OnEvent(uint nEventID, uint nObjectID, object context)

@@ -21,6 +21,9 @@ public static class XSF
 
     public static void Init()
     {
+        int seed = DateTime.Now.GetHashCode();
+        UnityEngine.Random.InitState(seed);
+
         XSFLog.Instance.Init();
         UnityEngine.Debug.Log("XSF.Init start");
 

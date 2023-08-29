@@ -19,6 +19,8 @@ public enum CSVDataType
     Array,      // 整形数组类型，配置为空无数据 num1:num2:num3
     IDAndCount, // ID和count组合，id1:count1|id2:count2|id3:count3
     SArray,     // 字符串数组
+    D2Ar,   // 2维数组 
+    IArray,     // int array
     Max,
 }
 
@@ -91,6 +93,8 @@ public class CSVData : ICSVData
             case CSVDataType.String:  m_Datas[nType] = new CSVData_String();  break;
             case CSVDataType.IDAndCount:  m_Datas[nType] = new CSVData_IDAndCount();  break;
             case CSVDataType.SArray:  m_Datas[nType] = new CSVData_SArray();  break;
+            case CSVDataType.D2Ar: m_Datas[nType] = new CSVData_D2Ar(); break;
+            case CSVDataType.IArray: m_Datas[nType] = new CSVData_IArray(); break;
 
             default: throw new XSFSchemaLoadException($"CSVData.GetData type error, type={nType}");
             }
@@ -120,7 +124,30 @@ public class CSVData : ICSVData
             type = CSVDataType.SArray;
         else if (name.ToLower().Equals("iac"))
             type = CSVDataType.IDAndCount;
+        else if (name.ToLower().Equals("iarray"))
+            type = CSVDataType.IArray;
+        else if(name.ToLower().Equals("d2ar"))
+        {
+            type = CSVDataType.D2Ar;
+        }
+        else
+            UnityEngine.Debug.LogError("CSVData GetDataByName name=" + name);
 
-        return GetData((int)type);
+        switch(type)
+        {
+        case CSVDataType.Int:  return new CSVData_Int();
+        case CSVDataType.Uint:  return new CSVData_Uint();
+        case CSVDataType.Ulong:  return new CSVData_Ulong();
+        case CSVDataType.Bool:  return new CSVData_Bool();
+        case CSVDataType.Float:  return new CSVData_Float();
+        case CSVDataType.Array:  return new CSVData_Array();
+        case CSVDataType.String:  return new CSVData_String();
+        case CSVDataType.IDAndCount:  return new CSVData_IDAndCount();
+        case CSVDataType.SArray:  return new CSVData_SArray();
+        case CSVDataType.D2Ar: return new CSVData_D2Ar();
+        case CSVDataType.IArray: return new CSVData_IArray();
+
+        default: throw new XSFSchemaLoadException($"CSVData.GetData type error, type={type}");
+        }
     }
 }

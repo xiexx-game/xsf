@@ -5,4 +5,6 @@
   <Schema id="4" desc="多语言配置" name="Language" type="1" cs="1" cpp="0" go="0" lua="0" key="" />
   <Schema id="5" desc="测试XML配置" name="TestData" type="2" cs="1" cpp="1" go="0" lua="0" key="" />
   <Schema id="6" desc="关卡游戏" name="LevelGame" type="1" cs="1" cpp="0" go="0" lua="0" key="" />
+  <Schema id="7" desc="俄罗斯方块配置" name="Tetris" type="1" cs="1" cpp="0" go="0" lua="0" key="" />
+  <Schema id="8" desc="俄罗斯方块游戏关卡配置" name="TetrisLevels" type="1" cs="1" cpp="0" go="0" lua="0" key="" /> 
 </root>

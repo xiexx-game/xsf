@@ -49,6 +49,7 @@ GameObject:
   - component: {fileID: 103377384}
   - component: {fileID: 103377386}
   - component: {fileID: 103377385}
+  - component: {fileID: 670047070}
   m_Layer: 5
   m_Name: pause
   m_TagString: Untagged
@@ -114,6 +115,23 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &670047070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 103377383}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17e558e65f296f640845ef69c04eab04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Pause
+  Namespace: 
+  Comp: GameObject
+  NeedClick: 1
+  Describe: "\u6682\u505C"
 --- !u!1 &157639840
 GameObject:
   m_ObjectHideFlags: 0
@@ -414,6 +432,7 @@ GameObject:
   - component: {fileID: 1115801727}
   - component: {fileID: 1115801729}
   - component: {fileID: 1115801728}
+  - component: {fileID: 503953368}
   m_Layer: 5
   m_Name: value
   m_TagString: Untagged
@@ -538,6 +557,23 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &503953368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1115801726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17e558e65f296f640845ef69c04eab04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Score
+  Namespace: 
+  Comp: GameObject
+  NeedClick: 0
+  Describe: "\u5206\u6570"
 --- !u!1 &1230238375
 GameObject:
   m_ObjectHideFlags: 0
@@ -876,6 +912,7 @@ GameObject:
   - component: {fileID: 1932217420}
   - component: {fileID: 1932217422}
   - component: {fileID: 1932217421}
+  - component: {fileID: 503953366}
   m_Layer: 5
   m_Name: value
   m_TagString: Untagged
@@ -1000,6 +1037,23 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &503953366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1932217419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17e558e65f296f640845ef69c04eab04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Level
+  Namespace: TMPro
+  Comp: TextMeshProUGUI
+  NeedClick: 0
+  Describe: "\u7B49\u7EA7"
 --- !u!1 &4186393920263197724
 GameObject:
   m_ObjectHideFlags: 0

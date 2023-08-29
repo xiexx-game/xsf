@@ -61,16 +61,16 @@ public sealed class UILoading : UIBase
         case ProgressStatus.Add:
             {
                 float current = Progress.value + Time.deltaTime;
-                Debug.LogError($"current={current}, m_fTargetProgress={m_fTargetProgress}");
+                //Debug.LogError($"current={current}, m_fTargetProgress={m_fTargetProgress}");
                 if(current >= m_fTargetProgress)
                 {
                     Progress.value = m_fTargetProgress;
                     m_nStatus = ProgressStatus.None;
-                    Debug.LogError($"1111 current={current}, m_fTargetProgress={m_fTargetProgress}");
+                    //Debug.LogError($"1111 current={current}, m_fTargetProgress={m_fTargetProgress}");
                     if(current >= 1.0f)
                     {
                         Close();
-                        Debug.LogError($"2222 current={current}, m_fTargetProgress={m_fTargetProgress}");
+                        //Debug.LogError($"2222 current={current}, m_fTargetProgress={m_fTargetProgress}");
                         XSFEvent.Instance.Fire((uint)EventID.LoadingDone);
                     }
                 }

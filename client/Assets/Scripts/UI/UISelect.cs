@@ -21,6 +21,9 @@ public sealed class UISelect : UIBase
 	public GameObject pacman { get; private set; }	// 
 	public GameObject Right { get; private set; }	// 
 	public GameObject Left { get; private set; }	// 
+	public TextMeshProUGUI LevelValue { get; private set; }	// 
+	public GameObject LevelRight { get; private set; }	// 
+	public GameObject LevelLeft { get; private set; }	// 
 // UI_PROP_END
 
     public override string Name { get { return "UISelect"; } }
@@ -31,6 +34,8 @@ public sealed class UISelect : UIBase
 
     private LevelGameType m_Current;
     private ScpLevelGame m_GameScp;
+
+    private uint m_nCurrentLevel;
 
     public override void OnInit()
     {
@@ -52,6 +57,14 @@ public sealed class UISelect : UIBase
 		// 
 		Left = RootT.Find("left").gameObject;
 		UIEventClick.Set(Left, OnLeftClick);
+		// 
+		LevelValue = RootT.Find("LevelValue").GetComponent<TextMeshProUGUI>();
+		// 
+		LevelRight = RootT.Find("LevelRight").gameObject;
+		UIEventClick.Set(LevelRight, OnLevelRightClick);
+		// 
+		LevelLeft = RootT.Find("LevelLeft").gameObject;
+		UIEventClick.Set(LevelLeft, OnLevelLeftClick);
         // UI_INIT_END
 
         Contents = new GameObject[(int)LevelGameType.Max];
@@ -76,7 +89,11 @@ public sealed class UISelect : UIBase
     {
         //Debug.LogError("OnShow = " + m_Current);
         m_Current = LevelGameType.Tetris;
+        Level.Instance.GameType = m_Current;
         UpdateSelect();
+
+        m_nCurrentLevel = 1;
+        LevelValue.text = m_nCurrentLevel.ToString();
     }
 
     private void UpdateSelect()
@@ -104,7 +121,8 @@ public sealed class UISelect : UIBase
 	// 
 	private void OnPlayClick(GameObject go)
 	{
-        Level.Instance.GameType = m_Current;
+        
+        Level.Instance.Current.CurrentLevel = m_nCurrentLevel;
         Level.Instance.Load();
 	}
 
@@ -117,6 +135,10 @@ public sealed class UISelect : UIBase
 
         m_Current --;
         UpdateSelect();
+        Level.Instance.GameType = m_Current;
+
+        m_nCurrentLevel = 1;
+        LevelValue.text = m_nCurrentLevel.ToString();
 	}
 
 	// 
@@ -128,6 +150,36 @@ public sealed class UISelect : UIBase
 
         m_Current ++;
         UpdateSelect();
+        Level.Instance.GameType = m_Current;
+
+        m_nCurrentLevel = 1;
+        LevelValue.text = m_nCurrentLevel.ToString();
+	}
+
+
+	// 
+	private void OnLevelRightClick(GameObject go)
+	{
+        uint Max = Level.Instance.Current.MaxLevel;
+        if(m_nCurrentLevel >= Max)
+        {
+            return;
+        }
+
+        m_nCurrentLevel ++;
+        LevelValue.text = m_nCurrentLevel.ToString();
+	}
+
+	// 
+	private void OnLevelLeftClick(GameObject go)
+	{
+        if(m_nCurrentLevel <= 1)
+        {
+            return;
+        }
+
+        m_nCurrentLevel --;
+        LevelValue.text = m_nCurrentLevel.ToString();
 	}
 
     // UI_FUNC_APPEND

@@ -11,14 +11,8 @@
 public enum GlobalID
 {
 //GLOBAL_ID_START
-	intData = 1,		//有符号整形
-	stringData = 2,		//字符串数据
-	uintData = 3,		//uint整形
-	ulongData = 4,		//长整形数据
-	floatData = 5,		//浮点数
-	uintArrayData = 6,		//无符号整形数组
-	boolData = 7,		//布尔数据
-	iacData = 8,		//id和count数据
+	RowScore = 1,		//一行消除的分数
+	ScoreAddition = 2,		//分数加成
 //GLOBAL_ID_END
 }
 
@@ -47,6 +41,16 @@ public enum CSVIndex
 	ScpLevelGame_Name = 1,
 	ScpLevelGame_ShowUIs = 2,
 	ScpLevelGame_SceneObjects = 3,
+
+	ScpTetris_id = 0,
+	ScpTetris_ChangeData = 1,
+	ScpTetris_rows = 2,
+	ScpTetris_cols = 3,
+
+	ScpTetrisLevels_id = 0,
+	ScpTetrisLevels_Tetris = 1,
+	ScpTetrisLevels_DownInterval = 2,
+	ScpTetrisLevels_LevelScore = 3,
 
 //CSV_INDEX_END
 }

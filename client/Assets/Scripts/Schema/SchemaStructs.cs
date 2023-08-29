@@ -65,5 +65,27 @@ public class ScpLevelGame
 	public string [] sarSceneObjects;	//场景资源
 //ScpLevelGame_END
 }
+
+//俄罗斯方块配置
+public class ScpTetris
+{
+//ScpTetris_START
+	public uint uId;	//编号
+	public ArrayData [] arChangeData;	//变体数据
+	public int [] arRows;	//出生的行
+	public int [] arCols;	//出生的列
+//ScpTetris_END
+}
+
+//俄罗斯方块游戏关卡配置
+public class ScpTetrisLevels
+{
+//ScpTetrisLevels_START
+	public uint uId;	//编号
+	public uint [] arTetris;	//俄罗斯方块
+	public float fDownInterval;	//掉落时间间隔
+	public uint uLevelScore;	//等级分数
+//ScpTetrisLevels_END
+}
 // SCHEMA_STRUCT
 // 不要删除上面的标签，自动生成代码需要用到

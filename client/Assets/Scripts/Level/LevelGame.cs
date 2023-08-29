@@ -20,13 +20,30 @@ public enum LevelGameType
 
 public abstract class LevelGame
 {
+    public uint CurrentLevel { get; set;}
+    public uint GameSocre { get; set; }
+
     public abstract void Init();
     public abstract void Load();
+
+    public abstract void PreCreate();
 
     public abstract void Enter();
 
     public abstract void Exit();
 
     public abstract void OnUpdate();
+
+    public abstract void MoveLeft();
+
+    public abstract void MoveRight();
+
+    public abstract void MoveDown();
+
+    public abstract void Change();
+
+    public abstract void Ultra();
+
+    public abstract uint MaxLevel { get;}
 }
 

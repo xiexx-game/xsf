@@ -52,6 +52,16 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - scp
+  - m_GUID: ce50359fde02c4537b89ac2d8e6fa7a0
+    m_Address: Tetris
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - scp
+  - m_GUID: f4a97e0307c4a4b768a9af146ee2a823
+    m_Address: TetrisLevels
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - scp
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: fc082288655110246813ff8eb26b01f0, type: 2}
   m_SchemaSet:

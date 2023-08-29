@@ -85,6 +85,34 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 296251234}
     m_Modifications:
+    - target: {fileID: 503953366, guid: 0d09fcb41f5c649e09d89240e0c7045d, type: 3}
+      propertyPath: Name
+      value: GameLevel
+      objectReference: {fileID: 0}
+    - target: {fileID: 503953368, guid: 0d09fcb41f5c649e09d89240e0c7045d, type: 3}
+      propertyPath: Comp
+      value: TextMeshProUGUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 503953368, guid: 0d09fcb41f5c649e09d89240e0c7045d, type: 3}
+      propertyPath: Name
+      value: GameScore
+      objectReference: {fileID: 0}
+    - target: {fileID: 503953368, guid: 0d09fcb41f5c649e09d89240e0c7045d, type: 3}
+      propertyPath: Namespace
+      value: TMPro
+      objectReference: {fileID: 0}
+    - target: {fileID: 1115801727, guid: 0d09fcb41f5c649e09d89240e0c7045d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1115801728, guid: 0d09fcb41f5c649e09d89240e0c7045d, type: 3}
+      propertyPath: m_text
+      value: 999999
+      objectReference: {fileID: 0}
+    - target: {fileID: 1932217420, guid: 0d09fcb41f5c649e09d89240e0c7045d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -14
+      objectReference: {fileID: 0}
     - target: {fileID: 4186393920263197724, guid: 0d09fcb41f5c649e09d89240e0c7045d, type: 3}
       propertyPath: m_Name
       value: top
@@ -173,7 +201,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 503953366, guid: 0d09fcb41f5c649e09d89240e0c7045d, type: 3}
+    - {fileID: 503953368, guid: 0d09fcb41f5c649e09d89240e0c7045d, type: 3}
+    - {fileID: 670047070, guid: 0d09fcb41f5c649e09d89240e0c7045d, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 0d09fcb41f5c649e09d89240e0c7045d, type: 3}
 --- !u!224 &4186393920431530956 stripped
 RectTransform:
@@ -275,7 +306,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1833280582, guid: c4f57797f9bd941aebdc1b6b0be4cc30, type: 3}
+    - {fileID: 1833280584, guid: c4f57797f9bd941aebdc1b6b0be4cc30, type: 3}
+    - {fileID: 896671052, guid: c4f57797f9bd941aebdc1b6b0be4cc30, type: 3}
+    - {fileID: 138918726, guid: c4f57797f9bd941aebdc1b6b0be4cc30, type: 3}
+    - {fileID: 1719995745, guid: c4f57797f9bd941aebdc1b6b0be4cc30, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: c4f57797f9bd941aebdc1b6b0be4cc30, type: 3}
 --- !u!224 &5727052596520576558 stripped
 RectTransform:

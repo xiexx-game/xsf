@@ -14,4 +14,7 @@ public enum UIRefreshID
     
     UIAtlasTest_SetImage,
     AddProgress,
+
+    PlayScore,
+    PlayLevel,
 }
