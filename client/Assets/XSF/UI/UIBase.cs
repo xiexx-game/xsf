@@ -48,7 +48,9 @@ public class UIBase
 
     private const int MAX_REFRESH = 10;
 
-    public bool IsShow { get { return m_nStatus == UIStatus.BeforeShow || m_nStatus == UIStatus.Show; } }
+    public bool IsShow { get { return m_nStatus == UIStatus.Show; } }
+
+    public bool NeedRemove { get { return m_nStatus != UIStatus.Show && m_nStatus != UIStatus.BeforeShow; } }
 
     public UIBase()
     {

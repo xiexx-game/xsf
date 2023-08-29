@@ -116,7 +116,21 @@ public class CSVData : ICSVData
             type = CSVDataType.Array;
         else if (name.ToLower().Equals("iac"))
             type = CSVDataType.IDAndCount;
+        else
+            UnityEngine.Debug.LogError("CSVData GetDataByName name=" + name);
 
-        return GetData((int)type);
+        switch(type)
+        {
+        case CSVDataType.Int:  return new CSVData_Int();
+        case CSVDataType.Uint:  return new CSVData_Uint();
+        case CSVDataType.Ulong:  return new CSVData_Ulong();
+        case CSVDataType.Bool:  return new CSVData_Bool();
+        case CSVDataType.Float:  return new CSVData_Float();
+        case CSVDataType.Array:  return new CSVData_Array();
+        case CSVDataType.String:  return new CSVData_String();
+        case CSVDataType.IDAndCount:  return new CSVData_IDAndCount();
+
+        default: throw new XSFSchemaLoadException($"CSVData.GetData type error, type={type}");
+        }
     }
 }
