@@ -26,3 +26,10 @@ public enum EventObjectID
     UISelectShow,
     UILoadingShow,
 }
+
+public class G
+{
+    public const string PR_LIFE = "LIFE_COUNT";
+    public const string PR_TIME = "LIFE_TIME";
+    public const string PR_SCORE = "HIGH_SCORE";
+}

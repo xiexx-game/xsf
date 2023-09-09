@@ -10,20 +10,27 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public sealed class UISelect : UIBase
 {
 // UI_PROP_START
+	public Image Heart1 { get; private set; }	// 
+	public Image Heart2 { get; private set; }	// 
+	public Image Heart3 { get; private set; }	// 
 	public GameObject Play { get; private set; }	// 
 	public TextMeshProUGUI name { get; private set; }	// 
 	public GameObject Blocks { get; private set; }	// 
 	public GameObject snake { get; private set; }	// 
 	public GameObject pacman { get; private set; }	// 
+	public TextMeshProUGUI HighScore { get; private set; }	// 最高分
 	public GameObject Right { get; private set; }	// 
 	public GameObject Left { get; private set; }	// 
 	public TextMeshProUGUI LevelValue { get; private set; }	// 
 	public GameObject LevelRight { get; private set; }	// 
 	public GameObject LevelLeft { get; private set; }	// 
+	public GameObject darkBg { get; private set; }	// 
+	public GameObject DarkBg { get; private set; }	// 
 // UI_PROP_END
 
     public override string Name { get { return "UISelect"; } }
@@ -37,9 +44,22 @@ public sealed class UISelect : UIBase
 
     private uint m_nCurrentLevel;
 
+    private Image[] m_Hearts;
+
+    private Color32 LifeColor = new Color32(255, 96, 96, 255);
+    private Color32 WhiteColor = new Color32(255, 255, 255, 255);
+
+    private bool IsPlay = false;
+
     public override void OnInit()
     {
         // UI_INIT_START
+		// 
+		Heart1 = RootT.Find("Life/1").GetComponent<Image>();
+		// 
+		Heart2 = RootT.Find("Life/2").GetComponent<Image>();
+		// 
+		Heart3 = RootT.Find("Life/3").GetComponent<Image>();
 		// 
 		Play = RootT.Find("play").gameObject;
 		UIEventClick.Set(Play, OnPlayClick);
@@ -51,6 +71,8 @@ public sealed class UISelect : UIBase
 		snake = RootT.Find("item/content/snake").gameObject;
 		// 
 		pacman = RootT.Find("item/content/pacman").gameObject;
+		// 最高分
+		HighScore = RootT.Find("item/HighScore").GetComponent<TextMeshProUGUI>();
 		// 
 		Right = RootT.Find("right").gameObject;
 		UIEventClick.Set(Right, OnRightClick);
@@ -65,12 +87,22 @@ public sealed class UISelect : UIBase
 		// 
 		LevelLeft = RootT.Find("LevelLeft").gameObject;
 		UIEventClick.Set(LevelLeft, OnLevelLeftClick);
+		// 
+		darkBg = RootT.Find("dark-bg").gameObject;
+		// 
+		DarkBg = RootT.Find("dark-bg").gameObject;
+		UIEventClick.Set(DarkBg, OnDarkBgClick);
         // UI_INIT_END
 
         Contents = new GameObject[(int)LevelGameType.Max];
         Contents[(int)LevelGameType.Tetris] = Blocks;
         Contents[(int)LevelGameType.Snake] = snake;
         Contents[(int)LevelGameType.PacMan] = pacman;
+
+        m_Hearts = new Image[Level.Instance.MaxLife];
+        m_Hearts[0] = Heart1;
+        m_Hearts[1] = Heart2;
+        m_Hearts[2] = Heart3;
     }
 
     public override void OnClose()
@@ -94,6 +126,46 @@ public sealed class UISelect : UIBase
 
         m_nCurrentLevel = 1;
         LevelValue.text = m_nCurrentLevel.ToString();
+
+        UpdateLife();
+
+        IsPlay = false;
+
+        AudioManager.Instance.PlayBGM(BGMID.Main);
+    }
+
+    private void UpdateLife()
+    {
+        uint nMax = Level.Instance.MaxLife;
+        uint nCurrent = Level.Instance.CurrentLifeCount;
+
+        if(nCurrent == 0)
+        {
+            DateTime time = Level.Instance.LifeTime;
+            DateTime now = DateTime.Now;
+            TimeSpan span = now - time;
+            if(span.Hours >= 12)
+            {
+                Level.Instance.CurrentLifeCount = Level.Instance.MaxLife;
+                nCurrent = Level.Instance.MaxLife;
+            }
+            else
+            {
+                darkBg.SetActive(true);
+            }
+        }
+
+        for(uint i = nMax; i > 0; i --)
+        {
+            if(i > nCurrent)
+            {
+                m_Hearts[i-1].color = WhiteColor;
+            }
+            else
+            {
+                m_Hearts[i-1].color = LifeColor;
+            }
+        }
     }
 
     private void UpdateSelect()
@@ -114,21 +186,51 @@ public sealed class UISelect : UIBase
                     Contents[i].SetActive(false);
                 }
             }
-            
+        }
+
+        uint nScore = Level.Instance.GetHighScore((int)m_Current);
+        if(nScore > 0)
+        {
+            HighScore.text = $"最高记录：{nScore}";
+        }
+        else
+        {
+            HighScore.text = "暂无记录";
         }
     }
 
 	// 
 	private void OnPlayClick(GameObject go)
 	{
-        
+        AudioManager.Instance.PlayUIAudio(ClipID.SngleSelect);
+
+        var ui = XSFUI.Instance.Get((int)UIID.UIExam);
+        ui.Show();
+        ui.Refresh((uint)UIRefreshID.SetLevel, m_nCurrentLevel);
+        XSFUI.Instance.ShowUI((int)UIID.UIExam);
+
+
+/*
+        uint nCurrent = Level.Instance.CurrentLifeCount;
+        if(nCurrent == 0)
+        {
+            return;
+        }
+
+        IsPlay = true;
+
+        nCurrent --;
+        Level.Instance.CurrentLifeCount = nCurrent;
+
         Level.Instance.Current.CurrentLevel = m_nCurrentLevel;
         Level.Instance.Load();
+        */
 	}
 
 	// 
 	private void OnLeftClick(GameObject go)
 	{
+        AudioManager.Instance.PlayUIAudio(ClipID.SngleSelect);
         if(m_Current <= LevelGameType.Tetris) {
             return;
         }
@@ -144,6 +246,7 @@ public sealed class UISelect : UIBase
 	// 
 	private void OnRightClick(GameObject go)
 	{
+        AudioManager.Instance.PlayUIAudio(ClipID.SngleSelect);
         if(m_Current >= LevelGameType.Max-1) {
             return;
         }
@@ -160,6 +263,7 @@ public sealed class UISelect : UIBase
 	// 
 	private void OnLevelRightClick(GameObject go)
 	{
+        AudioManager.Instance.PlayUIAudio(ClipID.SngleSelect);
         uint Max = Level.Instance.Current.MaxLevel;
         if(m_nCurrentLevel >= Max)
         {
@@ -173,6 +277,7 @@ public sealed class UISelect : UIBase
 	// 
 	private void OnLevelLeftClick(GameObject go)
 	{
+        AudioManager.Instance.PlayUIAudio(ClipID.SngleSelect);
         if(m_nCurrentLevel <= 1)
         {
             return;
@@ -180,6 +285,13 @@ public sealed class UISelect : UIBase
 
         m_nCurrentLevel --;
         LevelValue.text = m_nCurrentLevel.ToString();
+	}
+
+
+	// 
+	private void OnDarkBgClick(GameObject go)
+	{
+        AudioManager.Instance.PlayFXAudio(ClipID.Rest);
 	}
 
     // UI_FUNC_APPEND

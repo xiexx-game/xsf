@@ -43,6 +43,8 @@ public sealed class UILoading : UIBase
     public override void OnShow()
     {
         Progress.value = 0;
+        m_fTargetProgress = 0;
+        m_nStatus = ProgressStatus.None;
     }
 
     public override void OnRefresh(uint nFreshID, object data)

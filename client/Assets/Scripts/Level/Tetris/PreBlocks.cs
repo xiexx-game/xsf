@@ -98,5 +98,10 @@ public class PreBlocks
     {
         m_Root = null;
         m_RootT = null;
+
+        for(int i = 0; i < m_Blocks.Length; i ++)
+        {
+            GameObject.Destroy(m_Blocks[i].go);
+        }
     }
 }

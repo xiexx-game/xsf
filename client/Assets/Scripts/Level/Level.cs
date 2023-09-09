@@ -8,11 +8,22 @@
 //
 //////////////////////////////////////////////////////////////////////////
 using UnityEngine;
+using System;
 
 public class Level : Singleton<Level>, IEventSink
 {
     private LevelGame[] m_Games;
     public LevelGame Current { get; private set;}
+
+    public bool Pause;
+
+    public uint MaxLife 
+    {
+        get
+        {
+            return XSFSchema.Instance.Get<SchemaGlobal>((int)SchemaID.Global).GetUint(GlobalID.MaxLifeCount);
+        }
+    }
     public void Init()
     {
         m_Games = new LevelGame[(int)LevelGameType.Max];
@@ -25,6 +36,8 @@ public class Level : Singleton<Level>, IEventSink
             if(m_Games[i] != null)
                 m_Games[i].Init();
         }
+
+        Pause = false;
     }
 
     public LevelGameType GameType
@@ -44,6 +57,7 @@ public class Level : Singleton<Level>, IEventSink
 
     public void Enter()
     {
+        Pause = false;
         Current.Enter();
     }
 
@@ -54,6 +68,9 @@ public class Level : Singleton<Level>, IEventSink
 
     public void OnUpdate()
     {
+        if(Pause)
+            return;
+
         Current.OnUpdate();
     }
 
@@ -66,6 +83,43 @@ public class Level : Singleton<Level>, IEventSink
         }
 
         return true;
+    }
+
+    public uint CurrentLifeCount
+    {
+        get {
+            return (uint)PlayerPrefs.GetInt(G.PR_LIFE, (int)MaxLife);
+        }
+
+        set {
+            DateTime currentTime = DateTime.Now;
+            string customFormat = currentTime.ToString("yyyy-MM-dd HH:mm:ss");
+            PlayerPrefs.SetString(G.PR_TIME, customFormat);
+
+            PlayerPrefs.SetInt(G.PR_LIFE, (int)value);
+        }   
+        
+    }
+
+    public DateTime LifeTime 
+    {
+        get
+        {
+            string dateString =  PlayerPrefs.GetString(G.PR_TIME);
+            return DateTime.Parse(dateString);
+        }
+    }
+
+    public uint GetHighScore(int nGameType)
+    {
+        string str = $"{G.PR_SCORE}_{nGameType}";
+        return (uint)PlayerPrefs.GetInt(str, 0);
+    }
+
+    public void SetHighScore(int nGameType, uint nScore)
+    {
+        string str = $"{G.PR_SCORE}_{nGameType}";
+        PlayerPrefs.SetInt(str, (int)nScore);
     }
 
 }

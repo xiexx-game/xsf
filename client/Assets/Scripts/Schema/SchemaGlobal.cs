@@ -61,5 +61,11 @@ public class SchemaGlobal : ISchema
 
         return m_Datas[nIndex];
     }
+
+    public uint GetUint(GlobalID id)
+    {
+        var data = Get((uint)id).data as CSVData_Uint;
+        return data.uValue;
+    }
     //*/
 }

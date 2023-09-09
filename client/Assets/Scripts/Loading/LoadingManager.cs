@@ -71,6 +71,7 @@ public class LoadingManager : Singleton<LoadingManager>, IUpdateNode, IEventSink
             //Debug.LogError($"LoadingStatus.Load, m_LoadingIndex={m_LoadingIndex}, m_LoadingList[m_LoadingIndex].IsDone={m_LoadingList[m_LoadingIndex].IsDone}");
             if(m_LoadingList[m_LoadingIndex].IsDone)
             {
+                //Debug.LogError($"LoadingStatus.Load, m_LoadingIndex={m_LoadingIndex}, m_LoadingList[m_LoadingIndex].IsDone={m_LoadingList[m_LoadingIndex].IsDone}");
                 m_LoadingList[m_LoadingIndex].End();
                 m_LoadingIndex ++;
                 m_UI.Refresh((uint)UIRefreshID.AddProgress, m_SingleProgress);

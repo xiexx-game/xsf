@@ -78,24 +78,28 @@ public sealed class UIPlay : UIBase
 	// 向左
 	private void OnleftClick(GameObject go)
 	{
+		AudioManager.Instance.PlayUIAudio(ClipID.SngleSelect);
 		Level.Instance.Current.MoveLeft();
 	}
 
 	// 向右
 	private void OnrightClick(GameObject go)
 	{
+		AudioManager.Instance.PlayUIAudio(ClipID.SngleSelect);
 		Level.Instance.Current.MoveRight();
 	}
 
 	// 向下
 	private void OndownClick(GameObject go)
 	{
+		AudioManager.Instance.PlayUIAudio(ClipID.SngleSelect);
 		Level.Instance.Current.MoveDown();
 	}
 
 	// 变形
 	private void OnchangeClick(GameObject go)
 	{
+		AudioManager.Instance.PlayUIAudio(ClipID.SngleSelect);
 		Level.Instance.Current.Change();
 	}
 
@@ -110,7 +114,12 @@ public sealed class UIPlay : UIBase
 	// 暂停
 	private void OnPauseClick(GameObject go)
 	{
-
+		AudioManager.Instance.PlayUIAudio(ClipID.SngleSelect);
+		Level.Instance.Pause = true;
+		var ui = XSFUI.Instance.Get((int)UIID.UIPause);
+		
+		ui.Show();
+		ui.Refresh((uint)UIRefreshID.SetPause, null);
 	}
 
     // UI_FUNC_APPEND

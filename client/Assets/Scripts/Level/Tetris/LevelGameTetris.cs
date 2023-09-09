@@ -9,6 +9,7 @@
 //////////////////////////////////////////////////////////////////////////
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.AddressableAssets;
 
 public class SingleBlock
 {
@@ -70,6 +71,8 @@ public class LevelGameTetris : LevelGame, ILoadingHandler, IBlockDisappearEvent
 
     private uint m_nRowScore;
     private uint m_nScoreAddtion;
+
+    private uint m_nCurHighScore;
 
     public override void Init()
     {
@@ -139,13 +142,31 @@ public class LevelGameTetris : LevelGame, ILoadingHandler, IBlockDisappearEvent
         var scoreAdditionScp = schema.Get((int)GlobalID.ScoreAddition).data as CSVData_Uint;
         m_nScoreAddtion = scoreAdditionScp.uValue;
 
-        Debug.LogError($"m_nRowScore={m_nRowScore}, m_nScoreAddtion={m_nScoreAddtion}");
+        m_nCurHighScore = Level.Instance.GetHighScore((int)LevelGameType.Tetris);
+
+        AudioManager.Instance.PlayBGM(BGMID.Tetris);
+
+        //Debug.LogError($"m_nRowScore={m_nRowScore}, m_nScoreAddtion={m_nScoreAddtion}");
     }
 
     public override void Exit()
     {
         GameSocre = 0;
         m_PreBlocks.Release();
+
+        for(int i = 0; i < m_Blocks.Length; i ++)
+        {
+            GameObject.Destroy(m_Blocks[i].go);
+            m_Blocks[i] = null;
+        }
+        
+        for(int i = 0; i < m_SceneObj.Length; i ++)
+        {
+            if(m_SceneObj[i] != null)
+                Addressables.ReleaseInstance(m_SceneObj[i]);
+        }
+
+        XSFUI.Instance.HideUI((int)UIID.UIPlay);
     }
 
     public SingleBlock GetBlock(int row, int col)
@@ -155,6 +176,17 @@ public class LevelGameTetris : LevelGame, ILoadingHandler, IBlockDisappearEvent
             return null;
 
         return m_Blocks[index];
+    }
+
+    public override void Restart()
+    {
+        for(int i = 0; i < m_Blocks.Length; i ++)
+        {
+            m_Blocks[i].mono.Hide();
+            m_Blocks[i].Exist = false;
+        }
+
+        Enter();
     }
 
     public override void OnUpdate()
@@ -197,7 +229,7 @@ public class LevelGameTetris : LevelGame, ILoadingHandler, IBlockDisappearEvent
             {
                 if(!TetrisMoveDown())
                 {
-                    if(m_CurrentTetris.MoveCount == 0)
+                    if(m_CurrentTetris.MoveCount <= 2)
                     {
                         ShowEndTetris();
                         m_nStatus = GameStatus.End;
@@ -226,7 +258,13 @@ public class LevelGameTetris : LevelGame, ILoadingHandler, IBlockDisappearEvent
             break;
 
         case GameStatus.End:
-            
+            {
+                var ui = XSFUI.Instance.Get((int)UIID.UIPause);
+		
+                ui.Show();
+                ui.Refresh((uint)UIRefreshID.SetEnd, null);
+                m_nStatus = GameStatus.None;
+            }
             break;
         }
     }
@@ -263,13 +301,27 @@ public class LevelGameTetris : LevelGame, ILoadingHandler, IBlockDisappearEvent
         {   
             uint totalRow = (uint)m_FullRowData.Count;
             uint nScore = totalRow * m_nRowScore;
-            Debug.LogError($"nScore={nScore}, totalRow={totalRow}, m_nRowScore={m_nRowScore}");
+            //Debug.LogError($"nScore={nScore}, totalRow={totalRow}, m_nRowScore={m_nRowScore}");
+
+            AudioManager.Instance.PlayFXAudio(ClipID.LinkDone);
+
             if(totalRow > 1)
             {
                 nScore += totalRow * m_nScoreAddtion;
+
+                if(totalRow > 2)
+                {
+                    AudioManager.Instance.PlayFXAudio(ClipID.HighScore, 0.5f);
+                }
             }
 
             GameSocre += nScore;
+
+            if(GameSocre > m_nCurHighScore)
+            {
+                m_nCurHighScore = GameSocre;
+                Level.Instance.SetHighScore((int)LevelGameType.Tetris, GameSocre);
+            }
 
             XSFUI.Instance.Get((int)UIID.UIPlay).Refresh((uint)UIRefreshID.PlayScore, null);
 
@@ -717,6 +769,7 @@ public class LevelGameTetris : LevelGame, ILoadingHandler, IBlockDisappearEvent
             return;
         }
 
+        AudioManager.Instance.PlayFXAudio(ClipID.StartCreate);
         int nCount = 0;
         while(TetrisMoveDown())
         {

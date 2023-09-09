@@ -13,5 +13,9 @@ using System.IO;
 
 public static class NormalTools
 {
-    
+    [MenuItem("XSFTools/Clear PlayerRefs", false, (int)XSFMenuID.Localization_Ch)]
+    public static void ClearPlayerRefs()
+    {
+        PlayerPrefs.DeleteAll();
+    }
 }

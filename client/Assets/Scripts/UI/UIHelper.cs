@@ -17,6 +17,8 @@ public enum UIID
     UISelect,
     UILoading,
     UIPlay,
+    UIPause,
+    UIExam,
 
     Max,
 }
@@ -34,6 +36,8 @@ public sealed class UIHelper : IUIHelper
             case UIID.UISelect:     return new UISelect();
             case UIID.UILoading:    return new UILoading();
             case UIID.UIPlay:       return new UIPlay();
+            case UIID.UIPause:      return new UIPause();
+            case UIID.UIExam: return new UIExam();
             default: return null;
         }
     }

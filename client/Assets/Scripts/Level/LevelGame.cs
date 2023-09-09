@@ -44,6 +44,8 @@ public abstract class LevelGame
 
     public abstract void Ultra();
 
+    public abstract void Restart();
+
     public abstract uint MaxLevel { get;}
 }
 

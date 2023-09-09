@@ -74,8 +74,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 292, y: -2}
-  m_SizeDelta: {x: 100, y: 163.56}
+  m_AnchoredPosition: {x: 292, y: 1.7}
+  m_SizeDelta: {x: 100, y: 187.48}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &103377386
 CanvasRenderer:
@@ -457,7 +457,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -11}
+  m_AnchoredPosition: {x: 0, y: -15}
   m_SizeDelta: {x: 214, y: 112}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1115801729
@@ -488,7 +488,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 9
+  m_text: 999999
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 00f629b36801745788337f34e0bb99e3, type: 2}
   m_sharedMaterial: {fileID: -8111571092261915150, guid: 00f629b36801745788337f34e0bb99e3, type: 2}
@@ -569,9 +569,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17e558e65f296f640845ef69c04eab04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: Score
-  Namespace: 
-  Comp: GameObject
+  Name: GameScore
+  Namespace: TMPro
+  Comp: TextMeshProUGUI
   NeedClick: 0
   Describe: "\u5206\u6570"
 --- !u!1 &1230238375
@@ -937,7 +937,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -6}
+  m_AnchoredPosition: {x: 0, y: -14}
   m_SizeDelta: {x: 214, y: 112}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1932217422
@@ -1049,7 +1049,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17e558e65f296f640845ef69c04eab04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: Level
+  Name: GameLevel
   Namespace: TMPro
   Comp: TextMeshProUGUI
   NeedClick: 0

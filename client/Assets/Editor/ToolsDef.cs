@@ -24,4 +24,6 @@ public enum XSFMenuID
     PBExportAll,
     PBExportCS,
     PBExportCpp,
+
+    ClearPlayerRefs,
 }

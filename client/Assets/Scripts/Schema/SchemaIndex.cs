@@ -13,6 +13,7 @@ public enum GlobalID
 //GLOBAL_ID_START
 	RowScore = 1,		//一行消除的分数
 	ScoreAddition = 2,		//分数加成
+	MaxLifeCount = 3,		//最大生命值
 //GLOBAL_ID_END
 }
 
