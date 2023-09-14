@@ -27,6 +27,21 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - 
+  - m_GUID: 7a0cb6c47c17043d8a017a1c6ff0333b
+    m_Address: block-v2
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - 
+  - m_GUID: b042ad2c731174dc4948c27a09b3a7ee
+    m_Address: food
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - 
+  - m_GUID: e71b8af5c85e8420c99bf068d5202f39
+    m_Address: snake
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - 
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: fc082288655110246813ff8eb26b01f0, type: 2}
   m_SchemaSet:

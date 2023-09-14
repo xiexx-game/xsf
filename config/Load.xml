@@ -7,4 +7,5 @@
   <Schema id="6" desc="关卡游戏" name="LevelGame" type="1" cs="1" cpp="0" go="0" lua="0" key="" />
   <Schema id="7" desc="俄罗斯方块配置" name="Tetris" type="1" cs="1" cpp="0" go="0" lua="0" key="" />
   <Schema id="8" desc="俄罗斯方块游戏关卡配置" name="TetrisLevels" type="1" cs="1" cpp="0" go="0" lua="0" key="" /> 
+  <Schema id="9" desc="贪吃蛇游戏关卡配置" name="SnakeLevels" type="1" cs="1" cpp="0" go="0" lua="0" key="" /> 
 </root>

@@ -37,11 +37,11 @@ public class PreBlocks
         m_Root = root;
         m_RootT = m_Root.transform;
 
-        m_Blocks = TetrisDef.CreateBlocks(ROW_COUNT, COL_COUNT, m_RootT, blockObj);
+        m_Blocks = LevelDef.CreateBlocks(LevelGameType.Tetris, ROW_COUNT, COL_COUNT, m_RootT, blockObj);
 
         for(int i = 0; i < m_Blocks.Length; i ++)
         {
-            m_Blocks[i].mono.SetPreColor();
+            m_Blocks[i].block.SetPreColor();
         }
     }
 
@@ -73,11 +73,11 @@ public class PreBlocks
         {
             if(d.data[i] == 0)
             {
-                m_Blocks[i].mono.Hide();
+                m_Blocks[i].block.Hide();
             }
             else
             {
-                m_Blocks[i].mono.ShowWithColor(m_Current.color);
+                m_Blocks[i].block.ShowWithColor(m_Current.color);
             }
         }
     }

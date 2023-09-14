@@ -21,8 +21,8 @@ public sealed class UISelect : UIBase
 	public GameObject Play { get; private set; }	// 
 	public TextMeshProUGUI name { get; private set; }	// 
 	public GameObject Blocks { get; private set; }	// 
-	public GameObject snake { get; private set; }	// 
 	public GameObject pacman { get; private set; }	// 
+	public GameObject snake { get; private set; }	// 
 	public TextMeshProUGUI HighScore { get; private set; }	// 最高分
 	public GameObject Right { get; private set; }	// 
 	public GameObject Left { get; private set; }	// 
@@ -49,8 +49,6 @@ public sealed class UISelect : UIBase
     private Color32 LifeColor = new Color32(255, 96, 96, 255);
     private Color32 WhiteColor = new Color32(255, 255, 255, 255);
 
-    private bool IsPlay = false;
-
     public override void OnInit()
     {
         // UI_INIT_START
@@ -68,9 +66,9 @@ public sealed class UISelect : UIBase
 		// 
 		Blocks = RootT.Find("item/content/blocks").gameObject;
 		// 
-		snake = RootT.Find("item/content/snake").gameObject;
-		// 
 		pacman = RootT.Find("item/content/pacman").gameObject;
+		// 
+		snake = RootT.Find("item/content/snake").gameObject;
 		// 最高分
 		HighScore = RootT.Find("item/HighScore").GetComponent<TextMeshProUGUI>();
 		// 
@@ -128,8 +126,6 @@ public sealed class UISelect : UIBase
         LevelValue.text = m_nCurrentLevel.ToString();
 
         UpdateLife();
-
-        IsPlay = false;
 
         AudioManager.Instance.PlayBGM(BGMID.Main);
     }
@@ -208,23 +204,6 @@ public sealed class UISelect : UIBase
         ui.Show();
         ui.Refresh((uint)UIRefreshID.SetLevel, m_nCurrentLevel);
         XSFUI.Instance.ShowUI((int)UIID.UIExam);
-
-
-/*
-        uint nCurrent = Level.Instance.CurrentLifeCount;
-        if(nCurrent == 0)
-        {
-            return;
-        }
-
-        IsPlay = true;
-
-        nCurrent --;
-        Level.Instance.CurrentLifeCount = nCurrent;
-
-        Level.Instance.Current.CurrentLevel = m_nCurrentLevel;
-        Level.Instance.Load();
-        */
 	}
 
 	// 

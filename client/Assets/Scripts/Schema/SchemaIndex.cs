@@ -53,6 +53,11 @@ public enum CSVIndex
 	ScpTetrisLevels_DownInterval = 2,
 	ScpTetrisLevels_LevelScore = 3,
 
+	ScpSnakeLevels_id = 0,
+	ScpSnakeLevels_MoveInterval = 1,
+	ScpSnakeLevels_LevelScore = 2,
+	ScpSnakeLevels_FoodScore = 3,
+
 //CSV_INDEX_END
 }
 

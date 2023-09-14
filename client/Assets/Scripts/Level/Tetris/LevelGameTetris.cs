@@ -11,15 +11,6 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.AddressableAssets;
 
-public class SingleBlock
-{
-    public int row;
-    public int col;
-    public MonoBlock mono;
-    public GameObject go;
-    public bool Exist;
-}
-
 public class FullRowData
 {
     public int row;
@@ -127,7 +118,7 @@ public class LevelGameTetris : LevelGame, ILoadingHandler, IBlockDisappearEvent
         m_PreBlocks = new PreBlocks();
         m_PreBlocks.Create(mono.PreBlock, m_SceneObj[(int)ObjID.Block]);
 
-        m_Blocks = TetrisDef.CreateBlocks(ROW_COUNT, COL_COUNT, mono.Playground.transform, m_SceneObj[(int)ObjID.Block]);
+        m_Blocks = LevelDef.CreateBlocks(LevelGameType.Tetris, ROW_COUNT, COL_COUNT, mono.Playground.transform, m_SceneObj[(int)ObjID.Block]);
     }
 
     public override void Enter()
@@ -171,7 +162,7 @@ public class LevelGameTetris : LevelGame, ILoadingHandler, IBlockDisappearEvent
 
     public SingleBlock GetBlock(int row, int col)
     {
-        var index = TetrisDef.GetBlockIndex(row, col, COL_COUNT);
+        var index = LevelDef.GetBlockIndex(row, col, COL_COUNT);
         if(index < 0 || index >= m_Blocks.Length)
             return null;
 
@@ -182,8 +173,8 @@ public class LevelGameTetris : LevelGame, ILoadingHandler, IBlockDisappearEvent
     {
         for(int i = 0; i < m_Blocks.Length; i ++)
         {
-            m_Blocks[i].mono.Hide();
-            m_Blocks[i].Exist = false;
+            m_Blocks[i].block.Hide();
+            m_Blocks[i].Status = BlockStatus.None;
         }
 
         Enter();
@@ -280,7 +271,7 @@ public class LevelGameTetris : LevelGame, ILoadingHandler, IBlockDisappearEvent
             for(int c = 0; c < COL_COUNT; c ++)
             {
                 var block = GetBlock(r, c);
-                if(block.Exist)
+                if(block.Status == BlockStatus.Block)
                 {
                     count ++;
                 }
@@ -340,10 +331,10 @@ public class LevelGameTetris : LevelGame, ILoadingHandler, IBlockDisappearEvent
         for(int i = 0; i < m_FullRowData.Count; i++)
         {
             var block = GetBlock(m_FullRowData[i], colLeft);
-            block.mono.DoDisappear(m_FullRowData[i], colLeft, this);
+            block.block.DoDisappear(m_FullRowData[i], colLeft, this);
 
             block = GetBlock(m_FullRowData[i], colRight);
-            block.mono.DoDisappear(m_FullRowData[i], colRight, this);
+            block.block.DoDisappear(m_FullRowData[i], colRight, this);
         }
 
         return NeedDisappear;
@@ -361,7 +352,7 @@ public class LevelGameTetris : LevelGame, ILoadingHandler, IBlockDisappearEvent
             {
                 col --;
                 var block = GetBlock(row, col);
-                block.mono.DoDisappear(row, col, this);
+                block.block.DoDisappear(row, col, this);
             }
             
         }
@@ -371,7 +362,7 @@ public class LevelGameTetris : LevelGame, ILoadingHandler, IBlockDisappearEvent
             {
                 col ++;
                 var block = GetBlock(row, col);
-                block.mono.DoDisappear(row, col, this);
+                block.block.DoDisappear(row, col, this);
             }
         }
     }
@@ -382,7 +373,7 @@ public class LevelGameTetris : LevelGame, ILoadingHandler, IBlockDisappearEvent
         for(int c = 0; c < COL_COUNT; c++)
         {
             var block = GetBlock(r, c);
-            if(block.Exist)
+            if(block.Status == BlockStatus.Block)
             {
                 IsEmptyRow = false;
                 break;
@@ -395,8 +386,8 @@ public class LevelGameTetris : LevelGame, ILoadingHandler, IBlockDisappearEvent
     public void OnBlockDisappearDone(int row, int col)
     {
         var curBlock = GetBlock(row, col);
-        curBlock.Exist = false;
-        curBlock.mono.Hide();
+        curBlock.Status = BlockStatus.None;
+        curBlock.block.Hide();
 
         DisappearCount ++;
 
@@ -428,13 +419,13 @@ public class LevelGameTetris : LevelGame, ILoadingHandler, IBlockDisappearEvent
                         var upBlock = GetBlock(nr, c);
                         var downBlock = GetBlock(r, c);
 
-                        if(upBlock.Exist)
+                        if(upBlock.Status == BlockStatus.Block)
                         {
-                            upBlock.mono.Hide();
-                            upBlock.Exist = false;
+                            upBlock.block.Hide();
+                            upBlock.Status = BlockStatus.None;
 
-                            downBlock.mono.ShowWithColor(upBlock.mono.ColorIndex);
-                            downBlock.Exist = true;
+                            downBlock.block.ShowWithColor(upBlock.block.ColorIndex);
+                            downBlock.Status = BlockStatus.Block;
                         }
                     }
                 }
@@ -466,7 +457,7 @@ public class LevelGameTetris : LevelGame, ILoadingHandler, IBlockDisappearEvent
                 }
                 else
                 {
-                    m_TetrisBlock[i].mono.ShowWithColor(m_CurrentTetris.color);
+                    m_TetrisBlock[i].block.ShowWithColor(m_CurrentTetris.color);
                 }  
             }
         }
@@ -549,7 +540,7 @@ public class LevelGameTetris : LevelGame, ILoadingHandler, IBlockDisappearEvent
                 }
                 else
                 {
-                    if(m_TetrisBlock[i].Exist)  // 这个地方已经有别的方块在了
+                    if(m_TetrisBlock[i].Status == BlockStatus.Block)  // 这个地方已经有别的方块在了
                     {
                         m_TetrisBlock.Clear();
                         m_TetrisBlock.AddRange(preList);
@@ -565,8 +556,8 @@ public class LevelGameTetris : LevelGame, ILoadingHandler, IBlockDisappearEvent
         {
             if(preList[i] != null && preList[i].go.activeSelf)
             {
-                if(!preList[i].Exist)
-                    preList[i].go.SetActive(false);
+                if(preList[i].Status == BlockStatus.None)
+                    preList[i].block.Hide();
             }
         }
 
@@ -581,7 +572,7 @@ public class LevelGameTetris : LevelGame, ILoadingHandler, IBlockDisappearEvent
                 }
                 else
                 {
-                    m_TetrisBlock[i].mono.ShowWithColor(m_CurrentTetris.color);
+                    m_TetrisBlock[i].block.ShowWithColor(m_CurrentTetris.color);
                 }  
             }
         }
@@ -624,10 +615,10 @@ public class LevelGameTetris : LevelGame, ILoadingHandler, IBlockDisappearEvent
                     {
                         for(int j = 0; j < preList.Count; j ++)
                         {
-                            if(preList[j] != null && preList[j].go.activeSelf && !preList[j].Exist)
+                            if(preList[j] != null && preList[j].go.activeSelf && preList[j].Status == BlockStatus.None)
                             {
-                                preList[j].mono.DoShimmer();
-                                preList[j].Exist = true;
+                                preList[j].block.DoShimmer();
+                                preList[j].Status = BlockStatus.Block;
                             }
                         }
 
@@ -635,14 +626,14 @@ public class LevelGameTetris : LevelGame, ILoadingHandler, IBlockDisappearEvent
                     }
                     else
                     {
-                        if(m_TetrisBlock[i].Exist)  // 这个地方已经有别的方块在了
+                        if(m_TetrisBlock[i].Status == BlockStatus.Block)  // 这个地方已经有别的方块在了
                         {
                             for(int j = 0; j < preList.Count; j ++)
                             {
-                                if(preList[j] != null && preList[j].go.activeSelf && !preList[j].Exist)
+                                if(preList[j] != null && preList[j].go.activeSelf && preList[j].Status == BlockStatus.None)
                                 {
-                                    preList[j].mono.DoShimmer();
-                                    preList[j].Exist = true;
+                                    preList[j].block.DoShimmer();
+                                    preList[j].Status = BlockStatus.Block;
                                 }
                             }
                             return false;
@@ -660,8 +651,8 @@ public class LevelGameTetris : LevelGame, ILoadingHandler, IBlockDisappearEvent
         {
             if(preList[i] != null && preList[i].go.activeSelf)
             {
-                if(!preList[i].Exist)
-                    preList[i].go.SetActive(false);
+                if(preList[i].Status == BlockStatus.None)
+                    preList[i].block.Hide();
             }
         }
 
@@ -676,7 +667,7 @@ public class LevelGameTetris : LevelGame, ILoadingHandler, IBlockDisappearEvent
                 }
                 else
                 {
-                    m_TetrisBlock[i].mono.ShowWithColor(m_CurrentTetris.color);
+                    m_TetrisBlock[i].block.ShowWithColor(m_CurrentTetris.color);
                 }  
             }
         }
@@ -723,7 +714,7 @@ public class LevelGameTetris : LevelGame, ILoadingHandler, IBlockDisappearEvent
                 }
                 else
                 {
-                    if(m_TetrisBlock[i].Exist)  // 这个地方已经有别的方块在了
+                    if(m_TetrisBlock[i].Status == BlockStatus.Block)  // 这个地方已经有别的方块在了
                     {
                         return false;
                     }  
@@ -738,8 +729,8 @@ public class LevelGameTetris : LevelGame, ILoadingHandler, IBlockDisappearEvent
         {
             if(preList[i] != null && preList[i].go.activeSelf)
             {
-                if(!preList[i].Exist)
-                    preList[i].go.SetActive(false);
+                if(preList[i].Status == BlockStatus.None)
+                    preList[i].block.Hide();
             }
         }
 
@@ -754,7 +745,7 @@ public class LevelGameTetris : LevelGame, ILoadingHandler, IBlockDisappearEvent
                 }
                 else
                 {
-                    m_TetrisBlock[i].mono.ShowWithColor(m_CurrentTetris.color);
+                    m_TetrisBlock[i].block.ShowWithColor(m_CurrentTetris.color);
                 }  
             }
         }

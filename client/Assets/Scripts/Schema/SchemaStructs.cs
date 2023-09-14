@@ -87,5 +87,16 @@ public class ScpTetrisLevels
 	public uint uLevelScore;	//等级分数
 //ScpTetrisLevels_END
 }
+
+//贪吃蛇游戏关卡配置
+public class ScpSnakeLevels
+{
+//ScpSnakeLevels_START
+	public uint uId;	//编号
+	public float fMoveInterval;	//移动时间间隔
+	public uint uLevelScore;	//等级分数
+	public uint uFoodScore;	//食物分数
+//ScpSnakeLevels_END
+}
 // SCHEMA_STRUCT
 // 不要删除上面的标签，自动生成代码需要用到
