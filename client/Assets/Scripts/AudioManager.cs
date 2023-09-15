@@ -14,6 +14,7 @@ public enum BGMID
 {
     Main = 0,
     Tetris,
+    Snake,
 }
 
 public enum ClipID

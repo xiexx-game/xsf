@@ -73,11 +73,11 @@ public class PreBlocks
         {
             if(d.data[i] == 0)
             {
-                m_Blocks[i].block.Hide();
+                m_Blocks[i].Hide();
             }
             else
             {
-                m_Blocks[i].block.ShowWithColor(m_Current.color);
+                m_Blocks[i].SetTetrisBlock(m_Current.color);
             }
         }
     }

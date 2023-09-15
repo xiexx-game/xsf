@@ -79,15 +79,9 @@ public class MonoBlock : MonoBehaviour
         }
     }
 
-    public void Hide()
-    {
-        gameObject.SetActive(false);
-    }
-
     public void ShowWithColor(int color)
     {
         SetColor(color);
-        gameObject.SetActive(true);
         gameObject.transform.localScale = Vector3.one;
     }
 

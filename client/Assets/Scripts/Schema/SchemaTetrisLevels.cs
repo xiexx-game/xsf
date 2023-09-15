@@ -65,12 +65,16 @@ public class SchemaTetrisLevels : ISchema
         uint nResult = 1;
         for(uint i = 1; i < m_Datas.Length - 1; i ++)
         {
+            nResult = i;
+
             if(nScore >= m_Datas[i].uLevelScore)
             {
-                nResult = i;
+                if(nScore < m_Datas[i+1].uLevelScore)
+                {
+                    break;
+                }
             }
-
-            if(nScore < m_Datas[i+1].uLevelScore)
+            else
             {
                 break;
             }

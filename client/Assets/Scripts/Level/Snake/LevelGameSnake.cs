@@ -80,9 +80,12 @@ public class LevelGameSnake : LevelGame, ILoadingHandler
     private SnakeNode m_SnakeHead;
     private SnakeNode m_SnakeTail;
 
+    private SnakeNode m_PreNode; 
+
     public override void Init()
     {
         m_SceneObj = new GameObject[(int)ObjID.Max];
+        m_PreNode = new SnakeNode();
     }
 
     public override void Load()
@@ -137,6 +140,9 @@ public class LevelGameSnake : LevelGame, ILoadingHandler
         GameSocre = 0;
         m_nStatus = GameStatus.CreateSnake;
         m_fMoveTime = 0;
+        m_nCurHighScore = Level.Instance.GetHighScore((int)LevelGameType.Snake);
+
+        AudioManager.Instance.PlayBGM(BGMID.Snake);
     }
 
     public override void Exit()
@@ -169,9 +175,12 @@ public class LevelGameSnake : LevelGame, ILoadingHandler
 
     public override void Restart()
     {
+        m_SnakeHead = null;
+        m_SnakeTail = null;
+
         for(int i = 0; i < m_Blocks.Length; i ++)
         {
-            m_Blocks[i].block.Hide();
+            m_Blocks[i].Hide();
             m_Blocks[i].Status = BlockStatus.None;
         }
 
@@ -229,8 +238,35 @@ public class LevelGameSnake : LevelGame, ILoadingHandler
                         break;
 
                     case MoveResult.EatFood:
+                        AudioManager.Instance.PlayFXAudio(ClipID.Cycle);
+                        AddNode();
                         GameSocre += ScpLevels.uFoodScore;
-                        XSFUI.Instance.Get((int)UIID.UIPlaySnake).Refresh((uint)UIRefreshID.PlayScore, null);
+
+                        var ui = XSFUI.Instance.Get((int)UIID.UIPlaySnake);
+                        ui.Refresh((uint)UIRefreshID.PlayScore, null);
+
+                        if(GameSocre > m_nCurHighScore)
+                        {
+                            m_nCurHighScore = GameSocre;
+                            Level.Instance.SetHighScore((int)LevelGameType.Snake, GameSocre);
+                        }
+
+                        uint level = XSFSchema.Instance.Get<SchemaSnakeLevels>((int)SchemaID.SnakeLevels).GetLevel(GameSocre);
+                        if(level > CurrentLevel)
+                        {
+                            CurrentLevel = level;
+                            ScpLevels = XSFSchema.Instance.Get<SchemaSnakeLevels>((int)SchemaID.SnakeLevels).Get(CurrentLevel);
+                            ui.Refresh((uint)UIRefreshID.PlayLevel, null);
+                            ui.Refresh((uint)UIRefreshID.ShowFireworks, null);
+                            AudioManager.Instance.PlayFXAudio(ClipID.HighScore);
+                        }
+
+                        SnakeNode node = m_SnakeHead;
+                        while(node != null)
+                        {
+                            node.block.block.DoShimmer();
+                            node = node.next;
+                        }
 
                         CreateFood();
                         break;
@@ -252,77 +288,90 @@ public class LevelGameSnake : LevelGame, ILoadingHandler
 
     }
 
+    private void AddNode()
+    {
+        var color = m_SnakeHead.block.block.ColorIndex;
+
+        SnakeNode node = new SnakeNode();
+        node.block = m_PreNode.block;
+        node.block.Status = BlockStatus.Block;
+        node.block.SetSnakeNode(color);
+        
+        m_SnakeTail.next = node;
+        m_SnakeTail = node;
+    }
+
     private MoveResult SnakeMove()
     {
         SnakeNode node = m_SnakeHead;
         MoveResult result = MoveResult.None;
 
+        m_PreNode.block = null;
+        m_PreNode.moveDir = SnakeMoveDir.None;
+
         //Debug.Log("SnakeMove start  ...");
 
         while(true)
         {
-            if(node.block.dir != SnakeMoveDir.None)
+            SingleBlock newBlock = null;
+            if(m_PreNode.block == null)
             {
-                node.moveDir = node.block.dir;
-                if(node == m_SnakeTail)
-                    node.block.dir = SnakeMoveDir.None;
-            }
-                
-            int row = node.block.row;
-            int col = node.block.col;
+                int row = node.block.row;
+                int col = node.block.col;
 
-            //Debug.Log($"SnakeMove row={row}, col={col}");
+                //Debug.Log($"SnakeMove row={row}, col={col}");
 
-            switch(node.moveDir)
-            {
-            case SnakeMoveDir.Up:
-                row --;
-                break;
+                switch(node.moveDir)
+                {
+                case SnakeMoveDir.Up:
+                    row --;
+                    break;
 
-            case SnakeMoveDir.Down:
-                row ++;
-                break;
+                case SnakeMoveDir.Down:
+                    row ++;
+                    break;
 
-            case SnakeMoveDir.Left:
-                col --;
-                break;
+                case SnakeMoveDir.Left:
+                    col --;
+                    break;
 
-            case SnakeMoveDir.Right:
-                col ++;
-                break;
-            }
+                case SnakeMoveDir.Right:
+                    col ++;
+                    break;
+                }
 
-            if(row < 0 || row >= ROW_COUNT || col < 0 || col >= ROW_COUNT)  // 撞墙了
-            {
-                //Debug.Log($"SnakeMove game end, row={row}, col={col}");
-                return MoveResult.GameEnd;
-            }
+                if(row < 0 || row >= ROW_COUNT || col < 0 || col >= COL_COUNT)  // 撞墙了
+                {
+                    //Debug.Log($"SnakeMove game end, row={row}, col={col}");
+                    return MoveResult.GameEnd;
+                }
 
-            var newBlock = GetBlock(row, col);
-            if(newBlock.Status == BlockStatus.Block)
-            {
-                return MoveResult.GameEnd;
-            }
-
-            if(node == m_SnakeHead)
-            {
-                if(newBlock.Status == BlockStatus.Food)
+                newBlock = GetBlock(row, col);
+                if(newBlock.Status == BlockStatus.Block)
+                {
+                    return MoveResult.GameEnd;
+                }
+                else if(newBlock.Status == BlockStatus.Food)
                 {
                     result = MoveResult.EatFood;
                 }
+            } 
+            else 
+            {
+                newBlock = m_PreNode.block;
             }
-
             
             var curColor = node.block.block.ColorIndex;
-            node.block.block.Hide();
-            node.block.food.Hide();
-            node.block.go.SetActive(false);
+            node.block.Hide();
             node.block.Status = BlockStatus.None;
 
+            m_PreNode.block = node.block;
+            m_PreNode.moveDir = node.moveDir;
+
             node.block = newBlock;
-            node.block.block.ShowWithColor(curColor);
-            node.block.food.Hide();
-            node.block.go.SetActive(true);
+            node.block.SetSnakeNode(curColor);
+            node.block.Status = BlockStatus.Block;
+            node.moveDir = m_PreNode.moveDir;
 
             if(node.next == null)
                 break;
@@ -346,9 +395,7 @@ public class LevelGameSnake : LevelGame, ILoadingHandler
                 continue;
             }
 
-            block.go.SetActive(true);
-            block.block.Hide();
-            block.food.Show();
+            block.SetSnakeFood();
             block.Status = BlockStatus.Food;
             return; 
 
@@ -381,11 +428,9 @@ public class LevelGameSnake : LevelGame, ILoadingHandler
                     Debug.Log("Create Snake node ...");
                     var node = new SnakeNode();
                     node.block = GetBlock(nRowStart, nColStart);
-                    node.block.block.ShowWithColor(color);
-                    node.block.food.Hide();
+                    node.block.SetSnakeNode(color);
                     node.block.Status = BlockStatus.Block;
                     node.moveDir = m_CurrentDir;
-                    node.block.go.SetActive(true);
 
                     if(m_SnakeHead == null) 
                     {
@@ -400,10 +445,6 @@ public class LevelGameSnake : LevelGame, ILoadingHandler
 
                     nRowStart ++;
                 }
-
-                // 最后再放一个空的
-                var nodeEmpty = new SnakeNode();
-                nodeEmpty.moveDir = m_CurrentDir;
             }
             break;
 
@@ -416,11 +457,9 @@ public class LevelGameSnake : LevelGame, ILoadingHandler
                 {
                     var node = new SnakeNode();
                     node.block = GetBlock(nRowStart, nColStart);
-                    node.block.block.ShowWithColor(color);
-                    node.block.food.Hide();
+                    node.block.SetSnakeNode(color);
                     node.block.Status = BlockStatus.Block;
                     node.moveDir = m_CurrentDir;
-                    node.block.go.SetActive(true);
 
                     if(m_SnakeHead == null) 
                     {
@@ -435,10 +474,6 @@ public class LevelGameSnake : LevelGame, ILoadingHandler
 
                     nRowStart --;
                 }
-
-                // 最后再放一个空的
-                var nodeEmpty = new SnakeNode();
-                nodeEmpty.moveDir = m_CurrentDir;
             }
             break;
 
@@ -451,9 +486,7 @@ public class LevelGameSnake : LevelGame, ILoadingHandler
                 {
                     var node = new SnakeNode();
                     node.block = GetBlock(nRowStart, nColStart);
-                    node.block.block.ShowWithColor(color);
-                    node.block.food.Hide();
-                    node.block.go.SetActive(true);
+                    node.block.SetSnakeNode(color);
                     node.block.Status = BlockStatus.Block;
                     node.moveDir = m_CurrentDir;
 
@@ -470,10 +503,6 @@ public class LevelGameSnake : LevelGame, ILoadingHandler
 
                     nColStart ++;
                 }
-
-                // 最后再放一个空的
-                var nodeEmpty = new SnakeNode();
-                nodeEmpty.moveDir = m_CurrentDir;
             }
             break;
 
@@ -486,9 +515,7 @@ public class LevelGameSnake : LevelGame, ILoadingHandler
                 {
                     var node = new SnakeNode();
                     node.block = GetBlock(nRowStart, nColStart);
-                    node.block.block.ShowWithColor(color);
-                    node.block.food.Hide();
-                    node.block.go.SetActive(true);
+                    node.block.SetSnakeNode(color);
                     node.block.Status = BlockStatus.Block;
                     node.moveDir = m_CurrentDir;
 
@@ -505,10 +532,6 @@ public class LevelGameSnake : LevelGame, ILoadingHandler
 
                     nColStart --;
                 }
-
-                // 最后再放一个空的
-                var nodeEmpty = new SnakeNode();
-                nodeEmpty.moveDir = m_CurrentDir;
             }
             break;
         }
@@ -528,7 +551,8 @@ public class LevelGameSnake : LevelGame, ILoadingHandler
         if(m_nStatus != GameStatus.Play)
             return;
 
-        m_SnakeHead.block.dir = SnakeMoveDir.Left;
+        if(m_SnakeHead.moveDir != SnakeMoveDir.Right && m_SnakeHead.moveDir != SnakeMoveDir.Left)
+            m_SnakeHead.moveDir = SnakeMoveDir.Left;
     }
 
     public override void MoveRight()
@@ -536,7 +560,8 @@ public class LevelGameSnake : LevelGame, ILoadingHandler
         if(m_nStatus != GameStatus.Play)
             return;
 
-        m_SnakeHead.block.dir = SnakeMoveDir.Right;
+        if(m_SnakeHead.moveDir != SnakeMoveDir.Left && m_SnakeHead.moveDir != SnakeMoveDir.Right)
+            m_SnakeHead.moveDir = SnakeMoveDir.Right;
     }
 
     public override void MoveDown()
@@ -544,7 +569,8 @@ public class LevelGameSnake : LevelGame, ILoadingHandler
         if(m_nStatus != GameStatus.Play)
             return;
 
-        m_SnakeHead.block.dir = SnakeMoveDir.Down;
+        if(m_SnakeHead.moveDir != SnakeMoveDir.Up && m_SnakeHead.moveDir != SnakeMoveDir.Down)
+            m_SnakeHead.moveDir = SnakeMoveDir.Down;
     }
 
     public override void Change()
@@ -552,7 +578,8 @@ public class LevelGameSnake : LevelGame, ILoadingHandler
         if(m_nStatus != GameStatus.Play)
             return;
 
-        m_SnakeHead.block.dir = SnakeMoveDir.Up;
+        if(m_SnakeHead.moveDir != SnakeMoveDir.Down && m_SnakeHead.moveDir != SnakeMoveDir.Up)
+            m_SnakeHead.moveDir = SnakeMoveDir.Up;
     }
 
     
@@ -566,7 +593,7 @@ public class LevelGameSnake : LevelGame, ILoadingHandler
     { 
         get
         {
-            return XSFSchema.Instance.Get<SchemaTetrisLevels>((int)SchemaID.TetrisLevels).MaxLevel;
+            return XSFSchema.Instance.Get<SchemaSnakeLevels>((int)SchemaID.SnakeLevels).MaxLevel;
         }
     }
 }

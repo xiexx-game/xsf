@@ -56,12 +56,15 @@ public sealed class UIPause : UIBase
 
 		case UIRefreshID.SetEnd:
 			{
-				if(Level.Instance.CurrentLifeCount <= 0)
+				var current = Level.Instance.CurrentLifeCount;
+				if(current <= 0)
 				{
 					XSFGSManager.Instance.mNextStateID = XSFGSID.Home;
 				}
 				else
 				{
+					current --;
+        			Level.Instance.CurrentLifeCount = current;
 					Level.Instance.Current.Restart();
 				}
 			}

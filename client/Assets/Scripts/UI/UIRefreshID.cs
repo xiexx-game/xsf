@@ -17,6 +17,7 @@ public enum UIRefreshID
 
     PlayScore,
     PlayLevel,
+    ShowFireworks,
 
     SetPause,
     SetEnd,

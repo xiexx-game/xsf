@@ -38,6 +38,9 @@ public class SchemaSnakeLevels : ISchema
             //* 使用数组
             m_Datas[scp.uId] = scp;
             //*/
+
+            if(scp.uId > MaxLevel)
+                MaxLevel = scp.uId;
         }
 
         return true;
@@ -55,4 +58,37 @@ public class SchemaSnakeLevels : ISchema
         return m_Datas[nIndex];
     }
     //*/
+
+    public uint MaxLevel { get; private set;}
+
+    public uint GetLevel(uint nScore)
+    {
+        // UnityEngine.Debug.Log($"GetLevel nScore={nScore}");
+
+        // for(uint i = 1; i < m_Datas.Length; i ++)
+        // {
+        //     UnityEngine.Debug.Log($"level={i}, score={m_Datas[i].uLevelScore}");
+        // }
+
+        uint nResult = 1;
+        for(uint i = 1; i < m_Datas.Length - 1; i ++)
+        {
+            //UnityEngine.Debug.Log($"nScore={nScore}, m_Datas[i].uLevelScore={m_Datas[i].uLevelScore}, m_Datas[i].uLevelScore={m_Datas[i+1].uLevelScore}");
+
+            if(nScore >= m_Datas[i].uLevelScore)
+            {
+                if(nScore < m_Datas[i+1].uLevelScore)
+                {
+                    nResult = i+1;
+                    break;
+                }
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        return nResult;
+    }
 }

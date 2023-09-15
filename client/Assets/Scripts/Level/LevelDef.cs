@@ -27,7 +27,32 @@ public class SingleBlock
     public GameObject go;
     public BlockStatus Status;
 
-    public SnakeMoveDir dir;
+    public void SetSnakeNode(int colorIndex)
+    {
+        go.SetActive(true);
+        block.gameObject.SetActive(true);
+        food.gameObject.SetActive(false);
+        block.SetColor(colorIndex);
+    }
+
+    public void SetSnakeFood()
+    {
+        go.SetActive(true);
+        block.gameObject.SetActive(false);
+        food.Show();
+        
+    }
+
+    public void SetTetrisBlock(int colorIndex)
+    {
+        go.SetActive(true);
+        block.ShowWithColor(colorIndex);
+    }
+
+    public void Hide()
+    {
+        go.SetActive(false);
+    }
 }
 
 

@@ -21,9 +21,4 @@ public class MonoSnakeFood : MonoBehaviour
         Image.color = Colors[nIndex];
         gameObject.SetActive(true);
     }
-
-    public void Hide()
-    {
-        gameObject.SetActive(false);
-    }
 }

@@ -173,7 +173,7 @@ public class LevelGameTetris : LevelGame, ILoadingHandler, IBlockDisappearEvent
     {
         for(int i = 0; i < m_Blocks.Length; i ++)
         {
-            m_Blocks[i].block.Hide();
+            m_Blocks[i].Hide();
             m_Blocks[i].Status = BlockStatus.None;
         }
 
@@ -314,14 +314,17 @@ public class LevelGameTetris : LevelGame, ILoadingHandler, IBlockDisappearEvent
                 Level.Instance.SetHighScore((int)LevelGameType.Tetris, GameSocre);
             }
 
-            XSFUI.Instance.Get((int)UIID.UIPlay).Refresh((uint)UIRefreshID.PlayScore, null);
+            var ui = XSFUI.Instance.Get((int)UIID.UIPlay);
+            ui.Refresh((uint)UIRefreshID.PlayScore, null);
 
             uint level = XSFSchema.Instance.Get<SchemaTetrisLevels>((int)SchemaID.TetrisLevels).GetLevel(GameSocre);
             if(level > CurrentLevel)
             {
                 CurrentLevel = level;
                 ScpLevels = XSFSchema.Instance.Get<SchemaTetrisLevels>((int)SchemaID.TetrisLevels).Get(CurrentLevel);
-                XSFUI.Instance.Get((int)UIID.UIPlay).Refresh((uint)UIRefreshID.PlayLevel, null);
+                ui.Refresh((uint)UIRefreshID.PlayLevel, null);
+                ui.Refresh((uint)UIRefreshID.ShowFireworks, null);
+                
             }
             
         }
@@ -387,7 +390,7 @@ public class LevelGameTetris : LevelGame, ILoadingHandler, IBlockDisappearEvent
     {
         var curBlock = GetBlock(row, col);
         curBlock.Status = BlockStatus.None;
-        curBlock.block.Hide();
+        curBlock.Hide();
 
         DisappearCount ++;
 
@@ -421,10 +424,10 @@ public class LevelGameTetris : LevelGame, ILoadingHandler, IBlockDisappearEvent
 
                         if(upBlock.Status == BlockStatus.Block)
                         {
-                            upBlock.block.Hide();
+                            upBlock.Hide();
                             upBlock.Status = BlockStatus.None;
 
-                            downBlock.block.ShowWithColor(upBlock.block.ColorIndex);
+                            downBlock.SetTetrisBlock(upBlock.block.ColorIndex);
                             downBlock.Status = BlockStatus.Block;
                         }
                     }
@@ -457,7 +460,7 @@ public class LevelGameTetris : LevelGame, ILoadingHandler, IBlockDisappearEvent
                 }
                 else
                 {
-                    m_TetrisBlock[i].block.ShowWithColor(m_CurrentTetris.color);
+                    m_TetrisBlock[i].SetTetrisBlock(m_CurrentTetris.color);
                 }  
             }
         }
@@ -557,7 +560,7 @@ public class LevelGameTetris : LevelGame, ILoadingHandler, IBlockDisappearEvent
             if(preList[i] != null && preList[i].go.activeSelf)
             {
                 if(preList[i].Status == BlockStatus.None)
-                    preList[i].block.Hide();
+                    preList[i].Hide();
             }
         }
 
@@ -572,7 +575,7 @@ public class LevelGameTetris : LevelGame, ILoadingHandler, IBlockDisappearEvent
                 }
                 else
                 {
-                    m_TetrisBlock[i].block.ShowWithColor(m_CurrentTetris.color);
+                    m_TetrisBlock[i].SetTetrisBlock(m_CurrentTetris.color);
                 }  
             }
         }
@@ -652,7 +655,7 @@ public class LevelGameTetris : LevelGame, ILoadingHandler, IBlockDisappearEvent
             if(preList[i] != null && preList[i].go.activeSelf)
             {
                 if(preList[i].Status == BlockStatus.None)
-                    preList[i].block.Hide();
+                    preList[i].Hide();
             }
         }
 
@@ -667,7 +670,7 @@ public class LevelGameTetris : LevelGame, ILoadingHandler, IBlockDisappearEvent
                 }
                 else
                 {
-                    m_TetrisBlock[i].block.ShowWithColor(m_CurrentTetris.color);
+                    m_TetrisBlock[i].SetTetrisBlock(m_CurrentTetris.color);
                 }  
             }
         }
@@ -730,7 +733,7 @@ public class LevelGameTetris : LevelGame, ILoadingHandler, IBlockDisappearEvent
             if(preList[i] != null && preList[i].go.activeSelf)
             {
                 if(preList[i].Status == BlockStatus.None)
-                    preList[i].block.Hide();
+                    preList[i].Hide();
             }
         }
 
@@ -745,7 +748,7 @@ public class LevelGameTetris : LevelGame, ILoadingHandler, IBlockDisappearEvent
                 }
                 else
                 {
-                    m_TetrisBlock[i].block.ShowWithColor(m_CurrentTetris.color);
+                    m_TetrisBlock[i].SetTetrisBlock(m_CurrentTetris.color);
                 }  
             }
         }

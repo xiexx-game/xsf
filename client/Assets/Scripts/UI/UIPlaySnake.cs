@@ -21,9 +21,13 @@ public sealed class UIPlaySnake : UIBase
 	public TextMeshProUGUI GameLevel { get; private set; }	// 等级
 	public TextMeshProUGUI GameScore { get; private set; }	// 分数
 	public GameObject Pause { get; private set; }	// 暂停
+	public GameObject fireworks { get; private set; }	// 
 // UI_PROP_END
 
     public override string Name { get { return "UIPlaySnake"; } }
+
+	private float m_fShowTime;
+	private bool m_bShowFireworks;
 
     public override void OnInit()
     {
@@ -47,6 +51,8 @@ public sealed class UIPlaySnake : UIBase
 		// 暂停
 		Pause = RootT.Find("top-snake/pause").gameObject;
 		UIEventClick.Set(Pause, OnPauseClick);
+		// 
+		fireworks = RootT.Find("fireworks").gameObject;
         // UI_INIT_END
     }
 
@@ -67,7 +73,27 @@ public sealed class UIPlaySnake : UIBase
 		case UIRefreshID.PlayScore:
 			GameScore.text = Level.Instance.Current.GameSocre.ToString();
 			break;
+
+		case UIRefreshID.ShowFireworks:
+			m_fShowTime = 3;
+			fireworks.SetActive(true);
+			m_bShowFireworks = true;
+			break;
 		
+		}
+	}
+
+	public override void OnUpdate()
+	{	
+		if(m_bShowFireworks)
+		{
+			m_fShowTime -= Time.deltaTime;
+			if(m_fShowTime <= 0)
+			{
+				m_bShowFireworks = false;
+				fireworks.SetActive(false);
+			}
+
 		}
 	}
 
