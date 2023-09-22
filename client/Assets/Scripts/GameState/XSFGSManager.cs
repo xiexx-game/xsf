@@ -1,24 +1,25 @@
 ﻿//////////////////////////////////////////////////////////////////////////
 //
-// 文件：Assets\XSF\GameState\XSFGSManager.cs
-// 作者：Xiexx
-// 时间：2022/03/05
+// 文件：Assets/Scripts/GameState/XSFGSManager.cs
+// 作者：Xoen
+// 时间：2023/08/25
 // 描述：游戏状态机
 // 说明：
 //
 //////////////////////////////////////////////////////////////////////////
-using System;
+using UnityEngine;
 
-public class XSFGSManager : Singleton<XSFGSManager>
+public class XSFGSManager : Singleton<XSFGSManager>, IUpdateNode
 {
     private XSFGameState[] m_States;
-    private XSFGameState m_CurState;
+    public XSFGameState CurState { get; private set;}
     private XSFGSID m_nNextStateID;
     public XSFGSID mNextStateID
     {
         set
         {
             m_nNextStateID = value;
+            Debug.Log($"XSFGSManager next state id={m_nNextStateID}");
         }
     }
 
@@ -29,21 +30,32 @@ public class XSFGSManager : Singleton<XSFGSManager>
         m_States[(int)XSFGSID.Main] = new XSFGameStateMain();
         m_States[(int)XSFGSID.Play] = new XSFGameStatePlay();
 
-        m_CurState = m_States[(int)XSFGSID.None];
+        CurState = m_States[(int)XSFGSID.None];
         m_nNextStateID = XSFGSID.None;
     }
 
-    public void Update()
+    public void Init()
     {
-        if (m_nNextStateID != m_CurState.mID)
+        XSFUpdate.Instance.Add(this);
+    }
+
+    public void OnUpdate()
+    {
+        if (m_nNextStateID != CurState.mID)
         {
-            m_CurState.End();
+            CurState.Exit();
+            Debug.Log($"XSFGSManager.Update {CurState.mID} Exit");
 
-            m_CurState = m_States[(int)m_nNextStateID];
+            CurState = m_States[(int)m_nNextStateID];
 
-            m_CurState.Enter();         
+            Debug.Log($"XSFGSManager.Update {CurState.mID} Enter");
+            CurState.Enter();         
         }
 
-        m_CurState.Update();
+        CurState.OnUpdate();
     }
+
+    public bool IsUpdateWroking { get { return true; } }
+
+    public void  OnFixedUpdate() { }
 }

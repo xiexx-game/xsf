@@ -19,6 +19,7 @@ public enum GlobalID
 	uintArrayData = 6,		//无符号整形数组
 	boolData = 7,		//布尔数据
 	iacData = 8,		//id和count数据
+	CharacterList = 9,		//角色资源列表
 //GLOBAL_ID_END
 }
 

@@ -15,7 +15,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &752136384007607471
 Transform:
   m_ObjectHideFlags: 0
@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 863868950373250953}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1.84, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -84,6 +84,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2787728069776014303}
   - component: {fileID: 9116986646901923881}
+  - component: {fileID: 9116986646476565925}
   m_Layer: 0
   m_Name: lobby
   m_TagString: Untagged
@@ -129,6 +130,21 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &9116986646476565925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2787728069776014300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ed0ed0c30c1e441a938b3df1410b78e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CamaraT: {fileID: 9116986647362615451}
+  Anim: {fileID: 9116986646901923881}
+  AnimName: Show
 --- !u!1 &9116986647362615444
 GameObject:
   m_ObjectHideFlags: 0
@@ -153,7 +169,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9116986647362615444}
   m_LocalRotation: {x: 0.084367946, y: 0.7033042, z: -0.084673285, w: 0.70076793}
-  m_LocalPosition: {x: -5.67, y: 0.49, z: 0}
+  m_LocalPosition: {x: -5.67, y: 2.46, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -170,6 +186,10 @@ PrefabInstance:
     - target: {fileID: 7353366311003348902, guid: 53d246d72f638dc4fa16ba6d2c4b91c1, type: 3}
       propertyPath: m_Name
       value: low_poly_interior.786
+      objectReference: {fileID: 0}
+    - target: {fileID: 7353366311003348902, guid: 53d246d72f638dc4fa16ba6d2c4b91c1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9091454786078388825, guid: 53d246d72f638dc4fa16ba6d2c4b91c1, type: 3}
       propertyPath: m_RootOrder
@@ -233,6 +253,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: low_poly_interior.797
       objectReference: {fileID: 0}
+    - target: {fileID: 877488403331019278, guid: 5fa8776f4c5faee4eb0d8c6407f37831, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5173118165884754508, guid: 5fa8776f4c5faee4eb0d8c6407f37831, type: 3}
       propertyPath: m_RootOrder
       value: 21
@@ -294,6 +318,10 @@ PrefabInstance:
     - target: {fileID: 1470280257341113954, guid: 3dae4b04ab92558498e9bee55366acc3, type: 3}
       propertyPath: m_Name
       value: low_poly_interior.793
+      objectReference: {fileID: 0}
+    - target: {fileID: 1470280257341113954, guid: 3dae4b04ab92558498e9bee55366acc3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4274452914104760027, guid: 3dae4b04ab92558498e9bee55366acc3, type: 3}
       propertyPath: m_RootOrder
@@ -401,6 +429,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: low_poly_interior.779
       objectReference: {fileID: 0}
+    - target: {fileID: 7331613145364194307, guid: 9a8d9a023c047804db10ce8f4a954692, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a8d9a023c047804db10ce8f4a954692, type: 3}
 --- !u!4 &3273000746125402774 stripped
@@ -462,6 +494,10 @@ PrefabInstance:
     - target: {fileID: 8866682280783204805, guid: faff07c8c91b3874493be644c27156e9, type: 3}
       propertyPath: m_Name
       value: low_poly_interior.790
+      objectReference: {fileID: 0}
+    - target: {fileID: 8866682280783204805, guid: faff07c8c91b3874493be644c27156e9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: faff07c8c91b3874493be644c27156e9, type: 3}
@@ -525,6 +561,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: low_poly_interior.784
       objectReference: {fileID: 0}
+    - target: {fileID: 6837202157976351950, guid: 0d4148d3e43b60543bf1efa5397110be, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d4148d3e43b60543bf1efa5397110be, type: 3}
 --- !u!4 &1816757814585736015 stripped
@@ -587,6 +627,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: low_poly_interior.813
       objectReference: {fileID: 0}
+    - target: {fileID: 5462540985733194712, guid: e26376140d932ba4fa4e96fc3586c870, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e26376140d932ba4fa4e96fc3586c870, type: 3}
 --- !u!4 &1184212659232943043 stripped
@@ -604,6 +648,10 @@ PrefabInstance:
     - target: {fileID: 1745642546265415422, guid: 0b570d240a781084e91ef022303d4f36, type: 3}
       propertyPath: m_Name
       value: low_poly_interior.781
+      objectReference: {fileID: 0}
+    - target: {fileID: 1745642546265415422, guid: 0b570d240a781084e91ef022303d4f36, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8560460035797490300, guid: 0b570d240a781084e91ef022303d4f36, type: 3}
       propertyPath: m_RootOrder
@@ -711,6 +759,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: low_poly_interior.787
       objectReference: {fileID: 0}
+    - target: {fileID: 3337395885491744518, guid: 3f0092fb9c5cd38488c283acded77dba, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3f0092fb9c5cd38488c283acded77dba, type: 3}
 --- !u!4 &1642197070106276991 stripped
@@ -728,6 +780,10 @@ PrefabInstance:
     - target: {fileID: 610328260837220841, guid: e0aaba359df598941980cd6111f8486c, type: 3}
       propertyPath: m_Name
       value: low_poly_interior.818
+      objectReference: {fileID: 0}
+    - target: {fileID: 610328260837220841, guid: e0aaba359df598941980cd6111f8486c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7990089686095248704, guid: e0aaba359df598941980cd6111f8486c, type: 3}
       propertyPath: m_RootOrder
@@ -835,6 +891,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: low_poly_interior.799
       objectReference: {fileID: 0}
+    - target: {fileID: 3226681593925581458, guid: ada5ff5013c911e48875b42121da3950, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ada5ff5013c911e48875b42121da3950, type: 3}
 --- !u!4 &444984924555119810 stripped
@@ -852,6 +912,10 @@ PrefabInstance:
     - target: {fileID: 1350258496945123937, guid: cebbda8838efb51408addc3688980c4e, type: 3}
       propertyPath: m_Name
       value: low_poly_interior.810
+      objectReference: {fileID: 0}
+    - target: {fileID: 1350258496945123937, guid: cebbda8838efb51408addc3688980c4e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4178572293051741412, guid: cebbda8838efb51408addc3688980c4e, type: 3}
       propertyPath: m_RootOrder
@@ -959,6 +1023,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: low_poly_interior.802
       objectReference: {fileID: 0}
+    - target: {fileID: 8579239255806761346, guid: 390784ac44eb2d0459a8b2fe43a82904, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 390784ac44eb2d0459a8b2fe43a82904, type: 3}
 --- !u!4 &1739145499464417492 stripped
@@ -1021,6 +1089,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: low_poly_interior.795
       objectReference: {fileID: 0}
+    - target: {fileID: 9027772660552881987, guid: 0aa2b281f29f57c48b83df8aac4e4ed5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0aa2b281f29f57c48b83df8aac4e4ed5, type: 3}
 --- !u!4 &4053480851061843194 stripped
@@ -1038,6 +1110,10 @@ PrefabInstance:
     - target: {fileID: 3893687480050728134, guid: d97ae34db496aa94092fe56187bfa85f, type: 3}
       propertyPath: m_Name
       value: low_poly_interior.805
+      objectReference: {fileID: 0}
+    - target: {fileID: 3893687480050728134, guid: d97ae34db496aa94092fe56187bfa85f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8035946541683793588, guid: d97ae34db496aa94092fe56187bfa85f, type: 3}
       propertyPath: m_RootOrder
@@ -1145,6 +1221,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: low_poly_interior.803
       objectReference: {fileID: 0}
+    - target: {fileID: 7554089656639466296, guid: 6d0011145a1dab949903b2f5bc73207b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6d0011145a1dab949903b2f5bc73207b, type: 3}
 --- !u!4 &1000594940273212480 stripped
@@ -1207,6 +1287,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: low_poly_interior.814
       objectReference: {fileID: 0}
+    - target: {fileID: 5373590185893062399, guid: e9d026ba26cf19943a5619028874af32, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e9d026ba26cf19943a5619028874af32, type: 3}
 --- !u!4 &8497348330379198 stripped
@@ -1224,6 +1308,10 @@ PrefabInstance:
     - target: {fileID: 4836710909807344781, guid: c7479b217b9fb824da81f03ab8389fe4, type: 3}
       propertyPath: m_Name
       value: low_poly_interior.794
+      objectReference: {fileID: 0}
+    - target: {fileID: 4836710909807344781, guid: c7479b217b9fb824da81f03ab8389fe4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8376472093973076658, guid: c7479b217b9fb824da81f03ab8389fe4, type: 3}
       propertyPath: m_RootOrder
@@ -1331,6 +1419,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: low_poly_interior.812
       objectReference: {fileID: 0}
+    - target: {fileID: 2440503960640635059, guid: e84a9a67e0e757d40bfeda9247736dd3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e84a9a67e0e757d40bfeda9247736dd3, type: 3}
 --- !u!4 &3524212288439934132 stripped
@@ -1392,6 +1484,10 @@ PrefabInstance:
     - target: {fileID: 5362562769353503673, guid: cd345b5e331d01946b0c942b579338a4, type: 3}
       propertyPath: m_Name
       value: low_poly_interior.792
+      objectReference: {fileID: 0}
+    - target: {fileID: 5362562769353503673, guid: cd345b5e331d01946b0c942b579338a4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cd345b5e331d01946b0c942b579338a4, type: 3}
@@ -1455,6 +1551,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: low_poly_interior.789
       objectReference: {fileID: 0}
+    - target: {fileID: 8834636574663283027, guid: 94362faeb26840b44ab7002ab56bdaa4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 94362faeb26840b44ab7002ab56bdaa4, type: 3}
 --- !u!4 &6930540119247849372 stripped
@@ -1517,6 +1617,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: low_poly_interior.788
       objectReference: {fileID: 0}
+    - target: {fileID: 8160215081069855978, guid: 836ed44d3a09f174495ab269821f4070, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 836ed44d3a09f174495ab269821f4070, type: 3}
 --- !u!4 &7109504989512757800 stripped
@@ -1534,6 +1638,10 @@ PrefabInstance:
     - target: {fileID: 780420991282619214, guid: 87047869425b7514fa2de6373c8fdf1e, type: 3}
       propertyPath: m_Name
       value: low_poly_interior.809
+      objectReference: {fileID: 0}
+    - target: {fileID: 780420991282619214, guid: 87047869425b7514fa2de6373c8fdf1e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3846400919104938364, guid: 87047869425b7514fa2de6373c8fdf1e, type: 3}
       propertyPath: m_RootOrder
@@ -1597,6 +1705,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: low_poly_interior.816
       objectReference: {fileID: 0}
+    - target: {fileID: 1306566546150488684, guid: 20977c4efee163f499edb6b70e1e7023, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7231122343464217968, guid: 20977c4efee163f499edb6b70e1e7023, type: 3}
       propertyPath: m_RootOrder
       value: 40
@@ -1658,6 +1770,10 @@ PrefabInstance:
     - target: {fileID: 4108463423093832027, guid: 2474ccf3314ae6a49b205de678ddd78b, type: 3}
       propertyPath: m_Name
       value: low_poly_interior.780
+      objectReference: {fileID: 0}
+    - target: {fileID: 4108463423093832027, guid: 2474ccf3314ae6a49b205de678ddd78b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6370244321313457189, guid: 2474ccf3314ae6a49b205de678ddd78b, type: 3}
       propertyPath: m_RootOrder
@@ -1765,6 +1881,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: low_poly_interior.804
       objectReference: {fileID: 0}
+    - target: {fileID: 6709283193466879666, guid: 4e69a0f3c9838e64f96e082510e9371f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4e69a0f3c9838e64f96e082510e9371f, type: 3}
 --- !u!4 &8990611549301580565 stripped
@@ -1827,6 +1947,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: low_poly_interior.800
       objectReference: {fileID: 0}
+    - target: {fileID: 1129395700210722148, guid: df56d529db43aec40b74e7e789a765f0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: df56d529db43aec40b74e7e789a765f0, type: 3}
 --- !u!4 &6234686303192282622 stripped
@@ -1844,6 +1968,10 @@ PrefabInstance:
     - target: {fileID: 2652983774496019003, guid: 53a9bb9e11ae81b459dbdf66e459e48a, type: 3}
       propertyPath: m_Name
       value: low_poly_interior.815
+      objectReference: {fileID: 0}
+    - target: {fileID: 2652983774496019003, guid: 53a9bb9e11ae81b459dbdf66e459e48a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2929340239446635039, guid: 53a9bb9e11ae81b459dbdf66e459e48a, type: 3}
       propertyPath: m_RootOrder
@@ -1951,6 +2079,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: low_poly_interior.807
       objectReference: {fileID: 0}
+    - target: {fileID: 5529398144984252120, guid: cf8610459b2be68498f84339a56e777c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf8610459b2be68498f84339a56e777c, type: 3}
 --- !u!4 &4826826414924504527 stripped
@@ -2023,7 +2155,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4798317852413508192, guid: a3dbef0a5f278884db43f92215ccb678, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a3dbef0a5f278884db43f92215ccb678, type: 3}
@@ -2087,6 +2219,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: low_poly_interior.776
       objectReference: {fileID: 0}
+    - target: {fileID: 1525264983780227968, guid: c529d9b9ea8c289449068fe974f2ddfa, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c529d9b9ea8c289449068fe974f2ddfa, type: 3}
 --- !u!4 &7543986010035623614 stripped
@@ -2148,6 +2284,10 @@ PrefabInstance:
     - target: {fileID: 1770036659318510044, guid: 70427b14ad2309f48b9ea395897e0489, type: 3}
       propertyPath: m_Name
       value: low_poly_interior.783
+      objectReference: {fileID: 0}
+    - target: {fileID: 1770036659318510044, guid: 70427b14ad2309f48b9ea395897e0489, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 70427b14ad2309f48b9ea395897e0489, type: 3}
@@ -2211,6 +2351,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: low_poly_interior.796
       objectReference: {fileID: 0}
+    - target: {fileID: 6097143029956908505, guid: dbedcbb508145404cade568a555d0eea, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dbedcbb508145404cade568a555d0eea, type: 3}
 --- !u!4 &3596930230366823302 stripped
@@ -2272,6 +2416,10 @@ PrefabInstance:
     - target: {fileID: 7855575904297251233, guid: 6cf864c35d3aeec49a17b6aba521431c, type: 3}
       propertyPath: m_Name
       value: low_poly_interior.811
+      objectReference: {fileID: 0}
+    - target: {fileID: 7855575904297251233, guid: 6cf864c35d3aeec49a17b6aba521431c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6cf864c35d3aeec49a17b6aba521431c, type: 3}
@@ -2335,6 +2483,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: low_poly_interior.778
       objectReference: {fileID: 0}
+    - target: {fileID: 7413592300476156363, guid: a5e681dbbb3e6124fa7949ce0b8ad6ad, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a5e681dbbb3e6124fa7949ce0b8ad6ad, type: 3}
 --- !u!4 &7788731402154275828 stripped
@@ -2396,6 +2548,10 @@ PrefabInstance:
     - target: {fileID: 2136935231348561340, guid: 98240de80c5c03442a480466a85a0c0b, type: 3}
       propertyPath: m_Name
       value: low_poly_interior.775
+      objectReference: {fileID: 0}
+    - target: {fileID: 2136935231348561340, guid: 98240de80c5c03442a480466a85a0c0b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 98240de80c5c03442a480466a85a0c0b, type: 3}
@@ -2459,6 +2615,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: low_poly_interior.785
       objectReference: {fileID: 0}
+    - target: {fileID: 3324628336500512281, guid: 17edf2809027cb945bd60188d163a5bf, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 17edf2809027cb945bd60188d163a5bf, type: 3}
 --- !u!4 &8943192706885493491 stripped
@@ -2521,6 +2681,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: low_poly_interior.791
       objectReference: {fileID: 0}
+    - target: {fileID: 7754552044155862004, guid: 2aae712f52657624f8fc34296cecad50, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2aae712f52657624f8fc34296cecad50, type: 3}
 --- !u!4 &2885942363948659392 stripped
@@ -2538,6 +2702,10 @@ PrefabInstance:
     - target: {fileID: 28019565575004131, guid: 1745afb6f2113c444ab1c06f6f97c920, type: 3}
       propertyPath: m_Name
       value: low_poly_interior.777
+      objectReference: {fileID: 0}
+    - target: {fileID: 28019565575004131, guid: 1745afb6f2113c444ab1c06f6f97c920, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9103816685324753191, guid: 1745afb6f2113c444ab1c06f6f97c920, type: 3}
       propertyPath: m_RootOrder
@@ -2601,6 +2769,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: low_poly_interior.817
       objectReference: {fileID: 0}
+    - target: {fileID: 4540085116299287510, guid: a6f5d60c00703ed45b4ad2734c1ada79, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9206779266239879451, guid: a6f5d60c00703ed45b4ad2734c1ada79, type: 3}
       propertyPath: m_RootOrder
       value: 41
@@ -2662,6 +2834,10 @@ PrefabInstance:
     - target: {fileID: 3984351743141422817, guid: d69bee1308dcae14895048b956c41dd5, type: 3}
       propertyPath: m_Name
       value: low_poly_interior.801
+      objectReference: {fileID: 0}
+    - target: {fileID: 3984351743141422817, guid: d69bee1308dcae14895048b956c41dd5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4196110159293910961, guid: d69bee1308dcae14895048b956c41dd5, type: 3}
       propertyPath: m_RootOrder
@@ -2773,6 +2949,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: low_poly_interior.798
       objectReference: {fileID: 0}
+    - target: {fileID: 7022251152041280214, guid: 2859250ea98ef104fb300c310c3cd197, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2859250ea98ef104fb300c310c3cd197, type: 3}
 --- !u!4 &2456650668598416961 stripped
@@ -2834,6 +3014,10 @@ PrefabInstance:
     - target: {fileID: 6496683355272554626, guid: c3405c32ce5de6540bcfac765f1eea55, type: 3}
       propertyPath: m_Name
       value: low_poly_interior.808
+      objectReference: {fileID: 0}
+    - target: {fileID: 6496683355272554626, guid: c3405c32ce5de6540bcfac765f1eea55, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c3405c32ce5de6540bcfac765f1eea55, type: 3}

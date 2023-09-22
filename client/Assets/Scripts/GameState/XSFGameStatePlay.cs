@@ -22,12 +22,12 @@ public class XSFGameStatePlay : XSFGameState
         return true;
     }
 
-    public override void End()
+    public override void Exit()
     {
-        //Playground.mInstance.End();
+        
     }
 
-    public override void Update()
+    public override void OnUpdate()
     {
 
     }

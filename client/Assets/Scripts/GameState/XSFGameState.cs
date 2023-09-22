@@ -27,12 +27,12 @@ public class XSFGameState
         return true;
     }
 
-    public virtual void End()
+    public virtual void Exit()
     { 
         
     }
 
-    public virtual void Update()
+    public virtual void OnUpdate()
     { 
         
     }

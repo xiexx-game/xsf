@@ -9,3 +9,4 @@ id,type,value,enumDef,desc
 6,array,2:3:4:5,uintArrayData,无符号整形数组
 7,bool,FALSE,boolData,布尔数据
 8,iac,10000:10|2000:20,iacData,id和count数据
+9,sarray,m_19:m_21:m_22:m_23:m_26:m_32:m_33,CharacterList,角色资源列表
