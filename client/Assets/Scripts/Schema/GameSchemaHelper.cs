@@ -19,6 +19,7 @@ public enum SchemaID
 	Item = 2,
 	Language = 4,
 	TestData = 5,
+	Level = 6,
 //SCHEMA_ID_END
 
     Max,
@@ -39,6 +40,7 @@ public class GameSchemaHelper : ISchemaHelper
 			case SchemaID.Item: return new SchemaItem();
 			case SchemaID.Language: return new SchemaLanguage();
 			case SchemaID.TestData: return new SchemaTestData();
+			case SchemaID.Level: return new SchemaLevel();
 			//SCHEMA_END
             default:
                 throw new XSFSchemaLoadException($"GameSchemaHelper.Get schema id error, id={nId}");

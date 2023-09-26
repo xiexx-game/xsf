@@ -44,6 +44,11 @@ public enum CSVIndex
 	ScpLanguage_key = 0,
 	ScpLanguage_value = 1,
 
+	ScpLevel_id = 0,
+	ScpLevel_data = 1,
+	ScpLevel_RowCount = 2,
+	ScpLevel_ColCount = 3,
+
 //CSV_INDEX_END
 }
 

@@ -54,5 +54,16 @@ public class ScpLanguage
 	public string sValue;	//值
 //ScpLanguage_END
 }
+
+//关卡配置
+public class ScpLevel
+{
+//ScpLevel_START
+	public uint uId;	//编号
+	public string [] sarData;	//关卡数据
+	public uint uRowCount;	//行数
+	public uint uColCount;	//列数
+//ScpLevel_END
+}
 // SCHEMA_STRUCT
 // 不要删除上面的标签，自动生成代码需要用到

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.43832392, g: 0.4863913, b: 0.5671517, a: 1}
+  m_IndirectSpecularColor: {r: 0.43832594, g: 0.48640436, b: 0.56715643, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -228,19 +228,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3243700700736043092, guid: a0e0c31dc117f453f8817a47490e7ae6, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.5054826
+      value: 0.5837719
       objectReference: {fileID: 0}
     - target: {fileID: 3243700700736043092, guid: a0e0c31dc117f453f8817a47490e7ae6, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.5046155
+      value: 0.67586505
       objectReference: {fileID: 0}
     - target: {fileID: 3243700700736043092, guid: a0e0c31dc117f453f8817a47490e7ae6, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.32781985
+      value: -0.14895949
       objectReference: {fileID: 0}
     - target: {fileID: 3243700700736043092, guid: a0e0c31dc117f453f8817a47490e7ae6, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.61837256
+      value: 0.42453253
       objectReference: {fileID: 0}
     - target: {fileID: 3243700700736043092, guid: a0e0c31dc117f453f8817a47490e7ae6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -248,7 +248,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3243700700736043092, guid: a0e0c31dc117f453f8817a47490e7ae6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 46.7
+      value: 84
       objectReference: {fileID: 0}
     - target: {fileID: 3243700700736043092, guid: a0e0c31dc117f453f8817a47490e7ae6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -352,8 +352,8 @@ MonoBehaviour:
   MainCharacterPos: {x: -2.09, y: 0, z: 0.07}
   TitlePos: {x: 0, y: 0, z: 0}
   LobbyPos: {x: 0, y: 0, z: 0}
-  CharacterEnterPos: {x: -2.09, y: 0, z: 4}
-  CharacterExitPos: {x: -2.09, y: 0, z: -4}
+  CharacterEnterPos: {x: -2.09, y: 0, z: 5}
+  CharacterExitPos: {x: -2.09, y: 0, z: -5}
   CharacterRotaSpeed: 360
   RunSpeed: 2
   WalkSpeed: 1

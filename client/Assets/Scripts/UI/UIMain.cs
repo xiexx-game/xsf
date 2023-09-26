@@ -15,6 +15,7 @@ public sealed class UIMain : UIBase
 // UI_PROP_START
 	public GameObject Play { get; private set; }	// 
 	public GameObject Change { get; private set; }	// 
+	public GameObject Level { get; private set; }	// 
 // UI_PROP_END
 
     public override string Name { get { return "UIMain"; } }
@@ -23,11 +24,14 @@ public sealed class UIMain : UIBase
     {
         // UI_INIT_START
 		// 
-		Play = RootT.Find("Play").gameObject;
+		Play = RootT.Find("frame/Play").gameObject;
 		UIEventClick.Set(Play, OnPlayClick);
 		// 
-		Change = RootT.Find("Change").gameObject;
+		Change = RootT.Find("frame/Change").gameObject;
 		UIEventClick.Set(Change, OnChangeClick);
+		// 
+		Level = RootT.Find("frame/Level").gameObject;
+		UIEventClick.Set(Level, OnLevelClick);
         // UI_INIT_END
     }
 
@@ -44,6 +48,13 @@ public sealed class UIMain : UIBase
 	{
 		var state = XSFGSManager.Instance.CurState as XSFGameStateMain;
 		state.ChangeCharacter();
+	}
+
+
+	// 
+	private void OnLevelClick(GameObject go)
+	{
+		XSFUI.Instance.ShowUI((int)UIID.UILevel);
 	}
 
     // UI_FUNC_APPEND

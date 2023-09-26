@@ -40,10 +40,34 @@ SpriteAtlas:
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: fc8064f06b4bff746b9891e65b425f67, type: 3}
+  - {fileID: 21300000, guid: bdef7b81b48314e14a7a157091a2fbd7, type: 3}
+  - {fileID: 21300000, guid: 317ba5c21d7194e52a8b9eaa3f597da0, type: 3}
+  - {fileID: 21300000, guid: 81de0df4be7be4944a3debe6bb2ac814, type: 3}
+  - {fileID: 21300000, guid: 2174f9885d45c4476b86147486ddad18, type: 3}
   - {fileID: 21300000, guid: e45a79d89e8f83143bbdd96bbd6593e1, type: 3}
+  - {fileID: 21300000, guid: 3f21dea9647234eab8205f9d3dec8ac0, type: 3}
+  - {fileID: 21300000, guid: 1a895a8a59e804f7e8f81a56b0103a24, type: 3}
+  - {fileID: 21300000, guid: 11b3e3fad0b34479ea91bceb8bd73fa7, type: 3}
+  - {fileID: 21300000, guid: b9cc234bb42e446499f48021aca251ea, type: 3}
+  - {fileID: 21300000, guid: 50b2131cdb6274ded81226d51fb5e8ff, type: 3}
+  - {fileID: 21300000, guid: 1a17a68c82dc2405185c661b00fd8ecc, type: 3}
+  - {fileID: 21300000, guid: c5bae0befe51a4682ad410df8bfa8432, type: 3}
+  - {fileID: 21300000, guid: 07036b8fb3468460bb43136f2393cd70, type: 3}
   m_PackedSpriteNamesToIndex:
   - Circle - 256px
+  - Cloud Background
+  - Arrow Left
+  - Gradient
+  - Menu
   - white-block-bg
+  - Cloud
+  - Arrow Right
+  - arrow
+  - No Avatar 2
+  - Arrow Basic Right
+  - Arrow Thin Right
+  - square-white
+  - Snow Star
   m_RenderDataMap: {}
   m_Tag: Common
   m_IsVariant: 0

@@ -15,6 +15,7 @@ public enum UIID
     UITest,
     UIAtlasTest,
     UIMain,
+    UILevel,
 
     Max,
 }
@@ -30,6 +31,7 @@ public sealed class UIHelper : IUIHelper
             case UIID.UITest:       return new UITest();
             case UIID.UIAtlasTest:  return new UIAtlasTest();
             case UIID.UIMain:       return new UIMain();
+            case UIID.UILevel:      return new UILevel();
             default: return null;
         }
     }
