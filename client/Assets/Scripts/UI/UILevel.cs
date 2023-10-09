@@ -10,6 +10,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections.Generic;
 
 public sealed class UILevel : UIBase
 {
@@ -17,6 +18,7 @@ public sealed class UILevel : UIBase
 	public RectTransform Level { get; private set; }	// 
 	public GameObject Block { get; private set; }	// 
 	public GameObject Dot { get; private set; }	// 
+	public GameObject Kid { get; private set; }	// 
 	public GameObject Left { get; private set; }	// 
 	public GameObject Right { get; private set; }	// 
 	public TextMeshProUGUI Title { get; private set; }	// 
@@ -24,6 +26,10 @@ public sealed class UILevel : UIBase
 // UI_PROP_END
 
     public override string Name { get { return "UILevel"; } }
+
+	private SingleBlock[] m_Blocks;
+
+	private List<GameObject> m_Dots;
 
     public override void OnInit()
     {
@@ -34,6 +40,8 @@ public sealed class UILevel : UIBase
 		Block = RootT.Find("Level/Block").gameObject;
 		// 
 		Dot = RootT.Find("Level/Dot").gameObject;
+		// 
+		Kid = RootT.Find("Level/Kid").gameObject;
 		// 
 		Left = RootT.Find("Left").gameObject;
 		UIEventClick.Set(Left, OnLeftClick);
@@ -46,6 +54,8 @@ public sealed class UILevel : UIBase
 		OK = RootT.Find("OK").gameObject;
 		UIEventClick.Set(OK, OnOKClick);
         // UI_INIT_END
+
+		m_Dots = new List<GameObject>();
     }
 
 	private uint m_nCurLevel;
@@ -59,12 +69,86 @@ public sealed class UILevel : UIBase
 		Refresh((uint)UIRefreshID.LevelFresh, null);
 	}
 
+	public override void OnClose()
+	{
+		ClearBlock();
+
+		for(int i = 0; i < m_Dots.Count; i ++)
+		{
+			GameObject.Destroy(m_Dots[i]);
+		}
+		m_Dots.Clear();
+	}
+
+	private void ClearBlock()
+	{
+		if(m_Blocks != null)
+		{
+			for(int i = 0; i < m_Blocks.Length; i ++)
+			{
+				m_Blocks[i].Clear();
+			}
+		}
+	}
+
 	public override void OnRefresh(uint nFreshID,  object data) 
 	{
 		switch(nFreshID)
 		{
 		case (uint)UIRefreshID.LevelFresh:
 			Title.text = $"关卡{m_nCurLevel}";
+			OnClose();
+			Level.sizeDelta = new Vector2(m_ScpLevel.uColCount*80, m_ScpLevel.uRowCount * 80);
+			m_Blocks = LevelDef.CreateBlocks((int)m_ScpLevel.uRowCount, (int)m_ScpLevel.uColCount, Level.transform, Block, 80.0f);
+			for(int i = 0; i < m_ScpLevel.sarData.Length; i ++)
+			{
+				if(m_ScpLevel.sarData[i] == "#") 
+				{
+					m_Blocks[i].SetColor(BlockColor.Wall);
+				}
+				else if(m_ScpLevel.sarData[i] == "-")
+				{
+					m_Blocks[i].SetColor(BlockColor.Road);
+				}
+				else if(m_ScpLevel.sarData[i] == "@")
+				{
+					m_Blocks[i].SetColor(BlockColor.Road);
+					Kid.transform.position = m_Blocks[i].go.transform.position;
+					Kid.SetActive(true);
+					Kid.transform.SetAsLastSibling();
+				}
+				else if(m_ScpLevel.sarData[i] == ".")
+				{
+					m_Blocks[i].SetColor(BlockColor.Road);
+					var dot = GameObject.Instantiate(Dot);
+					dot.transform.SetParent(Level.transform);
+					dot.transform.position = m_Blocks[i].go.transform.position;
+					dot.transform.localScale = Dot.transform.localScale;
+					dot.SetActive(true);
+					m_Dots.Add(dot);
+				}
+				else if(m_ScpLevel.sarData[i] == "$")
+				{
+					m_Blocks[i].SetColor(BlockColor.Box);
+				}
+				else if(m_ScpLevel.sarData[i] == "*")
+				{
+					m_Blocks[i].SetColor(BlockColor.Box);
+					
+
+					var dot = GameObject.Instantiate(Dot);
+					dot.transform.SetParent(Level.transform);
+					dot.transform.position = m_Blocks[i].go.transform.position;
+					dot.transform.localScale = Dot.transform.localScale;
+
+					var cur = dot.GetComponent<Image>().color;
+					cur.a = 0.8f;
+					dot.GetComponent<Image>().color = cur;
+					
+					dot.SetActive(true);
+					m_Dots.Add(dot);
+				}
+			}
 			break;
 		}
 	}

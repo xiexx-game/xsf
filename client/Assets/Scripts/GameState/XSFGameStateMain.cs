@@ -120,6 +120,14 @@ public class XSFGameStateMain : XSFGameState, ICharacterEvent, XSFAnimHandler
         var t = m_Objs[(int)MainSceneObjID.Character].transform;
         var mono = t.GetComponent<MonoCharacter>();
         mono.LobbyRunExit();
+
+        var t2 = m_Objs[(int)MainSceneObjID.Lobby].transform;
+        var mono2 = t2.GetComponent<MonoLevel>();
+        mono2.PlayReverse();
+
+        var t3 = m_Objs[(int)MainSceneObjID.Title].transform;
+        var mono3 = t3.GetComponent<MonoLevel>();
+        mono3.PlayReverse();
     }
 
     private void LoadAsset(MainSceneObjID id, string name)
@@ -133,12 +141,13 @@ public class XSFGameStateMain : XSFGameState, ICharacterEvent, XSFAnimHandler
                     m_Objs = new GameObject[(int)MainSceneObjID.Max];
 
                 m_Objs[(int)id] = op.Result;
+                var t = m_Objs[(int)id].transform;
+
                 switch(id)
                 {
                 case MainSceneObjID.Character:
                     {
                         m_Objs[(int)id].SetActive(true);
-                        var t = m_Objs[(int)id].transform;
                         var mono = t.GetComponent<MonoCharacter>();
                         mono.Init(this);
                         mono.LobbyBorn();
@@ -147,11 +156,18 @@ public class XSFGameStateMain : XSFGameState, ICharacterEvent, XSFAnimHandler
                     break;
 
                 case MainSceneObjID.Lobby:
-                case MainSceneObjID.Title:
                     {
-                        var t = m_Objs[(int)id].transform;
                         var mono = t.GetComponent<MonoLevel>();
                         mono.Init(this);
+                        mono.PlayAnim();
+                    }
+                    break;
+
+                case MainSceneObjID.Title:
+                    {
+                        var mono = t.GetComponent<MonoLevel>();
+                        mono.Init(this);
+                        mono.PlayAnim();
                     }
                     break;
 
@@ -168,7 +184,12 @@ public class XSFGameStateMain : XSFGameState, ICharacterEvent, XSFAnimHandler
     {
         if(param == "LobbyShow")
         {
-            m_nStatus = RunStatus.LoadTitle;
+            if(m_Objs[(int)MainSceneObjID.Title] == null)
+                m_nStatus = RunStatus.LoadTitle;
+        }
+        else if(param == "LobbyHide")
+        {
+            Debug.LogError("LobbyHide ....");
         }
         else if(param == "TitleShow")
         {

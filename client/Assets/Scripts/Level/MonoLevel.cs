@@ -30,9 +30,20 @@ public class MonoLevel : MonoBehaviour
 
     public void PlayAnim()
     {
-        gameObject.SetActive(true);
-        Anim.Play(AnimName);
+        if(Anim != null)
+        {
+            Anim.SetFloat("Ins", 1.0f);
+        }
     }
+
+    public void PlayReverse()
+    {
+        if(Anim != null)
+        {
+            Anim.SetFloat("Ins", -1.0f);
+        }
+    }
+
 
     public void OnAnimFinish(string param)
     {
