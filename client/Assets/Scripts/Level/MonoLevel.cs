@@ -19,9 +19,11 @@ public class MonoLevel : MonoBehaviour
     public Transform CamaraT;
 
     public Animator Anim;
-    public string AnimName;
 
     XSFAnimHandler m_Handler;
+
+    public GameObject Map;
+    public GameObject[] Objs;
 
     public void Init(XSFAnimHandler handler)
     {
