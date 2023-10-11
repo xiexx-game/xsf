@@ -14,14 +14,6 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class XSFGameStateMain : XSFGameState, ICharacterEvent, XSFAnimHandler
 {
-    enum MainSceneObjID
-    {
-        Character = 0,
-        Lobby,
-        Title,
-        Max,
-    }
-
     enum RunStatus
     {
         None = 0,
@@ -33,7 +25,7 @@ public class XSFGameStateMain : XSFGameState, ICharacterEvent, XSFAnimHandler
         Change,
     }
 
-    private GameObject[] m_Objs;
+    
 
     private RunStatus m_nStatus;
 
@@ -55,6 +47,7 @@ public class XSFGameStateMain : XSFGameState, ICharacterEvent, XSFAnimHandler
 
     public override void OnUpdate()
     {
+        /*
         switch(m_nStatus)
         {
         case RunStatus.LoadCharacter:
@@ -90,6 +83,7 @@ public class XSFGameStateMain : XSFGameState, ICharacterEvent, XSFAnimHandler
             m_CharacterIndex ++;
             break;
         }
+        */
     }
 
     public void OnLobbyEnterDone()
@@ -106,9 +100,11 @@ public class XSFGameStateMain : XSFGameState, ICharacterEvent, XSFAnimHandler
 
     public void OnLobbyExitDone()
     {
+        /*
         Addressables.ReleaseInstance(m_Objs[(int)MainSceneObjID.Character]);
         m_Objs[(int)MainSceneObjID.Character] = null;
         m_nStatus = RunStatus.Change;
+        */
     }
 
     public void ChangeCharacter()
@@ -116,6 +112,7 @@ public class XSFGameStateMain : XSFGameState, ICharacterEvent, XSFAnimHandler
         if(m_nStatus != RunStatus.None)
             return;
 
+        /*
         m_nStatus = RunStatus.Wait;
         var t = m_Objs[(int)MainSceneObjID.Character].transform;
         var mono = t.GetComponent<MonoCharacter>();
@@ -128,60 +125,12 @@ public class XSFGameStateMain : XSFGameState, ICharacterEvent, XSFAnimHandler
         var t3 = m_Objs[(int)MainSceneObjID.Title].transform;
         var mono3 = t3.GetComponent<MonoLevel>();
         mono3.PlayReverse();
-    }
-
-    private void LoadAsset(MainSceneObjID id, string name)
-    {
-        var handle = Addressables.InstantiateAsync(name);
-        handle.Completed += (op) =>
-        {
-            if (op.Status == AsyncOperationStatus.Succeeded)
-            {
-                if(m_Objs == null)
-                    m_Objs = new GameObject[(int)MainSceneObjID.Max];
-
-                m_Objs[(int)id] = op.Result;
-                var t = m_Objs[(int)id].transform;
-
-                switch(id)
-                {
-                case MainSceneObjID.Character:
-                    {
-                        m_Objs[(int)id].SetActive(true);
-                        var mono = t.GetComponent<MonoCharacter>();
-                        mono.Init(this);
-                        mono.LobbyBorn();
-                    }
-                    
-                    break;
-
-                case MainSceneObjID.Lobby:
-                    {
-                        var mono = t.GetComponent<MonoLevel>();
-                        mono.Init(this);
-                        mono.PlayAnim();
-                    }
-                    break;
-
-                case MainSceneObjID.Title:
-                    {
-                        var mono = t.GetComponent<MonoLevel>();
-                        mono.Init(this);
-                        mono.PlayAnim();
-                    }
-                    break;
-
-                }
-            }
-            else
-            {
-                Debug.LogError("LoadingGameObject.Start error, name=" + name);
-            }
-        };
+        */
     }
 
     public void OnAnimFinish(GameObject obj, string param)
     {
+        /*
         if(param == "LobbyShow")
         {
             if(m_Objs[(int)MainSceneObjID.Title] == null)
@@ -195,6 +144,7 @@ public class XSFGameStateMain : XSFGameState, ICharacterEvent, XSFAnimHandler
         {
             m_nStatus = RunStatus.ShowUI;
         }
+        */
     }
 
 

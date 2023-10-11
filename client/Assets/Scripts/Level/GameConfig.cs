@@ -11,12 +11,6 @@ using UnityEngine;
 
 public class GameConfig : MonoSingleton<GameConfig>
 {
-    public Vector3 MainCharacterPos;
-    public Vector3 TitlePos;
-    public Vector3 LobbyPos;
-
-    public Vector3 CharacterEnterPos;
-    public Vector3 CharacterExitPos;
     public float CharacterRotaSpeed;
 
     public float RunSpeed;

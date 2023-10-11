@@ -393,7 +393,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CamaraT: {fileID: 9116986647362615451}
   Anim: {fileID: 9116986646901923881}
-  AnimName: Show
+  Map: {fileID: 0}
+  Objs: []
+  CharacterPos: {x: -2.09, y: 0, z: 0}
+  CharacterTurnPos: {x: -2.19, y: 0, z: 0}
+  CharacterEnterPos: {x: -2.09, y: 0, z: 5}
+  CharacterExitPos: {x: -2.09, y: 0, z: -5}
 --- !u!1 &9116986647362615444
 GameObject:
   m_ObjectHideFlags: 0

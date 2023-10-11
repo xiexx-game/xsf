@@ -45,9 +45,9 @@ public class MonoCharacter : MonoBehaviour
         Anim.Play("Victory");
     }
 
-    public void LobbyBorn()
+    public void Born()
     {
-        transform.position = GameConfig.Instance.CharacterEnterPos;
+        transform.position = Level.Instance.LevelData.CharacterEnterPos;
         LobbyRunEnter();
     }
 
@@ -67,7 +67,7 @@ public class MonoCharacter : MonoBehaviour
     private int m_RotaParam;
     private void LobbyRunEnter()
     {
-        m_Target = GameConfig.Instance.MainCharacterPos;
+        m_Target = Level.Instance.LevelData.CharacterPos;
         PlayRun();
         m_nStatus = CharacterStatus.LobbyRunEnter;
         m_bRota = true;
@@ -80,8 +80,7 @@ public class MonoCharacter : MonoBehaviour
 
     private void LobbyMoveIdle()
     {
-        m_Target = GameConfig.Instance.MainCharacterPos;
-        m_Target.x -= 0.1f;
+        m_Target = Level.Instance.LevelData.CharacterTurnPos;
         PlayWalk();
         m_nStatus = CharacterStatus.LobbyWalk;
         m_bRota = true;
@@ -94,7 +93,7 @@ public class MonoCharacter : MonoBehaviour
 
     public void LobbyRunExit()
     {
-        m_Target = GameConfig.Instance.CharacterExitPos;
+        m_Target = Level.Instance.LevelData.CharacterExitPos;
         PlayRun();
         m_nStatus = CharacterStatus.LobbyRunExit;
         m_bRota = true;

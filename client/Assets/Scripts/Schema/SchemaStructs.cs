@@ -63,6 +63,8 @@ public class ScpLevel
 	public string [] sarData;	//关卡数据
 	public uint uRowCount;	//行数
 	public uint uColCount;	//列数
+	public string sSceneObj;	//场景资源
+	public int iUIID;	//UI资源
 //ScpLevel_END
 }
 // SCHEMA_STRUCT

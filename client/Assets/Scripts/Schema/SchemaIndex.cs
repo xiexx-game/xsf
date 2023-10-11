@@ -48,6 +48,8 @@ public enum CSVIndex
 	ScpLevel_data = 1,
 	ScpLevel_RowCount = 2,
 	ScpLevel_ColCount = 3,
+	ScpLevel_SceneObj = 4,
+	ScpLevel_UIID = 5,
 
 //CSV_INDEX_END
 }

@@ -22,7 +22,7 @@ public class SchemaLevel : ISchema
     public bool OnSchemaLoad(ISchemaReader reader)
     {
         CSVReader csv = reader as CSVReader;
-        m_Datas = new ScpLevel[csv.mRowCount + 1];
+        m_Datas = new ScpLevel[csv.mRowCount];
 
         for (int i = 0; i < csv.mRowCount; ++i)
         {
@@ -33,6 +33,8 @@ public class SchemaLevel : ISchema
 			scp.sarData = (csv.GetData((int)CSVDataType.SArray, i, (int)CSVIndex.ScpLevel_data) as CSVData_SArray).sarValue;	// 关卡数据
 			scp.uRowCount = (csv.GetData((int)CSVDataType.Uint, i, (int)CSVIndex.ScpLevel_RowCount) as CSVData_Uint).uValue;	// 行数
 			scp.uColCount = (csv.GetData((int)CSVDataType.Uint, i, (int)CSVIndex.ScpLevel_ColCount) as CSVData_Uint).uValue;	// 列数
+			scp.sSceneObj = (csv.GetData((int)CSVDataType.String, i, (int)CSVIndex.ScpLevel_SceneObj) as CSVData_String).sValue;	// 场景资源
+			scp.iUIID = (csv.GetData((int)CSVDataType.Int, i, (int)CSVIndex.ScpLevel_UIID) as CSVData_Int).iValue;	// UI资源
 //_CSV_LIST_END_
 
             //* 使用数组

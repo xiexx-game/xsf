@@ -25,6 +25,13 @@ public class MonoLevel : MonoBehaviour
     public GameObject Map;
     public GameObject[] Objs;
 
+    public Vector3 CharacterPos;
+
+    public Vector3 CharacterTurnPos;
+
+    public Vector3 CharacterEnterPos;
+    public Vector3 CharacterExitPos;
+
     public void Init(XSFAnimHandler handler)
     {
         m_Handler = handler;
