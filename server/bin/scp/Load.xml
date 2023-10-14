@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <Schema id="1" desc="全局变量配置" name="Global" type="1" cs="1" server="1" />
+  <Schema id="2" desc="物品配置" name="Item" type="1" cs="1" server="1" />
+  <Schema id="3" desc="测试XML配置" name="TestData" type="2" cs="1" server="1" />
+  <Schema id="4" desc="关卡配置" name="Level" type="1" cs="1" server="1"  />
+</root>

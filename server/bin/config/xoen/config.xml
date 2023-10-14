@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <config>
+        <name>Xoen</name>
+        <desc>个人服</desc>
+        <auto_start desc="是否自动开服">true</auto_start>
+        <htcheck desc="服务器心跳检测频率，秒">5</htcheck>
+        <httimeout desc="服务器心跳超时，秒">10</httimeout>
+        <htinterval desc="服务器心跳发送频率，秒">5</htinterval>
+        <client_htcheck desc="客户端心跳超时检测频率，秒">100</client_htcheck>
+        <client_httimeout desc="客户端心跳超时时间，秒">300</client_httimeout>
+        <main_center_ip desc="中心服IP">127.0.0.1</main_center_ip>
+        <center_port desc="中心服端口">9900</center_port>
+        <inner_port_start desc="内部端口起始值">10000</inner_port_start>
+        <out_port_start desc="对外端口起始值">20000</out_port_start>
+        <gate_max_count desc="网关最大连接数">5000</gate_max_count>
+        <nats desc="NATS地址">nats://root:root123@127.0.0.1:4242</nats>
+        <account_lifetime desc="登录账号生命周期，秒">120</account_lifetime>
+        <actor_save desc="actor存盘时间，秒">300</actor_save>
+        <client_max_msg_length desc="客户端最大包长">2048</client_max_msg_length>
+        <max_gate desc="最大网关数">50</max_gate>
+        <actor_release desc="actor释放时间，秒">600</actor_release>
+    </config>
+
+    <redis>
+        <item id="1" desc="登录redis" ip="127.0.0.1" passwd="root123" port="6379" count="10" />
+    </redis>
+
+    <mongo>
+        <item id="1" desc="账号登录" ip="127.0.0.1" user="wyb" passwd="wyb123" port="27017" count="5">
+            <db name="login">
+                <collection name="account"/>
+            </db>
+        </item>
+        <item id="2" desc="游戏库" ip="127.0.0.1" user="wyb" passwd="wyb123" port="27017" count="5">
+            <db name="game">
+                <collection name="actor"/>
+                <collection name="item"/>
+                <collection name="character"/>
+                <collection name="logic"/>
+                <collection name="task"/>
+            </db>
+        </item>
+    </mongo>
+
+    <server>
+        <item name="网关服" ep="gate" count="2" />
+        <item name="登录服" ep="login" count="1" db_mongo_id="1" redis_id="1" />
+        <item name="游戏服" ep="game" count="2" db_mongo_id="2" />
+    </server>
+</root>
