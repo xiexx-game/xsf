@@ -10,20 +10,14 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-enum BlockType
-{
-    None = 0,
-    Road = 0x1,
-    Box = 0x10,
-    Point = 0x100,
-    Character = 0x1000,
-}
 
 public enum BlockStatus
 {
-    None = 0,
-    Block,
-    Food,
+    None = 0,           // 什么都没有
+    Road = 0x1,         // 可以行走的路
+    Character = 0x10,   // 角色
+    Box = 0x100,        // 箱子
+    Point = 0x1000,     // 目标点位
 }
 
 public enum BlockColor
@@ -41,6 +35,8 @@ public class SingleBlock
     public GameObject go;
     public BlockStatus Status;
 
+    public GameObject FX;
+
     private Color32[] m_Colors = new Color32[] {
         new Color32( 82, 82, 82, 255),
         new Color32( 255, 255, 255, 255),
@@ -54,12 +50,22 @@ public class SingleBlock
 
     public void SetColor(BlockColor color)
     {
-        go.GetComponent<Image>().color = m_Colors[(int)color];
+        var image = go.GetComponent<Image>();
+        if(image != null)
+            image.color = m_Colors[(int)color];
+        else
+        {
+            var sp = go.GetComponent<SpriteRenderer>();
+            sp.color = m_Colors[(int)color];
+        }
         go.SetActive(true);
     }
 
     public void Clear()
     {
+        if(FX != null)
+            GameObject.Destroy(FX);
+            
         GameObject.Destroy(go);
     }
 }
@@ -69,7 +75,7 @@ public class LevelDef
 {
     public const float BLOCK_Z = 0f;
 
-    public static SingleBlock[] CreateBlocks(int row, int col, Transform rootT, GameObject go, float blockSize)
+    public static SingleBlock[] CreateBlocks(int row, int col, Transform rootT, GameObject go, float blockSize, bool isUI)
     {
         var blocks = new SingleBlock[row * col];
 
@@ -90,7 +96,16 @@ public class LevelDef
                 float x = XStart + c * blockSize;
 
                 sb.go.transform.SetParent(rootT, false);
-                sb.go.transform.localPosition = new Vector3(x, y, BLOCK_Z);
+
+                if(isUI)
+                {
+                    sb.go.transform.localPosition = new Vector3(x, y, BLOCK_Z);
+                }
+                else
+                {
+                    sb.go.transform.localPosition = new Vector3(x, BLOCK_Z, y);
+                }
+                
 
                 blocks[index++] = sb;
 

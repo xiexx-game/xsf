@@ -11,8 +11,8 @@ using UnityEngine;
 
 public interface ICharacterEvent
 {
-    void OnLobbyEnterDone();
-    void OnLobbyExitDone();
+    void OnEnterDone();
+    void OnExitDone();
 }
 
 public class MonoCharacter : MonoBehaviour
@@ -20,6 +20,10 @@ public class MonoCharacter : MonoBehaviour
     public Animator Anim;
 
     ICharacterEvent m_Handler;
+
+    int m_nTargetIndex;
+    Vector3[] m_Targets;
+
     public void Init(ICharacterEvent handler)
     {
         m_Handler = handler;
@@ -33,11 +37,13 @@ public class MonoCharacter : MonoBehaviour
     public void PlayWalk()
     {
         Anim.Play("Walk");
+        m_fSpeed = GameConfig.Instance.WalkSpeed;
     }
 
     public void PlayRun()
     {
         Anim.Play("Run");
+        m_fSpeed = GameConfig.Instance.RunSpeed;
     }
 
     public void PlayVictory()
@@ -45,18 +51,22 @@ public class MonoCharacter : MonoBehaviour
         Anim.Play("Victory");
     }
 
-    public void Born()
+    public void Born(Vector3 pos, Vector3[] targets)
     {
-        transform.position = Level.Instance.LevelData.CharacterEnterPos;
-        LobbyRunEnter();
+        transform.position = pos;
+        m_nTargetIndex = 0;
+        m_Targets = targets;
+        m_nStatus = CharacterStatus.StartEnter;
     }
 
     enum CharacterStatus
     {
         None = 0,
-        LobbyRunEnter,
-        LobbyWalk,
-        LobbyRunExit,
+        StartEnter,
+        Enter,
+        Exit,
+        PlayExit,
+        PlayFastExit,
         Idle,
     }
 
@@ -65,11 +75,12 @@ public class MonoCharacter : MonoBehaviour
     private bool m_bRota;
     private Vector3 m_MoveDir;
     private int m_RotaParam;
-    private void LobbyRunEnter()
+
+    private float m_fSpeed;
+
+    private void Enter()
     {
-        m_Target = Level.Instance.LevelData.CharacterPos;
-        PlayRun();
-        m_nStatus = CharacterStatus.LobbyRunEnter;
+        m_Target = m_Targets[m_nTargetIndex++];
         m_bRota = true;
         m_MoveDir = m_Target - transform.position;
         m_MoveDir.Normalize();
@@ -78,11 +89,24 @@ public class MonoCharacter : MonoBehaviour
         m_RotaParam = cross.y < 0 ? -1 : 1; 
     }
 
-    private void LobbyMoveIdle()
+    public void Exit(Vector3 target)
     {
-        m_Target = Level.Instance.LevelData.CharacterTurnPos;
+        m_Target = target;
+        PlayRun();
+        m_nStatus = CharacterStatus.Exit;
+        m_bRota = true;
+        m_MoveDir = m_Target - transform.position;
+        m_MoveDir.Normalize();
+
+        Vector3 cross = Vector3.Cross(transform.forward, m_MoveDir);
+        m_RotaParam = cross.y < 0 ? -1 : 1; 
+    }
+
+    public void PlayExit(Vector3 target)
+    {
+        m_Target = target;
         PlayWalk();
-        m_nStatus = CharacterStatus.LobbyWalk;
+        m_nStatus = CharacterStatus.Exit;
         m_bRota = true;
         m_MoveDir = m_Target - transform.position;
         m_MoveDir.Normalize();
@@ -91,17 +115,9 @@ public class MonoCharacter : MonoBehaviour
         m_RotaParam = cross.y < 0 ? -1 : 1; 
     }
 
-    public void LobbyRunExit()
+    public void PlayFastExit()
     {
-        m_Target = Level.Instance.LevelData.CharacterExitPos;
         PlayRun();
-        m_nStatus = CharacterStatus.LobbyRunExit;
-        m_bRota = true;
-        m_MoveDir = m_Target - transform.position;
-        m_MoveDir.Normalize();
-
-        Vector3 cross = Vector3.Cross(transform.forward, m_MoveDir);
-        m_RotaParam = cross.y < 0 ? -1 : 1; 
     }
 
     private void LobbyIdle()
@@ -115,6 +131,7 @@ public class MonoCharacter : MonoBehaviour
         if(m_bRota)
         {
             float rota = GameConfig.Instance.CharacterRotaSpeed * Time.deltaTime;
+            //Debug.Log($"rota={rota}");
 
             var current = transform.forward;
             float a = Vector3.Angle(current, m_MoveDir);
@@ -131,14 +148,28 @@ public class MonoCharacter : MonoBehaviour
 
         switch(m_nStatus)
         {
-        case CharacterStatus.LobbyRunEnter:
+        case CharacterStatus.StartEnter:
+            PlayRun();
+            Enter();
+            m_nStatus = CharacterStatus.Enter;
+            break;
+
+        case CharacterStatus.Enter:
             {
-                float dis = GameConfig.Instance.RunSpeed * Time.deltaTime;
+                float dis = m_fSpeed * Time.deltaTime;
                 float length = Vector3.Distance(transform.position, m_Target);
                 if(dis > length)
                 {
                     transform.position = m_Target;
-                    LobbyMoveIdle();
+                    if(m_nTargetIndex >= m_Targets.Length)
+                    {
+                        m_Handler.OnEnterDone();
+                        m_nStatus = CharacterStatus.Idle;
+                    }
+                    else
+                    {
+                        Enter();
+                    }
                 }
                 else
                 {
@@ -146,43 +177,27 @@ public class MonoCharacter : MonoBehaviour
                 }
             }
             break;
-
-        case CharacterStatus.LobbyRunExit:
-            {
-                float dis = GameConfig.Instance.RunSpeed * Time.deltaTime;
-                float length = Vector3.Distance(transform.position, m_Target);
-                if(dis > length)
-                {
-                    transform.position = m_Target;
-                    m_Handler.OnLobbyExitDone();
-                    m_nStatus = CharacterStatus.None;
-                }
-                else
-                {
-                    transform.position += m_MoveDir * dis;
-                }
-            }
-            break;
-
-        case CharacterStatus.LobbyWalk:
-            {
-                float dis = GameConfig.Instance.WalkSpeed * Time.deltaTime;
-                float length = Vector3.Distance(transform.position, m_Target);
-                if(dis > length)
-                {
-                    transform.position = m_Target;
-                    LobbyIdle();
-                    m_Handler.OnLobbyEnterDone();
-                }
-                else
-                {
-                    transform.position += m_MoveDir * dis;
-                }
-            }
-            break;
-
 
         case CharacterStatus.Idle:
+            PlayIdle();
+            m_nStatus = CharacterStatus.None;
+            break;
+
+        case CharacterStatus.Exit:
+            {
+                float dis = m_fSpeed * Time.deltaTime;
+                float length = Vector3.Distance(transform.position, m_Target);
+                if(dis > length)
+                {
+                    transform.position = m_Target;
+                    m_Handler.OnExitDone();
+                    m_nStatus = CharacterStatus.Idle;
+                }
+                else
+                {
+                    transform.position += m_MoveDir * dis;
+                }
+            }
             break;
         }
     }

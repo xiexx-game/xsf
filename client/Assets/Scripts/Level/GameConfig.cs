@@ -15,4 +15,10 @@ public class GameConfig : MonoSingleton<GameConfig>
 
     public float RunSpeed;
     public float WalkSpeed;
+
+    public Vector3 BornPos;
+
+    public Vector3[] EnterPos;
+
+    public Vector3 ExitPos;
 }

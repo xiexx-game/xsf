@@ -23,14 +23,19 @@ public class MonoLevel : MonoBehaviour
     XSFAnimHandler m_Handler;
 
     public GameObject Map;
+    public GameObject Block;
     public GameObject[] Objs;
 
-    public Vector3 CharacterPos;
+    public Vector3[] ObjFXPos;
+    public float[] ObjFXScale;
 
-    public Vector3 CharacterTurnPos;
+    public Vector3 BornPos;
 
-    public Vector3 CharacterEnterPos;
-    public Vector3 CharacterExitPos;
+    public Vector3[] EnterPos;
+
+    public Vector3 ExitPos;
+
+    int count = 0;
 
     public void Init(XSFAnimHandler handler)
     {
@@ -47,6 +52,7 @@ public class MonoLevel : MonoBehaviour
 
     public void PlayReverse()
     {
+        Debug.LogError("PlayReverse");
         if(Anim != null)
         {
             Anim.SetFloat("Ins", -1.0f);
@@ -58,5 +64,12 @@ public class MonoLevel : MonoBehaviour
     {
         if(m_Handler != null)
             m_Handler.OnAnimFinish(gameObject, param);
+
+        if(param.Contains("Show") && count == 0)
+        {
+            count ++;
+            Anim.SetFloat("Ins", 0);
+        }
+            
     }
 }

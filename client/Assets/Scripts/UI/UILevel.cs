@@ -15,7 +15,7 @@ using System.Collections.Generic;
 public sealed class UILevel : UIBase
 {
 // UI_PROP_START
-	public RectTransform Level { get; private set; }	// 
+	public RectTransform LevelObj { get; private set; }	// 
 	public GameObject Block { get; private set; }	// 
 	public GameObject Dot { get; private set; }	// 
 	public GameObject Kid { get; private set; }	// 
@@ -35,7 +35,7 @@ public sealed class UILevel : UIBase
     {
         // UI_INIT_START
 		// 
-		Level = RootT.Find("Level").GetComponent<RectTransform>();
+		LevelObj = RootT.Find("Level").GetComponent<RectTransform>();
 		// 
 		Block = RootT.Find("Level/Block").gameObject;
 		// 
@@ -98,8 +98,8 @@ public sealed class UILevel : UIBase
 		case (uint)UIRefreshID.LevelFresh:
 			Title.text = $"关卡{m_nCurLevel}";
 			OnClose();
-			Level.sizeDelta = new Vector2(m_ScpLevel.uColCount*80, m_ScpLevel.uRowCount * 80);
-			m_Blocks = LevelDef.CreateBlocks((int)m_ScpLevel.uRowCount, (int)m_ScpLevel.uColCount, Level.transform, Block, 80.0f);
+			LevelObj.sizeDelta = new Vector2(m_ScpLevel.uColCount*80, m_ScpLevel.uRowCount * 80);
+			m_Blocks = LevelDef.CreateBlocks((int)m_ScpLevel.uRowCount, (int)m_ScpLevel.uColCount, LevelObj.transform, Block, 80.0f, true);
 			for(int i = 0; i < m_ScpLevel.sarData.Length; i ++)
 			{
 				if(m_ScpLevel.sarData[i] == "#") 
@@ -121,7 +121,7 @@ public sealed class UILevel : UIBase
 				{
 					m_Blocks[i].SetColor(BlockColor.Road);
 					var dot = GameObject.Instantiate(Dot);
-					dot.transform.SetParent(Level.transform);
+					dot.transform.SetParent(LevelObj.transform);
 					dot.transform.position = m_Blocks[i].go.transform.position;
 					dot.transform.localScale = Dot.transform.localScale;
 					dot.SetActive(true);
@@ -137,7 +137,7 @@ public sealed class UILevel : UIBase
 					
 
 					var dot = GameObject.Instantiate(Dot);
-					dot.transform.SetParent(Level.transform);
+					dot.transform.SetParent(LevelObj.transform);
 					dot.transform.position = m_Blocks[i].go.transform.position;
 					dot.transform.localScale = Dot.transform.localScale;
 
@@ -158,7 +158,7 @@ public sealed class UILevel : UIBase
 	{
 		uint level = m_nCurLevel - 1;
 		var scp = XSFSchema.Instance.Get<SchemaLevel>((int)SchemaID.Level).Get(level);
-		if(scp == null)
+		if(level == 0 || scp == null)
 		{
 
 		}
@@ -167,6 +167,7 @@ public sealed class UILevel : UIBase
 			m_nCurLevel --;
 			m_ScpLevel = scp;
 			Refresh((uint)UIRefreshID.LevelFresh, null);
+			Level.Instance.LevelConfig = scp;
 		}
 	}
 
@@ -184,6 +185,7 @@ public sealed class UILevel : UIBase
 			m_nCurLevel ++;
 			m_ScpLevel = scp;
 			Refresh((uint)UIRefreshID.LevelFresh, null);
+			Level.Instance.LevelConfig = scp;
 		}
 	}
 
