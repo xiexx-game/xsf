@@ -129,6 +129,7 @@ namespace XSF
         public uint HeartbeatCheck;
         public uint HeartbeatTimeout;
         public uint HeartbeatInterval;
+        public uint ReconnectInterval;
         public uint ClientHeartbeatCheck;
         public uint ClientHeartbeatTimeout;
         public string MainCenterIP = "";

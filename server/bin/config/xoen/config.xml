@@ -6,7 +6,8 @@
         <auto_start desc="是否自动开服">true</auto_start>
         <htcheck desc="服务器心跳检测频率，秒">5</htcheck>
         <httimeout desc="服务器心跳超时，秒">10</httimeout>
-        <htinterval desc="服务器心跳发送频率，秒">5</htinterval>
+        <htinterval desc="服务器心跳发送频率，tick">500</htinterval>
+        <rc_interval desc="重连时间，tick">500</rc_interval>
         <client_htcheck desc="客户端心跳超时检测频率，秒">100</client_htcheck>
         <client_httimeout desc="客户端心跳超时时间，秒">300</client_httimeout>
         <main_center_ip desc="中心服IP">127.0.0.1</main_center_ip>

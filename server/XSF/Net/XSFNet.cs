@@ -54,10 +54,13 @@ namespace XSF
             m_Lock = new object();
         }
 
-        internal bool Listen(INetHandler handler, int port)
+        internal IConnection? Listen(INetHandler handler, int port)
         {
             ConnectionTcp tcp = new ConnectionTcp(handler, m_AsyncReceive, m_AsyncSend, m_AsyncConnect);
-            return tcp.Listen(port, m_AsyncAccept);
+            if( tcp.Listen(port, m_AsyncAccept) )
+                return tcp;
+
+            return null;
         }
 
         internal IConnection? Connect(INetHandler handler, string ip, int port)

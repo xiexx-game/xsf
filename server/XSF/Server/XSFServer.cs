@@ -69,6 +69,8 @@ namespace XSF
             ReadArgs(args);
             XSFLogger.Init();
             ReadConfig();
+
+            XSFTimer.Instance.Create();
         }
 
         public void Run()
@@ -92,7 +94,14 @@ namespace XSF
         {
             Serilog.Log.Information("服务器所有处理完毕，关闭退出");
 
+            XSFTimer.Instance.Release();
+
             XSFLogger.End();
+        }
+
+        internal void SpeedUp()
+        {
+            m_MainEvent.Set();
         }
 
         void OnProcessExit(object? sender, EventArgs e)
@@ -137,68 +146,46 @@ namespace XSF
                     m_MainEvent.Reset();
                 }
 
-                switch(m_nStatus)
+                StatusUpdate();
+                
+                XSFNet.Instance.Dispath();
+                XSFTimer.Instance.Dispatch();
+            }
+
+            Serilog.Log.Debug("主逻辑线程已退出");
+        }
+
+        private void StatusUpdate()
+        {
+            switch(m_nStatus)
+            {
+            case RunStatus.Init:
                 {
-                case RunStatus.Init:
+                    m_Modules = new IModule[MaxModuleID+1];
+                    m_StepModule = new IModule[MaxModuleID+1];
+                    for(int i = 0; i < m_InitList.Count; i ++)
                     {
-                        m_Modules = new IModule[MaxModuleID+1];
-                        m_StepModule = new IModule[MaxModuleID+1];
-                        for(int i = 0; i < m_InitList.Count; i ++)
+                        var info = m_InitList[i];
+                        m_Modules[info.initData.ID] = info.module;
+                        if(!info.module.Init(info.initData))
                         {
-                            var info = m_InitList[i];
-                            m_Modules[info.initData.ID] = info.module;
-                            if(!info.module.Init(info.initData))
-                            {
-                                m_nStatus = RunStatus.Stop;
-                                break;
-                            }
-                        }
-
-                        for(int i = 0; i < m_Modules.Length; i ++)
-                        {
-                            if(m_Modules[i] != null)
-                                m_Modules[i].DoRegist();
-                        }
-
-                        int WaitStart = 0;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
-                        for(int i = 0; i < m_Modules.Length; i ++)
-                        {
-                            if(m_Modules[i] != null )
-                            {
-                                if(m_Modules[i].NoWaitStart)
-                                {
-                                    if(!m_Modules[i].Start())
-                                    {
-                                        m_nStatus = RunStatus.Stop;
-                                        break;
-                                    }
-                                }
-                                else
-                                {
-                                    WaitStart ++;
-                                }
-                            }
-                        }
-
-                        if(m_nStatus != RunStatus.Stop)
-                        {
-                            if(WaitStart > 0)
-                            {
-                                m_nStatus = RunStatus.WaitStart;
-                            }
-                            else
-                            {
-                                m_nStatus = RunStatus.Start;
-                            }
+                            m_nStatus = RunStatus.Stop;
+                            break;
                         }
                     }
-                    break;
 
-                case RunStatus.Start:
+                    for(int i = 0; i < m_Modules.Length; i ++)
                     {
-                        for(int i = 0; i < m_Modules.Length; i ++)
+                        if(m_Modules[i] != null)
+                            m_Modules[i].DoRegist();
+                    }
+
+                    int WaitStart = 0;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+                    for(int i = 0; i < m_Modules.Length; i ++)
+                    {
+                        if(m_Modules[i] != null )
                         {
-                            if(m_Modules[i] != null && !m_Modules[i].NoWaitStart)
+                            if(m_Modules[i].NoWaitStart)
                             {
                                 if(!m_Modules[i].Start())
                                 {
@@ -206,108 +193,138 @@ namespace XSF
                                     break;
                                 }
                             }
-                        }
-
-                        Array.Copy(m_Modules, m_StepModule, m_Modules.Length);
-
-                        m_nStatus = RunStatus.RunningCheck;
-                    }
-                    break;
-
-                case RunStatus.RunningCheck:
-                    {
-                        var isAllOK = true;
-                        for(int i = 0; i < m_StepModule.Length; i ++)
-                        {
-                            if(m_StepModule[i] != null)
+                            else
                             {
-                                ModuleRunCode RunCode = m_StepModule[i].OnStartCheck();
-                                if(RunCode == ModuleRunCode.OK)
-                                {
-                                    m_StepModule[i] = null;
-                                }
-                                else if(RunCode == ModuleRunCode.Error)
-                                {
-                                    m_nStatus = RunStatus.Stop;
-                                    break;
-                                }
-                                else if(RunCode == ModuleRunCode.Wait)
-                                {
-                                    isAllOK = false;
-                                }
+                                WaitStart ++;
                             }
                         }
-
-                        if(isAllOK)
-                        {
-                            Serilog.Log.Information("======================= 服务器所有模块都已启动完毕 =======================");
-                            for(int i = 0; i < m_Modules.Length; i ++)
-                            {
-                                if(m_Modules[i] != null)
-                                    m_Modules[i].OnOK();
-                            }
-
-                            m_nStatus = RunStatus.Running;
-                        }
                     }
-                    break;
 
-                case RunStatus.StopCheck0:
+                    if(m_nStatus != RunStatus.Stop)
                     {
-                        for(int i = 0; i < m_Modules.Length; i ++)
+                        if(WaitStart > 0)
                         {
-                            if(m_Modules[i] != null)
-                                m_Modules[i].OnClose();
+                            m_nStatus = RunStatus.WaitStart;
                         }
-
-                        Array.Copy(m_Modules, m_StepModule, m_Modules.Length);
-
-                        m_nStatus = RunStatus.StopCheck;
-                    }
-                    break;
-
-                case RunStatus.StopCheck:
-                    {
-                        var isAllOK = true;
-                        for(int i = m_StepModule.Length - 1; i >= 0; i --)
+                        else
                         {
-                            if(m_StepModule[i] != null)
-                            {
-                                ModuleRunCode RunCode = m_StepModule[i].OnCloseCheck();
-                                if(RunCode == ModuleRunCode.OK)
-                                {
-                                    m_StepModule[i] = null;
-                                }
-                                else
-                                {
-                                    isAllOK = false;
-                                }
-                            }
-                        }
-
-                        if(isAllOK)
-                        {
-                            m_nStatus = RunStatus.Stop;
+                            m_nStatus = RunStatus.Start;
                         }
                     }
-                    break;
-
-                case RunStatus.Stop:
-                    {
-                        for(int i = 0; i < m_Modules.Length; i ++)
-                        {
-                            if(m_Modules[i] != null)
-                                m_Modules[i].Release();
-                        }
-
-                        m_nStatus = RunStatus.None;
-                        m_bIsRunning = false;
-                    }
-                    break;
                 }
-            }
+                break;
 
-            Serilog.Log.Debug("主逻辑线程已退出");
+            case RunStatus.Start:
+                {
+                    for(int i = 0; i < m_Modules.Length; i ++)
+                    {
+                        if(m_Modules[i] != null && !m_Modules[i].NoWaitStart)
+                        {
+                            if(!m_Modules[i].Start())
+                            {
+                                m_nStatus = RunStatus.Stop;
+                                break;
+                            }
+                        }
+                    }
+
+                    Array.Copy(m_Modules, m_StepModule, m_Modules.Length);
+
+                    m_nStatus = RunStatus.RunningCheck;
+                }
+                break;
+
+            case RunStatus.RunningCheck:
+                {
+                    var isAllOK = true;
+                    for(int i = 0; i < m_StepModule.Length; i ++)
+                    {
+                        if(m_StepModule[i] != null)
+                        {
+                            ModuleRunCode RunCode = m_StepModule[i].OnStartCheck();
+                            if(RunCode == ModuleRunCode.OK)
+                            {
+                                m_StepModule[i] = null;
+                            }
+                            else if(RunCode == ModuleRunCode.Error)
+                            {
+                                m_nStatus = RunStatus.Stop;
+                                break;
+                            }
+                            else if(RunCode == ModuleRunCode.Wait)
+                            {
+                                isAllOK = false;
+                            }
+                        }
+                    }
+
+                    if(isAllOK)
+                    {
+                        Serilog.Log.Information("======================= 服务器所有模块都已启动完毕 =======================");
+                        for(int i = 0; i < m_Modules.Length; i ++)
+                        {
+                            if(m_Modules[i] != null)
+                                m_Modules[i].OnOK();
+                        }
+
+                        m_nStatus = RunStatus.Running;
+                    }
+                }
+                break;
+
+            case RunStatus.StopCheck0:
+                {
+                    for(int i = 0; i < m_Modules.Length; i ++)
+                    {
+                        if(m_Modules[i] != null)
+                            m_Modules[i].OnClose();
+                    }
+
+                    Array.Copy(m_Modules, m_StepModule, m_Modules.Length);
+
+                    m_nStatus = RunStatus.StopCheck;
+                }
+                break;
+
+            case RunStatus.StopCheck:
+                {
+                    var isAllOK = true;
+                    for(int i = m_StepModule.Length - 1; i >= 0; i --)
+                    {
+                        if(m_StepModule[i] != null)
+                        {
+                            ModuleRunCode RunCode = m_StepModule[i].OnCloseCheck();
+                            if(RunCode == ModuleRunCode.OK)
+                            {
+                                m_StepModule[i] = null;
+                            }
+                            else
+                            {
+                                isAllOK = false;
+                            }
+                        }
+                    }
+
+                    if(isAllOK)
+                    {
+                        m_nStatus = RunStatus.Stop;
+                    }
+                }
+                break;
+
+            case RunStatus.Stop:
+                {
+                    for(int i = 0; i < m_Modules.Length; i ++)
+                    {
+                        if(m_Modules[i] != null)
+                            m_Modules[i].Release();
+                    }
+
+                    m_nStatus = RunStatus.None;
+                    m_bIsRunning = false;
+                }
+                break;
+            }
         }
 
         private bool ReadArgs(string[] args)
@@ -392,6 +409,9 @@ namespace XSF
 
                     ele = eleConfig.SelectSingleNode("htinterval") as XmlElement;
                     Config.HeartbeatInterval = XMLReader.GetUInt(ele, null);
+
+                    ele = eleConfig.SelectSingleNode("rc_interval") as XmlElement;
+                    Config.ReconnectInterval = XMLReader.GetUInt(ele, null);
 
                     ele = eleConfig.SelectSingleNode("client_htcheck") as XmlElement;
                     Config.ClientHeartbeatCheck = XMLReader.GetUInt(ele, null);

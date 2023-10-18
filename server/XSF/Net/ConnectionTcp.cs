@@ -90,9 +90,10 @@ namespace XSF
             m_AsyncSend = send;
         }
 
-        public void SetHandler(INetHandler handler)
+        public void DoStart(INetHandler handler)
         {
             m_Handler = handler;
+            Receive();
         }
 
         public void Release()
@@ -121,7 +122,7 @@ namespace XSF
                 Serilog.Log.Error(string.Format("NetTcp.Connect caught exception, message={0}", e.Message));
 
                 Close();
-                XSFNet.Instance.PushEventError(this, m_Handler, NetError.Connect);
+                //XSFNet.Instance.PushEventError(this, m_Handler, NetError.Connect);
 
                 return false;
             }

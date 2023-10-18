@@ -26,7 +26,7 @@ namespace XSF
         bool Connect(string ip, int port);
         bool Send(byte[] data, ushort length);
         void Close();
-        void Receive();
+        void DoStart(INetHandler handler);
     }
 
     public interface INetHandler
