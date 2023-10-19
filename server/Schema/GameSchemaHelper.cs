@@ -27,15 +27,7 @@ namespace XsfScp
         Max,
     }
 
-    public class GameSchemaHelper : ISchemaHelper
-    {
-        public ICSVData GetData(int type)
-        {
-            return CSVData.GetData(type);
-        }
-    }
-
-    public partial class SchemaModule
+    public partial class SchemaModule : ISchemaHelper
     {
         public ISchema GetSchema(int nId)
         {
@@ -50,6 +42,11 @@ namespace XsfScp
                 default:
                     throw new XSFSchemaLoadException($"SchemaModule GetSchema schema null, id={(SchemaID)nId}");
             }
+        }
+
+        public ICSVData GetData(int type)
+        {
+            return CSVData.GetData(type);
         }
     }
 }

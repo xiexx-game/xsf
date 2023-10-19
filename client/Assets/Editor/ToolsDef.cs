@@ -21,7 +21,5 @@ public enum XSFMenuID
     Localization_En,
     Localization_Ch,
 
-    PBExportAll,
-    PBExportCS,
-    PBExportCpp,
+    GenProtoCode,
 }

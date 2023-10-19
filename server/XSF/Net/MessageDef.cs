@@ -12,13 +12,18 @@ namespace XSF
 {
     public class IMessage
     {
-        public virtual short ID { get { return 0; } }
+        public virtual ushort ID { get { return 0; } }
 
         public virtual byte EP { get { return 0; } }
 
         public virtual void Export(XSFWriter writer) { }
 
         public virtual void Import(byte[] data, int offset, int length) { }
+    }
+
+    public interface IMessageHelper
+    {
+        IMessage GetMessage(ushort nID);
     }
 
     public enum EP

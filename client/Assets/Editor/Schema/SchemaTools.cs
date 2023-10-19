@@ -84,7 +84,7 @@ public static class SchemaTools
             SchemaType nType = (SchemaType)XMLReader.GetUInt(ele, "type");
             if(nType == SchemaType.XML) 
             {
-                int nLoad = XMLReader.GetInt(ele, "cs");
+                int nLoad = XMLReader.GetInt(ele, "client");
                 if(nLoad > 0)
                 {
                     string sSrcXml = Application.dataPath + $"/../../config/{sName}.xml";
@@ -121,16 +121,14 @@ public static class SchemaTools
             string sName = XMLReader.GetString(ele, "name");
             string sDesc = XMLReader.GetString(ele, "desc");
 
-            int nCSLoad = XMLReader.GetInt(ele, "cs");
-            int nLuaLoad = XMLReader.GetInt(ele, "lua");
-            int nGoLoad = XMLReader.GetInt(ele, "go");
-            int nCppLoad = XMLReader.GetInt(ele, "cpp");
-            string key = XMLReader.GetString(ele, "key");
+            int nClientLoad = XMLReader.GetInt(ele, "client");
+            int nServerLoad = XMLReader.GetInt(ele, "server");
+
             SchemaType nType = (SchemaType)XMLReader.GetUInt(ele, "type");
 
             string sStructName = $"Scp{sName}";
 
-            if(nCSLoad > 0)
+            if(nClientLoad > 0)
             {
                 sCSID += $"\t{sName} = {nID},\n";
 
@@ -147,19 +145,9 @@ public static class SchemaTools
                 DoCSCode(sName, sStructName, sDesc, nType, ref sCSIndex);
             }
             
-            if(nLuaLoad > 0)
+            if(nServerLoad > 0)
             {
-                DoLuaCode(sName, nType, key);
-            }
-            
-            if(nCppLoad > 0)
-            {
-                DoCppCode(sName, nType);
-            }
-            
-            if(nGoLoad > 0)
-            {
-                DoGoCode(sName, nType);
+                DoServerCode(sName, nType);
             }
         }
 
@@ -260,112 +248,7 @@ public static class SchemaTools
         }
     }
 
-    private static void DoLuaCode(string name, SchemaType nType, string key)
-    {
-        Debug.Log($"DoLuaCode name={name}, key={key}");
-        if(nType == SchemaType.CSV)
-        {
-            string sCSVFile = Application.dataPath + $"/Scp/{name}.csv";
-            if(!File.Exists(sCSVFile)) 
-            {
-                Debug.LogError("csv file not exist, can not gen lua code. path=" + sCSVFile);
-                return;
-            }
-
-            string [] lines = File.ReadAllLines(sCSVFile);
-            string [] paramDesc = lines[0].Split(',');
-            string [] paramType = lines[1].Split(',');
-            string [] paramName = lines[2].Split(',');
-
-            string sLuaContent = "local data = {\n";
-            string sGlobalContent = "";
-
-            if(name == "Global")
-            {
-                sGlobalContent = "local GlobalID = {\n";
-
-                for(int i = 3; i < lines.Length; i ++)
-                {
-                    string lineData = "";
-                    string[] srcData = lines[i].Split(',');
-                    for(int J = 0; J < srcData.Length; J++)
-                    {
-                        lineData = $"\t[{srcData[(int)CSVIndex.ScpGlobal_id]}] = ";
-
-                        CSVData D = CSVData.GetDataByName(srcData[(int)CSVIndex.ScpGlobal_type]);
-                        D.Read(0, 0, srcData[(int)CSVIndex.ScpGlobal_value]);
-                        lineData += D.GetLuaCode(null);
-
-                        lineData += "," + $"\t\t-- {srcData[(int)CSVIndex.ScpGlobal_desc]}\n";
-                    }
-
-                    sGlobalContent += $"\t{srcData[(int)CSVIndex.ScpGlobal_enumDef]} = {srcData[(int)CSVIndex.ScpGlobal_id]}, --{srcData[(int)CSVIndex.ScpGlobal_desc]}\n";
-
-                    sLuaContent += lineData;
-                }
-
-                sGlobalContent += "}\n\n";
-                sGlobalContent += "XSF.GlobalID = GlobalID\n\n\n";
-            }
-            else
-            {
-                for(int i = 3; i < lines.Length; i ++)
-                {
-                    string lineData = "";
-
-                    string keyStr = "";
-
-                    string[] srcData = lines[i].Split(',');
-                    for(int J = 0; J < srcData.Length; J++)
-                    {
-                        CSVData D = CSVData.GetDataByName(paramType[J]);
-                        D.Read(0, J, srcData[J]);
-
-                        if(string.IsNullOrEmpty(lineData))
-                        {
-                            lineData = "{ " + D.GetLuaCode(paramName[J]);
-                        }
-                        else 
-                        {
-                            lineData += " ," + D.GetLuaCode(paramName[J]);
-                        }
-
-                        if(paramName[J] == key) {
-                            keyStr = $"\t[{srcData[J]}] = ";
-                        }
-                    }
-
-                    if(string.IsNullOrEmpty(keyStr))
-                    {
-                        keyStr = "\t";
-                    }
-                    
-                    lineData = keyStr + lineData + " },\n";
-
-                    sLuaContent += lineData;
-                }
-            }
-
-            sLuaContent += "}\n\nreturn data";
-
-            sLuaContent = sGlobalContent + sLuaContent;
-
-            string sLuaFile = Application.dataPath + $"/../Lua/Schema/Schema{name}.lua";
-            File.WriteAllText(sLuaFile, sLuaContent);
-        }
-        else
-        {
-            Debug.LogWarning($"Due to the complexity of XML configuration files, generating code from them is not currently supported. file={name}.xml");
-        }
-        
-    }
-
-    private static void DoCppCode(string name, SchemaType nType)
-    {
-
-    }
-
-    private static void DoGoCode(string name, SchemaType nType)
+    private static void DoServerCode(string name, SchemaType nType)
     {
 
     }

@@ -28,7 +28,7 @@ namespace XsfScp
         public override bool Start() 
         {
             Log.Information("开始加载配置");
-            XSFUtil.schemaHelper = new GameSchemaHelper();
+            XSFUtil.schemaHelper = this;
 
             try
             {

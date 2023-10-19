@@ -20,6 +20,8 @@ namespace XSF
     public interface ISchemaHelper
     {
         ICSVData GetData(int type);
+
+        ISchema GetSchema(int nID);
     }
 
     public interface ICSVData

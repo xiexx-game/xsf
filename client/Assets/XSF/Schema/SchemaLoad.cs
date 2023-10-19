@@ -48,7 +48,7 @@ public sealed class SchemaLoad : ISchema
             int nID = XMLReader.GetInt(ele, "id");
             string sName = XMLReader.GetString(ele, "name");
             SchemaType nType = (SchemaType)XMLReader.GetUInt(ele, "type");
-            int nLoad = XMLReader.GetInt(ele, "cs");
+            int nLoad = XMLReader.GetInt(ele, "client");
             if(nLoad > 0)
             {
                 SchemaLoadInfo info;

@@ -7,7 +7,7 @@ package xsf_pb;
 
 // 客户端消息ID
 enum CMSGID {
-    None = 0;
+    CMSGID_None = 0;
     //MESSAGE_ID_START
     
     Clt_Gt_Handshake = 1;             // client --> gate 握手请求
@@ -17,5 +17,5 @@ enum CMSGID {
     Clt_L_Login = 5;                  // client --> login 登录
     
     //MESSAGE_ID_END
-    Max = 1024;
+    CMSGID_Max = 1024;
 }

@@ -7,18 +7,30 @@
 // 说明：
 //
 //////////////////////////////////////////////////////////////////////////
+#pragma warning disable CS8602, CS8618
 
 namespace XSF
 {
     public static class XSFUtil
     {
-        public static ISchemaHelper? schemaHelper;
+        public static ISchemaHelper schemaHelper;
+        public static IMessageHelper messageHelper;
 
         public static IServer Server 
         {
             get {
                 return XSFServer.Instance;
             }
+        }
+
+        public static ISchema GetSchema(int nID)
+        {
+            return schemaHelper.GetSchema(nID);
+        }
+
+        public static IMessage GetMessage(ushort nID)
+        {
+            return messageHelper.GetMessage(nID);
         }
 
         public static bool GetArg(string[] args, string tag, out string data)

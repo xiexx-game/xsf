@@ -8,9 +8,12 @@ package xsf_pb;
 // 客户端消息ID
 enum SMSGID
 {
+    SMSGID_None = 0;
     Start = 1500;
+    //MESSAGE_ID_START
 
 
 
-    Max = 2048;
+    //MESSAGE_ID_END
+    SMSGID_Max = 2048;
 }
