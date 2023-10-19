@@ -217,6 +217,7 @@ public class Level : Singleton<Level>, ICharacterEvent, XSFAnimHandler
 				{
 					m_Blocks[i].SetColor(BlockColor.Road);
                     m_Blocks[i].Status = BlockStatus.Road | BlockStatus.Character;
+                    Character.transform.position = m_Blocks[i].go.transform.position;
 					
 				}
 				else if(LevelConfig.sarData[i] == ".")
