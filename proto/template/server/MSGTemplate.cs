@@ -16,7 +16,7 @@ namespace XsfMsg
 {
     public sealed class MSG__MSG_NAME_ : IMessage
     {
-        public override ushort ID { get { return (ushort)CMSGID._MSG_ID_NAME_; } }
+        public override ushort ID { get { return (ushort)SMSGID._MSG_ID_NAME_; } }
 
         private _MSG_NAME_ m_PB;
         public _MSG_NAME_ mPB

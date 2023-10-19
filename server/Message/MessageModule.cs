@@ -24,11 +24,21 @@ namespace XsfMsg
 
             // 下面的注释定义必须保留，用来自动生成代码
             //MESSAGE_START
-            m_MessagePool[(int)CMSGID.CltGtHandshake] = new MSG_Clt_Gt_Handshake();
-            m_MessagePool[(int)CMSGID.GtCltHandshake] = new MSG_Gt_Clt_Handshake();
-            m_MessagePool[(int)CMSGID.CltGtHeartbeat] = new MSG_Clt_Gt_Heartbeat();
-            m_MessagePool[(int)CMSGID.GtCltHeartbeat] = new MSG_Gt_Clt_Heartbeat();
-            m_MessagePool[(int)CMSGID.CltLLogin] = new MSG_Clt_L_Login();
+			m_MessagePool[(int)CMSGID.CltGtHandshake] = new MSG_Clt_Gt_Handshake();
+			m_MessagePool[(int)CMSGID.GtCltHandshake] = new MSG_Gt_Clt_Handshake();
+			m_MessagePool[(int)CMSGID.CltGtHeartbeat] = new MSG_Clt_Gt_Heartbeat();
+			m_MessagePool[(int)CMSGID.GtCltHeartbeat] = new MSG_Gt_Clt_Heartbeat();
+			m_MessagePool[(int)CMSGID.CltLLogin] = new MSG_Clt_L_Login();
+			m_MessagePool[(int)SMSGID.CcCHandshake] = new MSG_Cc_C_Handshake();
+			m_MessagePool[(int)SMSGID.CCcHandshake] = new MSG_C_Cc_Handshake();
+			m_MessagePool[(int)SMSGID.CcCHeartbeat] = new MSG_Cc_C_Heartbeat();
+			m_MessagePool[(int)SMSGID.CcCServerInfo] = new MSG_Cc_C_ServerInfo();
+			m_MessagePool[(int)SMSGID.CCcServerInfo] = new MSG_C_Cc_ServerInfo();
+			m_MessagePool[(int)SMSGID.CcCServerLost] = new MSG_Cc_C_ServerLost();
+			m_MessagePool[(int)SMSGID.CCcServerLost] = new MSG_C_Cc_ServerLost();
+			m_MessagePool[(int)SMSGID.CcCServerOk] = new MSG_Cc_C_ServerOk();
+			m_MessagePool[(int)SMSGID.CCcServerOk] = new MSG_C_Cc_ServerOk();
+			m_MessagePool[(int)SMSGID.CCcStop] = new MSG_C_Cc_Stop();
             //MESSAGE_END
             // 上面的注释定义必须保留，用来自动生成代码
 

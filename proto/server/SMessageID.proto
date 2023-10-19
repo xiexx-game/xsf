@@ -9,11 +9,22 @@ package xsf_pb;
 enum SMSGID
 {
     SMSGID_None = 0;
-    Start = 1500;
+    Start = 3000;
     //MESSAGE_ID_START
+    // MESSAGE_ID_START
+	Cc_C_Handshake = 3001;  // center connector --> center 握手
+	C_Cc_Handshake = 3002;  // center  --> center connector 握手反馈
+	Cc_C_Heartbeat = 3003;  // center connector --> center 心跳
 
+	Cc_C_ServerInfo = 3005; // connector --> center 上行服务器信息数据
+	C_Cc_ServerInfo = 3006;   // center --> connector 下行服务器信息数据
+	Cc_C_ServerLost = 3007;   // connector --> center 服务器离线
+	C_Cc_ServerLost = 3008;   // center --> connector 服务器离线
+	Cc_C_ServerOk = 3009;     // connector --> center 服务器已准备好
+	C_Cc_ServerOk = 3010;     // center --> connector 服务器已准备好
+	C_Cc_Stop = 3011;         // center --> connector 关服
 
 
     //MESSAGE_ID_END
-    SMSGID_Max = 2048;
+    SMSGID_Max = 5000;
 }

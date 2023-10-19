@@ -17,5 +17,5 @@ enum CMSGID {
     Clt_L_Login = 5;                  // client --> login 登录
     
     //MESSAGE_ID_END
-    CMSGID_Max = 1024;
+    CMSGID_Max = 2000;
 }

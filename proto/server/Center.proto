@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+package xsf_pb;
+
+// 中心服相关协议定义
+// center connector --> center 握手
+message Cc_C_Handshake {
+    uint32 server_id = 1;
+    repeated uint32 ports = 2;
+}
+
+// center  --> center connector 握手反馈
+message C_Cc_Handshake {
+    uint32 server_id = 1;
+    uint32 new_id = 2;
+	repeated uint32 ports = 3;
+}
+
+// center connector --> center 心跳
+message Cc_C_Heartbeat {
+  
+}
+
+// 服务器信息
+message MSG_ServerInfo {
+    uint32 server_id = 1; // 服务器ID
+    string ip = 2;        // 服务器内部IP
+    repeated uint32 ports = 3; // 端口信息
+    uint32 status = 4;
+}
+
+// connector --> center 上行服务器信息数据
+message Cc_C_ServerInfo {
+    repeated MSG_ServerInfo infos = 1;    // 所有信息
+}
+
+// center --> connector 下行服务器信息数据
+message C_Cc_ServerInfo {
+    repeated MSG_ServerInfo infos = 1;    // 所有信息
+}
+
+// connector --> center 服务器离线
+message Cc_C_ServerLost {
+    uint32 server_id = 1;
+}
+
+// center --> connector 服务器离线
+message C_Cc_ServerLost {
+    uint32 server_id = 1;
+}
+
+// connector --> center 服务器已准备好
+message Cc_C_ServerOk {
+    uint32 server_id = 1;
+}
+
+// center --> connector 服务器已准备好
+message C_Cc_ServerOk {
+    uint32 server_id = 1;
+}
+
+// center --> connector 关服
+message C_Cc_Stop {
+
+}
+

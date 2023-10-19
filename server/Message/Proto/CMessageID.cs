@@ -24,10 +24,11 @@ namespace XsfPb {
     static CMessageIDReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "ChBDTWVzc2FnZUlELnByb3RvEgZ4c2ZfcGIqhQEKBkNNU0dJRBIICgROb25l",
-            "EAASFAoQQ2x0X0d0X0hhbmRzaGFrZRABEhQKEEd0X0NsdF9IYW5kc2hha2UQ",
-            "AhIUChBDbHRfR3RfSGVhcnRiZWF0EAMSFAoQR3RfQ2x0X0hlYXJ0YmVhdBAE",
-            "Eg8KC0NsdF9MX0xvZ2luEAUSCAoDTWF4EIAIYgZwcm90bzM="));
+            "ChBDTWVzc2FnZUlELnByb3RvEgZ4c2ZfcGIqkwEKBkNNU0dJRBIPCgtDTVNH",
+            "SURfTm9uZRAAEhQKEENsdF9HdF9IYW5kc2hha2UQARIUChBHdF9DbHRfSGFu",
+            "ZHNoYWtlEAISFAoQQ2x0X0d0X0hlYXJ0YmVhdBADEhQKEEd0X0NsdF9IZWFy",
+            "dGJlYXQQBBIPCgtDbHRfTF9Mb2dpbhAFEg8KCkNNU0dJRF9NYXgQ0A9iBnBy",
+            "b3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::XsfPb.CMSGID), }, null));
@@ -43,7 +44,7 @@ namespace XsfPb {
     /// <summary>
     ///MESSAGE_ID_START
     /// </summary>
-    [pbr::OriginalName("None")] None = 0,
+    [pbr::OriginalName("CMSGID_None")] None = 0,
     /// <summary>
     /// client --> gate 握手请求
     /// </summary>
@@ -67,7 +68,7 @@ namespace XsfPb {
     /// <summary>
     ///MESSAGE_ID_END
     /// </summary>
-    [pbr::OriginalName("Max")] Max = 1024,
+    [pbr::OriginalName("CMSGID_Max")] Max = 2000,
   }
 
   #endregion
