@@ -25,11 +25,6 @@ public enum GlobalID
 public enum CSVIndex
 {
 //CSV_INDEX_BEGIN
-	ScpGlobal_id = 0,
-	ScpGlobal_type = 1,
-	ScpGlobal_value = 2,
-	ScpGlobal_enumDef = 3,
-	ScpGlobal_desc = 4,
 
 	ScpItem_id = 0,
 	ScpItem_type = 1,

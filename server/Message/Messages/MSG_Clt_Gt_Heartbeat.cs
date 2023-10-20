@@ -1,9 +1,9 @@
 //////////////////////////////////////////////////////////////////////////
 // 
-// 文件：Assets\Scripts\Net\Messages\MSG_Clt_Gt_Heartbeat.cs
+// 文件：server/Message/Messages/MSG_Clt_Gt_Heartbeat.cs
 // 作者：Xoen Xie
-// 时间：2023/7/1
-// 描述： client --> gate 心跳 请求
+// 时间：10/19/2023
+// 描述：client --> gate 心跳 请求
 // 说明：
 //
 //////////////////////////////////////////////////////////////////////////
@@ -30,17 +30,20 @@ namespace XsfMsg
             }
         }
 
-        public override void Export(XSFWriter writer)
+        public override byte[] Export()
         {
-            // 写入PB数据
             byte[] bytes = new byte[mPB.CalculateSize()];
             mPB.WriteTo(new Google.Protobuf.CodedOutputStream(bytes));
-            writer.WriteBuffer(bytes);
+
+            return bytes;
         }
 
-        public override void Import(byte[] data, int offset, int length)
+        public override IMessage Import(byte[] data, int offset, int length)
         {
-            m_PB = Clt_Gt_Heartbeat.Parser.ParseFrom(data, offset, length);
+            var message = new MSG_Clt_Gt_Heartbeat();
+            message.m_PB = Clt_Gt_Heartbeat.Parser.ParseFrom(data, offset, length);
+            message.m_Executor = m_Executor;
+            return message;
         }
     }
 }

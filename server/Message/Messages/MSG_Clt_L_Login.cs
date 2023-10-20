@@ -1,13 +1,14 @@
 //////////////////////////////////////////////////////////////////////////
 // 
-// 文件：Assets\Scripts\Net\Messages\MSG_Clt_L_Login.cs
+// 文件：server/Message/Messages/MSG_Clt_L_Login.cs
 // 作者：Xoen Xie
-// 时间：2023/7/1
-// 描述： client --> login 登录
+// 时间：10/19/2023
+// 描述：client --> login 登录
 // 说明：
 //
 //////////////////////////////////////////////////////////////////////////
 #pragma warning disable CS8618
+
 using XsfPb;
 using XSF;
 
@@ -29,17 +30,20 @@ namespace XsfMsg
             }
         }
 
-        public override void Export(XSFWriter writer)
+        public override byte[] Export()
         {
-            // 写入PB数据
             byte[] bytes = new byte[mPB.CalculateSize()];
             mPB.WriteTo(new Google.Protobuf.CodedOutputStream(bytes));
-            writer.WriteBuffer(bytes);
+
+            return bytes;
         }
 
-        public override void Import(byte[] data, int offset, int length)
+        public override IMessage Import(byte[] data, int offset, int length)
         {
-            m_PB = Clt_L_Login.Parser.ParseFrom(data, offset, length);
+            var message = new MSG_Clt_L_Login();
+            message.m_PB = Clt_L_Login.Parser.ParseFrom(data, offset, length);
+            message.m_Executor = m_Executor;
+            return message;
         }
     }
 }

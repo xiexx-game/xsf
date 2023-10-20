@@ -15,7 +15,7 @@ using System;
 
 public static class UITools
 {
-    [MenuItem("XSFTools/UI/Create UI Scene", false, (int)XSFMenuID.CreateUIScene)]
+    [MenuItem("XSFTools/创建UI场景 (Create UI Scene)", false, (int)XSFMenuID.CreateUIScene)]
     public static void CreateUIScene()
     {
         EditorWindow window = EditorWindow.GetWindow(typeof(UISceneCreateWindow));

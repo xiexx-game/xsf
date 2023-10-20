@@ -23,7 +23,7 @@ public static class ProtoTools
     static string PROTOC = PROTOC_DIR + "protoc";
 #endif
 
-    [MenuItem("XSFTools/生成pb代码(Gen Proto Code)", false, (int)XSFMenuID.GenProtoCode)]
+    [MenuItem("XSFTools/生成proto代码(Gen Proto Code)", false, (int)XSFMenuID.GenProtoCode)]
     public static void GenProtoCode()
     {
         ProtoExport();
@@ -122,6 +122,7 @@ public static class ProtoTools
                         content = content.Replace("_MSG_DATE_", DateStr);
                         content = content.Replace("_MSG_DESC_", md.Desc.Trim());
                         content = content.Replace("_MSG_ID_NAME_", md.CodeID);
+                        content = content.Replace("_ID_PREFIX_", "CMSGID");
                         File.WriteAllText(SCodePath, content);
                     }
 
@@ -137,6 +138,7 @@ public static class ProtoTools
                     content = content.Replace("_MSG_DATE_", DateStr);
                     content = content.Replace("_MSG_DESC_", md.Desc.Trim());
                     content = content.Replace("_MSG_ID_NAME_", md.CodeID);
+                    content = content.Replace("_ID_PREFIX_", "SMSGID");
                     File.WriteAllText(SCodePath, content);
                 }
 

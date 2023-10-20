@@ -10,6 +10,6 @@
 public enum ModuleID
 {
     Schema = 0,
-    Test,
-    
+    Message,
+    Node,
 }

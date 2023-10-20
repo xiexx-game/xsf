@@ -13,9 +13,19 @@ namespace CC
 {
     public abstract class ICenterConnector : NetConnector
     {
-        public static ICenterConnector CreateModule()
+        public static ICenterConnector CreateModule(int nID)
         {
-            return new CenterConnector();
+            var connector = new CenterConnector();
+
+            NetConnectorInit init = new NetConnectorInit();
+            init.ID = nID;
+            init.Name = "CenterConnector";
+            init.NoWaitStart = true;
+            init.NeedReconnect = true;
+
+            XSFUtil.Server.AddModule(connector, init);
+
+            return connector;
         }
     }
 }

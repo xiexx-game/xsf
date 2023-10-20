@@ -23,8 +23,13 @@ namespace XSF
 
     public interface IConnection 
     {
+        string RemoteIP { get; }
+        
         bool Connect(string ip, int port);
-        bool Send(byte[] data, ushort length);
+
+        bool SendMessage(IMessage message);
+
+        bool SendData(byte[] data);
         void Close();
         void DoStart(INetHandler handler);
     }
@@ -32,7 +37,7 @@ namespace XSF
     public interface INetHandler
     {
         void OnConnected(IConnection connection);
-        void OnRecv(IConnection connection, byte[]? data);
+        void OnRecv(IConnection connection, IMessage message, ushort nMessageID, uint nRawID, byte[]? data);
         void OnError(IConnection connection, NetError nErrorCode);
         void OnAccept(IConnection connection);
     }
@@ -48,6 +53,13 @@ namespace XSF
         void DoSend(IAsyncResult iar);
         void DoReceive(IAsyncResult iar);
         void DoAccept(IAsyncResult iar);
+    }
+
+    public interface INetPacker
+    {
+        byte[] Read(byte[] recvBuffer, int recvIndex, int nPackageLen, out IMessage message, out ushort nMessageID, out uint nRawID);
+
+        byte[] Pack(IMessage message);
     }
 }
 

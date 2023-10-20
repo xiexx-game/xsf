@@ -16,7 +16,7 @@ namespace XsfMsg
 {
     public sealed class MSG__MSG_NAME_ : IMessage
     {
-        public override ushort ID { get { return (ushort)SMSGID._MSG_ID_NAME_; } }
+        public override ushort ID { get { return (ushort)_ID_PREFIX_._MSG_ID_NAME_; } }
 
         private _MSG_NAME_ m_PB;
         public _MSG_NAME_ mPB
@@ -30,17 +30,20 @@ namespace XsfMsg
             }
         }
 
-        public override void Export(XSFWriter writer)
+        public override byte[] Export()
         {
-            // 写入PB数据
             byte[] bytes = new byte[mPB.CalculateSize()];
             mPB.WriteTo(new Google.Protobuf.CodedOutputStream(bytes));
-            writer.WriteBuffer(bytes);
+
+            return bytes;
         }
 
-        public override void Import(byte[] data, int offset, int length)
+        public override IMessage Import(byte[] data, int offset, int length)
         {
-            m_PB = _MSG_NAME_.Parser.ParseFrom(data, offset, length);
+            var message = new MSG__MSG_NAME_();
+            message.m_PB = _MSG_NAME_.Parser.ParseFrom(data, offset, length);
+            message.m_Executor = m_Executor;
+            return message;
         }
     }
 }

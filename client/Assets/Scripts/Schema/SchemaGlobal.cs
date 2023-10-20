@@ -13,7 +13,7 @@ using UnityEngine;
 
 public class SchemaGlobal : ISchema
 {
-    private ScpGlobal [] m_Datas;
+    public ScpGlobal GlobalData { get; private set; }
 
     public string GetSchemaName(string name)
     {
@@ -23,43 +23,17 @@ public class SchemaGlobal : ISchema
     public bool OnSchemaLoad(ISchemaReader reader)
     {
         CSVReader csv = reader as CSVReader;
-        m_Datas = new ScpGlobal[csv.mRowCount + 1];
+        GlobalData = new ScpGlobal();
 
-        for (int i = 0; i < csv.mRowCount; ++i)
-        {
-            ScpGlobal scp = new ScpGlobal();
-
-            scp.uId = (csv.GetData((int)CSVDataType.Uint, i, (int)CSVIndex.ScpGlobal_id) as CSVData_Uint).uValue;
-            if(scp.uId != i + 1) 
-            {
-                Debug.LogError($"SchemaGlobal.OnSchemaLoad index error, scp.uId:{scp.uId} != i:{i} + 1");
-                return false;
-            }
-
-            string typeStr = (csv.GetData((int)CSVDataType.String, i, (int)CSVIndex.ScpGlobal_type) as CSVData_String).sValue;
-            scp.data = CSVData.GetDataByName(typeStr);
-
-            string valueStr = (csv.GetData((int)CSVDataType.String, i, (int)CSVIndex.ScpGlobal_value) as CSVData_String).sValue;
-            scp.data.Read(i, (int)CSVIndex.ScpGlobal_value, valueStr);
-
-            //* 使用数组
-            m_Datas[scp.uId] = scp;
-            //*/
-        }
+        // 类型， 值， 名称， 注释， client server
+        int nRowIndex = 0;
+//_CSV_LIST_BEGIN_
+		GlobalData.iIntData = (csv.GetData((int)CSVDataType.Int, nRowIndex++, 1) as CSVData_Int).iValue;	// 有符号整形
+		GlobalData.sStringData = (csv.GetData((int)CSVDataType.String, nRowIndex++, 1) as CSVData_String).sValue;	// 字符串数据
+		GlobalData.uUintData = (csv.GetData((int)CSVDataType.Uint, nRowIndex++, 1) as CSVData_Uint).uValue;	// uint整形
+		GlobalData.ulUlongData = (csv.GetData((int)CSVDataType.Ulong, nRowIndex++, 1) as CSVData_Ulong).ulValue;	// 长整形数据
+//_CSV_LIST_END_
 
         return true;
     }
-
-    //* 使用数组 根据索引获取
-    public ScpGlobal Get(uint nIndex)
-    {
-        if (nIndex >= m_Datas.Length)
-        {
-            Debug.LogError(string.Format("SchemaGlobal.Get nIndex[{0}] >= m_Datas.Length[{1}]", nIndex, m_Datas.Length));
-            return null;
-        }
-
-        return m_Datas[nIndex];
-    }
-    //*/
 }

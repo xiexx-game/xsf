@@ -31,11 +31,15 @@ namespace XSF
 
         public uint ID { get; }
 
+        public uint[] Ports { get; }
+
         void Init(EP ep, string[] args);
 
         void Run();
 
         void AddModule(IModule module, ModuleInit init);
+
+        IModule GetModule(int nID);
     }
 
     public struct ServerID

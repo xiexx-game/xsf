@@ -2,7 +2,7 @@
 // 
 // 文件：Schema/SchemaTestData.cs
 // 作者：Xoen Xie
-// 时间：2023/6/19
+// 时间：10/19/2023
 // 描述：测试XML配置
 // 说明：
 //

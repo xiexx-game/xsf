@@ -7,7 +7,7 @@
 // 说明：
 //
 //////////////////////////////////////////////////////////////////////////
-
+#pragma warning disable CS8600, CS8602
 using System;
 using System.Net;
 using System.Net.Sockets;
@@ -41,7 +41,6 @@ namespace XSF
         private NetState m_nState;
 
         private INetHandler? m_Handler;
-        private XSFWriter m_Writer;
 
         private AsyncCallback? m_AsyncConnect;
         private AsyncCallback? m_AsyncReceive;
@@ -50,7 +49,9 @@ namespace XSF
 
         public bool mIsConnected { get { return m_nState == NetState.Connected; } }
 
-        public ConnectionTcp(INetHandler handler, AsyncCallback recevie, AsyncCallback send, AsyncCallback connect)
+        private INetPacker m_Packer;
+
+        public ConnectionTcp(INetPacker packer, INetHandler handler, AsyncCallback recevie, AsyncCallback send, AsyncCallback connect)
         {
             m_nState = NetState.None;
 
@@ -62,16 +63,15 @@ namespace XSF
             m_IDData = new byte[2];
             m_nBufferLength = 0;
 
-            m_Writer = new XSFWriter();
-
             m_AsyncReceive = recevie;
             m_AsyncSend = send;
             m_AsyncConnect = connect;
 
             m_Handler = handler;
+            m_Packer = packer;
         }
 
-        public ConnectionTcp(Socket s, AsyncCallback? recevie, AsyncCallback? send)
+        public ConnectionTcp(INetPacker packer, Socket s, AsyncCallback? recevie, AsyncCallback? send)
         {
             m_nState = NetState.Connected;
             m_Socket = s;
@@ -84,10 +84,19 @@ namespace XSF
             m_IDData = new byte[2];
             m_nBufferLength = 0;
 
-            m_Writer = new XSFWriter();
-
             m_AsyncReceive = recevie;
             m_AsyncSend = send;
+            m_Packer = packer;
+        }
+
+        public string RemoteIP 
+        { 
+            get
+            {
+                IPEndPoint remoteEndPoint = (IPEndPoint)m_Socket.RemoteEndPoint;
+                IPAddress remoteIpAddress = remoteEndPoint.Address;
+                return remoteIpAddress.ToString();
+            }
         }
 
         public void DoStart(INetHandler handler)
@@ -164,23 +173,20 @@ namespace XSF
             return true;
         }
 
-        public bool Send(byte[] data, ushort length)
+        public bool SendMessage(IMessage message)
+        {
+            byte[] data = m_Packer.Pack(message);
+            return SendData(data);
+        }
+
+        public bool SendData(byte[] data)
         {
             if (m_nState != NetState.Connected)
                 return false;
 
-            
-            m_Writer.Clear();
-            m_Writer.WriteUInt(length);
-            m_Writer.WriteBuffer(data, length);
-
-            int nSendSize = (int)m_Writer.Size;
-            byte []sendData = new byte[nSendSize];
-            Array.Copy(m_Writer.Buffer, sendData, nSendSize);
-
             try
             {
-                m_Socket?.BeginSend(sendData, 0, nSendSize, SocketFlags.None, m_AsyncSend, this);
+                m_Socket?.BeginSend(data, 0, data.Length, SocketFlags.None, m_AsyncSend, this);
             }
             catch (SocketException e)
             {
@@ -323,7 +329,7 @@ namespace XSF
                     Socket clientSocket = m_Socket.EndAccept(iar);
 
                     // 处理连接建立后的操作
-                    ConnectionTcp tcp = new ConnectionTcp(clientSocket, m_AsyncReceive, m_AsyncSend);
+                    ConnectionTcp tcp = new ConnectionTcp(m_Packer, clientSocket, m_AsyncReceive, m_AsyncSend);
                     XSFNet.Instance.PushEventAccept(tcp, m_Handler);
 
                     // 开始异步接受下一个连接请求
@@ -407,10 +413,12 @@ namespace XSF
             }
             else if (nTotalLen == nPackageLen + m_nUintSize)       // 刚好收到一个包
             {
+                IMessage message = null;
+                ushort nMessageID = 0;
+                uint nRawID = 0;
+                byte[] packetData = m_Packer.Read(m_RecvBuffer, 0, nPackageLen, out message, out nMessageID, out nRawID);
 
-                byte[] packetData = new byte[nPackageLen];
-                Array.Copy(m_RecvBuffer, m_nUintSize, packetData, 0, nPackageLen);
-                XSFNet.Instance.PushEventData(this, m_Handler, packetData);
+                XSFNet.Instance.PushEventData(this, m_Handler, message, nMessageID, nRawID, packetData);
                 m_nBufferLength = 0;
                 return;
             }
@@ -420,9 +428,12 @@ namespace XSF
                 int nReadPos = 0;
                 while (true)
                 {
-                    byte[] packetData = new byte[nPackageLen];
-                    Array.Copy(m_TempBuffer, nReadPos + m_nUintSize, packetData, 0, nPackageLen);
-                    XSFNet.Instance.PushEventData(this, m_Handler, packetData);
+                    IMessage message = null;
+                    ushort nMessageID = 0;
+                    uint nRawID = 0;
+                    byte[] packetData = m_Packer.Read(m_RecvBuffer, nReadPos, nPackageLen, out message, out nMessageID, out nRawID);
+
+                    XSFNet.Instance.PushEventData(this, m_Handler, message, nMessageID, nRawID, packetData);
 
                     nReadPos += nPackageLen + m_nUintSize;
                     m_nBufferLength = nTotalLen - nReadPos;   // 剩余数据长度

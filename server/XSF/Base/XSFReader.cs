@@ -119,6 +119,11 @@ namespace XSF
             value = Encoding.UTF8.GetString(m_Buffer, m_nCurPos, length);
             m_nCurPos += length;
         }
+
+        public void ReadBuffer(ref byte[] dataOut)
+        {
+            Array.Copy(m_Buffer, m_nCurPos, dataOut, 0, dataOut.Length);
+        }
     }
 }
 

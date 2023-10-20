@@ -20,9 +20,9 @@ namespace XSF
     {
         private ulong [] m_TimerIDs;
 
-        public void Init(int nMax)
+        public TimersManager(int nMaxCount)
         {
-            m_TimerIDs = new ulong[nMax];
+            m_TimerIDs = new ulong[nMaxCount];
         }
 
         public void StartTimer(byte nTimerID, ITimerHandler handler, uint nInterval, int nTimes, string sDebugStr)

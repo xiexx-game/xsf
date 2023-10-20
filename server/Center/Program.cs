@@ -13,7 +13,8 @@ namespace Center // Note: actual namespace depends on the project name.
             XSF.XSFUtil.Server.Init(XSF.EP.Center, args);
 
             XsfScp.SchemaModule.CreateModule();
-            TestModule.CreateModule();
+            XsfMsg.MessageModule.CreateModule();
+            NodeManager.CreateModule();
 
             XSF.XSFUtil.Server.Run();
 

@@ -16,10 +16,31 @@ namespace XSF
         public static ISchemaHelper schemaHelper;
         public static IMessageHelper messageHelper;
 
+        private static INetPacker m_ServerPacker;
+
         public static IServer Server 
         {
             get {
                 return XSFServer.Instance;
+            }
+        }
+
+        public static XSFConfig Config
+        {
+            get 
+            {
+                return XSFServer.Instance.Config;
+            }
+        }
+
+        public static INetPacker ServerPakcer
+        {
+            get
+            {
+                if(m_ServerPacker == null)
+                    m_ServerPacker = new ServerPacker();
+
+                return m_ServerPacker;
             }
         }
 
@@ -31,6 +52,12 @@ namespace XSF
         public static IMessage GetMessage(ushort nID)
         {
             return messageHelper.GetMessage(nID);
+        }
+
+        public static void SetMessageExecutor(ushort nID, IMessageExecutor executor)
+        {
+            var message = GetMessage(nID);
+            message.SetExecutor(executor);
         }
 
         public static bool GetArg(string[] args, string tag, out string data)

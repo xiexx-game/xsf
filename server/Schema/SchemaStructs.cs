@@ -7,67 +7,41 @@
 // 说明：
 //
 //////////////////////////////////////////////////////////////////////////
+#pragma warning disable CS8618
 
 namespace XsfScp
 {
 
-/*ScpGlobal_START
-	public uint uId;	//编号
-	public string sType;	//类型
-	public string sValue;	//值
-	public string sEnumDef;	//枚举定义
-	public string sDesc;	//描述
-ScpGlobal_END*/
-
-//全局变量配值
+//全局变量配置
 public class ScpGlobal
 {
-    public uint uId;	//编号
-    public CSVData? data;
+//ScpGlobal_START
+	public int iIntData;	//有符号整形
+	public string sStringData;	//字符串数据
+	public uint uUintData;	//uint整形
+	public ulong ulUlongData;	//长整形数据
+//ScpGlobal_END
 }
 
-//物品配值
+//物品配置
 public class ScpItem
 {
 //ScpItem_START
 	public uint uId;	//编号
 	public int iType;	//类型
-	public string sDesc = "";	//描述
 	public float fParam1;	//参数1
 	public ulong ulParam2;	//参数2
-	public uint []? arParam3;	//参数3
-	public CSVIdCount[]? icParam4;	//参数4
+	public uint [] arParam3;	//参数3
+	public CSVIdCount[] icParam4;	//参数4
 	public bool bParam5;	//参数5
 //ScpItem_END
 }
 
-//测试XML配值
+//测试XML配置
 public class ScpTestData
 {
 //ScpTestData_START
 //ScpTestData_END
-}
-
-//多语言配置
-public class ScpLanguage
-{
-//ScpLanguage_START
-	public string sKey = "";	//键
-	public string sValue = "";	//值
-//ScpLanguage_END
-}
-
-//关卡配置
-public class ScpLevel
-{
-//ScpLevel_START
-	public uint uId;	//编号
-	public string []? sarData;	//关卡数据
-	public uint uRowCount;	//行数
-	public uint uColCount;	//列数
-	public string sSceneObj = "";	//场景资源
-	public int iUIID;	//UI资源
-//ScpLevel_END
 }
 // SCHEMA_STRUCT
 // 不要删除上面的标签，自动生成代码需要用到

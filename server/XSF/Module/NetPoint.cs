@@ -7,7 +7,7 @@
 // 说明：
 //
 //////////////////////////////////////////////////////////////////////////
-#pragma warning disable CS8602, CS8618
+#pragma warning disable CS8602, CS8618, CS8604
 
 namespace XSF
 {
@@ -37,12 +37,17 @@ namespace XSF
             m_Connection = connection;
             m_nLastHTTime = XSFUtil.CurrentS;
 
-            m_Timers = new TimersManager();
-            m_Timers.Init((int)TimerID.Max);
+            m_Timers = new TimersManager((int)TimerID.Max);
 
             m_Timers.StartTimer((byte)TimerID.HTCheck, this, XSFServer.Instance.Config.HeartbeatInterval, -1, "NetPoint.Create");
 
             return true;
+        }
+
+        public void SetID(uint nID)
+        {
+            m_nID = nID;
+            m_SID = ServerID.GetSID(m_nID);
         }
 
         public void Release()
@@ -66,15 +71,45 @@ namespace XSF
             m_nLastHTTime = XSFUtil.CurrentS;
         }
 
+        public string RemoteIP
+        {
+            get
+            {
+                return m_Connection.RemoteIP;
+            }
+        }
+
+        public void SendMessage(IMessage message)
+        {
+            if (m_Connection == null)
+            {
+                Serilog.Log.Error($"NetPoint.SendMessage connection not exist, msg id={message.ID}");
+                return;
+            }
+
+            m_Connection.SendMessage(message);
+        }
+
+        public void SendData(ushort nMessageID, byte[] data)
+        {
+            if (m_Connection == null)
+            {
+                Serilog.Log.Error($"NetPoint.SendMessage connection not exist, msg id={nMessageID}");
+                return;
+            }
+
+            m_Connection.SendData(data);
+        }
+
 
         public void OnConnected(IConnection connection)
         {
             Serilog.Log.Error("NetPoint.OnConnected error call, name={0}", Owner.Name);
         }
 
-        public void OnRecv(IConnection connection, byte[]? data)
+        public void OnRecv(IConnection connection, IMessage message, ushort nMessageID, uint nRawID, byte[]? data)
         {
-            
+            message.Execute(this, nMessageID, nRawID, data);
         }
 
         public void OnError(IConnection connection, NetError nErrorCode)

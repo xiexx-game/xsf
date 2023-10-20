@@ -7,9 +7,7 @@
 // 说明：
 //
 //////////////////////////////////////////////////////////////////////////
-using System;
-using System.Net;
-using System.Net.Sockets;
+#pragma warning disable CS8625
 
 namespace XSF
 {
@@ -31,6 +29,9 @@ namespace XSF
             public NetInfoType type;
             public byte[]? data;
             public NetError error;
+            public IMessage message;
+            public ushort nMessageID;
+            public uint nRawID;
         }
 
         private object m_Lock;
@@ -54,9 +55,9 @@ namespace XSF
             m_Lock = new object();
         }
 
-        internal IConnection? Listen(INetHandler handler, int port)
+        internal IConnection? Listen(INetPacker packer, INetHandler handler, int port)
         {
-            ConnectionTcp tcp = new ConnectionTcp(handler, m_AsyncReceive, m_AsyncSend, m_AsyncConnect);
+            ConnectionTcp tcp = new ConnectionTcp(packer, handler, m_AsyncReceive, m_AsyncSend, m_AsyncConnect);
             if( tcp.Listen(port, m_AsyncAccept) )
                 return tcp;
 
@@ -65,7 +66,7 @@ namespace XSF
 
         internal IConnection? Connect(INetHandler handler, string ip, int port)
         {
-            ConnectionTcp tcp = new ConnectionTcp(handler, m_AsyncReceive, m_AsyncSend, m_AsyncConnect);
+            ConnectionTcp tcp = new ConnectionTcp(XSFUtil.ServerPakcer, handler, m_AsyncReceive, m_AsyncSend, m_AsyncConnect);
             if(tcp.Connect(ip, port))
             {
                 return tcp;
@@ -82,6 +83,9 @@ namespace XSF
             info.error = error;
             info.connection = connection;
             info.handler = handler;
+            info.message = null;
+            info.nMessageID = 0;
+            info.nRawID = 0;
 
             lock (m_Lock)
             {
@@ -89,7 +93,7 @@ namespace XSF
             }
         }
 
-        internal void PushEventData(IConnection connection, INetHandler? handler, byte[] data)
+        internal void PushEventData(IConnection connection, INetHandler? handler, IMessage message, ushort nMessageID, uint nRawID, byte[] data)
         {
             NetInfo info;
             info.type = NetInfoType.Data;
@@ -97,6 +101,9 @@ namespace XSF
             info.error = NetError.None;
             info.connection = connection;
             info.handler = handler;
+            info.message = message;
+            info.nMessageID = nMessageID;
+            info.nRawID = nRawID;
 
             lock (m_Lock)
             {
@@ -112,6 +119,9 @@ namespace XSF
             info.error = NetError.None;
             info.connection = connection;
             info.handler = handler;
+            info.message = null;
+            info.nMessageID = 0;
+            info.nRawID = 0;
 
             lock (m_Lock)
             {
@@ -127,6 +137,9 @@ namespace XSF
             info.error = NetError.None;
             info.connection = connection;
             info.handler = handler;
+            info.message = null;
+            info.nMessageID = 0;
+            info.nRawID = 0;
 
             lock (m_Lock)
             {
@@ -150,7 +163,7 @@ namespace XSF
                         break;
 
                     case NetInfoType.Data:
-                        info.handler?.OnRecv(info.connection, info.data);
+                        info.handler?.OnRecv(info.connection, info.message, info.nMessageID, info.nRawID, info.data);
                         break;
 
                     case NetInfoType.Accept:

@@ -9,8 +9,10 @@
 
   <ItemGroup>
     <ProjectReference Include="../XSF/XSF.csproj" />
+    <ProjectReference Include="../Message/Message.csproj" />
     <Reference Include="../lib/net6.0/XSF.dll" />
     <Reference Include="../lib/net6.0/Message.dll" />
+    <Reference Include="../3rd/Google.Protobuf/Google.Protobuf.dll" />
   </ItemGroup>
 
 </Project>

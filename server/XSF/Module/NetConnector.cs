@@ -7,7 +7,7 @@
 // 说明：
 //
 //////////////////////////////////////////////////////////////////////////
-#pragma warning disable CS8602
+#pragma warning disable CS8602, CS8604
 
 namespace XSF
 {
@@ -33,13 +33,11 @@ namespace XSF
 
         private IConnection? m_Connection;
 
-        private bool m_bIsHandshake;
-
         private bool m_bNeedReconnect;
 
         public NetConnector()
         {
-            m_Timers = new TimersManager();
+            m_Timers = new TimersManager((int)TimerID.Max);
         }
 
         public override bool Init(ModuleInit init)
@@ -48,8 +46,6 @@ namespace XSF
 
             var localInit = init as NetConnectorInit;
             m_bNeedReconnect = localInit.NeedReconnect;
-
-            m_Timers.Init((int)TimerID.Max);
             
             return true;
         }
@@ -102,20 +98,40 @@ namespace XSF
         public void OnHandshake()
         {
             m_Timers.StartTimer((byte)TimerID.HT, this, XSFServer.Instance.Config.HeartbeatInterval, -1, "NetConnector.OnHandshake");
-            m_bIsHandshake = true;
 
             OnHandshakeOk();
         }
 
-        public void OnRecv(IConnection connection, byte[]? data)
+        public void SendMessage(IMessage message)
         {
+            if (m_Connection == null)
+            {
+                Serilog.Log.Error($"NetConnector.SendMessage connection not exist, msg id={message.ID}");
+                return;
+            }
 
+            m_Connection.SendMessage(message);
+        }
+
+        public void SendData(ushort nMessageID, byte[] data)
+        {
+            if (m_Connection == null)
+            {
+                Serilog.Log.Error($"NetConnector.SendMessage connection not exist, msg id={nMessageID}");
+                return;
+            }
+
+            m_Connection.SendData(data);
+        }
+
+        public void OnRecv(IConnection connection, IMessage message, ushort nMessageID, uint nRawID, byte[]? data)
+        {
+            message.Execute(this, nMessageID, nRawID, data);
         }
 
         public void OnError(IConnection connection, NetError nErrorCode)
         {
             Serilog.Log.Error("NetConnector OnError, name={0}, code={1}", Name, nErrorCode);
-            m_bIsHandshake = false;
             m_Timers.DelTimer((byte)TimerID.HT);
 
             if(m_bNeedReconnect)

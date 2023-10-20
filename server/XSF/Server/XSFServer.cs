@@ -43,6 +43,8 @@ namespace XSF
 
         public uint ID {get; private set;}
 
+        public uint[] Ports { get; private set; }
+
         public ServerInit InitData { get; private set; }
 
         public XSFConfig Config { get; private set; }
@@ -60,6 +62,7 @@ namespace XSF
         {
             m_InitList = new List<ModuleInfo>();
             Config = new XSFConfig();
+            Ports = new uint[(int)EP.Max];
         }
 
         public void Init(EP ep, string[] args)
@@ -533,6 +536,11 @@ namespace XSF
             {
                 MaxModuleID = init.ID;
             }
+        }
+
+        public IModule GetModule(int nID)
+        {
+            return m_Modules[nID];
         }
     }
 }

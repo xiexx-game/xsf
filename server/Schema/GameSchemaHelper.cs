@@ -18,10 +18,9 @@ namespace XsfScp
         None = 0,
 
     //SCHEMA_ID_BEGIN
-        Global = 1,
-        Item = 2,
-        TestData = 3,
-        Level = 4,
+		Global = 1,
+		Item = 2,
+		TestData = 5,
     //SCHEMA_ID_END
 
         Max,
@@ -34,10 +33,9 @@ namespace XsfScp
             switch ((SchemaID)nId)
             {
                 //SCHEMA_BEGIN
-                case SchemaID.Global: return new SchemaGlobal();
-                case SchemaID.Item: return new SchemaItem();
-                case SchemaID.TestData: return new SchemaTestData();
-                case SchemaID.Level: return new SchemaLevel();
+				case SchemaID.Global: return new SchemaGlobal();
+				case SchemaID.Item: return new SchemaItem();
+				case SchemaID.TestData: return new SchemaTestData();
                 //SCHEMA_END
                 default:
                     throw new XSFSchemaLoadException($"SchemaModule GetSchema schema null, id={(SchemaID)nId}");

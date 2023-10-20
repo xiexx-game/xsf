@@ -30,17 +30,20 @@ namespace XsfMsg
             }
         }
 
-        public override void Export(XSFWriter writer)
+        public override byte[] Export()
         {
-            // 写入PB数据
             byte[] bytes = new byte[mPB.CalculateSize()];
             mPB.WriteTo(new Google.Protobuf.CodedOutputStream(bytes));
-            writer.WriteBuffer(bytes);
+
+            return bytes;
         }
 
-        public override void Import(byte[] data, int offset, int length)
+        public override IMessage Import(byte[] data, int offset, int length)
         {
-            m_PB = C_Cc_Stop.Parser.ParseFrom(data, offset, length);
+            var message = new MSG_C_Cc_Stop();
+            message.m_PB = C_Cc_Stop.Parser.ParseFrom(data, offset, length);
+            message.m_Executor = m_Executor;
+            return message;
         }
     }
 }

@@ -26,7 +26,7 @@ public static class AASTools
         public string label;
     }
 
-    [MenuItem("XSFTools/Refresh AAS Group", false, (int)XSFMenuID.UpdateAASGroup)]
+    [MenuItem("XSFTools/刷新AAS组 (Refresh AAS Group)", false, (int)XSFMenuID.UpdateAASGroup)]
     public static void UpdateAASGroup()
     {
         AssetDatabase.Refresh();
