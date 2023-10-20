@@ -29,6 +29,8 @@ public class Level : Singleton<Level>, ICharacterEvent, XSFAnimHandler
         LoadWait,
         ChangeWait,
         PlayWait,
+        Play,
+        Moving,
     }
 
     private RunStatus m_nStatus;
@@ -186,14 +188,99 @@ public class Level : Singleton<Level>, ICharacterEvent, XSFAnimHandler
         {
             m_nStatus = RunStatus.None;
         }
-        if(m_nStatus == RunStatus.PlayWait)
+        else if(m_nStatus == RunStatus.PlayWait)
         {
             CreateLevelBlock();
+            XSFUI.Instance.ShowUI((int)UIID.UIPlay);
+            m_nStatus = RunStatus.Play;
+        }
+        else if(m_nStatus == RunStatus.Moving)
+        {
+            Debug.LogError("2222222222222");
+            m_nStatus = RunStatus.Play;
         }
         else
         {
             LoadAsset(SceneObjID.Lobby, LobbyConfig.sSceneObj);
         }
+    }
+
+    public void Redo()
+    {
+
+    }
+
+    private void MoveTo(int nRow, int nCol)
+    {
+        Debug.Log($"Character pos={Character.transform.position}, next row={nRow}, col={nCol}");
+
+        int nIndex = LevelDef.GetBlockIndex(nRow, nCol, (int)LevelConfig.uColCount);
+        var block = m_Blocks[nIndex];
+        if((block.Status & BlockStatus.Road) ==  BlockStatus.Road)
+        {
+            Character.Row = nRow;
+            Character.Col = nCol;
+            Debug.Log("Move to " + block.go.transform.position);
+            Character.Run(block.go.transform.position);
+
+            m_nStatus = RunStatus.Moving;
+        }
+    }
+
+    public void MoveUp()
+    {
+        if(m_nStatus != RunStatus.Play)
+            return;
+
+        int nNextRow = Character.Row - 1;
+        int nNextCol = Character.Col;
+
+        if(nNextRow < 0)
+            return;
+
+        MoveTo(nNextRow, nNextCol);
+    }
+
+    public void MoveRight()
+    {
+        if(m_nStatus != RunStatus.Play)
+            return;
+
+        int nNextRow = Character.Row;
+        int nNextCol = Character.Col + 1;
+
+        if(nNextCol >= LevelConfig.uColCount)
+            return;
+
+        MoveTo(nNextRow, nNextCol);
+    }
+
+    public void MoveDown()
+    {
+        if(m_nStatus != RunStatus.Play)
+            return;
+
+        int nNextRow = Character.Row + 1;
+        int nNextCol = Character.Col;
+
+        if(nNextRow >= LevelConfig.uRowCount)
+            return;
+
+        MoveTo(nNextRow, nNextCol);
+    }
+
+    public void MoveLeft()
+    {
+        if(m_nStatus != RunStatus.Play)
+            return;
+
+        int nNextRow = Character.Row;
+        int nNextCol = Character.Col - 1;
+
+        if(nNextCol <= 0)
+            return;
+
+        MoveTo(nNextRow, nNextCol);
     }
 
     private SingleBlock[] m_Blocks;
@@ -218,7 +305,10 @@ public class Level : Singleton<Level>, ICharacterEvent, XSFAnimHandler
 					m_Blocks[i].SetColor(BlockColor.Road);
                     m_Blocks[i].Status = BlockStatus.Road | BlockStatus.Character;
                     Character.transform.position = m_Blocks[i].go.transform.position;
-					
+                    Character.Row = m_Blocks[i].row;
+                    Character.Col = m_Blocks[i].col;
+
+                    Debug.Log($"pos={Character.transform.position}, row={Character.Row}, col={Character.Col}");
 				}
 				else if(LevelConfig.sarData[i] == ".")
 				{
@@ -234,11 +324,13 @@ public class Level : Singleton<Level>, ICharacterEvent, XSFAnimHandler
 				{
                     m_Blocks[i].SetColor(BlockColor.Road);
                     m_Blocks[i].Status = BlockStatus.Road | BlockStatus.Box;
+                    m_Blocks[i].box = PlayData.Objs[nObjIndex].GetComponent<MonoBox>();
 
                     GameObject select = GameObject.Instantiate(m_Objs[(int)SceneObjID.Select]);
                     select.name = "fx";
                     select.SetActive(true);
                     select.GetComponent<MonoSelect>().ShowSelect(0); 
+
                     select.transform.SetParent(PlayData.Objs[nObjIndex].transform);
                     float scale = PlayData.ObjFXScale[nObjIndex];
                     select.transform.localScale = new Vector3(scale, scale, scale);
@@ -248,6 +340,7 @@ public class Level : Singleton<Level>, ICharacterEvent, XSFAnimHandler
 				{
                     m_Blocks[i].SetColor(BlockColor.Road);
                     m_Blocks[i].Status = BlockStatus.Road | BlockStatus.Box | BlockStatus.Point; 
+                    m_Blocks[i].box = PlayData.Objs[nObjIndex].GetComponent<MonoBox>();
 
                     GameObject select = GameObject.Instantiate(m_Objs[(int)SceneObjID.Select]);
                     select.transform.position = m_Blocks[i].go.transform.position;

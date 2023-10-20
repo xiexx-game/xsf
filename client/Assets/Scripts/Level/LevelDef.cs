@@ -37,6 +37,8 @@ public class SingleBlock
 
     public GameObject FX;
 
+    public MonoBox box;
+
     private Color32[] m_Colors = new Color32[] {
         new Color32( 82, 82, 82, 255),
         new Color32( 255, 255, 255, 255),

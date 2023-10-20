@@ -42,31 +42,41 @@ SpriteAtlas:
   - {fileID: 21300000, guid: fc8064f06b4bff746b9891e65b425f67, type: 3}
   - {fileID: 21300000, guid: bdef7b81b48314e14a7a157091a2fbd7, type: 3}
   - {fileID: 21300000, guid: 317ba5c21d7194e52a8b9eaa3f597da0, type: 3}
+  - {fileID: 21300000, guid: 10a50e832d7684baa8ba183dbb993f89, type: 3}
   - {fileID: 21300000, guid: ce9b28c38e33b4431900cb34252a15d4, type: 3}
   - {fileID: 21300000, guid: 81de0df4be7be4944a3debe6bb2ac814, type: 3}
+  - {fileID: 21300000, guid: 6f24852712aaa4dc9a85150f4c5962fc, type: 3}
   - {fileID: 21300000, guid: 2174f9885d45c4476b86147486ddad18, type: 3}
   - {fileID: 21300000, guid: e45a79d89e8f83143bbdd96bbd6593e1, type: 3}
   - {fileID: 21300000, guid: 3f21dea9647234eab8205f9d3dec8ac0, type: 3}
   - {fileID: 21300000, guid: 1a895a8a59e804f7e8f81a56b0103a24, type: 3}
+  - {fileID: 21300000, guid: fc8180ba962c34aeda26759840de63c8, type: 3}
   - {fileID: 21300000, guid: 11b3e3fad0b34479ea91bceb8bd73fa7, type: 3}
   - {fileID: 21300000, guid: 50b2131cdb6274ded81226d51fb5e8ff, type: 3}
   - {fileID: 21300000, guid: 1a17a68c82dc2405185c661b00fd8ecc, type: 3}
+  - {fileID: 21300000, guid: 02c08bdd25d204ff9b033c530d157f6c, type: 3}
   - {fileID: 21300000, guid: c5bae0befe51a4682ad410df8bfa8432, type: 3}
+  - {fileID: 21300000, guid: c379115ff25064c30a82f1520fca9061, type: 3}
   - {fileID: 21300000, guid: 07036b8fb3468460bb43136f2393cd70, type: 3}
   m_PackedSpriteNamesToIndex:
   - Circle - 256px
   - Cloud Background
   - Arrow Left
+  - Arrow Cartoon Up
   - Body
   - Gradient
+  - Arrow Cartoon Down
   - Menu
   - white-block-bg
   - Cloud
   - Arrow Right
+  - Redo
   - arrow
   - Arrow Basic Right
   - Arrow Thin Right
+  - Arrow Cartoon Left
   - square-white
+  - Arrow Cartoon Right
   - Snow Star
   m_RenderDataMap: {}
   m_Tag: Common

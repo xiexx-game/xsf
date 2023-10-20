@@ -78,6 +78,9 @@ public class MonoCharacter : MonoBehaviour
 
     private float m_fSpeed;
 
+    public int Row;
+    public int Col;
+
     private void Enter()
     {
         m_Target = m_Targets[m_nTargetIndex++];
@@ -107,6 +110,21 @@ public class MonoCharacter : MonoBehaviour
         m_Target = target;
         PlayWalk();
         m_nStatus = CharacterStatus.Exit;
+        m_bRota = true;
+        m_MoveDir = m_Target - transform.position;
+        m_MoveDir.Normalize();
+
+        Vector3 cross = Vector3.Cross(transform.forward, m_MoveDir);
+        m_RotaParam = cross.y < 0 ? -1 : 1; 
+    }
+
+    public void Run(Vector3 target)
+    {
+        m_Targets = new Vector3[] { target };
+        m_nTargetIndex = 1;
+        m_Target = target;
+        PlayRun();
+        m_nStatus = CharacterStatus.Enter;
         m_bRota = true;
         m_MoveDir = m_Target - transform.position;
         m_MoveDir.Normalize();
