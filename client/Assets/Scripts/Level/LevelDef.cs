@@ -14,10 +14,10 @@ using UnityEngine.UI;
 public enum BlockStatus
 {
     None = 0,           // 什么都没有
-    Road = 0x1,         // 可以行走的路
-    Character = 0x10,   // 角色
-    Box = 0x100,        // 箱子
-    Point = 0x1000,     // 目标点位
+    Wall = 0b0001,         // 可以行走的路
+    Road = 0b0010,
+    Box = 0b0100,        // 箱子
+    Point = 0b1000,     // 目标点位
 }
 
 public enum BlockColor
@@ -33,9 +33,9 @@ public class SingleBlock
     public int col;
 
     public GameObject go;
-    public BlockStatus Status;
+    public int Status;
 
-    public GameObject FX;
+    public MonoSelect select;
 
     public MonoBox box;
 
@@ -65,8 +65,8 @@ public class SingleBlock
 
     public void Clear()
     {
-        if(FX != null)
-            GameObject.Destroy(FX);
+        if(select != null)
+            GameObject.Destroy(select.gameObject);
             
         GameObject.Destroy(go);
     }
@@ -94,6 +94,7 @@ public class LevelDef
                 sb.row = r;
                 sb.col = c;
                 sb.go = GameObject.Instantiate(go);
+                sb.go.name = $"{r}-{c}";
 
                 float x = XStart + c * blockSize;
 

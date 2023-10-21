@@ -11,6 +11,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using System.Collections.Generic;
+using System;
 
 public enum SceneObjID
 {
@@ -87,7 +88,61 @@ public class Level : Singleton<Level>, ICharacterEvent, XSFAnimHandler
 
     public void OnUpdate()
     {
-        
+        if(m_nStatus != RunStatus.Play)
+            return;
+
+        for(int i = 0; i < m_StatusCheck.Length; i ++)
+        {
+            if(m_StatusCheck[i] != m_Blocks[i].Status)
+            {
+                if((m_Blocks[i].Status & (int)BlockStatus.Point) == (int)BlockStatus.Point)
+                {
+                    if((m_Blocks[i].Status & (int)BlockStatus.Box) == (int)BlockStatus.Box)
+                    {
+                        m_Blocks[i].select.SetOK();
+                        m_Blocks[i].box.select.gameObject.SetActive(true);
+                    }
+                    else
+                    {
+                        m_Blocks[i].select.ShowSelect(1);
+                    }
+                }
+                else
+                {
+                    if((m_Blocks[i].Status & (int)BlockStatus.Box) == (int)BlockStatus.Box)
+                    {
+                        if(!m_Blocks[i].box.select.gameObject.activeSelf)
+                        {
+                            m_Blocks[i].box.select.gameObject.SetActive(true);
+                        }
+                    }
+                }
+
+                m_StatusCheck[i] = m_Blocks[i].Status;
+            }
+        }
+
+        bool IsWin = true;
+        for(int i = 0; i < m_Blocks.Length; i ++)
+        {
+            if((m_Blocks[i].Status & (int)BlockStatus.Point) == (int)BlockStatus.Point)
+            {
+                if((m_Blocks[i].Status & (int)BlockStatus.Box) == (int)BlockStatus.Box)
+                {
+
+                }
+                else
+                {
+                    IsWin = false;
+                }
+            }
+        }
+
+        if(IsWin)
+        {
+            m_nStatus = RunStatus.None;
+            Debug.LogWarning("Is Win .......");
+        }
     }
 
     void LoadAsset(SceneObjID id, string name)
@@ -196,7 +251,7 @@ public class Level : Singleton<Level>, ICharacterEvent, XSFAnimHandler
         }
         else if(m_nStatus == RunStatus.Moving)
         {
-            Debug.LogError("2222222222222");
+            //Debug.LogError("2222222222222");
             m_nStatus = RunStatus.Play;
         }
         else
@@ -207,23 +262,108 @@ public class Level : Singleton<Level>, ICharacterEvent, XSFAnimHandler
 
     public void Redo()
     {
+        if(m_nStatus != RunStatus.Play)
+            return;
 
+        int nObjIndex = 0;
+        for(int i = 0; i < LevelConfig.sarData.Length; i ++)
+        {
+            m_Blocks[i].box = null;
+            if(LevelConfig.sarData[i] == "#") 
+            {
+                m_Blocks[i].Status = (int)BlockStatus.Wall;
+            }
+            else if(LevelConfig.sarData[i] == "-")
+            {
+                m_Blocks[i].Status = (int)BlockStatus.Road;
+            }
+            else if(LevelConfig.sarData[i] == "@")
+            {
+                m_Blocks[i].Status = (int)BlockStatus.Road;
+                Character.transform.position = m_Blocks[i].go.transform.position;
+                Character.Row = m_Blocks[i].row;
+                Character.Col = m_Blocks[i].col;
+
+                //Debug.Log($"pos={Character.transform.position}, row={Character.Row}, col={Character.Col}");
+            }
+            else if(LevelConfig.sarData[i] == ".")
+            {
+                m_Blocks[i].Status = (int)BlockStatus.Road | (int)BlockStatus.Point;
+                m_Blocks[i].select.ShowSelect(1);
+            }
+            else if(LevelConfig.sarData[i] == "$")
+            {
+                m_Blocks[i].Status = (int)BlockStatus.Road | (int)BlockStatus.Box; 
+                m_Blocks[i].box = PlayData.Objs[nObjIndex].GetComponent<MonoBox>();
+                m_Blocks[i].box.select.ShowSelect(0);
+                PlayData.Objs[nObjIndex].transform.localPosition = m_Blocks[i].go.transform.localPosition;
+
+                nObjIndex ++;
+            }
+            else if(LevelConfig.sarData[i] == "*")
+            {
+                m_Blocks[i].Status = (int)BlockStatus.Road | (int)BlockStatus.Box | (int)BlockStatus.Point; 
+                PlayData.Objs[nObjIndex].transform.localPosition = m_Blocks[i].go.transform.localPosition;
+                m_Blocks[i].box = PlayData.Objs[nObjIndex].GetComponent<MonoBox>();
+                m_Blocks[i].box.select.gameObject.SetActive(false);
+
+                m_Blocks[i].select.ShowSelect(1);
+
+                nObjIndex ++;
+            }
+
+            m_StatusCheck[i] = m_Blocks[i].Status;
+        }
     }
 
-    private void MoveTo(int nRow, int nCol)
+    private void MoveTo(int nRow, int nCol, int nRowNext, int nColNext)
     {
-        Debug.Log($"Character pos={Character.transform.position}, next row={nRow}, col={nCol}");
+        //Debug.Log($"Character pos={Character.transform.position}, next row={nRow}, col={nCol}");
 
         int nIndex = LevelDef.GetBlockIndex(nRow, nCol, (int)LevelConfig.uColCount);
         var block = m_Blocks[nIndex];
-        if((block.Status & BlockStatus.Road) ==  BlockStatus.Road)
+        //Debug.Log("old block.Status=" + Convert.ToString(block.Status, 2).PadLeft(4, '0'));
+        if((block.Status & (int)BlockStatus.Road) == (int)BlockStatus.Road)
         {
+            // 如果这个地方有箱子，则推箱子动
+            if((block.Status & (int)BlockStatus.Box) == (int)BlockStatus.Box)
+            {
+                int nNextIndex = LevelDef.GetBlockIndex(nRowNext, nColNext, (int)LevelConfig.uColCount);
+                var blockNext = m_Blocks[nNextIndex];
+                // 箱子的下一格只能是空白格或者是点位格，才能移动
+                // 也就是说下一格有箱子，或者没路的，都不能移动
+                //Debug.Log("old blockNext.Status=" + Convert.ToString(blockNext.Status, 2).PadLeft(4, '0'));
+                if((blockNext.Status & (int)BlockStatus.Box) == (int)BlockStatus.Box || ((blockNext.Status & (int)BlockStatus.Wall) == (int)BlockStatus.Wall))
+                {
+                    //Debug.LogError("Cant Move ....");
+                    return;
+                }
+
+                // 移动箱子
+                Vector3 target = blockNext.go.transform.localPosition;
+                target.y = block.box.transform.localPosition.y;
+                block.box.Move(target);
+
+                int nBoxFlag = ~(int)BlockStatus.Box;
+                //Debug.Log("nBoxFlag=" + Convert.ToString(nBoxFlag, 2).PadLeft(4, '0'));
+                block.Status = block.Status & nBoxFlag;
+                //Debug.Log("new block.Status=" + Convert.ToString(block.Status, 2).PadLeft(4, '0'));
+                blockNext.box = block.box;
+                blockNext.Status = blockNext.Status | (int)BlockStatus.Box;
+                //Debug.Log("new blockNext.Status=" + Convert.ToString(blockNext.Status, 2).PadLeft(4, '0'));
+                block.box = null;
+            }
+
             Character.Row = nRow;
             Character.Col = nCol;
             Debug.Log("Move to " + block.go.transform.position);
             Character.Run(block.go.transform.position);
 
             m_nStatus = RunStatus.Moving;
+        }
+        else
+        {
+
         }
     }
 
@@ -232,13 +372,10 @@ public class Level : Singleton<Level>, ICharacterEvent, XSFAnimHandler
         if(m_nStatus != RunStatus.Play)
             return;
 
-        int nNextRow = Character.Row - 1;
-        int nNextCol = Character.Col;
+        int nRow = Character.Row - 1;
+        int nNextRow = nRow - 1;
 
-        if(nNextRow < 0)
-            return;
-
-        MoveTo(nNextRow, nNextCol);
+        MoveTo(nRow, Character.Col, nNextRow, Character.Col);
     }
 
     public void MoveRight()
@@ -246,13 +383,10 @@ public class Level : Singleton<Level>, ICharacterEvent, XSFAnimHandler
         if(m_nStatus != RunStatus.Play)
             return;
 
-        int nNextRow = Character.Row;
-        int nNextCol = Character.Col + 1;
+        int nCol = Character.Col + 1;
+        int nNextCol = nCol + 1;
 
-        if(nNextCol >= LevelConfig.uColCount)
-            return;
-
-        MoveTo(nNextRow, nNextCol);
+        MoveTo(Character.Row, nCol, Character.Row, nNextCol);
     }
 
     public void MoveDown()
@@ -260,13 +394,10 @@ public class Level : Singleton<Level>, ICharacterEvent, XSFAnimHandler
         if(m_nStatus != RunStatus.Play)
             return;
 
-        int nNextRow = Character.Row + 1;
-        int nNextCol = Character.Col;
+        int nRow = Character.Row + 1;
+        int nNextRow = nRow + 1;
 
-        if(nNextRow >= LevelConfig.uRowCount)
-            return;
-
-        MoveTo(nNextRow, nNextCol);
+        MoveTo(nRow, Character.Col, nNextRow, Character.Col);
     }
 
     public void MoveLeft()
@@ -274,89 +405,93 @@ public class Level : Singleton<Level>, ICharacterEvent, XSFAnimHandler
         if(m_nStatus != RunStatus.Play)
             return;
 
-        int nNextRow = Character.Row;
-        int nNextCol = Character.Col - 1;
+        int nCol = Character.Col - 1;
+        int nNextCol = nCol - 1;
 
-        if(nNextCol <= 0)
-            return;
-
-        MoveTo(nNextRow, nNextCol);
+        MoveTo(Character.Row, nCol, Character.Row, nNextCol);
     }
 
     private SingleBlock[] m_Blocks;
+    private int [] m_StatusCheck;
     private Dictionary<int, GameObject> m_Selects;
     private void CreateLevelBlock()
     {
         int nObjIndex = 0;
         m_Blocks = LevelDef.CreateBlocks((int)LevelConfig.uRowCount, (int)LevelConfig.uColCount, PlayData.Map.transform, PlayData.Block, 0.8f, false);
+        m_StatusCheck = new int[m_Blocks.Length];
         for(int i = 0; i < LevelConfig.sarData.Length; i ++)
-			{
-				if(LevelConfig.sarData[i] == "#") 
-				{
-					//m_Blocks[i].SetColor(BlockColor.Wall);
-				}
-				else if(LevelConfig.sarData[i] == "-")
-				{
-					m_Blocks[i].SetColor(BlockColor.Road);
-                    m_Blocks[i].Status = BlockStatus.Road;
-				}
-				else if(LevelConfig.sarData[i] == "@")
-				{
-					m_Blocks[i].SetColor(BlockColor.Road);
-                    m_Blocks[i].Status = BlockStatus.Road | BlockStatus.Character;
-                    Character.transform.position = m_Blocks[i].go.transform.position;
-                    Character.Row = m_Blocks[i].row;
-                    Character.Col = m_Blocks[i].col;
+        {
+            if(LevelConfig.sarData[i] == "#") 
+            {
+                m_Blocks[i].SetColor(BlockColor.Wall);
+                m_Blocks[i].Status = (int)BlockStatus.Wall;
+            }
+            else if(LevelConfig.sarData[i] == "-")
+            {
+                m_Blocks[i].SetColor(BlockColor.Road);
+                m_Blocks[i].Status = (int)BlockStatus.Road;
+            }
+            else if(LevelConfig.sarData[i] == "@")
+            {
+                m_Blocks[i].SetColor(BlockColor.Road);
+                m_Blocks[i].Status = (int)BlockStatus.Road;
+                Character.transform.position = m_Blocks[i].go.transform.position;
+                Character.Row = m_Blocks[i].row;
+                Character.Col = m_Blocks[i].col;
 
-                    Debug.Log($"pos={Character.transform.position}, row={Character.Row}, col={Character.Col}");
-				}
-				else if(LevelConfig.sarData[i] == ".")
-				{
-					m_Blocks[i].SetColor(BlockColor.Road);
-                    m_Blocks[i].Status = BlockStatus.Road | BlockStatus.Point;
-                    GameObject select = GameObject.Instantiate(m_Objs[(int)SceneObjID.Select]);
-                    select.SetActive(true);
-                    select.GetComponent<MonoSelect>().ShowSelect(1); 
-                    m_Blocks[i].FX = select;
-                    select.transform.position = m_Blocks[i].go.transform.position;
-				}
-				else if(LevelConfig.sarData[i] == "$")
-				{
-                    m_Blocks[i].SetColor(BlockColor.Road);
-                    m_Blocks[i].Status = BlockStatus.Road | BlockStatus.Box;
-                    m_Blocks[i].box = PlayData.Objs[nObjIndex].GetComponent<MonoBox>();
+                //Debug.Log($"pos={Character.transform.position}, row={Character.Row}, col={Character.Col}");
+            }
+            else if(LevelConfig.sarData[i] == ".")
+            {
+                m_Blocks[i].SetColor(BlockColor.Road);
+                m_Blocks[i].Status = (int)BlockStatus.Road | (int)BlockStatus.Point;
+                GameObject select = GameObject.Instantiate(m_Objs[(int)SceneObjID.Select]);
+                select.SetActive(true);
+                m_Blocks[i].select = select.GetComponent<MonoSelect>();
+                m_Blocks[i].select.ShowSelect(1);
+                select.transform.position = m_Blocks[i].go.transform.position;
+            }
+            else if(LevelConfig.sarData[i] == "$")
+            {
+                m_Blocks[i].SetColor(BlockColor.Road);
+                m_Blocks[i].Status = (int)BlockStatus.Road | (int)BlockStatus.Box;
+                m_Blocks[i].box = PlayData.Objs[nObjIndex].GetComponent<MonoBox>();
 
-                    GameObject select = GameObject.Instantiate(m_Objs[(int)SceneObjID.Select]);
-                    select.name = "fx";
-                    select.SetActive(true);
-                    select.GetComponent<MonoSelect>().ShowSelect(0); 
+                GameObject select = GameObject.Instantiate(m_Objs[(int)SceneObjID.Select]);
+                select.name = "fx";
+                select.SetActive(true);
+                m_Blocks[i].box.select = select.GetComponent<MonoSelect>();
+                m_Blocks[i].box.select.ShowSelect(0); 
 
-                    select.transform.SetParent(PlayData.Objs[nObjIndex].transform);
-                    float scale = PlayData.ObjFXScale[nObjIndex];
-                    select.transform.localScale = new Vector3(scale, scale, scale);
-                    select.transform.localPosition = PlayData.ObjFXPos[nObjIndex++];
-				}
-				else if(LevelConfig.sarData[i] == "*")
-				{
-                    m_Blocks[i].SetColor(BlockColor.Road);
-                    m_Blocks[i].Status = BlockStatus.Road | BlockStatus.Box | BlockStatus.Point; 
-                    m_Blocks[i].box = PlayData.Objs[nObjIndex].GetComponent<MonoBox>();
+                select.transform.SetParent(PlayData.Objs[nObjIndex].transform);
+                float scale = PlayData.ObjFXScale[nObjIndex];
+                select.transform.localScale = new Vector3(scale, scale, scale);
+                select.transform.localPosition = PlayData.ObjFXPos[nObjIndex++];
+            }
+            else if(LevelConfig.sarData[i] == "*")
+            {
+                m_Blocks[i].SetColor(BlockColor.Road);
+                m_Blocks[i].Status = (int)BlockStatus.Road | (int)BlockStatus.Box | (int)BlockStatus.Point; 
+                m_Blocks[i].box = PlayData.Objs[nObjIndex].GetComponent<MonoBox>();
 
-                    GameObject select = GameObject.Instantiate(m_Objs[(int)SceneObjID.Select]);
-                    select.transform.position = m_Blocks[i].go.transform.position;
-                    select.SetActive(true);
-                    select.GetComponent<MonoSelect>().ShowSelect(1); 
-                    m_Blocks[i].FX = select;
+                GameObject select = GameObject.Instantiate(m_Objs[(int)SceneObjID.Select]);
+                select.transform.position = m_Blocks[i].go.transform.position;
+                select.SetActive(true);
+                m_Blocks[i].select = select.GetComponent<MonoSelect>();
+                m_Blocks[i].select.ShowSelect(1);
 
-                    select = GameObject.Instantiate(m_Objs[(int)SceneObjID.Select]);
-                    select.name = "fx";
-                    
-                    select.transform.SetParent(PlayData.Objs[nObjIndex].transform);
-                    float scale = PlayData.ObjFXScale[nObjIndex];
-                    select.transform.localScale = new Vector3(scale, scale, scale);
-                    select.transform.localPosition = PlayData.ObjFXPos[nObjIndex++];
-				}
-			}
+                select = GameObject.Instantiate(m_Objs[(int)SceneObjID.Select]);
+                select.name = "fx";
+                m_Blocks[i].box.select = select.GetComponent<MonoSelect>();
+                
+                select.transform.SetParent(PlayData.Objs[nObjIndex].transform);
+                float scale = PlayData.ObjFXScale[nObjIndex];
+                select.transform.localScale = new Vector3(scale, scale, scale);
+                select.transform.localPosition = PlayData.ObjFXPos[nObjIndex++];
+            }
+
+            m_StatusCheck[i] = m_Blocks[i].Status;
+        }
     }
 
     public void OnExitDone()
@@ -371,7 +506,7 @@ public class Level : Singleton<Level>, ICharacterEvent, XSFAnimHandler
         {
             Debug.LogError("OnExitDone 22222");
             LobbyData.PlayReverse();
-            XSFMain.Instance.MainCamera.GetComponent<CameraMove>().MoveTo(PlayData.CamaraT);
+            
         }
     }
 
@@ -396,6 +531,13 @@ public class Level : Singleton<Level>, ICharacterEvent, XSFAnimHandler
         else if(param == "LevelShow")
         {
             Character.Born(PlayData.BornPos, PlayData.EnterPos);
+        }
+        else if(param == "Camera")
+        {
+            if(m_nStatus == RunStatus.PlayWait)
+            {
+                XSFMain.Instance.MainCamera.GetComponent<CameraMove>().MoveTo(PlayData.CamaraT);
+            }
         }
     }
 }
