@@ -23,6 +23,11 @@ namespace CC
             return Connect(config.MainCenterIP, (int)config.CenterPort);
         }
 
+        public override void DoRegist()
+        {
+            
+        }
+
         public override void SendHandshake()
         {
             Serilog.Log.Information("CenterConnector SendHandshake");

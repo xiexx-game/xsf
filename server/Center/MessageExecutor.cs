@@ -25,7 +25,7 @@ public sealed class Executor_Cc_C_Handshake : IMessageExecutor
         }
 
         NetPoint node = NetObj as NetPoint;
-        ServerNode sn = NodeManager.Instance.AddNode(localMsg.mPB.ServerId, node.RemoteIP, ports);
+        ServerInfo sn = NodeManager.Instance.AddNode(localMsg.mPB.ServerId, node.RemoteIP, ports);
         if(sn == null)
         {
             node.Release();
@@ -53,23 +53,8 @@ public sealed class Executor_Cc_C_Heartbeat : IMessageExecutor
 {
     public void OnExecute(object NetObj, IMessage message, ushort nMessageID, uint nRawID, byte[] rawData)
     {
-        
-    }
-}
-
-public sealed class Executor_Cc_C_ServerInfo : IMessageExecutor
-{
-    public void OnExecute(object NetObj, IMessage message, ushort nMessageID, uint nRawID, byte[] rawData)
-    {
-        
-    }
-}
-
-public sealed class Executor_Cc_C_ServerLost : IMessageExecutor
-{
-    public void OnExecute(object NetObj, IMessage message, ushort nMessageID, uint nRawID, byte[] rawData)
-    {
-        
+        NetPoint node = NetObj as NetPoint;
+        node.UpdateHTTime();
     }
 }
 
@@ -77,6 +62,7 @@ public sealed class Executor_Cc_C_ServerOk : IMessageExecutor
 {
     public void OnExecute(object NetObj, IMessage message, ushort nMessageID, uint nRawID, byte[] rawData)
     {
-        
+        NetPoint node = NetObj as NetPoint;
+        NodeManager.Instance.OnNodeOk(node.ID);
     }
 }

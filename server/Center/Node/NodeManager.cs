@@ -7,47 +7,124 @@
 // 说明：
 //
 //////////////////////////////////////////////////////////////////////////
-#pragma warning disable CS8603, CS8600
+#pragma warning disable CS8603, CS8600, CS8602, CS8604, CS8618
 using XSF;
 
 public class NodeManager : DicNPManager
 {
-    private List<ServerNode>[] m_LostList;
-    private Dictionary<uint, ServerNode> m_Nodes;
+    enum RunStep
+    {
+        None = 0,
+        StartServer,
+        WaitHandshake,
+        HandshakeDone,
+        OK,
+    }
+
+    private List<ServerInfo>[] m_LostList;
+    private Dictionary<uint, ServerInfo> m_Nodes;
     private byte[] m_NodeIndex;
+    private uint m_nInnerPort;
+    private uint m_nOutPort;
+
+    private int m_nStartIndex;
+    private RunStep m_nStep;
+
+    private ServerNode m_CurStartNode;
+
     public NodeManager()
     {   
-        m_Nodes = new Dictionary<uint, ServerNode>();
-        m_LostList = new List<ServerNode>[(int)EP.Max];
+        m_Nodes = new Dictionary<uint, ServerInfo>();
+        m_LostList = new List<ServerInfo>[(int)EP.Max];
         m_NodeIndex = new byte[(int)EP.Max];
 
         for(int i = 0; i < (int)EP.Max; i ++)
         {
-            m_LostList[i] = new List<ServerNode>();
+            m_LostList[i] = new List<ServerInfo>();
             m_NodeIndex[i] = 1;
         }
+    }
+
+    public override bool Init(ModuleInit init)
+    {
+        m_nInnerPort = XSFUtil.Config.InnerPortStart;
+        m_nOutPort = XSFUtil.Config.OutPortStart;
+
+        return base.Init(init);
+    }
+
+    public override bool Start()
+    {
+        m_nStartIndex = 0;
+        m_nStep = RunStep.StartServer;
+
+        return base.Start();
     }
 
     public override void DoRegist()
     {
         XSFUtil.SetMessageExecutor((ushort)XsfPb.SMSGID.CcCHandshake, new Executor_Cc_C_Handshake());
         XSFUtil.SetMessageExecutor((ushort)XsfPb.SMSGID.CcCHeartbeat, new Executor_Cc_C_Heartbeat());
-        XSFUtil.SetMessageExecutor((ushort)XsfPb.SMSGID.CcCServerInfo, new Executor_Cc_C_ServerInfo());
-        XSFUtil.SetMessageExecutor((ushort)XsfPb.SMSGID.CcCServerLost, new Executor_Cc_C_ServerLost());
         XSFUtil.SetMessageExecutor((ushort)XsfPb.SMSGID.CcCServerOk, new Executor_Cc_C_ServerOk());
     }
 
-    public ServerNode AddNode(uint nID, string ip, uint[] ports)
+    public override ModuleRunCode OnStartCheck() 
+    {
+        if(!XSFUtil.Config.AutoStart)
+        {
+            return ModuleRunCode.OK;
+        }
+        else
+        {
+            switch(m_nStep)
+            {
+            case RunStep.StartServer:
+                {
+                    m_CurStartNode = XSFUtil.Config.NodeList[m_nStartIndex];
+
+                    Serilog.Log.Information("Start server type={0}",  XSFUtil.EP2CNName((byte)m_CurStartNode.ep));
+
+                    string args = $"./single_start.sh {XSFUtil.Server.InitData.ServerTag} {XSFUtil.EP2Name((byte)m_CurStartNode.ep)} {XSFUtil.Server.SID.ID}";
+                    XSFUtil.StartProcess("sh", args, XSFUtil.Server.InitData.WorkDir);
+
+                    m_nStep = RunStep.WaitHandshake;
+                }
+                break;
+
+            case RunStep.HandshakeDone:
+                {
+                    m_nStartIndex ++;
+                    if(m_nStartIndex >= XSFUtil.Config.NodeList.Length)
+                    {
+                        m_nStep = RunStep.OK;
+                    }
+                    else
+                    {
+                        m_nStep = RunStep.StartServer;
+                    }
+                }
+                break;
+
+
+            case RunStep.OK:
+                return ModuleRunCode.OK; 
+            } 
+
+            return ModuleRunCode.Wait;
+        }
+    }
+
+    public ServerInfo AddNode(uint nID, string ip, uint[] ports)
     {
         ServerID sid = ServerID.GetSID(nID);
-        ServerNode newNode = null;
+        ServerInfo newNode = null;
         if(sid.Index == 0 )
         {
             var nodeLost = GetLostNode(sid.Type, nID, false);
             if(nodeLost == null)
             {
-                newNode = new ServerNode();
-                GetPort(ref newNode.Ports);
+                newNode = new ServerInfo();
+                GetPort(sid.Type, ref newNode.Ports);
 
                 sid.Index = GetIndex(sid.Type);
                 newNode.ID = ServerID.GetID(sid);
@@ -115,12 +192,40 @@ public class NodeManager : DicNPManager
         return index;
     }
 
-    public void GetPort(ref uint[] ports)
+    public void GetPort(byte nEP, ref uint[] ports)
     {
+        switch((EP)nEP)
+        {
+        case EP.Gate:
+            ports[(int)EP.Client] = GetNextPort(false);
+            break;
 
+        case EP.Game:
+            ports[(int)EP.Gate] = GetNextPort(true);
+            break;
+
+        case EP.Login:
+            ports[(int)EP.Gate] = GetNextPort(true);
+            break;
+
+        default:
+            break;
+        }
     }
 
-    public ServerNode GetLostNode(byte nEP, uint nID, bool CheckEqual)
+    private uint GetNextPort(bool IsInner)
+    {
+        if(IsInner)
+        {
+            return m_nInnerPort ++;
+        } 
+        else 
+        {
+            return m_nOutPort ++;
+        }
+    }
+
+    public ServerInfo GetLostNode(byte nEP, uint nID, bool CheckEqual)
     {
         var list = m_LostList[nEP];
         for(int i = 0; i < list.Count; i ++)
@@ -142,6 +247,79 @@ public class NodeManager : DicNPManager
         }
 
         return null;
+    }
+
+    public override void OnNPConnected(NetPoint np)
+    {
+        var message = XSFUtil.GetMessage((ushort)XsfPb.SMSGID.CCcServerInfo) as XsfMsg.MSG_C_Cc_ServerInfo;
+        message.mPB.Infos.Clear();
+
+        // 把当前已经收到的服务器信息下发给新加入的节点
+        uint nID = np.ID;
+        foreach (KeyValuePair<uint, ServerInfo> kvp in m_Nodes)
+        {
+            if(kvp.Key != nID)
+            {
+                var node = kvp.Value;
+                XsfPb.MSG_ServerInfo info = new XsfPb.MSG_ServerInfo();
+                info.ServerId = node.ID;
+                info.Ip = node.IP;
+                for(int i = 0; i < node.Ports.Length; i ++)
+                    info.Ports.Add(node.Ports[i]);
+                info.Status = (uint)node.Status;
+                message.mPB.Infos.Add(info);
+            }
+        }
+
+        if(message.mPB.Infos.Count > 0)
+            np.SendMessage(message);
+
+        // 把新加入的节点信息，广播给其他所有服务器节点
+        {
+            message.mPB.Infos.Clear();
+            ServerInfo nodeAdd = null;
+            m_Nodes.TryGetValue(np.ID, out nodeAdd);
+            XsfPb.MSG_ServerInfo info = new XsfPb.MSG_ServerInfo();
+            info.ServerId = nodeAdd.ID;
+            info.Ip = nodeAdd.IP;
+            for(int i = 0; i < nodeAdd.Ports.Length; i ++)
+                info.Ports.Add(nodeAdd.Ports[i]);
+            info.Status = (uint)nodeAdd.Status;
+            message.mPB.Infos.Add(info);
+            
+            Broadcast(message, np.ID);
+        }
+        
+        if(m_CurStartNode != null && (byte)m_CurStartNode.ep == np.SID.Type)
+        {
+            m_nStep = RunStep.HandshakeDone;
+        }
+    }
+
+    public override void OnNPLost(NetPoint np)
+    {
+        ServerInfo node = null;
+        if(m_Nodes.TryGetValue(np.ID, out node))
+        {
+            m_Nodes.Remove(np.ID);
+            m_LostList[np.SID.Type].Add(node);
+        }
+        else
+        {
+            Serilog.Log.Information("NodeManager OnNPLost, node not exist, id={0}", np.ID);
+            return;
+        }
+
+        var message = XSFUtil.GetMessage((ushort)XsfPb.SMSGID.CCcServerLost) as XsfMsg.MSG_C_Cc_ServerLost;
+        message.mPB.ServerId = np.ID;
+        Serilog.Log.Information("服务器已离线, id={0}", np.ID);
+
+        Broadcast(message, 0);
+    }
+
+    public void OnNodeOk(uint nID)
+    {
+
     }
 
 

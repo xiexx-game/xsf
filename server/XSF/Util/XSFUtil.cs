@@ -7,7 +7,8 @@
 // 说明：
 //
 //////////////////////////////////////////////////////////////////////////
-#pragma warning disable CS8602, CS8618
+#pragma warning disable CS8602, CS8618, CS8600, CS8604
+using System.Diagnostics;
 
 namespace XSF
 {
@@ -164,12 +165,12 @@ namespace XSF
         {
             switch((EP)nEP)
             {
-            case EP.Client:   return "client";
-            case EP.Center: return "center";
-            case EP.Login:  return "login";
-            case EP.Gate:   return "gate";
-            case EP.Game:   return "game";
-            case EP.Db: return "db";
+            case EP.Client:   return "Client";
+            case EP.Center: return "Center";
+            case EP.Login:  return "Login";
+            case EP.Gate:   return "Gate";
+            case EP.Game:   return "Game";
+            case EP.Db: return "DB";
             default:    return "Unknow";
             }
         }
@@ -200,6 +201,68 @@ namespace XSF
             case EP.Db: return true;
             default:    return false;
             }
+        }
+
+        public static bool StartProcess(string sFilename, string sArgs, string sWorkDir)
+        {
+            Process ps = null;
+            bool fail = false;
+
+            try
+            {
+                ProcessStartInfo StartInfo = new ProcessStartInfo();
+                StartInfo.FileName = sFilename;
+                StartInfo.Arguments = sArgs;
+                StartInfo.CreateNoWindow = true;
+                StartInfo.UseShellExecute = false;
+                if (!string.IsNullOrEmpty(sWorkDir))
+                    StartInfo.WorkingDirectory = sWorkDir;
+                StartInfo.RedirectStandardError = true;
+                ps = new Process();
+                ps.StartInfo = StartInfo;
+                ps.Start();
+                StreamReader readerErr = ps.StandardError; //截取错误流
+
+                string line = readerErr.ReadLine();
+                while (!readerErr.EndOfStream)
+                {
+                    line = readerErr.ReadLine();
+                    line = line + "\r\n";
+                }
+
+                ps.WaitForExit();
+
+
+                string fileName = null;
+                string arguments = null;
+
+                if (ps.ExitCode != 0 && !fail)
+                {
+                    fail = true;
+                    fileName = ps.StartInfo.FileName;
+                    arguments = ps.StartInfo.Arguments;
+                }
+
+                if (fail)
+                {
+                    throw new Exception(string.Format("ExitCode:{0}]\nStartProcess Fail.FileName=[{1}]\nArg=[{2}\n{3}",
+                        ps.ExitCode, fileName, arguments, line));
+                }
+                else
+                {
+                    Serilog.Log.Information(line);
+                }
+            }
+            catch (Exception e)
+            {
+                Serilog.Log.Error(e.Message);
+            }
+            finally
+            {
+                ps.Dispose();
+            }
+
+            return !fail;
         }
     }
 }

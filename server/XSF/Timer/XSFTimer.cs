@@ -175,7 +175,7 @@ namespace XSF
             m_bIsRunning = false;
             m_Thread.Join();
 
-            Serilog.Log.Information("Timer Release done");
+            Serilog.Log.Information("定时器线程退出");
         }
 
         public ulong Add(byte nTimerID, ITimerHandler handler, uint nInterval, int nTimes, string sDebugStr)

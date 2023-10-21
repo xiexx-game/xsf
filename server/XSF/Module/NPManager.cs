@@ -81,7 +81,9 @@ namespace XSF
         public abstract uint Total { get; }
         public abstract NetPoint Get(uint nID);
 
-        public virtual void OnNPError(NetPoint np) {}
+        public abstract void Broadcast(IMessage message, uint nSkipID);
+
+        public virtual void OnNPLost(NetPoint np) {}
         public virtual void OnNPConnected(NetPoint np) {}
         public virtual bool CanConnected { get { return true;} }
 
@@ -160,7 +162,7 @@ namespace XSF
             {
                 m_NetPoints.Remove(np.ID);
 
-                OnNPError(np);
+                OnNPLost(np);
             }
 
             Serilog.Log.Information("DicNPManager.Delete name={0}, NetPoint logout, id=[{1},{2}-{3}-{4}", Name, np.ID, np.SID.ID, XSFUtil.EP2CNName((byte)np.SID.Type), np.SID.Index);
@@ -176,6 +178,17 @@ namespace XSF
             }
 
             return null;
+        }
+
+        public override void Broadcast(IMessage message, uint nSkipID)
+        {
+            foreach(KeyValuePair<uint, NetPoint> kv in m_NetPoints)
+            {
+                if(kv.Value.ID != nSkipID)
+                {
+                    kv.Value.SendMessage(message);
+                }
+            }
         }
     }
 
@@ -260,7 +273,7 @@ namespace XSF
                 m_NetPoints[nIndex] = null;
                 m_nTotal --;
 
-                OnNPError(np);
+                OnNPLost(np);
             }
 
             Serilog.Log.Information("FastNPManager.Delete name={0}, NetPoint logout, id=[{1},{2}-{3}-{4}", Name, np.ID, np.SID.ID, XSFUtil.EP2CNName((byte)np.SID.Type), np.SID.Index);
@@ -280,6 +293,17 @@ namespace XSF
             }
 
             return m_NetPoints[nIndex];
+        }
+
+        public override void Broadcast(IMessage message, uint nSkipID)
+        {
+            for(int i = 0; i < m_NetPoints.Length; i++)
+            {
+                if(m_NetPoints[i] != null && m_NetPoints[i].ID != nSkipID)
+                {
+                    m_NetPoints[i].SendMessage(message);
+                }
+            }
         }   
     }
 }

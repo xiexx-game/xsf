@@ -324,7 +324,7 @@ namespace XSF
             try
             {
                 // 接受传入的连接
-                if(m_Socket != null)
+                if(m_Socket != null && m_Socket.Connected)
                 {
                     Socket clientSocket = m_Socket.EndAccept(iar);
 
@@ -336,7 +336,7 @@ namespace XSF
                     m_Socket?.BeginAccept(m_AsyncAccept, m_Socket);
                 }
             }
-            catch(SocketException e)
+            catch(Exception e)
             {
                 Serilog.Log.Error($"NetTcp::OnEndAccept caught a exception, message={e.Message}");
             }

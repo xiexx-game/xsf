@@ -17,7 +17,7 @@ public enum NodeStatus
     Ok,
 }
 
-public class ServerNode
+public class ServerInfo
 {
     public uint ID;
 
@@ -25,7 +25,7 @@ public class ServerNode
     public NodeStatus Status;
     public uint[] Ports;
 
-    public ServerNode()
+    public ServerInfo()
     {
         Ports = new uint[(int)EP.Max];
     }

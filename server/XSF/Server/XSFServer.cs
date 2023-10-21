@@ -95,9 +95,9 @@ namespace XSF
 
         private void Release()
         {
-            Serilog.Log.Information("服务器所有处理完毕，关闭退出");
-
             XSFTimer.Instance.Release();
+
+            Serilog.Log.Information("服务器所有处理完毕，退出");
 
             XSFLogger.End();
         }
@@ -170,6 +170,7 @@ namespace XSF
                     {
                         var info = m_InitList[i];
                         m_Modules[info.initData.ID] = info.module;
+                        Serilog.Log.Information("模块初始化, id={0}, name={1}", info.initData.ID, info.initData.Name);
                         if(!info.module.Init(info.initData))
                         {
                             m_nStatus = RunStatus.Stop;
@@ -180,7 +181,11 @@ namespace XSF
                     for(int i = 0; i < m_Modules.Length; i ++)
                     {
                         if(m_Modules[i] != null)
+                        {
+                            Serilog.Log.Information("模块注册, id={0}, name={1}", m_Modules[i].ID, m_Modules[i].Name);
                             m_Modules[i].DoRegist();
+                        }
+                            
                     }
 
                     int WaitStart = 0;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
@@ -190,6 +195,7 @@ namespace XSF
                         {
                             if(m_Modules[i].NoWaitStart)
                             {
+                                Serilog.Log.Information("模块不等待开始, id={0}, name={1}", m_Modules[i].ID, m_Modules[i].Name);
                                 if(!m_Modules[i].Start())
                                 {
                                     m_nStatus = RunStatus.Stop;
@@ -223,6 +229,7 @@ namespace XSF
                     {
                         if(m_Modules[i] != null && !m_Modules[i].NoWaitStart)
                         {
+                            Serilog.Log.Information("模块等待开始, id={0}, name={1}", m_Modules[i].ID, m_Modules[i].Name);
                             if(!m_Modules[i].Start())
                             {
                                 m_nStatus = RunStatus.Stop;
@@ -247,6 +254,7 @@ namespace XSF
                             ModuleRunCode RunCode = m_StepModule[i].OnStartCheck();
                             if(RunCode == ModuleRunCode.OK)
                             {
+                                Serilog.Log.Information("模块启动OK, id={0}, name={1}", m_StepModule[i].ID, m_StepModule[i].Name);
                                 m_StepModule[i] = null;
                             }
                             else if(RunCode == ModuleRunCode.Error)
@@ -279,8 +287,10 @@ namespace XSF
                 {
                     for(int i = 0; i < m_Modules.Length; i ++)
                     {
-                        if(m_Modules[i] != null)
+                        if(m_Modules[i] != null) {
+                            Serilog.Log.Information("模块开始关闭, id={0}, name={1}", m_Modules[i].ID, m_Modules[i].Name);
                             m_Modules[i].OnClose();
+                        }
                     }
 
                     Array.Copy(m_Modules, m_StepModule, m_Modules.Length);
@@ -299,6 +309,7 @@ namespace XSF
                             ModuleRunCode RunCode = m_StepModule[i].OnCloseCheck();
                             if(RunCode == ModuleRunCode.OK)
                             {
+                                Serilog.Log.Information("模块关闭完成, id={0}, name={1}", m_StepModule[i].ID, m_StepModule[i].Name);
                                 m_StepModule[i] = null;
                             }
                             else
@@ -317,6 +328,7 @@ namespace XSF
 
             case RunStatus.Stop:
                 {
+                    Serilog.Log.Information("======================= 服务器所有模块都已关闭完毕 =======================");
                     for(int i = 0; i < m_Modules.Length; i ++)
                     {
                         if(m_Modules[i] != null)

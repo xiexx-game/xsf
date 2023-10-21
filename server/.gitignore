@@ -2,3 +2,7 @@ obj/
 logs/
 Debug/
 lib/
+bin/*/*.dll
+bin/*/*.pdb
+bin/*/*.json
+bin/*/XSF_*

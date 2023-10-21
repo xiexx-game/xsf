@@ -11,6 +11,11 @@ using XSF;
 
 namespace CC
 {
+    public interface IServerInfoHandler
+    {
+        
+    }
+
     public abstract class ICenterConnector : NetConnector
     {
         public static ICenterConnector CreateModule(int nID)
