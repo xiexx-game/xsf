@@ -13,14 +13,17 @@ namespace CC
 {
     public interface IServerInfoHandler
     {
-        
+        void OnServerNew(ServerInfo info);       // 有一个服务器连入到集群
+	    void OnServerLost(uint nID);              // 有一个服务器断开
+        void OnServerOk(ServerInfo info);
     }
 
     public abstract class ICenterConnector : NetConnector
     {
-        public static ICenterConnector CreateModule(int nID)
+        public static ICenterConnector CreateModule(int nID, IServerInfoHandler handler)
         {
             var connector = new CenterConnector();
+            connector.m_Handler = handler;
 
             NetConnectorInit init = new NetConnectorInit();
             init.ID = nID;

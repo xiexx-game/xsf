@@ -61,6 +61,12 @@ public class NodeManager : DicNPManager
         return base.Start();
     }
 
+    public override void OnClose()
+    {
+        var message = XSFUtil.GetMessage((ushort)XsfPb.SMSGID.CCcStop);
+        Broadcast(message, 0);
+    }
+
     public override void DoRegist()
     {
         XSFUtil.SetMessageExecutor((ushort)XsfPb.SMSGID.CcCHandshake, new Executor_Cc_C_Handshake());
@@ -86,6 +92,8 @@ public class NodeManager : DicNPManager
 
                     string args = $"./single_start.sh {XSFUtil.Server.InitData.ServerTag} {XSFUtil.EP2Name((byte)m_CurStartNode.ep)} {XSFUtil.Server.SID.ID}";
                     XSFUtil.StartProcess("sh", args, XSFUtil.Server.InitData.WorkDir);
+
+                    Serilog.Log.Information("RunStep.StartServer done ....");
 
                     m_nStep = RunStep.WaitHandshake;
                 }
@@ -141,7 +149,7 @@ public class NodeManager : DicNPManager
                 Serilog.Log.Information($"NodeManager AddNode new, find lost server node id={newNode.ID}, ip1={newNode.IP}, ip2={ip}");
             }
 
-            m_Nodes[nID] = newNode;
+            m_Nodes[newNode.ID] = newNode;
         }
         else
         {
@@ -256,6 +264,7 @@ public class NodeManager : DicNPManager
 
         // 把当前已经收到的服务器信息下发给新加入的节点
         uint nID = np.ID;
+        Serilog.Log.Information("OnNPConnected nID=" + nID);
         foreach (KeyValuePair<uint, ServerInfo> kvp in m_Nodes)
         {
             if(kvp.Key != nID)
@@ -277,6 +286,7 @@ public class NodeManager : DicNPManager
         // 把新加入的节点信息，广播给其他所有服务器节点
         {
             message.mPB.Infos.Clear();
+
             ServerInfo nodeAdd = null;
             m_Nodes.TryGetValue(np.ID, out nodeAdd);
             XsfPb.MSG_ServerInfo info = new XsfPb.MSG_ServerInfo();

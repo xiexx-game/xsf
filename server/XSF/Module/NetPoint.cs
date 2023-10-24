@@ -39,7 +39,7 @@ namespace XSF
 
             m_Timers = new TimersManager((int)TimerID.Max);
 
-            m_Timers.StartTimer((byte)TimerID.HTCheck, this, XSFServer.Instance.Config.HeartbeatInterval, -1, "NetPoint.Create");
+            m_Timers.StartTimer((byte)TimerID.HTCheck, this, XSFServer.Instance.Config.HeartbeatCheck, -1, "NetPoint.Create");
 
             return true;
         }
@@ -63,7 +63,18 @@ namespace XSF
 
         public void OnTimer(byte nTimerID, bool bLastCall)
         {
+            var current = XSFUtil.CurrentS;
+            if(current > m_nLastHTTime + XSFServer.Instance.Config.HeartbeatTimeout)
+            {
+                Serilog.Log.Error($"NetPoint OnTimer heartbeat timeout ... {current} > {m_nLastHTTime} + {XSFServer.Instance.Config.HeartbeatTimeout}");
+                if(m_Connection != null)
+                {
+                    m_Connection.Close();
+                    m_Connection = null;
+                }
 
+                m_Timers.CloseAllTimer();
+            }
         }
 
         public void UpdateHTTime()

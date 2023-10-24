@@ -44,7 +44,11 @@ namespace XSF
 
     internal class NetPackageParseException : Exception
     {
-        public override string Message { get { return "Net ReceiveData catch Exception"; } }
+        public NetPackageParseException(string msg)
+            : base(msg)
+        {
+            
+        }
     }
 
     internal interface IAsyncCallback
@@ -57,6 +61,10 @@ namespace XSF
 
     public interface INetPacker
     {
+        int PackMinLength { get; }
+
+        int PackMaxLength { get; }
+
         byte[] Read(byte[] recvBuffer, int recvIndex, int nPackageLen, out IMessage message, out ushort nMessageID, out uint nRawID);
 
         byte[] Pack(IMessage message);

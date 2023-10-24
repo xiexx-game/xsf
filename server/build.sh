@@ -10,6 +10,8 @@ BuildServer() {
     mv bin/Debug/net6.0/$1 bin/Debug/net6.0/XSF_$1 
     mv bin/Debug/net6.0  $workpath/bin/$1
     rm -rf bin
+    cd $workpath
 }
 
 BuildServer Center
+BuildServer Gate

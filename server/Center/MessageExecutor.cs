@@ -33,11 +33,13 @@ public sealed class Executor_Cc_C_Handshake : IMessageExecutor
         }
 
         node.SetID(sn.ID);
+        Serilog.Log.Information("sn id=" + sn.ID);
 
         if(NodeManager.Instance.Add(node))
         {
             var respMsg = XSFUtil.GetMessage((ushort)XsfPb.SMSGID.CCcHandshake) as XsfMsg.MSG_C_Cc_Handshake;
-            respMsg.mPB.ServerId = sn.ID;
+            respMsg.mPB.ServerId = XSFUtil.Server.ID;
+            respMsg.mPB.NewId = sn.ID;
             respMsg.mPB.Ports.Clear();
             for(int i = 0; i < sn.Ports.Length; i ++ )
             {

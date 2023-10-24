@@ -58,6 +58,14 @@ namespace XSF
 
         private int m_nExitFlag;
 
+        public bool IsRunning 
+        { 
+            get
+            {
+                return m_nStatus == RunStatus.Running;
+            }
+        }
+
         public XSFServer()
         {
             m_InitList = new List<ModuleInfo>();
@@ -74,6 +82,26 @@ namespace XSF
             ReadConfig();
 
             XSFTimer.Instance.Create();
+        }
+
+        public void SetID(uint nID)
+        {
+            ID = nID;
+            m_SID = ServerID.GetSID(ID);
+        }
+
+        public void SetPort(byte ep, uint port)
+        {
+            Ports[ep] = port;
+        }
+
+        public void DoStart()
+        {
+            if(m_nStatus == RunStatus.WaitStart)
+            {
+                Serilog.Log.Information("XSFServer DoStart call ....");
+                m_nStatus = RunStatus.Start;
+            }
         }
 
         public void Run()
@@ -124,7 +152,7 @@ namespace XSF
             Release();
         }
 
-        void Stop()
+        public void Stop()
         {
             if(m_nStatus == RunStatus.Running)
                 m_nStatus = RunStatus.StopCheck0;
@@ -149,10 +177,17 @@ namespace XSF
                     m_MainEvent.Reset();
                 }
 
-                StatusUpdate();
+                try
+                {
+                    StatusUpdate();
                 
-                XSFNet.Instance.Dispath();
-                XSFTimer.Instance.Dispatch();
+                    XSFNet.Instance.Dispath();
+                    XSFTimer.Instance.Dispatch();
+                }
+                catch(Exception e)
+                {
+                    Serilog.Log.Error("MainThreadMethod Catch exception, message=" + e.Message);
+                }
             }
 
             Serilog.Log.Debug("主逻辑线程已退出");
@@ -240,6 +275,7 @@ namespace XSF
 
                     Array.Copy(m_Modules, m_StepModule, m_Modules.Length);
 
+                    Serilog.Log.Information("进入开服检测 ...");
                     m_nStatus = RunStatus.RunningCheck;
                 }
                 break;
@@ -363,6 +399,7 @@ namespace XSF
                 if(XSFUtil.GetArg(args, "-i", out argData))
                 {
                     m_SID.ID = Convert.ToUInt16(argData);
+                    ID = ServerID.GetID(m_SID);
                 }
                 else
                 {
@@ -484,7 +521,7 @@ namespace XSF
                     XmlElement eleItem = nodes[i] as XmlElement;
                     var ep = XMLReader.GetString(eleItem, "ep");
                     var epValue = XSFUtil.Name2EP(ep);
-                    Serilog.Log.Information("ep={0}, epValue={1}", ep, epValue);
+                    //Serilog.Log.Information("ep={0}, epValue={1}", ep, epValue);
                     if(XSFUtil.IsEPInvalid((byte)epValue))
                     {
                         uint count = XMLReader.GetUInt(eleItem, "count");
@@ -527,6 +564,8 @@ namespace XSF
                 {
                     throw new XSFSchemaLoadException("未找到服务器节点配置, ep=" + Config.Me.ep);
                 }
+
+                Serilog.Log.Information("启动服务器 ID={0}, {1}-{2}-{3}", ID, m_SID.ID, m_SID.Index, m_SID.Type);
 
             }
             catch(Exception e)

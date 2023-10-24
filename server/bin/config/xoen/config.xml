@@ -4,7 +4,7 @@
         <name>Xoen</name>
         <desc>个人服</desc>
         <auto_start desc="是否自动开服">true</auto_start>
-        <htcheck desc="服务器心跳检测频率，秒">5</htcheck>
+        <htcheck desc="服务器心跳检测频率，秒">1000</htcheck>
         <httimeout desc="服务器心跳超时，秒">10</httimeout>
         <htinterval desc="服务器心跳发送频率，tick">500</htinterval>
         <rc_interval desc="重连时间，tick">500</rc_interval>
@@ -45,8 +45,6 @@
     </mongo>
 
     <server>
-        <item name="网关服" ep="gate" count="2" />
-        <item name="登录服" ep="login" count="1" db_mongo_id="1" redis_id="1" />
-        <item name="游戏服" ep="game" count="2" db_mongo_id="2" />
+        <item name="网关服" ep="gate" count="1" />
     </server>
 </root>

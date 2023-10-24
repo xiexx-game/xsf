@@ -105,11 +105,14 @@ namespace XSF
 
         public void OnAccept(IConnection connection) 
         {
+            Serilog.Log.Information("NPManager OnAccept ...1");
             if(!CanConnected)
             {
                 connection.Close();
                 return;
             }
+
+            Serilog.Log.Information("NPManager OnAccept ...2");
 
             NetPoint np = NewNP();
             np.Create(this, connection);
@@ -132,14 +135,14 @@ namespace XSF
         {
             if(!DeleteFromWaitList(np))
             {
-                Serilog.Log.Error("DicNPManager.Add name={0}, np not int wait list, id=[{1},{2}-{3}-{4}", Name, np.ID, np.SID.ID, np.SID.Type, np.SID.Index);
+                Serilog.Log.Error("DicNPManager.Add name={0}, np not int wait list, id=[{1},{2}-{3}-{4}]", Name, np.ID, np.SID.ID, np.SID.Type, np.SID.Index);
                 np.Release();
                 return false;
             }
             
             if(m_NetPoints.ContainsKey(np.ID))
             {
-                Serilog.Log.Error("DicNPManager.Add name={0}, np exist, id=[{1},{2}-{3}-{4}", Name, np.ID, np.SID.ID, np.SID.Type, np.SID.Index);
+                Serilog.Log.Error("DicNPManager.Add name={0}, np exist, id=[{1},{2}-{3}-{4}]", Name, np.ID, np.SID.ID, np.SID.Type, np.SID.Index);
                 np.Release();
                 return false;
             }
@@ -148,7 +151,7 @@ namespace XSF
 
             OnNPConnected(np);
 
-            Serilog.Log.Information("DicNPManager.Add name={0}, NetPoint login, id=[{1},{2}-{3}-{4}", Name, np.ID, np.SID.ID, XSFUtil.EP2CNName((byte)np.SID.Type), np.SID.Index);
+            Serilog.Log.Information("DicNPManager.Add name={0}, NetPoint login, id=[{1},{2}-{3}-{4}]", Name, np.ID, np.SID.ID, XSFUtil.EP2CNName((byte)np.SID.Type), np.SID.Index);
 
             return true;
         }
@@ -165,7 +168,7 @@ namespace XSF
                 OnNPLost(np);
             }
 
-            Serilog.Log.Information("DicNPManager.Delete name={0}, NetPoint logout, id=[{1},{2}-{3}-{4}", Name, np.ID, np.SID.ID, XSFUtil.EP2CNName((byte)np.SID.Type), np.SID.Index);
+            Serilog.Log.Information("DicNPManager.Delete name={0}, NetPoint logout, id=[{1},{2}-{3}-{4}]", Name, np.ID, np.SID.ID, XSFUtil.EP2CNName((byte)np.SID.Type), np.SID.Index);
         }
         public override uint Total { get { return (uint)m_NetPoints.Count; } }
 
@@ -216,28 +219,28 @@ namespace XSF
         {
             if(!DeleteFromWaitList(np))
             {
-                Serilog.Log.Error("FastNPManager.Add name={0}, np not int wait list, id=[{1},{2}-{3}-{4}", Name, np.ID, np.SID.ID, np.SID.Type, np.SID.Index);
+                Serilog.Log.Error("FastNPManager.Add name={0}, np not int wait list, id=[{1},{2}-{3}-{4}]", Name, np.ID, np.SID.ID, np.SID.Type, np.SID.Index);
                 np.Release();
                 return false;
             }
 
             if(m_nTotal >= m_NetPoints.Length)
             {
-                Serilog.Log.Error("FastNPManager.Add name={0}, is full, id=[{1},{2}-{3}-{4}", Name, np.ID, np.SID.ID, np.SID.Type, np.SID.Index);
+                Serilog.Log.Error("FastNPManager.Add name={0}, is full, id=[{1},{2}-{3}-{4}]", Name, np.ID, np.SID.ID, np.SID.Type, np.SID.Index);
                 np.Release();
                 return false;
             }
             
             if(np.SID.Index >= m_NetPoints.Length)
             {
-                Serilog.Log.Error("FastNPManager.Add name={0}, index too big, id=[{1},{2}-{3}-{4}", Name, np.ID, np.SID.ID, np.SID.Type, np.SID.Index);
+                Serilog.Log.Error("FastNPManager.Add name={0}, index too big, id=[{1},{2}-{3}-{4}]", Name, np.ID, np.SID.ID, np.SID.Type, np.SID.Index);
                 np.Release();
                 return false;
             }
 
             if(m_NetPoints[np.SID.Index] != null)
             {
-                Serilog.Log.Error("FastNPManager.Add name={0}, np exist, id=[{1},{2}-{3}-{4}", Name, np.ID, np.SID.ID, np.SID.Type, np.SID.Index);
+                Serilog.Log.Error("FastNPManager.Add name={0}, np exist, id=[{1},{2}-{3}-{4}]", Name, np.ID, np.SID.ID, np.SID.Type, np.SID.Index);
                 np.Release();
                 return false;
             }
@@ -247,7 +250,7 @@ namespace XSF
 
             OnNPConnected(np);
 
-            Serilog.Log.Information("FastNPManager.Add name={0}, NetPoint login, id=[{1},{2}-{3}-{4}", Name, np.ID, np.SID.ID, XSFUtil.EP2CNName((byte)np.SID.Type), np.SID.Index);
+            Serilog.Log.Information("FastNPManager.Add name={0}, NetPoint login, id=[{1},{2}-{3}-{4}]", Name, np.ID, np.SID.ID, XSFUtil.EP2CNName((byte)np.SID.Type), np.SID.Index);
 
             return true;
         }
@@ -276,7 +279,7 @@ namespace XSF
                 OnNPLost(np);
             }
 
-            Serilog.Log.Information("FastNPManager.Delete name={0}, NetPoint logout, id=[{1},{2}-{3}-{4}", Name, np.ID, np.SID.ID, XSFUtil.EP2CNName((byte)np.SID.Type), np.SID.Index);
+            Serilog.Log.Information("FastNPManager.Delete name={0}, NetPoint logout, id=[{1},{2}-{3}-{4}]", Name, np.ID, np.SID.ID, XSFUtil.EP2CNName((byte)np.SID.Type), np.SID.Index);
         }
         public override uint Total { get { return m_nTotal; } }
 

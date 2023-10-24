@@ -213,45 +213,17 @@ namespace XSF
                 ProcessStartInfo StartInfo = new ProcessStartInfo();
                 StartInfo.FileName = sFilename;
                 StartInfo.Arguments = sArgs;
+
                 StartInfo.CreateNoWindow = true;
                 StartInfo.UseShellExecute = false;
                 if (!string.IsNullOrEmpty(sWorkDir))
                     StartInfo.WorkingDirectory = sWorkDir;
-                StartInfo.RedirectStandardError = true;
+
                 ps = new Process();
                 ps.StartInfo = StartInfo;
+                
                 ps.Start();
-                StreamReader readerErr = ps.StandardError; //截取错误流
-
-                string line = readerErr.ReadLine();
-                while (!readerErr.EndOfStream)
-                {
-                    line = readerErr.ReadLine();
-                    line = line + "\r\n";
-                }
-
                 ps.WaitForExit();
-
-
-                string fileName = null;
-                string arguments = null;
-
-                if (ps.ExitCode != 0 && !fail)
-                {
-                    fail = true;
-                    fileName = ps.StartInfo.FileName;
-                    arguments = ps.StartInfo.Arguments;
-                }
-
-                if (fail)
-                {
-                    throw new Exception(string.Format("ExitCode:{0}]\nStartProcess Fail.FileName=[{1}]\nArg=[{2}\n{3}",
-                        ps.ExitCode, fileName, arguments, line));
-                }
-                else
-                {
-                    Serilog.Log.Information(line);
-                }
             }
             catch (Exception e)
             {

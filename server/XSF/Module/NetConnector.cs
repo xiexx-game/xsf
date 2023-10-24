@@ -35,9 +35,17 @@ namespace XSF
 
         private bool m_bNeedReconnect;
 
+        public ServerID SID { get { return m_SID; } }
+        public uint ConnectorID { get { return m_nID; } }
+        protected uint m_nID;
+        protected ServerID m_SID;
+
+        public bool IsHandshake { get; private set; }
+
         public NetConnector()
         {
             m_Timers = new TimersManager((int)TimerID.Max);
+            IsHandshake = false;
         }
 
         public override bool Init(ModuleInit init)
@@ -48,6 +56,12 @@ namespace XSF
             m_bNeedReconnect = localInit.NeedReconnect;
             
             return true;
+        }
+
+        public void SetID(uint nID)
+        {
+            m_nID = nID;
+            m_SID = ServerID.GetSID(m_nID);
         }
 
         public override bool Start()
@@ -98,6 +112,7 @@ namespace XSF
         public void OnHandshake()
         {
             m_Timers.StartTimer((byte)TimerID.HT, this, XSFServer.Instance.Config.HeartbeatInterval, -1, "NetConnector.OnHandshake");
+            IsHandshake = true;
 
             OnHandshakeOk();
         }
@@ -133,6 +148,7 @@ namespace XSF
         {
             Serilog.Log.Error("NetConnector OnError, name={0}, code={1}", Name, nErrorCode);
             m_Timers.DelTimer((byte)TimerID.HT);
+            IsHandshake = false;
 
             if(m_bNeedReconnect)
             {

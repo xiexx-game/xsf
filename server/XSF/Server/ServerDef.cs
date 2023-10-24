@@ -25,21 +25,31 @@ namespace XSF
 
     public interface IServer
     {
-        public ServerID SID { get; }
+        ServerID SID { get; }
 
-        public ServerInit InitData { get; }
+        ServerInit InitData { get; }
 
-        public uint ID { get; }
+        uint ID { get; }
 
-        public uint[] Ports { get; }
+        uint[] Ports { get; }
+
+        bool IsRunning { get; }
+
+        void SetPort(byte ep, uint port);
 
         void Init(EP ep, string[] args);
+
+        void SetID(uint nID);
 
         void Run();
 
         void AddModule(IModule module, ModuleInit init);
 
         IModule GetModule(int nID);
+
+        void DoStart();
+
+        void Stop();
     }
 
     public struct ServerID
@@ -114,6 +124,27 @@ namespace XSF
             : base(msg)
         {
             
+        }
+    }
+
+    public enum NodeStatus
+    {
+        None = 0,
+        New,
+        Ok,
+    }
+
+    public class ServerInfo
+    {
+        public uint ID;
+
+        public string IP = "";
+        public NodeStatus Status;
+        public uint[] Ports;
+
+        public ServerInfo()
+        {
+            Ports = new uint[(int)EP.Max];
         }
     }
 
