@@ -33,7 +33,7 @@ public sealed class Executor_Cc_C_Handshake : IMessageExecutor
         }
 
         node.SetID(sn.ID);
-        Serilog.Log.Information("sn id=" + sn.ID);
+        //Serilog.Log.Information("sn id=" + sn.ID);
 
         if(NodeManager.Instance.Add(node))
         {

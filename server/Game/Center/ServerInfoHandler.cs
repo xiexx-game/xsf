@@ -15,14 +15,7 @@ public class ServerInfoHandler : Singleton<ServerInfoHandler>, IServerInfoHandle
     // 有一个服务器连入到集群
     public void OnServerNew(ServerInfo info)
     {
-        var sid = ServerID.GetSID(info.ID);
-        if(sid.Type == (byte)EP.Game)
-        {
-            if(info.Status == NodeStatus.Ok)
-            {
-                ConnectorManager.Instance.CreateConnector(info.ID, info.IP, (int)info.Ports[(int)EP.Gate]);
-            }
-        }
+
     }
 
     // 有一个服务器断开
@@ -33,10 +26,6 @@ public class ServerInfoHandler : Singleton<ServerInfoHandler>, IServerInfoHandle
 
     public void OnServerOk(ServerInfo info)
     {
-        var sid = ServerID.GetSID(info.ID);
-        if(sid.Type == (byte)EP.Game)
-        {
-            ConnectorManager.Instance.CreateConnector(info.ID, info.IP, (int)info.Ports[(int)EP.Gate]);
-        }
+
     }
 }

@@ -12,6 +12,5 @@ public enum ModuleID
     Schema = 0,
     Message,
     CenterConnector,
-    ConnectorManager,
-    Client,
+    GateAcceptor,
 }

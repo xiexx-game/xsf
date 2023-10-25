@@ -23,7 +23,14 @@ message Gt_Clt_Heartbeat {
     uint64 server_time = 2; // 服务器回复心跳当前时间毫秒数
 }
 
+
 // client --> login 登录
-message Clt_L_Login {
-    uint32 account_id = 1;          // 账号ID
+message Clt_G_Login {
+	string account = 1;
+    string password = 2;
+}
+
+// gate --> client 服务器断开连接
+message Gt_Clt_Disconnect {
+	int32 reason = 1;    // 断开原因
 }

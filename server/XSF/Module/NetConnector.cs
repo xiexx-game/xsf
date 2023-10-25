@@ -91,6 +91,17 @@ namespace XSF
             m_sIP = ip;
             m_nPort = port;
 
+            return DoConnect();
+        }
+
+        public void SetConnectInfo(string ip, int port)
+        {
+            m_sIP = ip;
+            m_nPort = port;
+        }
+
+        public bool DoConnect()
+        {
             m_Connection = XSFNet.Instance.Connect(this, m_sIP, m_nPort);
             if(m_Connection == null)
             {
@@ -172,7 +183,7 @@ namespace XSF
                 break;
 
             case TimerID.Reconnect:
-                if(Connect(m_sIP, m_nPort))
+                if(DoConnect())
                 {
                     m_Timers.DelTimer((byte)TimerID.Reconnect);
                 }

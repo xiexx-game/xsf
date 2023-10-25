@@ -101,7 +101,7 @@ namespace XSF
 
         public void DoStart(INetHandler handler)
         {
-            Serilog.Log.Information("ConnectionTcp.DoStart start ...");
+            //Serilog.Log.Information("ConnectionTcp.DoStart start ...");
             m_Handler = handler;
             Receive();
         }
@@ -198,14 +198,14 @@ namespace XSF
                 }
 
                 Serilog.Log.Error($"ConnectionTcp::Send 1 caught a exception, error={e.ErrorCode}, message={e.Message}");
-                Close();
-                XSFNet.Instance.PushEventError(this, m_Handler, NetError.Send);
+                if(Close())
+                    XSFNet.Instance.PushEventError(this, m_Handler, NetError.Send);
             }
             catch (Exception e)
             {
                 Serilog.Log.Error("ConnectionTcp::Send 2 caught a exception, message:" + e.Message);
-                Close();
-                XSFNet.Instance.PushEventError(this, m_Handler, NetError.Send);
+                if(Close())
+                    XSFNet.Instance.PushEventError(this, m_Handler, NetError.Send);
             }
 
             return true;
@@ -229,14 +229,14 @@ namespace XSF
                 }
 
                 Serilog.Log.Error($"ConnectionTcp::Receive 1 caught a exception, error={e.ErrorCode}, message={e.Message}");
-                Close();
-                XSFNet.Instance.PushEventError(this, m_Handler, NetError.Recv);
+                if(Close())
+                    XSFNet.Instance.PushEventError(this, m_Handler, NetError.Recv);
             }
             catch (Exception e)
             {
                 Serilog.Log.Error("ConnectionTcp::Receive 2 caught a exception, message:" + e.Message);
-                Close();
-                XSFNet.Instance.PushEventError(this, m_Handler, NetError.Recv);
+                if(Close())
+                    XSFNet.Instance.PushEventError(this, m_Handler, NetError.Recv);
             }
         }
 
@@ -254,8 +254,9 @@ namespace XSF
             catch (Exception e)
             {
                 Serilog.Log.Error("ConnectionTcp::OnEndConnect caught a exception, message:" + e.Message);
-                Close();
-                XSFNet.Instance.PushEventError(this, m_Handler, NetError.Connect);
+                if(Close())
+                    XSFNet.Instance.PushEventError(this, m_Handler, NetError.Connect);
+
                 return;
             }
         }
@@ -264,11 +265,8 @@ namespace XSF
         {
             try
             {
-                if(m_Socket != null)
-                {
-                    int? nLength = m_Socket?.EndSend(iar);
-                    Serilog.Log.Information("发送消息成功... nLength=" + nLength);
-                }
+                int? nLength = m_Socket?.EndSend(iar);
+                //Serilog.Log.Information("发送消息成功... nLength=" + nLength);
             }
             catch (SocketException e)
             {
@@ -279,14 +277,14 @@ namespace XSF
                 }
 
                 Serilog.Log.Error($"ConnectionTcp::OnEndSend 1 caught a exception, error={e.ErrorCode}, message={e.Message}");
-                Close();
-                XSFNet.Instance.PushEventError(this, m_Handler, NetError.Send);
+                if(Close())
+                    XSFNet.Instance.PushEventError(this, m_Handler, NetError.Send);
             }
             catch (Exception e)
             {
                 Serilog.Log.Error($"ConnectionTcp::OnEndSend 2 caught a exception, message={e.Message}");
-                Close();
-                XSFNet.Instance.PushEventError(this, m_Handler, NetError.Send);
+                if(Close())
+                    XSFNet.Instance.PushEventError(this, m_Handler, NetError.Send);
             }
         }
 
@@ -295,21 +293,18 @@ namespace XSF
             int nReceiveLength = 0;
 
             try
-            {  
-                if(m_Socket != null)
+            {
+                nReceiveLength = m_Socket.EndReceive(iar);
+                if(nReceiveLength > 0)
                 {
-                    nReceiveLength = m_Socket.EndReceive(iar);
-                    if(nReceiveLength > 0)
-                    {
-                        OnReceiveData(nReceiveLength);
-                        Receive();
-                    }
-                    else
-                    {
-                        Serilog.Log.Error($"ConnectionTcp::DoReceive receive length 0, need close");
-                        Close();
+                    OnReceiveData(nReceiveLength);
+                    Receive();
+                }
+                else
+                {
+                    //Serilog.Log.Error($"ConnectionTcp::DoReceive receive length 0, need close");
+                    if(Close())
                         XSFNet.Instance.PushEventError(this, m_Handler, NetError.Recv);
-                    }
                 }
             }
             catch (SocketException e)
@@ -321,15 +316,15 @@ namespace XSF
                 }
 
                 Serilog.Log.Error($"ConnectionTcp::OnEndReceive 1 caught a exception, error={e.ErrorCode}, message={e.Message}");
-                Close();
-                XSFNet.Instance.PushEventError(this, m_Handler,NetError.Recv);
+                if(Close())
+                    XSFNet.Instance.PushEventError(this, m_Handler,NetError.Recv);
                 return;
             }
             catch (Exception e)
             {
                 Serilog.Log.Error($"ConnectionTcp::OnEndReceive 2 caught a exception, message={e.Message} stack={e.StackTrace}");
-                Close();
-                XSFNet.Instance.PushEventError(this, m_Handler,NetError.Recv);
+                if(Close())
+                    XSFNet.Instance.PushEventError(this, m_Handler,NetError.Recv);
                 return;
             }
         }
@@ -338,20 +333,14 @@ namespace XSF
         {
             try
             {
-                Serilog.Log.Information("接收到连接 ....");
-                // 接受传入的连接
-                if(m_Socket != null)
-                {
-                    Serilog.Log.Information("接收到连接 ....2");
-                    Socket clientSocket = m_Socket.EndAccept(iar);
+                Socket clientSocket = m_Socket.EndAccept(iar);
 
-                    // 处理连接建立后的操作
-                    ConnectionTcp tcp = new ConnectionTcp(m_Packer, clientSocket, m_AsyncReceive, m_AsyncSend);
-                    XSFNet.Instance.PushEventAccept(tcp, m_Handler);
+                // 处理连接建立后的操作
+                ConnectionTcp tcp = new ConnectionTcp(m_Packer, clientSocket, m_AsyncReceive, m_AsyncSend);
+                XSFNet.Instance.PushEventAccept(tcp, m_Handler);
 
-                    // 开始异步接受下一个连接请求
-                    m_Socket?.BeginAccept(m_AsyncAccept, this);
-                }
+                // 开始异步接受下一个连接请求
+                m_Socket?.BeginAccept(m_AsyncAccept, this);
             }
             catch(Exception e)
             {
@@ -360,10 +349,10 @@ namespace XSF
         }
 
 
-        public void Close()
+        public bool Close()
         {
             if (m_nState == NetState.Release || m_nState == NetState.Close)
-                return;
+                return false;
 
             m_nState = NetState.Close;
 
@@ -388,9 +377,9 @@ namespace XSF
                 {
 
                 }
-
-                m_Socket = null;
             }
+
+            return true;
         }
 
         

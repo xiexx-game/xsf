@@ -73,6 +73,8 @@ namespace XSF
 
         public virtual void OnClose() {}
 
+        public virtual void OnUpdate(uint nDeltaTime) {}
+
         public virtual ModuleRunCode OnStartCheck() { return ModuleRunCode.OK; }
         public virtual ModuleRunCode OnCloseCheck() { return ModuleRunCode.OK; }
     }

@@ -10,12 +10,17 @@ enum CMSGID {
     CMSGID_None = 0;
     //MESSAGE_ID_START
     
-    Clt_Gt_Handshake = 1;             // client --> gate 握手请求
-    Gt_Clt_Handshake = 2;             // gate --> client 握手反馈
-    Clt_Gt_Heartbeat = 3;             // client --> gate 心跳 请求
-    Gt_Clt_Heartbeat = 4;             // gate --> client 心跳 反馈
-    Clt_L_Login = 5;                  // client --> login 登录
+    Clt_Gt_Handshake = 1;           // client --> Gate 握手
+    Gt_Clt_Handshake = 2;           // gate --> client 握手反馈
+    Clt_Gt_Heartbeat = 3;           // client --> gate 心跳
+    Gt_Clt_Heartbeat = 4;           // gate --> client 心跳反馈
+
+    Gt_Clt_Disconnect = 5;        // gate --> client 服务器断开连接
+    Clt_G_Login = 6;              // client --> login 登录
+    L_Clt_LoginResult = 7;        // login --> client 登录结果
+
+    G_Clt_LoginResult = 9;        // game --> client 登录结果
     
     //MESSAGE_ID_END
-    CMSGID_Max = 2000;
+    CMSGID_Max = 100;
 }

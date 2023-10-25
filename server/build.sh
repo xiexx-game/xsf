@@ -15,3 +15,4 @@ BuildServer() {
 
 BuildServer Center
 BuildServer Gate
+BuildServer Game

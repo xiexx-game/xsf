@@ -77,6 +77,8 @@ namespace XSF
 
         internal void PushEventError(IConnection connection, INetHandler? handler, NetError error)
         {
+            //Serilog.Log.Information("PushEventError error=" + error);
+
             NetInfo info;
             info.type = NetInfoType.Error;
             info.data = null;
@@ -95,7 +97,7 @@ namespace XSF
 
         internal void PushEventData(IConnection connection, INetHandler? handler, IMessage message, ushort nMessageID, uint nRawID, byte[] data)
         {
-            Serilog.Log.Information("PushEventData data 1 nMessageID=" + message.ID);
+            //Serilog.Log.Information("PushEventData data 1 nMessageID=" + message.ID);
             NetInfo info;
             info.type = NetInfoType.Data;
             info.data = data;
@@ -108,10 +110,10 @@ namespace XSF
 
             lock (m_Lock)
             {
-                Serilog.Log.Information("PushEventData data 1");
+                //Serilog.Log.Information("PushEventData data 1");
                 m_EventQueue.Push(info);
             }
-            Serilog.Log.Information("PushEventData data 1");
+            //Serilog.Log.Information("PushEventData data 1");
         }
 
         internal void PushEventConnected(IConnection connection, INetHandler? handler)
@@ -155,7 +157,7 @@ namespace XSF
             NetInfo info;
             while (m_EventQueue != null && m_EventQueue.Pop(out info))
             {
-                Serilog.Log.Information("Net.Dispatch type=" + info.type);
+                //Serilog.Log.Information("Net.Dispatch type=" + info.type);
                 switch (info.type)
                 {
                     case NetInfoType.Connected:
@@ -184,28 +186,28 @@ namespace XSF
 
         private void OnEndConnect(IAsyncResult iar)
         {
-            Serilog.Log.Error("XSFNet.OnEndConnect start ...");
+            //Serilog.Log.Error("XSFNet.OnEndConnect start ...");
             IAsyncCallback? callback = iar.AsyncState as IAsyncCallback;
             callback?.DoConnect(iar);
         }
 
         private void OnEndSend(IAsyncResult iar)
         {
-            Serilog.Log.Error("XSFNet.OnEndSend start ...");
+            //Serilog.Log.Error("XSFNet.OnEndSend start ...");
             IAsyncCallback? callback = iar.AsyncState as IAsyncCallback;
             callback?.DoSend(iar);
         }
 
         private void OnEndReceive(IAsyncResult iar)
         {
-            Serilog.Log.Error("XSFNet.OnEndReceive start ...");
+            //Serilog.Log.Error("XSFNet.OnEndReceive start ...");
             IAsyncCallback? callback = iar.AsyncState as IAsyncCallback;
             callback?.DoReceive(iar);
         }
 
         private void OnEndAccept(IAsyncResult iar)
         {
-            Serilog.Log.Error("XSFNet.OnEndAccept start ...");
+            //Serilog.Log.Error("XSFNet.OnEndAccept start ...");
             IAsyncCallback? callback = iar.AsyncState as IAsyncCallback;
             callback?.DoAccept(iar);
         }

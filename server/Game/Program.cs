@@ -5,15 +5,14 @@ namespace Gate // Note: actual namespace depends on the project name.
     {
         static void Main(string[] args)
         {
-            XSF.XSFUtil.Server.Init(XSF.EP.Gate, args);
+            XSF.XSFUtil.Server.Init(XSF.EP.Game, args);
+            XsfScp.SchemaModule.CreateModule();
             XsfMsg.MessageModule.CreateModule();
+            
             CC.ICenterConnector.CreateModule((int)ModuleID.CenterConnector, ServerInfoHandler.Instance);
-
-            GateClient.ClientManager.CreateModule();
-            ConnectorManager.CreateModule();
+            GateA.IGateAcceptor.CreateModule((int)ModuleID.GateAcceptor, new GateHandler());
 
             XSF.XSFUtil.Server.Run();
-
         }
     }
 }

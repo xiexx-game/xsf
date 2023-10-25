@@ -20,7 +20,7 @@ namespace CC
 
     public abstract class ICenterConnector : NetConnector
     {
-        public static ICenterConnector CreateModule(int nID, IServerInfoHandler handler)
+        public static void CreateModule(int nID, IServerInfoHandler handler)
         {
             var connector = new CenterConnector();
             connector.m_Handler = handler;
@@ -32,8 +32,6 @@ namespace CC
             init.NeedReconnect = true;
 
             XSFUtil.Server.AddModule(connector, init);
-
-            return connector;
         }
     }
 }

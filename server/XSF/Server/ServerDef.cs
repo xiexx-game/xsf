@@ -63,11 +63,10 @@ namespace XSF
             byte[] data = BitConverter.GetBytes(id);
 
             ServerID sid;
-            int pos = 0;
+            int pos = 2;
             sid.ID = BitConverter.ToUInt16(data, pos);
-            pos += sizeof(ushort);
-            sid.Type = data[pos++];
-            sid.Index = data[pos++];
+            sid.Type = data[1];
+            sid.Index = data[0];
 
             return sid;
         }
@@ -76,10 +75,10 @@ namespace XSF
         {
             byte[] all = new byte[4];
             byte[] data = BitConverter.GetBytes(sid.ID);
-            all[0] = data[0];
-            all[1] = data[1];
-            all[2] = sid.Type;
-            all[3] = sid.Index;
+            all[0] = sid.Index;
+            all[1] = sid.Type;
+            all[2] = data[0];
+            all[3] = data[1];
 
             return BitConverter.ToUInt32(all, 0);
         }
@@ -99,8 +98,8 @@ namespace XSF
             int pos = 0;
             cid.ID = BitConverter.ToUInt16(data, pos);
             pos += sizeof(ushort);
-            cid.Gate = data[pos++];
             cid.Key = data[pos++];
+            cid.Gate = data[pos++];
 
             return cid;
         }
@@ -111,8 +110,8 @@ namespace XSF
             byte[] data = BitConverter.GetBytes(cid.ID);
             all[0] = data[0];
             all[1] = data[1];
-            all[2] = cid.Gate;
-            all[3] = cid.Key;
+            all[2] = cid.Key;
+            all[3] = cid.Gate;
 
             return BitConverter.ToUInt32(all, 0);
         }

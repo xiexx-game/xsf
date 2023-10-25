@@ -51,6 +51,13 @@ namespace CC
             return ModuleRunCode.Wait;
         }
 
+        public override void OnOK()
+        {
+            var message = XSFUtil.GetMessage((ushort)XsfPb.SMSGID.CcCServerOk) as XsfMsg.MSG_Cc_C_ServerOk;
+            message.mPB.ServerId = XSFUtil.Server.ID;
+            SendMessage(message);
+        }
+
         public override void SendHandshake()
         {
             Serilog.Log.Information("CenterConnector SendHandshake");
@@ -68,7 +75,7 @@ namespace CC
 
         public override void SendHeartbeat()
         {
-            Serilog.Log.Information("CenterConnector SendHeartbeat");
+            //Serilog.Log.Information("CenterConnector SendHeartbeat");
             var message = XSFUtil.GetMessage((ushort)XsfPb.SMSGID.CcCHeartbeat);
             SendMessage(message);
         }
@@ -120,7 +127,7 @@ namespace CC
             m_ServerInfos.Remove(nID);
             var sid = ServerID.GetSID(nID);
 
-            Serilog.Log.Information("服务器节点离线, id={0} [{1}-{2}-{3}]", nID, sid.ID, sid.Index, XSFUtil.EP2CNName(sid.Type));
+            Serilog.Log.Information("【中心服连接器】有服务器节点离线, id={0} [{1}-{2}-{3}]", nID, sid.ID, sid.Index, XSFUtil.EP2CNName(sid.Type));
             m_Handler.OnServerLost(nID);
         }
 
@@ -132,7 +139,7 @@ namespace CC
                 info.Status = NodeStatus.Ok;
                 var sid = ServerID.GetSID(nID);
 
-                Serilog.Log.Information("【中心服连接器】服务器已准备好, id={0} [{1}-{2}-{3}]", nID, sid.ID, sid.Index, XSFUtil.EP2CNName(sid.Type) );
+                Serilog.Log.Information("【中心服连接器】收到服务器节点已准备好, id={0} [{1}-{2}-{3}]", nID, sid.ID, sid.Index, XSFUtil.EP2CNName(sid.Type) );
 
                 m_Handler.OnServerOk(info);
             }

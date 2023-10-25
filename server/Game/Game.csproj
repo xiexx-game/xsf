@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="../lib/net6.0/XSF.dll" />
+    <Reference Include="../lib/net6.0/Message.dll" />
+    <Reference Include="../lib/net6.0/Schema.dll" />
+    <Reference Include="../lib/net6.0/CenterConnector.dll" />
+    <Reference Include="../lib/net6.0/GateAcceptor.dll" />
+    <Reference Include="../3rd/Google.Protobuf/Google.Protobuf.dll" />
+    <ProjectReference Include="../XSF/XSF.csproj" />
+    <ProjectReference Include="../Message/Message.csproj" />
+    <ProjectReference Include="../Schema/Schema.csproj" />
+    <ProjectReference Include="../CenterConnector/CenterConnector.csproj" />
+    <ProjectReference Include="../GateAcceptor/GateAcceptor.csproj" />
+  </ItemGroup>
+
+</Project>

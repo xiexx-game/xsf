@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////////////////////
 // 
-// 文件：server/CenterConnector/MessageExecutor.cs
+// 文件：server/GateAcceptor/MessageExecutor.cs
 // 作者：Xoen Xie
 // 时间：2023/06/19
 // 描述：消息处理
@@ -10,8 +10,9 @@
 #pragma warning disable CS8600, CS8602, CS8604
 using XSF;
 
-namespace CC
+namespace GateA
 {
+    /*
     internal class Executor_C_Cc_Handshake : IMessageExecutor
     {
         public void OnExecute(object NetObj, IMessage message, ushort nMessageID, uint nRawID, byte[] rawData)
@@ -77,4 +78,5 @@ namespace CC
             XSFUtil.Server.Stop();
         }
     }
+    */
 }

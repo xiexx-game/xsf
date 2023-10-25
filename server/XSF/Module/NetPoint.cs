@@ -126,7 +126,6 @@ namespace XSF
         public void OnError(IConnection connection, NetError nErrorCode)
         {
             Serilog.Log.Error("NetPoint.OnError, name={0}, id=[{1}|{2}-{3}-{4}]", Owner.Name, ID, SID.ID, XSFUtil.EP2CNName(SID.Type), SID.Index);
-            Owner.OnNPLost(this);
             Owner.Delete(this);
         }
 

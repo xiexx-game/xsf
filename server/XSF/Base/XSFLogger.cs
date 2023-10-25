@@ -24,7 +24,7 @@ namespace XSF
                 config = config.WriteTo.Console();
 
             string logName = "";
-            int logIndex = 0;
+            int logIndex = 1;
 
             string dir = $"{InitData.WorkDir}/logs";
             if(Directory.Exists(dir))

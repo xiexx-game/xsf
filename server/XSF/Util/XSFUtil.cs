@@ -7,7 +7,7 @@
 // 说明：
 //
 //////////////////////////////////////////////////////////////////////////
-#pragma warning disable CS8602, CS8618, CS8600, CS8604
+#pragma warning disable CS8602, CS8618, CS8600, CS8604, CS8603
 using System.Diagnostics;
 
 namespace XSF
@@ -53,6 +53,11 @@ namespace XSF
         public static IMessage GetMessage(ushort nID)
         {
             return messageHelper.GetMessage(nID);
+        }
+
+        public static IConnection Listen(INetPacker packer, INetHandler handler, int port)
+        {
+            return XSFNet.Instance.Listen(packer, handler, port);
         }
 
         public static void SetMessageExecutor(ushort nID, IMessageExecutor executor)

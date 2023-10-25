@@ -16,8 +16,6 @@ namespace Center // Note: actual namespace depends on the project name.
             NodeManager.CreateModule();
 
             XSF.XSFUtil.Server.Run();
-
-            Console.WriteLine("Program main end");
         }
     }
 }

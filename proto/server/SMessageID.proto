@@ -24,6 +24,15 @@ enum SMSGID
 	C_Cc_ServerOk = 3010;     // center --> connector 服务器已准备好
 	C_Cc_Stop = 3011;         // center --> connector 关服
 
+	Gt_GtA_Handshake = 3100;  // gate --> gate acceptor 握手
+	GtA_Gt_Handshake = 3101;  // gate acceptor --> gate  握手反馈
+	Gt_GtA_Heartbeat = 3102;  // gate --> gate acceptor 心跳
+	Gt_GtA_ClientClose = 3103;  // gete --> gate acceptor 客户端连接关闭
+	GtA_Gt_ClientDisconnect = 3104;  // gate acceptor --> gate 主动关闭客户端连接
+	GtA_Gt_ClientMessage = 3105;    // gate acceptor --> gate 发往客户端消息
+	GtA_Gt_Broadcast = 3106;       // gate acceptor --> gate 广播消息
+	GtA_Gt_SetServerID = 3107;		// gate acceptor --> gate 设置服务器id
+
 
     //MESSAGE_ID_END
     SMSGID_Max = 5000;

@@ -264,7 +264,7 @@ public class NodeManager : DicNPManager
 
         // 把当前已经收到的服务器信息下发给新加入的节点
         uint nID = np.ID;
-        Serilog.Log.Information("OnNPConnected nID=" + nID);
+        //Serilog.Log.Information("OnNPConnected nID=" + nID);
         foreach (KeyValuePair<uint, ServerInfo> kvp in m_Nodes)
         {
             if(kvp.Key != nID)
@@ -322,14 +322,30 @@ public class NodeManager : DicNPManager
 
         var message = XSFUtil.GetMessage((ushort)XsfPb.SMSGID.CCcServerLost) as XsfMsg.MSG_C_Cc_ServerLost;
         message.mPB.ServerId = np.ID;
-        Serilog.Log.Information("服务器已离线, id={0}", np.ID);
+        Serilog.Log.Information("【中心服】有服务器节点离线, id={0}", np.ID);
 
         Broadcast(message, 0);
     }
 
     public void OnNodeOk(uint nID)
     {
+        ServerInfo node = null;
+        if(m_Nodes.TryGetValue(nID, out node))
+        {
+            node.Status = NodeStatus.Ok;
+        }
+        else
+        {
+            Serilog.Log.Information("NodeManager OnNodeOk, node not exist, id={0}", nID);
+            return;
+        }
 
+        Serilog.Log.Information("【中心服】收到服务器已准备好 id={0}", nID);
+
+        var message = XSFUtil.GetMessage((ushort)XsfPb.SMSGID.CCcServerOk) as XsfMsg.MSG_C_Cc_ServerOk;
+        message.mPB.ServerId = nID;
+
+        Broadcast(message, nID);
     }
 
 

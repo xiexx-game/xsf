@@ -30,7 +30,7 @@ namespace XSF
         bool SendMessage(IMessage message);
 
         bool SendData(byte[] data);
-        void Close();
+        bool Close();
         void DoStart(INetHandler handler);
     }
 

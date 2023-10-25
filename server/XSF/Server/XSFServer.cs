@@ -66,6 +66,8 @@ namespace XSF
             }
         }
 
+        private ulong m_LastUpdateTime;
+
         public XSFServer()
         {
             m_InitList = new List<ModuleInfo>();
@@ -110,7 +112,6 @@ namespace XSF
 
             m_MainThread = new Thread(MainThreadMethod);
             m_MainThread.Start();
-
             m_MainThread.Join();
 
             m_nExitFlag ++;
@@ -119,12 +120,12 @@ namespace XSF
             {
                 m_StopEvent.Set();
             }
+
+            Serilog.Log.Information("Server Run 退出");
         }
 
         private void Release()
         {
-            XSFTimer.Instance.Release();
-
             Serilog.Log.Information("服务器所有处理完毕，退出");
 
             XSFLogger.End();
@@ -142,9 +143,7 @@ namespace XSF
             if(m_nExitFlag == 0)
             {
                 m_StopEvent = new ManualResetEvent(false);
-
                 Stop();
-
                 Serilog.Log.Information("服务器结束中，等待主线程结束");
                 m_StopEvent.WaitOne();
             }
@@ -191,6 +190,8 @@ namespace XSF
             }
 
             Serilog.Log.Debug("主逻辑线程已退出");
+
+            XSFTimer.Instance.Release();
         }
 
         private void StatusUpdate()
@@ -307,7 +308,7 @@ namespace XSF
 
                     if(isAllOK)
                     {
-                        Serilog.Log.Information("======================= 服务器所有模块都已启动完毕 =======================");
+                        Serilog.Log.Information("==== [{0} {1}-{2}-{3}] 所有模块都已启动完毕 ====", XSFUtil.Server.ID, XSFUtil.Server.SID.ID, XSFUtil.EP2CNName(XSFUtil.Server.SID.Type), XSFUtil.Server.SID.Index);
                         for(int i = 0; i < m_Modules.Length; i ++)
                         {
                             if(m_Modules[i] != null)
@@ -315,7 +316,27 @@ namespace XSF
                         }
 
                         m_nStatus = RunStatus.Running;
+                        m_LastUpdateTime = XSFUtil.CurrentMS;
                     }
+                }
+                break;
+
+            case RunStatus.Running:
+                {
+                    var current = XSFUtil.CurrentMS;
+                    if(current >= m_LastUpdateTime + 20)
+                    {
+                        var nDeltaTime = current - m_LastUpdateTime;
+
+                        for(int i = 0; i < m_Modules.Length; i ++)
+                        {
+                            if(m_Modules[i] != null)
+                                m_Modules[i].OnUpdate((uint)nDeltaTime);
+                        }
+
+                        m_LastUpdateTime = current;
+                    }
+                    
                 }
                 break;
 
@@ -364,7 +385,7 @@ namespace XSF
 
             case RunStatus.Stop:
                 {
-                    Serilog.Log.Information("======================= 服务器所有模块都已关闭完毕 =======================");
+                    Serilog.Log.Information("==== [{0} {1}-{2}-{3}] 所有模块都已正常关闭 ====", XSFUtil.Server.ID, XSFUtil.Server.SID.ID, XSFUtil.EP2CNName(XSFUtil.Server.SID.Type), XSFUtil.Server.SID.Index);
                     for(int i = 0; i < m_Modules.Length; i ++)
                     {
                         if(m_Modules[i] != null)
@@ -511,6 +532,7 @@ namespace XSF
 
                 if(Config.Me.ep == EP.Center) {
                     Config.Me.Name = "中心服";
+                    m_SID.Index = 1;
                 }
                 
                 XmlElement eleServer = reader.mRootNode.SelectSingleNode("server") as XmlElement;

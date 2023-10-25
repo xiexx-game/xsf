@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package xsf_pb;
+
+// gate --> gate acceptor 握手
+message Gt_GtA_Handshake {
+    uint32 server_id = 1;   // 服务器id
+}
+
+// gate acceptor --> gate  握手反馈
+message GtA_Gt_Handshake {
+    uint32 server_id = 1;   // 服务器id
+}
+
+// gate --> gate acceptor 心跳
+message Gt_GtA_Heartbeat {
+
+}
+
+// gate --> gate acceptor 客户端连接关闭
+message Gt_GtA_ClientClose {
+    uint32 client_id = 1;
+}
+
+// gate acceptor --> gate 主动关闭客户端连接
+message GtA_Gt_ClientDisconnect {
+    uint32 client_id = 1;
+    uint32 reason = 2;
+}
+
+// gate acceptor --> gate 发往客户端消息
+message GtA_Gt_ClientMessage {
+    repeated uint32 client_id = 1;
+    bytes client_message = 2;
+}
+
+// gate acceptor --> gate 消息广播
+message GtA_Gt_Broadcast {
+    bytes client_message = 1;
+}
+
+// gate acceptor --> gate 设置服务器id
+message GtA_Gt_SetServerID {
+    uint32 client_id = 1;
+    uint32 ep = 2;
+    uint32 server_id = 3;
+}
+

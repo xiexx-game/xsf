@@ -105,14 +105,11 @@ namespace XSF
 
         public void OnAccept(IConnection connection) 
         {
-            Serilog.Log.Information("NPManager OnAccept ...1");
             if(!CanConnected)
             {
                 connection.Close();
                 return;
             }
-
-            Serilog.Log.Information("NPManager OnAccept ...2");
 
             NetPoint np = NewNP();
             np.Create(this, connection);
@@ -124,7 +121,7 @@ namespace XSF
 
     public class DicNPManager : NPManager
     {
-        Dictionary<uint, NetPoint> m_NetPoints;
+        protected Dictionary<uint, NetPoint> m_NetPoints;
 
         public DicNPManager()
         {
@@ -202,9 +199,9 @@ namespace XSF
 
     public class FastNPManager : NPManager
     {
-        private NetPoint[] m_NetPoints;
+        protected NetPoint[] m_NetPoints;
 
-        private uint m_nTotal;
+        protected uint m_nTotal;
 
         public override bool Init(ModuleInit init)
         {

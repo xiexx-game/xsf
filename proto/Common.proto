@@ -4,13 +4,17 @@ syntax = "proto3";
 
 package xsf_pb;
 
-
-// 角色属性
-enum ActorProp {
-    Nickname = 0;             // 昵称
-    ActorID = 1;              // actor_id
-    Headicon = 2;             // 头像
-    CreateTime = 3;           // 出生时间
-
-    Max = 4;
+enum DisconnectReason {
+    DR_None = 0;
+    Full = 1;      // 服务器已满
+    HTTimeout = 2; // 心跳超时
+    ServerDown = 3; // 服务器关闭
+    MsgInvalid = 4; // 消息非法
+    LoginError = 5;  // 登录错误
 }
+
+enum LoginResult {
+    Success = 0;    // 登录成功
+    SystemError = 1;  // 系统错误
+}
+
