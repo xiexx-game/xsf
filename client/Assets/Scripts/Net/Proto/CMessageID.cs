@@ -24,11 +24,12 @@ namespace XsfPb {
     static CMessageIDReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "ChBDTWVzc2FnZUlELnByb3RvEgZ4c2ZfcGIqkwEKBkNNU0dJRBIPCgtDTVNH",
+            "ChBDTWVzc2FnZUlELnByb3RvEgZ4c2ZfcGIq1wEKBkNNU0dJRBIPCgtDTVNH",
             "SURfTm9uZRAAEhQKEENsdF9HdF9IYW5kc2hha2UQARIUChBHdF9DbHRfSGFu",
             "ZHNoYWtlEAISFAoQQ2x0X0d0X0hlYXJ0YmVhdBADEhQKEEd0X0NsdF9IZWFy",
-            "dGJlYXQQBBIPCgtDbHRfTF9Mb2dpbhAFEg8KCkNNU0dJRF9NYXgQ0A9iBnBy",
-            "b3RvMw=="));
+            "dGJlYXQQBBIVChFHdF9DbHRfRGlzY29ubmVjdBAFEg8KC0NsdF9HX0xvZ2lu",
+            "EAYSFQoRTF9DbHRfTG9naW5SZXN1bHQQBxIVChFHX0NsdF9Mb2dpblJlc3Vs",
+            "dBAJEg4KCkNNU0dJRF9NYXgQZGIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::XsfPb.CMSGID), }, null));
@@ -46,7 +47,7 @@ namespace XsfPb {
     /// </summary>
     [pbr::OriginalName("CMSGID_None")] None = 0,
     /// <summary>
-    /// client --> gate 握手请求
+    /// client --> Gate 握手
     /// </summary>
     [pbr::OriginalName("Clt_Gt_Handshake")] CltGtHandshake = 1,
     /// <summary>
@@ -54,21 +55,33 @@ namespace XsfPb {
     /// </summary>
     [pbr::OriginalName("Gt_Clt_Handshake")] GtCltHandshake = 2,
     /// <summary>
-    /// client --> gate 心跳 请求
+    /// client --> gate 心跳
     /// </summary>
     [pbr::OriginalName("Clt_Gt_Heartbeat")] CltGtHeartbeat = 3,
     /// <summary>
-    /// gate --> client 心跳 反馈
+    /// gate --> client 心跳反馈
     /// </summary>
     [pbr::OriginalName("Gt_Clt_Heartbeat")] GtCltHeartbeat = 4,
     /// <summary>
+    /// gate --> client 服务器断开连接
+    /// </summary>
+    [pbr::OriginalName("Gt_Clt_Disconnect")] GtCltDisconnect = 5,
+    /// <summary>
     /// client --> login 登录
     /// </summary>
-    [pbr::OriginalName("Clt_L_Login")] CltLLogin = 5,
+    [pbr::OriginalName("Clt_G_Login")] CltGLogin = 6,
+    /// <summary>
+    /// login --> client 登录结果
+    /// </summary>
+    [pbr::OriginalName("L_Clt_LoginResult")] LCltLoginResult = 7,
+    /// <summary>
+    /// game --> client 登录结果
+    /// </summary>
+    [pbr::OriginalName("G_Clt_LoginResult")] GCltLoginResult = 9,
     /// <summary>
     ///MESSAGE_ID_END
     /// </summary>
-    [pbr::OriginalName("CMSGID_Max")] Max = 2000,
+    [pbr::OriginalName("CMSGID_Max")] Max = 100,
   }
 
   #endregion

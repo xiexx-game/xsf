@@ -27,8 +27,9 @@ namespace XsfPb {
             "CgxDbGllbnQucHJvdG8SBnhzZl9wYiISChBDbHRfR3RfSGFuZHNoYWtlIhIK",
             "EEd0X0NsdF9IYW5kc2hha2UiIAoQQ2x0X0d0X0hlYXJ0YmVhdBIMCgR0aW1l",
             "GAEgASgEIjwKEEd0X0NsdF9IZWFydGJlYXQSEwoLY2xpZW50X3RpbWUYASAB",
-            "KAQSEwoLc2VydmVyX3RpbWUYAiABKAQiIQoLQ2x0X0xfTG9naW4SEgoKYWNj",
-            "b3VudF9pZBgBIAEoDWIGcHJvdG8z"));
+            "KAQSEwoLc2VydmVyX3RpbWUYAiABKAQiMAoLQ2x0X0dfTG9naW4SDwoHYWNj",
+            "b3VudBgBIAEoCRIQCghwYXNzd29yZBgCIAEoCSIjChFHdF9DbHRfRGlzY29u",
+            "bmVjdBIOCgZyZWFzb24YASABKAViBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -36,7 +37,8 @@ namespace XsfPb {
             new pbr::GeneratedClrTypeInfo(typeof(global::XsfPb.Gt_Clt_Handshake), global::XsfPb.Gt_Clt_Handshake.Parser, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::XsfPb.Clt_Gt_Heartbeat), global::XsfPb.Clt_Gt_Heartbeat.Parser, new[]{ "Time" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::XsfPb.Gt_Clt_Heartbeat), global::XsfPb.Gt_Clt_Heartbeat.Parser, new[]{ "ClientTime", "ServerTime" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::XsfPb.Clt_L_Login), global::XsfPb.Clt_L_Login.Parser, new[]{ "AccountId" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::XsfPb.Clt_G_Login), global::XsfPb.Clt_G_Login.Parser, new[]{ "Account", "Password" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::XsfPb.Gt_Clt_Disconnect), global::XsfPb.Gt_Clt_Disconnect.Parser, new[]{ "Reason" }, null, null, null)
           }));
     }
     #endregion
@@ -555,11 +557,11 @@ namespace XsfPb {
   /// <summary>
   /// client --> login 登录
   /// </summary>
-  public sealed partial class Clt_L_Login : pb::IMessage<Clt_L_Login> {
-    private static readonly pb::MessageParser<Clt_L_Login> _parser = new pb::MessageParser<Clt_L_Login>(() => new Clt_L_Login());
+  public sealed partial class Clt_G_Login : pb::IMessage<Clt_G_Login> {
+    private static readonly pb::MessageParser<Clt_G_Login> _parser = new pb::MessageParser<Clt_G_Login>(() => new Clt_G_Login());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<Clt_L_Login> Parser { get { return _parser; } }
+    public static pb::MessageParser<Clt_G_Login> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
@@ -572,58 +574,69 @@ namespace XsfPb {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public Clt_L_Login() {
+    public Clt_G_Login() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public Clt_L_Login(Clt_L_Login other) : this() {
-      accountId_ = other.accountId_;
+    public Clt_G_Login(Clt_G_Login other) : this() {
+      account_ = other.account_;
+      password_ = other.password_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public Clt_L_Login Clone() {
-      return new Clt_L_Login(this);
+    public Clt_G_Login Clone() {
+      return new Clt_G_Login(this);
     }
 
-    /// <summary>Field number for the "account_id" field.</summary>
-    public const int AccountIdFieldNumber = 1;
-    private uint accountId_;
-    /// <summary>
-    /// 账号ID
-    /// </summary>
+    /// <summary>Field number for the "account" field.</summary>
+    public const int AccountFieldNumber = 1;
+    private string account_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public uint AccountId {
-      get { return accountId_; }
+    public string Account {
+      get { return account_; }
       set {
-        accountId_ = value;
+        account_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "password" field.</summary>
+    public const int PasswordFieldNumber = 2;
+    private string password_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Password {
+      get { return password_; }
+      set {
+        password_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as Clt_L_Login);
+      return Equals(other as Clt_G_Login);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(Clt_L_Login other) {
+    public bool Equals(Clt_G_Login other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (AccountId != other.AccountId) return false;
+      if (Account != other.Account) return false;
+      if (Password != other.Password) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (AccountId != 0) hash ^= AccountId.GetHashCode();
+      if (Account.Length != 0) hash ^= Account.GetHashCode();
+      if (Password.Length != 0) hash ^= Password.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -637,9 +650,13 @@ namespace XsfPb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (AccountId != 0) {
-        output.WriteRawTag(8);
-        output.WriteUInt32(AccountId);
+      if (Account.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(Account);
+      }
+      if (Password.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(Password);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -649,8 +666,11 @@ namespace XsfPb {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (AccountId != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(AccountId);
+      if (Account.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Account);
+      }
+      if (Password.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Password);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -659,12 +679,154 @@ namespace XsfPb {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(Clt_L_Login other) {
+    public void MergeFrom(Clt_G_Login other) {
       if (other == null) {
         return;
       }
-      if (other.AccountId != 0) {
-        AccountId = other.AccountId;
+      if (other.Account.Length != 0) {
+        Account = other.Account;
+      }
+      if (other.Password.Length != 0) {
+        Password = other.Password;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            Account = input.ReadString();
+            break;
+          }
+          case 18: {
+            Password = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  /// <summary>
+  /// gate --> client 服务器断开连接
+  /// </summary>
+  public sealed partial class Gt_Clt_Disconnect : pb::IMessage<Gt_Clt_Disconnect> {
+    private static readonly pb::MessageParser<Gt_Clt_Disconnect> _parser = new pb::MessageParser<Gt_Clt_Disconnect>(() => new Gt_Clt_Disconnect());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<Gt_Clt_Disconnect> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::XsfPb.ClientReflection.Descriptor.MessageTypes[5]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public Gt_Clt_Disconnect() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public Gt_Clt_Disconnect(Gt_Clt_Disconnect other) : this() {
+      reason_ = other.reason_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public Gt_Clt_Disconnect Clone() {
+      return new Gt_Clt_Disconnect(this);
+    }
+
+    /// <summary>Field number for the "reason" field.</summary>
+    public const int ReasonFieldNumber = 1;
+    private int reason_;
+    /// <summary>
+    /// 断开原因
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int Reason {
+      get { return reason_; }
+      set {
+        reason_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as Gt_Clt_Disconnect);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(Gt_Clt_Disconnect other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Reason != other.Reason) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Reason != 0) hash ^= Reason.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (Reason != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(Reason);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (Reason != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Reason);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(Gt_Clt_Disconnect other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Reason != 0) {
+        Reason = other.Reason;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -678,7 +840,7 @@ namespace XsfPb {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            AccountId = input.ReadUInt32();
+            Reason = input.ReadInt32();
             break;
           }
         }

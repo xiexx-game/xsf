@@ -27,7 +27,10 @@ public sealed class MessagePool : Singleton<MessagePool>
 		m_MessagePool[(int)CMSGID.GtCltHandshake] = new MSG_Gt_Clt_Handshake();
 		m_MessagePool[(int)CMSGID.CltGtHeartbeat] = new MSG_Clt_Gt_Heartbeat();
 		m_MessagePool[(int)CMSGID.GtCltHeartbeat] = new MSG_Gt_Clt_Heartbeat();
-		m_MessagePool[(int)CMSGID.CltLLogin] = new MSG_Clt_L_Login();
+		m_MessagePool[(int)CMSGID.GtCltDisconnect] = new MSG_Gt_Clt_Disconnect();
+		m_MessagePool[(int)CMSGID.CltGLogin] = new MSG_Clt_G_Login();
+		m_MessagePool[(int)CMSGID.LCltLoginResult] = new MSG_L_Clt_LoginResult();
+		m_MessagePool[(int)CMSGID.GCltLoginResult] = new MSG_G_Clt_LoginResult();
         //MESSAGE_END
         // 上面的注释定义必须保留，用来自动生成代码
         return true;

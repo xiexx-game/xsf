@@ -24,13 +24,18 @@ namespace XsfPb {
     static SMessageIDReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "ChBTTWVzc2FnZUlELnByb3RvEgZ4c2ZfcGIqhQIKBlNNU0dJRBIPCgtTTVNH",
+            "ChBTTWVzc2FnZUlELnByb3RvEgZ4c2ZfcGIqzAMKBlNNU0dJRBIPCgtTTVNH",
             "SURfTm9uZRAAEgoKBVN0YXJ0ELgXEhMKDkNjX0NfSGFuZHNoYWtlELkXEhMK",
             "DkNfQ2NfSGFuZHNoYWtlELoXEhMKDkNjX0NfSGVhcnRiZWF0ELsXEhQKD0Nj",
             "X0NfU2VydmVySW5mbxC9FxIUCg9DX0NjX1NlcnZlckluZm8QvhcSFAoPQ2Nf",
             "Q19TZXJ2ZXJMb3N0EL8XEhQKD0NfQ2NfU2VydmVyTG9zdBDAFxISCg1DY19D",
             "X1NlcnZlck9rEMEXEhIKDUNfQ2NfU2VydmVyT2sQwhcSDgoJQ19DY19TdG9w",
-            "EMMXEg8KClNNU0dJRF9NYXgQiCdiBnByb3RvMw=="));
+            "EMMXEhUKEEd0X0d0QV9IYW5kc2hha2UQnBgSFQoQR3RBX0d0X0hhbmRzaGFr",
+            "ZRCdGBIVChBHdF9HdEFfSGVhcnRiZWF0EJ4YEhcKEkd0X0d0QV9DbGllbnRD",
+            "bG9zZRCfGBIcChdHdEFfR3RfQ2xpZW50RGlzY29ubmVjdBCgGBIZChRHdEFf",
+            "R3RfQ2xpZW50TWVzc2FnZRChGBIVChBHdEFfR3RfQnJvYWRjYXN0EKIYEhcK",
+            "Ekd0QV9HdF9TZXRTZXJ2ZXJJRBCjGBIPCgpTTVNHSURfTWF4EIgnYgZwcm90",
+            "bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::XsfPb.SMSGID), }, null));
@@ -86,6 +91,38 @@ namespace XsfPb {
     /// center --> connector 关服
     /// </summary>
     [pbr::OriginalName("C_Cc_Stop")] CCcStop = 3011,
+    /// <summary>
+    /// gate --> gate acceptor 握手
+    /// </summary>
+    [pbr::OriginalName("Gt_GtA_Handshake")] GtGtAHandshake = 3100,
+    /// <summary>
+    /// gate acceptor --> gate  握手反馈
+    /// </summary>
+    [pbr::OriginalName("GtA_Gt_Handshake")] GtAGtHandshake = 3101,
+    /// <summary>
+    /// gate --> gate acceptor 心跳
+    /// </summary>
+    [pbr::OriginalName("Gt_GtA_Heartbeat")] GtGtAHeartbeat = 3102,
+    /// <summary>
+    /// gete --> gate acceptor 客户端连接关闭
+    /// </summary>
+    [pbr::OriginalName("Gt_GtA_ClientClose")] GtGtAClientClose = 3103,
+    /// <summary>
+    /// gate acceptor --> gate 主动关闭客户端连接
+    /// </summary>
+    [pbr::OriginalName("GtA_Gt_ClientDisconnect")] GtAGtClientDisconnect = 3104,
+    /// <summary>
+    /// gate acceptor --> gate 发往客户端消息
+    /// </summary>
+    [pbr::OriginalName("GtA_Gt_ClientMessage")] GtAGtClientMessage = 3105,
+    /// <summary>
+    /// gate acceptor --> gate 广播消息
+    /// </summary>
+    [pbr::OriginalName("GtA_Gt_Broadcast")] GtAGtBroadcast = 3106,
+    /// <summary>
+    /// gate acceptor --> gate 设置服务器id
+    /// </summary>
+    [pbr::OriginalName("GtA_Gt_SetServerID")] GtAGtSetServerId = 3107,
     /// <summary>
     ///MESSAGE_ID_END
     /// </summary>

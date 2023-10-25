@@ -24,38 +24,52 @@ namespace XsfPb {
     static CommonReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "CgxDb21tb24ucHJvdG8SBnhzZl9wYipNCglBY3RvclByb3ASDAoITmlja25h",
-            "bWUQABILCgdBY3RvcklEEAESDAoISGVhZGljb24QAhIOCgpDcmVhdGVUaW1l",
-            "EAMSBwoDTWF4EARiBnByb3RvMw=="));
+            "CgxDb21tb24ucHJvdG8SBnhzZl9wYipoChBEaXNjb25uZWN0UmVhc29uEgsK",
+            "B0RSX05vbmUQABIICgRGdWxsEAESDQoJSFRUaW1lb3V0EAISDgoKU2VydmVy",
+            "RG93bhADEg4KCk1zZ0ludmFsaWQQBBIOCgpMb2dpbkVycm9yEAUqKwoLTG9n",
+            "aW5SZXN1bHQSCwoHU3VjY2VzcxAAEg8KC1N5c3RlbUVycm9yEAFiBnByb3Rv",
+            "Mw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::XsfPb.ActorProp), }, null));
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::XsfPb.DisconnectReason), typeof(global::XsfPb.LoginResult), }, null));
     }
     #endregion
 
   }
   #region Enums
-  /// <summary>
-  /// 角色属性
-  /// </summary>
-  public enum ActorProp {
+  public enum DisconnectReason {
+    [pbr::OriginalName("DR_None")] DrNone = 0,
     /// <summary>
-    /// 昵称
+    /// 服务器已满
     /// </summary>
-    [pbr::OriginalName("Nickname")] Nickname = 0,
+    [pbr::OriginalName("Full")] Full = 1,
     /// <summary>
-    /// actor_id
+    /// 心跳超时
     /// </summary>
-    [pbr::OriginalName("ActorID")] ActorId = 1,
+    [pbr::OriginalName("HTTimeout")] Httimeout = 2,
     /// <summary>
-    /// 头像
+    /// 服务器关闭
     /// </summary>
-    [pbr::OriginalName("Headicon")] Headicon = 2,
+    [pbr::OriginalName("ServerDown")] ServerDown = 3,
     /// <summary>
-    /// 出生时间
+    /// 消息非法
     /// </summary>
-    [pbr::OriginalName("CreateTime")] CreateTime = 3,
-    [pbr::OriginalName("Max")] Max = 4,
+    [pbr::OriginalName("MsgInvalid")] MsgInvalid = 4,
+    /// <summary>
+    /// 登录错误
+    /// </summary>
+    [pbr::OriginalName("LoginError")] LoginError = 5,
+  }
+
+  public enum LoginResult {
+    /// <summary>
+    /// 登录成功
+    /// </summary>
+    [pbr::OriginalName("Success")] Success = 0,
+    /// <summary>
+    /// 系统错误
+    /// </summary>
+    [pbr::OriginalName("SystemError")] SystemError = 1,
   }
 
   #endregion
