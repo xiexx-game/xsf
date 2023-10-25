@@ -67,6 +67,11 @@ public class SingleBlock
     {
         if(select != null)
             GameObject.Destroy(select.gameObject);
+
+        if(box != null)
+        {
+            GameObject.Destroy(box.select.gameObject);
+        }
             
         GameObject.Destroy(go);
     }

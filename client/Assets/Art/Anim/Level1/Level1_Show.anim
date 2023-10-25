@@ -3851,7 +3851,7 @@ AnimationClip:
     messageOptions: 0
   - time: 0.31666666
     functionName: OnAnimFinish
-    data: Camera
+    data: LevelCamera
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0

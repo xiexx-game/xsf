@@ -21,6 +21,7 @@ public sealed class UIPlay : UIBase
 	public GameObject BtnLeft { get; private set; }	// 
 	public TextMeshProUGUI Best { get; private set; }	// 
 	public TextMeshProUGUI CurrentValue { get; private set; }	// 
+	public GameObject Return { get; private set; }	// 
 // UI_PROP_END
 
     public override string Name { get { return "UIPlay"; } }
@@ -47,6 +48,9 @@ public sealed class UIPlay : UIBase
 		Best = RootT.Find("Title/Best").GetComponent<TextMeshProUGUI>();
 		// 
 		CurrentValue = RootT.Find("Title/CurrentValue").GetComponent<TextMeshProUGUI>();
+		// 
+		Return = RootT.Find("Return").gameObject;
+		UIEventClick.Set(Return, OnReturnClick);
         // UI_INIT_END
     }
 
@@ -83,6 +87,13 @@ public sealed class UIPlay : UIBase
 	{
 		
 		Level.Instance.MoveUp();
+	}
+
+
+	// 
+	private void OnReturnClick(GameObject go)
+	{
+		Level.Instance.GoHome();
 	}
 
     // UI_FUNC_APPEND

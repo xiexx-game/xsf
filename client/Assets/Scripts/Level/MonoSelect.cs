@@ -30,6 +30,11 @@ public class MonoSelect : MonoBehaviour
         SetColor(new Color32(85, 243, 0, 255));
     }
 
+    public void Hide()
+    {
+        gameObject.SetActive(false);
+    }
+
     public void ShowSelect(int nType)
     {
         if(nType == 0)

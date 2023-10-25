@@ -54,6 +54,7 @@ public class CameraMove : MonoBehaviour
             if(m_fLerp >= 1.0f)
             {
                 m_nStatus =  Status.None;
+                GameObject.Destroy(Start);
             }
         }
     }

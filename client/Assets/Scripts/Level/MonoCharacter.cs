@@ -53,6 +53,7 @@ public class MonoCharacter : MonoBehaviour
 
     public void Born(Vector3 pos, Vector3[] targets)
     {
+        gameObject.SetActive(true);
         transform.position = pos;
         m_nTargetIndex = 0;
         m_Targets = targets;

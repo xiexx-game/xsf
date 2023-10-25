@@ -32,6 +32,7 @@ public class Level : Singleton<Level>, ICharacterEvent, XSFAnimHandler
         PlayWait,
         Play,
         Moving,
+        HomeWait,
     }
 
     private RunStatus m_nStatus;
@@ -100,7 +101,7 @@ public class Level : Singleton<Level>, ICharacterEvent, XSFAnimHandler
                     if((m_Blocks[i].Status & (int)BlockStatus.Box) == (int)BlockStatus.Box)
                     {
                         m_Blocks[i].select.SetOK();
-                        m_Blocks[i].box.select.gameObject.SetActive(true);
+                        m_Blocks[i].box.select.Hide();
                     }
                     else
                     {
@@ -141,7 +142,7 @@ public class Level : Singleton<Level>, ICharacterEvent, XSFAnimHandler
         if(IsWin)
         {
             m_nStatus = RunStatus.None;
-            Debug.LogWarning("Is Win .......");
+            XSFUI.Instance.ShowUI((int)UIID.UIEnd);
         }
     }
 
@@ -254,6 +255,11 @@ public class Level : Singleton<Level>, ICharacterEvent, XSFAnimHandler
             //Debug.LogError("2222222222222");
             m_nStatus = RunStatus.Play;
         }
+        else if(m_nStatus == RunStatus.HomeWait)
+        {
+            XSFUI.Instance.ShowUI((int)UIID.UIMain);
+            m_nStatus = RunStatus.None;
+        }
         else
         {
             LoadAsset(SceneObjID.Lobby, LobbyConfig.sSceneObj);
@@ -305,7 +311,7 @@ public class Level : Singleton<Level>, ICharacterEvent, XSFAnimHandler
                 m_Blocks[i].Status = (int)BlockStatus.Road | (int)BlockStatus.Box | (int)BlockStatus.Point; 
                 PlayData.Objs[nObjIndex].transform.localPosition = m_Blocks[i].go.transform.localPosition;
                 m_Blocks[i].box = PlayData.Objs[nObjIndex].GetComponent<MonoBox>();
-                m_Blocks[i].box.select.gameObject.SetActive(false);
+                m_Blocks[i].box.select.Hide();
 
                 m_Blocks[i].select.ShowSelect(1);
 
@@ -411,6 +417,22 @@ public class Level : Singleton<Level>, ICharacterEvent, XSFAnimHandler
         MoveTo(Character.Row, nCol, Character.Row, nNextCol);
     }
 
+    public void GoHome()
+    {
+        if(m_nStatus == RunStatus.None || m_nStatus == RunStatus.Play)
+        {
+            for(int i = 0; i < m_Blocks.Length; i ++)
+            {
+                m_Blocks[i].Clear();
+            }
+
+            XSFUI.Instance.HideUI((int)UIID.UIPlay);
+
+            Character.Exit(PlayData.ExitPos);
+            m_nStatus = RunStatus.HomeWait;
+        }
+    }
+
     private SingleBlock[] m_Blocks;
     private int [] m_StatusCheck;
     private Dictionary<int, GameObject> m_Selects;
@@ -423,7 +445,7 @@ public class Level : Singleton<Level>, ICharacterEvent, XSFAnimHandler
         {
             if(LevelConfig.sarData[i] == "#") 
             {
-                m_Blocks[i].SetColor(BlockColor.Wall);
+                //m_Blocks[i].SetColor(BlockColor.Wall);
                 m_Blocks[i].Status = (int)BlockStatus.Wall;
             }
             else if(LevelConfig.sarData[i] == "-")
@@ -496,17 +518,18 @@ public class Level : Singleton<Level>, ICharacterEvent, XSFAnimHandler
 
     public void OnExitDone()
     {
-        Debug.LogError("OnExitDone 111111111");
+        Character.gameObject.SetActive(false);
         if(m_nStatus == RunStatus.ChangeWait)
         {
-            Debug.LogError("OnExitDone 333");
             LoadCharacter();
         }
         else if(m_nStatus == RunStatus.PlayWait)
         {
-            Debug.LogError("OnExitDone 22222");
             LobbyData.PlayReverse();
-            
+        }
+        else if(m_nStatus == RunStatus.HomeWait)
+        {
+            PlayData.PlayReverse();
         }
     }
 
@@ -519,24 +542,49 @@ public class Level : Singleton<Level>, ICharacterEvent, XSFAnimHandler
                 XSFUI.Instance.ShowUI(LobbyConfig.iUIID);
                 m_nStatus = RunStatus.None;
             }
+            else if(m_nStatus == RunStatus.HomeWait)
+            {
+                Character.Born(LobbyData.BornPos, LobbyData.EnterPos);
+                Addressables.ReleaseInstance(m_Objs[(int)SceneObjID.Playground]);
+            }
         }
         else if(param == "LobbyHide")
         {
             if(m_nStatus == RunStatus.PlayWait)
             {
+                LobbyData.gameObject.SetActive(false);
+
                 PlayData.gameObject.SetActive(true);
                 PlayData.PlayAnim();
             }
         }
         else if(param == "LevelShow")
         {
-            Character.Born(PlayData.BornPos, PlayData.EnterPos);
+            if(m_nStatus == RunStatus.PlayWait)
+            {
+                Character.Born(PlayData.BornPos, PlayData.EnterPos);
+            }
         }
-        else if(param == "Camera")
+        else if(param == "LevelHide")
+        {
+            if(m_nStatus == RunStatus.HomeWait)
+            {
+                LobbyData.gameObject.SetActive(true);
+                LobbyData.PlayAnim();
+            }
+        }
+        else if(param == "LevelCamera")
         {
             if(m_nStatus == RunStatus.PlayWait)
             {
                 XSFMain.Instance.MainCamera.GetComponent<CameraMove>().MoveTo(PlayData.CamaraT);
+            }
+        }
+        else if(param == "LobbyCamera")
+        {
+            if(m_nStatus == RunStatus.HomeWait)
+            {
+                XSFMain.Instance.MainCamera.GetComponent<CameraMove>().MoveTo(LobbyData.CamaraT);
             }
         }
     }

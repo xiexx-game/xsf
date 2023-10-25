@@ -17,6 +17,7 @@ public enum UIID
     UIMain,
     UILevel,
     UIPlay,
+    UIEnd,
 
     Max,
 }
@@ -34,6 +35,7 @@ public sealed class UIHelper : IUIHelper
             case UIID.UIMain:       return new UIMain();
             case UIID.UILevel:      return new UILevel();
             case UIID.UIPlay:       return new UIPlay();
+            case UIID.UIEnd:        return new UIEnd();
             default: return null;
         }
     }

@@ -5783,6 +5783,13 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
+  - time: 0.6
+    functionName: OnAnimFinish
+    data: LobbyCamera
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: 4.0333333
     functionName: OnAnimFinish
     data: LobbyShow

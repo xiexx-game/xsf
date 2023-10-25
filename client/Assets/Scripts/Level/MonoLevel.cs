@@ -44,6 +44,7 @@ public class MonoLevel : MonoBehaviour
 
     public void PlayAnim()
     {
+        count = 0;
         if(Anim != null)
         {
             Anim.SetFloat("Ins", 1.0f);
