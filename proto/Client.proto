@@ -34,3 +34,8 @@ message Clt_G_Login {
 message Gt_Clt_Disconnect {
 	int32 reason = 1;    // 断开原因
 }
+
+// game --> client 服务器断开连接
+message G_Clt_LoginResult {
+    uint32 result = 1;
+}

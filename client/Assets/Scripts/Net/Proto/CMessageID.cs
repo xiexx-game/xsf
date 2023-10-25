@@ -24,12 +24,12 @@ namespace XsfPb {
     static CMessageIDReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "ChBDTWVzc2FnZUlELnByb3RvEgZ4c2ZfcGIq1wEKBkNNU0dJRBIPCgtDTVNH",
+            "ChBDTWVzc2FnZUlELnByb3RvEgZ4c2ZfcGIqwAEKBkNNU0dJRBIPCgtDTVNH",
             "SURfTm9uZRAAEhQKEENsdF9HdF9IYW5kc2hha2UQARIUChBHdF9DbHRfSGFu",
             "ZHNoYWtlEAISFAoQQ2x0X0d0X0hlYXJ0YmVhdBADEhQKEEd0X0NsdF9IZWFy",
             "dGJlYXQQBBIVChFHdF9DbHRfRGlzY29ubmVjdBAFEg8KC0NsdF9HX0xvZ2lu",
-            "EAYSFQoRTF9DbHRfTG9naW5SZXN1bHQQBxIVChFHX0NsdF9Mb2dpblJlc3Vs",
-            "dBAJEg4KCkNNU0dJRF9NYXgQZGIGcHJvdG8z"));
+            "EAYSFQoRR19DbHRfTG9naW5SZXN1bHQQBxIOCgpDTVNHSURfTWF4EGRiBnBy",
+            "b3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::XsfPb.CMSGID), }, null));
@@ -71,13 +71,9 @@ namespace XsfPb {
     /// </summary>
     [pbr::OriginalName("Clt_G_Login")] CltGLogin = 6,
     /// <summary>
-    /// login --> client 登录结果
-    /// </summary>
-    [pbr::OriginalName("L_Clt_LoginResult")] LCltLoginResult = 7,
-    /// <summary>
     /// game --> client 登录结果
     /// </summary>
-    [pbr::OriginalName("G_Clt_LoginResult")] GCltLoginResult = 9,
+    [pbr::OriginalName("G_Clt_LoginResult")] GCltLoginResult = 7,
     /// <summary>
     ///MESSAGE_ID_END
     /// </summary>

@@ -30,7 +30,6 @@ namespace XsfMsg
 			m_MessagePool[(int)CMSGID.GtCltHeartbeat] = new MSG_Gt_Clt_Heartbeat();
 			m_MessagePool[(int)CMSGID.GtCltDisconnect] = new MSG_Gt_Clt_Disconnect();
 			m_MessagePool[(int)CMSGID.CltGLogin] = new MSG_Clt_G_Login();
-			m_MessagePool[(int)CMSGID.LCltLoginResult] = new MSG_L_Clt_LoginResult();
 			m_MessagePool[(int)CMSGID.GCltLoginResult] = new MSG_G_Clt_LoginResult();
 			m_MessagePool[(int)SMSGID.CcCHandshake] = new MSG_Cc_C_Handshake();
 			m_MessagePool[(int)SMSGID.CCcHandshake] = new MSG_C_Cc_Handshake();
