@@ -2,7 +2,7 @@
 // 
 // 文件：server/Message/Messages/MSG_Clt_G_Login.cs
 // 作者：Xoen Xie
-// 时间：10/25/2023
+// 时间：10/26/2023
 // 描述：client --> login 登录
 // 说明：
 //
@@ -18,7 +18,7 @@ namespace XsfMsg
     {
         public override ushort ID { get { return (ushort)CMSGID.CltGLogin; } }
 
-        public override byte DestEP { get { return (byte)EP.Game;} }
+        public override byte DestEP { get { return (byte)EP.Game; } }
 
         private Clt_G_Login m_PB;
         public Clt_G_Login mPB

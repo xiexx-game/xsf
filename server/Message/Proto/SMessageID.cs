@@ -34,7 +34,7 @@ namespace XsfPb {
             "ZRCdGBIVChBHdF9HdEFfSGVhcnRiZWF0EJ4YEhcKEkd0X0d0QV9DbGllbnRD",
             "bG9zZRCfGBIcChdHdEFfR3RfQ2xpZW50RGlzY29ubmVjdBCgGBIZChRHdEFf",
             "R3RfQ2xpZW50TWVzc2FnZRChGBIVChBHdEFfR3RfQnJvYWRjYXN0EKIYEhcK",
-            "Ekd0QV9HdF9TZXRTZXJ2ZXJJRBCjGBIPCgpTTVNHSURfTWF4EIgnYgZwcm90",
+            "Ekd0QV9HdF9TZXRTZXJ2ZXJJZBCjGBIPCgpTTVNHSURfTWF4EIgnYgZwcm90",
             "bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
@@ -122,7 +122,7 @@ namespace XsfPb {
     /// <summary>
     /// gate acceptor --> gate 设置服务器id
     /// </summary>
-    [pbr::OriginalName("GtA_Gt_SetServerID")] GtAGtSetServerId = 3107,
+    [pbr::OriginalName("GtA_Gt_SetServerId")] GtAGtSetServerId = 3107,
     /// <summary>
     ///MESSAGE_ID_END
     /// </summary>

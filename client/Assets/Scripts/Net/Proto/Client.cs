@@ -30,7 +30,8 @@ namespace XsfPb {
             "KAQSEwoLc2VydmVyX3RpbWUYAiABKAQiMAoLQ2x0X0dfTG9naW4SDwoHYWNj",
             "b3VudBgBIAEoCRIQCghwYXNzd29yZBgCIAEoCSIjChFHdF9DbHRfRGlzY29u",
             "bmVjdBIOCgZyZWFzb24YASABKAUiIwoRR19DbHRfTG9naW5SZXN1bHQSDgoG",
-            "cmVzdWx0GAEgASgNYgZwcm90bzM="));
+            "cmVzdWx0GAEgASgNIiEKDkdfQ2x0X1Rlc3REYXRhEg8KB21lc3NhZ2UYASAB",
+            "KAliBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -40,7 +41,8 @@ namespace XsfPb {
             new pbr::GeneratedClrTypeInfo(typeof(global::XsfPb.Gt_Clt_Heartbeat), global::XsfPb.Gt_Clt_Heartbeat.Parser, new[]{ "ClientTime", "ServerTime" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::XsfPb.Clt_G_Login), global::XsfPb.Clt_G_Login.Parser, new[]{ "Account", "Password" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::XsfPb.Gt_Clt_Disconnect), global::XsfPb.Gt_Clt_Disconnect.Parser, new[]{ "Reason" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::XsfPb.G_Clt_LoginResult), global::XsfPb.G_Clt_LoginResult.Parser, new[]{ "Result" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::XsfPb.G_Clt_LoginResult), global::XsfPb.G_Clt_LoginResult.Parser, new[]{ "Result" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::XsfPb.G_Clt_TestData), global::XsfPb.G_Clt_TestData.Parser, new[]{ "Message" }, null, null, null)
           }));
     }
     #endregion
@@ -975,6 +977,138 @@ namespace XsfPb {
             break;
           case 8: {
             Result = input.ReadUInt32();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  /// <summary>
+  /// game --> client 测试协议
+  /// </summary>
+  public sealed partial class G_Clt_TestData : pb::IMessage<G_Clt_TestData> {
+    private static readonly pb::MessageParser<G_Clt_TestData> _parser = new pb::MessageParser<G_Clt_TestData>(() => new G_Clt_TestData());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<G_Clt_TestData> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::XsfPb.ClientReflection.Descriptor.MessageTypes[7]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public G_Clt_TestData() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public G_Clt_TestData(G_Clt_TestData other) : this() {
+      message_ = other.message_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public G_Clt_TestData Clone() {
+      return new G_Clt_TestData(this);
+    }
+
+    /// <summary>Field number for the "message" field.</summary>
+    public const int MessageFieldNumber = 1;
+    private string message_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Message {
+      get { return message_; }
+      set {
+        message_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as G_Clt_TestData);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(G_Clt_TestData other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Message != other.Message) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Message.Length != 0) hash ^= Message.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (Message.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(Message);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (Message.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Message);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(G_Clt_TestData other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Message.Length != 0) {
+        Message = other.Message;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            Message = input.ReadString();
             break;
           }
         }

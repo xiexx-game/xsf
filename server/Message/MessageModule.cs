@@ -31,6 +31,7 @@ namespace XsfMsg
 			m_MessagePool[(int)CMSGID.GtCltDisconnect] = new MSG_Gt_Clt_Disconnect();
 			m_MessagePool[(int)CMSGID.CltGLogin] = new MSG_Clt_G_Login();
 			m_MessagePool[(int)CMSGID.GCltLoginResult] = new MSG_G_Clt_LoginResult();
+			m_MessagePool[(int)CMSGID.GCltTestData] = new MSG_G_Clt_TestData();
 			m_MessagePool[(int)SMSGID.CcCHandshake] = new MSG_Cc_C_Handshake();
 			m_MessagePool[(int)SMSGID.CCcHandshake] = new MSG_C_Cc_Handshake();
 			m_MessagePool[(int)SMSGID.CcCHeartbeat] = new MSG_Cc_C_Heartbeat();
@@ -48,7 +49,7 @@ namespace XsfMsg
 			m_MessagePool[(int)SMSGID.GtAGtClientDisconnect] = new MSG_GtA_Gt_ClientDisconnect();
 			m_MessagePool[(int)SMSGID.GtAGtClientMessage] = new MSG_GtA_Gt_ClientMessage();
 			m_MessagePool[(int)SMSGID.GtAGtBroadcast] = new MSG_GtA_Gt_Broadcast();
-			m_MessagePool[(int)SMSGID.GtAGtSetServerId] = new MSG_GtA_Gt_SetServerID();
+			m_MessagePool[(int)SMSGID.GtAGtSetServerId] = new MSG_GtA_Gt_SetServerId();
             //MESSAGE_END
             // 上面的注释定义必须保留，用来自动生成代码
 

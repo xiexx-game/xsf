@@ -31,7 +31,7 @@ namespace XsfPb {
             "b25uZWN0EhEKCWNsaWVudF9pZBgBIAEoDRIOCgZyZWFzb24YAiABKA0iQQoU",
             "R3RBX0d0X0NsaWVudE1lc3NhZ2USEQoJY2xpZW50X2lkGAEgAygNEhYKDmNs",
             "aWVudF9tZXNzYWdlGAIgASgMIioKEEd0QV9HdF9Ccm9hZGNhc3QSFgoOY2xp",
-            "ZW50X21lc3NhZ2UYASABKAwiRgoSR3RBX0d0X1NldFNlcnZlcklEEhEKCWNs",
+            "ZW50X21lc3NhZ2UYASABKAwiRgoSR3RBX0d0X1NldFNlcnZlcklkEhEKCWNs",
             "aWVudF9pZBgBIAEoDRIKCgJlcBgCIAEoDRIRCglzZXJ2ZXJfaWQYAyABKA1i",
             "BnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
@@ -44,7 +44,7 @@ namespace XsfPb {
             new pbr::GeneratedClrTypeInfo(typeof(global::XsfPb.GtA_Gt_ClientDisconnect), global::XsfPb.GtA_Gt_ClientDisconnect.Parser, new[]{ "ClientId", "Reason" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::XsfPb.GtA_Gt_ClientMessage), global::XsfPb.GtA_Gt_ClientMessage.Parser, new[]{ "ClientId", "ClientMessage" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::XsfPb.GtA_Gt_Broadcast), global::XsfPb.GtA_Gt_Broadcast.Parser, new[]{ "ClientMessage" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::XsfPb.GtA_Gt_SetServerID), global::XsfPb.GtA_Gt_SetServerID.Parser, new[]{ "ClientId", "Ep", "ServerId" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::XsfPb.GtA_Gt_SetServerId), global::XsfPb.GtA_Gt_SetServerId.Parser, new[]{ "ClientId", "Ep", "ServerId" }, null, null, null)
           }));
     }
     #endregion
@@ -1005,11 +1005,11 @@ namespace XsfPb {
   /// <summary>
   /// gate acceptor --> gate 设置服务器id
   /// </summary>
-  public sealed partial class GtA_Gt_SetServerID : pb::IMessage<GtA_Gt_SetServerID> {
-    private static readonly pb::MessageParser<GtA_Gt_SetServerID> _parser = new pb::MessageParser<GtA_Gt_SetServerID>(() => new GtA_Gt_SetServerID());
+  public sealed partial class GtA_Gt_SetServerId : pb::IMessage<GtA_Gt_SetServerId> {
+    private static readonly pb::MessageParser<GtA_Gt_SetServerId> _parser = new pb::MessageParser<GtA_Gt_SetServerId>(() => new GtA_Gt_SetServerId());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<GtA_Gt_SetServerID> Parser { get { return _parser; } }
+    public static pb::MessageParser<GtA_Gt_SetServerId> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
@@ -1022,14 +1022,14 @@ namespace XsfPb {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public GtA_Gt_SetServerID() {
+    public GtA_Gt_SetServerId() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public GtA_Gt_SetServerID(GtA_Gt_SetServerID other) : this() {
+    public GtA_Gt_SetServerId(GtA_Gt_SetServerId other) : this() {
       clientId_ = other.clientId_;
       ep_ = other.ep_;
       serverId_ = other.serverId_;
@@ -1037,8 +1037,8 @@ namespace XsfPb {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public GtA_Gt_SetServerID Clone() {
-      return new GtA_Gt_SetServerID(this);
+    public GtA_Gt_SetServerId Clone() {
+      return new GtA_Gt_SetServerId(this);
     }
 
     /// <summary>Field number for the "client_id" field.</summary>
@@ -1076,11 +1076,11 @@ namespace XsfPb {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as GtA_Gt_SetServerID);
+      return Equals(other as GtA_Gt_SetServerId);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(GtA_Gt_SetServerID other) {
+    public bool Equals(GtA_Gt_SetServerId other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -1148,7 +1148,7 @@ namespace XsfPb {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(GtA_Gt_SetServerID other) {
+    public void MergeFrom(GtA_Gt_SetServerId other) {
       if (other == null) {
         return;
       }

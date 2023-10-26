@@ -2,8 +2,8 @@
 // 
 // 文件：server/Message/Messages/MSG_Gt_Clt_Heartbeat.cs
 // 作者：Xoen Xie
-// 时间：10/19/2023
-// 描述：gate --> client 心跳 反馈
+// 时间：10/26/2023
+// 描述：gate --> client 心跳反馈
 // 说明：
 //
 //////////////////////////////////////////////////////////////////////////
@@ -17,6 +17,8 @@ namespace XsfMsg
     public sealed class MSG_Gt_Clt_Heartbeat : IMessage
     {
         public override ushort ID { get { return (ushort)CMSGID.GtCltHeartbeat; } }
+
+        public override byte DestEP { get { return (byte)EP.Gate; } }
 
         private Gt_Clt_Heartbeat m_PB;
         public Gt_Clt_Heartbeat mPB

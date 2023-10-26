@@ -2,8 +2,8 @@
 // 
 // 文件：server/Message/Messages/MSG_Clt_Gt_Handshake.cs
 // 作者：Xoen Xie
-// 时间：10/19/2023
-// 描述：client --> gate 握手请求
+// 时间：10/26/2023
+// 描述：client --> Gate 握手
 // 说明：
 //
 //////////////////////////////////////////////////////////////////////////
@@ -17,6 +17,8 @@ namespace XsfMsg
     public sealed class MSG_Clt_Gt_Handshake : IMessage
     {
         public override ushort ID { get { return (ushort)CMSGID.CltGtHandshake; } }
+
+        public override byte DestEP { get { return (byte)EP.Gate; } }
 
         private Clt_Gt_Handshake m_PB;
         public Clt_Gt_Handshake mPB

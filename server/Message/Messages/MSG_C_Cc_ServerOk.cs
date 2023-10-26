@@ -2,7 +2,7 @@
 // 
 // 文件：server/Message/Messages/MSG_C_Cc_ServerOk.cs
 // 作者：Xoen Xie
-// 时间：10/19/2023
+// 时间：10/26/2023
 // 描述：center --> connector 服务器已准备好
 // 说明：
 //
@@ -17,6 +17,8 @@ namespace XsfMsg
     public sealed class MSG_C_Cc_ServerOk : IMessage
     {
         public override ushort ID { get { return (ushort)SMSGID.CCcServerOk; } }
+
+        public override byte DestEP { get { return (byte)EP.Center; } }
 
         private C_Cc_ServerOk m_PB;
         public C_Cc_ServerOk mPB

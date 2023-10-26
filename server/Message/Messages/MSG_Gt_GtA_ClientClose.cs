@@ -2,7 +2,7 @@
 // 
 // 文件：server/Message/Messages/MSG_Gt_GtA_ClientClose.cs
 // 作者：Xoen Xie
-// 时间：10/25/2023
+// 时间：10/26/2023
 // 描述：gete --> gate acceptor 客户端连接关闭
 // 说明：
 //
@@ -17,6 +17,8 @@ namespace XsfMsg
     public sealed class MSG_Gt_GtA_ClientClose : IMessage
     {
         public override ushort ID { get { return (ushort)SMSGID.GtGtAClientClose; } }
+
+        public override byte DestEP { get { return (byte)EP.Gate; } }
 
         private Gt_GtA_ClientClose m_PB;
         public Gt_GtA_ClientClose mPB

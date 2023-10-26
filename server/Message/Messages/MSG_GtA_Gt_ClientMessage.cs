@@ -2,7 +2,7 @@
 // 
 // 文件：server/Message/Messages/MSG_GtA_Gt_ClientMessage.cs
 // 作者：Xoen Xie
-// 时间：10/25/2023
+// 时间：10/26/2023
 // 描述：gate acceptor --> gate 发往客户端消息
 // 说明：
 //
@@ -17,6 +17,8 @@ namespace XsfMsg
     public sealed class MSG_GtA_Gt_ClientMessage : IMessage
     {
         public override ushort ID { get { return (ushort)SMSGID.GtAGtClientMessage; } }
+
+        public override byte DestEP { get { return (byte)EP.Gate; } }
 
         private GtA_Gt_ClientMessage m_PB;
         public GtA_Gt_ClientMessage mPB

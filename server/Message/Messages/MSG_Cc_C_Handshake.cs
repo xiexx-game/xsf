@@ -2,7 +2,7 @@
 // 
 // 文件：server/Message/Messages/MSG_Cc_C_Handshake.cs
 // 作者：Xoen Xie
-// 时间：10/19/2023
+// 时间：10/26/2023
 // 描述：center connector --> center 握手
 // 说明：
 //
@@ -17,6 +17,8 @@ namespace XsfMsg
     public sealed class MSG_Cc_C_Handshake : IMessage
     {
         public override ushort ID { get { return (ushort)SMSGID.CcCHandshake; } }
+
+        public override byte DestEP { get { return (byte)EP.Center; } }
 
         private Cc_C_Handshake m_PB;
         public Cc_C_Handshake mPB

@@ -1,9 +1,9 @@
 //////////////////////////////////////////////////////////////////////////
 // 
-// 文件：server/Message/Messages/MSG_Cc_C_ServerLost.cs
+// 文件：server/Message/Messages/MSG_G_Clt_TestData.cs
 // 作者：Xoen Xie
 // 时间：10/26/2023
-// 描述：connector --> center 服务器离线
+// 描述：game --> client 测试协议
 // 说明：
 //
 //////////////////////////////////////////////////////////////////////////
@@ -14,19 +14,19 @@ using XSF;
 
 namespace XsfMsg
 {
-    public sealed class MSG_Cc_C_ServerLost : IMessage
+    public sealed class MSG_G_Clt_TestData : IMessage
     {
-        public override ushort ID { get { return (ushort)SMSGID.CcCServerLost; } }
+        public override ushort ID { get { return (ushort)CMSGID.GCltTestData; } }
 
-        public override byte DestEP { get { return (byte)EP.Center; } }
+        public override byte DestEP { get { return (byte)EP.Game; } }
 
-        private Cc_C_ServerLost m_PB;
-        public Cc_C_ServerLost mPB
+        private G_Clt_TestData m_PB;
+        public G_Clt_TestData mPB
         {
             get
             {
                 if (m_PB == null)
-                    m_PB = new Cc_C_ServerLost();
+                    m_PB = new G_Clt_TestData();
 
                 return m_PB;
             }
@@ -42,8 +42,8 @@ namespace XsfMsg
 
         public override IMessage Import(byte[] data, int offset, int length)
         {
-            var message = new MSG_Cc_C_ServerLost();
-            message.m_PB = Cc_C_ServerLost.Parser.ParseFrom(data, offset, length);
+            var message = new MSG_G_Clt_TestData();
+            message.m_PB = G_Clt_TestData.Parser.ParseFrom(data, offset, length);
             message.m_Executor = m_Executor;
             return message;
         }

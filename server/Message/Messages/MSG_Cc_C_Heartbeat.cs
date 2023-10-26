@@ -2,7 +2,7 @@
 // 
 // 文件：server/Message/Messages/MSG_Cc_C_Heartbeat.cs
 // 作者：Xoen Xie
-// 时间：10/19/2023
+// 时间：10/26/2023
 // 描述：center connector --> center 心跳
 // 说明：
 //
@@ -17,6 +17,8 @@ namespace XsfMsg
     public sealed class MSG_Cc_C_Heartbeat : IMessage
     {
         public override ushort ID { get { return (ushort)SMSGID.CcCHeartbeat; } }
+
+        public override byte DestEP { get { return (byte)EP.Center; } }
 
         private Cc_C_Heartbeat m_PB;
         public Cc_C_Heartbeat mPB
