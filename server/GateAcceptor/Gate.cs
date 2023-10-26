@@ -33,11 +33,21 @@ namespace GateA
             m_ClientIDs.Clear();
         }
 
-        public void Boradcast(IMessage message)
+        public void Boradcast(Google.Protobuf.ByteString data)
         {
             if(m_ClientIDs.Count > 0)
             {
-                SendMessage(message);
+                var messageWrap = XSFUtil.GetMessage((ushort)XsfPb.SMSGID.GtAGtClientMessage) as XsfMsg.MSG_GtA_Gt_ClientMessage;
+                messageWrap.mPB.ClientId.Clear();
+
+                for(int i = 0; i < m_ClientIDs.Count; i ++)
+                {
+                    messageWrap.mPB.ClientId.Add(m_ClientIDs[i]);
+                }
+                
+                messageWrap.mPB.ClientMessage = data;
+
+                SendMessage(messageWrap);
             }
         }
     }

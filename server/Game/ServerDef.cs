@@ -13,4 +13,5 @@ public enum ModuleID
     Message,
     CenterConnector,
     GateAcceptor,
+    Actor,
 }

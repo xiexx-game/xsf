@@ -14,21 +14,9 @@ using XSF;
 
 namespace GateClient
 {
-    public sealed class ClientPakcer : INetPacker
+    public sealed class LocalPakcer : ClientPakcer
     {
-        private XSFWriter m_Writer;
-
-        public int PackMinLength { get { return 6; } }
-
-        public int PackMaxLength { get { return (int)XSFUtil.Config.ClientMsgMaxLength; } }
-
-        public ClientPakcer()
-        {
-            m_Writer = new XSFWriter();
-            
-        }
-
-        public byte[] Read(byte[] recvBuffer, int recvIndex, int nPackageLen, out IMessage message, out ushort nMessageID, out uint nRawID)
+        public override byte[] Read(byte[] recvBuffer, int recvIndex, int nPackageLen, out IMessage message, out ushort nMessageID, out uint nRawID)
         {
             int pbLen = nPackageLen - sizeof(ushort) - sizeof(uint);
             //Serilog.Log.Information("Read pbLen=" + pbLen);
@@ -59,26 +47,6 @@ namespace GateClient
                     return bufferOut;
                 }
             }
-        }
-
-        public byte[] Pack(IMessage message)
-        {
-            m_Writer.Clear();
-            byte[] pbData = message.Export();
-            //Serilog.Log.Information("pack pbData length=" + pbData.Length);
-            uint pbLen = (uint)pbData.Length;
-            // | 包长(uint 4字节) | 消息ID(ushort 2字节) | pb data |
-            uint total = sizeof(ushort) + pbLen;
-            //Serilog.Log.Information("total = " + total);
-            m_Writer.WriteUInt(total);
-            m_Writer.WriteUShort(message.ID);
-            m_Writer.WriteBuffer(pbData);
-
-            byte[] totalData = new byte[m_Writer.Size];
-            //Serilog.Log.Information("send total = " + totalData.Length);
-            Array.Copy(m_Writer.Buffer, totalData, m_Writer.Size);
-
-            return totalData;
         }
     }
 }

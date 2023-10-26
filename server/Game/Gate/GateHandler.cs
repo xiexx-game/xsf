@@ -14,6 +14,7 @@ public class GateHandler : IGateHandler
 {
     public void OnClientClose(uint nClientID)
     {
-
+        Serilog.Log.Information("Client close, client id=" + nClientID);
+        ActorManager.Instance.OnActorLogout(nClientID);
     }
 }

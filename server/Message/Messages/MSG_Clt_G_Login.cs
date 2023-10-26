@@ -18,6 +18,8 @@ namespace XsfMsg
     {
         public override ushort ID { get { return (ushort)CMSGID.CltGLogin; } }
 
+        public override byte DestEP { get { return (byte)EP.Game;} }
+
         private Clt_G_Login m_PB;
         public Clt_G_Login mPB
         {

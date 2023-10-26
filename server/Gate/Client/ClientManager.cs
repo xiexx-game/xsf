@@ -7,7 +7,7 @@
 // 说明：
 //
 //////////////////////////////////////////////////////////////////////////
-#pragma warning disable CS8625
+#pragma warning disable CS8625, CS8618, CS8603
 
 using XSF;
 
@@ -28,7 +28,7 @@ namespace GateClient
         public ClientManager()
         {
             m_Clients = new Client[XSFUtil.Config.GateMaxCount];
-            m_ClientPakcer = new ClientPakcer();
+            m_ClientPakcer = new LocalPakcer();
         }
 
         public override void DoRegist()
@@ -51,7 +51,7 @@ namespace GateClient
             for(int i = 0; i < m_Clients.Length; i ++)
             {
                 if(m_Clients[i] != null)
-                    m_Clients[i].Disconnect();
+                    m_Clients[i].Disconnect((int)XsfPb.DisconnectReason.ServerDown);
             }
         }
 
@@ -119,6 +119,37 @@ namespace GateClient
             connection.Close();
         }
 
+        public Client GetClient(uint nClientID)
+        {
+            var cid = ClientID.GetCID(nClientID);
+            if(cid.ID >= m_Clients.Length)
+            {
+                Serilog.Log.Error($"ClientManager.GetClient cid.ID:{cid.ID} >= m_Clients.Length:{m_Clients.Length}");
+                return null;
+            }
+
+            if(m_Clients[cid.ID] != null)
+            {
+                if(m_Clients[cid.ID].m_CID.Key != cid.Key)
+                {
+                    return null;
+                }
+            }
+
+            return m_Clients[cid.ID];
+        }
+
+        public void Broadcast(byte[] data)
+        {
+            for(int i = 0; i < m_Clients.Length; i ++)
+            {
+                if(m_Clients[i] != null)
+                {
+                    m_Clients[i].SendData(data);
+                }
+            }
+        }
+
         public void OnConnected(IConnection connection) 
         {
             Serilog.Log.Error("ClientManager.OnConnected error call");
@@ -134,15 +165,20 @@ namespace GateClient
             Serilog.Log.Error("ClientManager.OnRecv error call");
         }
 
+        public static ClientManager Instance
+        {
+            get; private set;
+        }
+
         public static void CreateModule()
         {
-            var module = new ClientManager();
+            Instance = new ClientManager();
 
             ModuleInit init = new ModuleInit();
             init.ID = (int)ModuleID.Client;
             init.Name = "ClientManager";
 
-            XSFUtil.Server.AddModule(module, init);
+            XSFUtil.Server.AddModule(Instance, init);
         }
     }
 }

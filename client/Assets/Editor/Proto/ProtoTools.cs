@@ -123,6 +123,7 @@ public static class ProtoTools
                         content = content.Replace("_MSG_DESC_", md.Desc.Trim());
                         content = content.Replace("_MSG_ID_NAME_", md.CodeID);
                         content = content.Replace("_ID_PREFIX_", "CMSGID");
+                        content = content.Replace("_EP_NAME_", GetDestEP(md.MessageID));
                         File.WriteAllText(SCodePath, content);
                     }
 
@@ -139,6 +140,7 @@ public static class ProtoTools
                     content = content.Replace("_MSG_DESC_", md.Desc.Trim());
                     content = content.Replace("_MSG_ID_NAME_", md.CodeID);
                     content = content.Replace("_ID_PREFIX_", "SMSGID");
+                    content = content.Replace("_EP_NAME_", GetDestEP(md.MessageID));
                     File.WriteAllText(SCodePath, content);
                 }
 
@@ -153,6 +155,27 @@ public static class ProtoTools
         {
             string sPoolFile = Application.dataPath + "/../../server/Message/MessageModule.cs";
             XSFEditorUtil.ReplaceContentByTag(sPoolFile, "MESSAGE_START", "MESSAGE_END", SMessagePoolStr);
+        }
+    }
+
+    private static string GetDestEP(string messageID)
+    {
+        if(messageID.Contains("G_"))
+        {
+            return "Game";
+        }
+        else if(messageID.Contains("Gt_"))
+        {
+            return "Gate";
+        }
+        else if(messageID.Contains("C_"))
+        {
+            return "Center";
+        }
+        else
+        {
+            Debug.LogError("GetDestEP error, ep not found, message id=" + messageID);
+            return "None";
         }
     }
 

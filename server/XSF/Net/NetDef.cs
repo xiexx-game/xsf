@@ -7,7 +7,7 @@
 // 说明：
 //
 //////////////////////////////////////////////////////////////////////////
-
+#pragma warning disable CS8603, CS8625
 using System;
 
 namespace XSF
@@ -59,15 +59,22 @@ namespace XSF
         void DoAccept(IAsyncResult iar);
     }
 
-    public interface INetPacker
+    public abstract class INetPacker
     {
-        int PackMinLength { get; }
+        public virtual int PackMinLength { get; }
 
-        int PackMaxLength { get; }
+        public virtual int PackMaxLength { get; }
 
-        byte[] Read(byte[] recvBuffer, int recvIndex, int nPackageLen, out IMessage message, out ushort nMessageID, out uint nRawID);
+        public virtual byte[] Read(byte[] recvBuffer, int recvIndex, int nPackageLen, out IMessage message, out ushort nMessageID, out uint nRawID)
+        {
+            message = null;
+            nMessageID = 0;
+            nRawID = 0;
 
-        byte[] Pack(IMessage message);
+            return null;
+        }
+
+        public abstract byte[] Pack(IMessage message);
     }
 }
 

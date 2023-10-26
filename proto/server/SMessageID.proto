@@ -31,7 +31,7 @@ enum SMSGID
 	GtA_Gt_ClientDisconnect = 3104;  // gate acceptor --> gate 主动关闭客户端连接
 	GtA_Gt_ClientMessage = 3105;    // gate acceptor --> gate 发往客户端消息
 	GtA_Gt_Broadcast = 3106;       // gate acceptor --> gate 广播消息
-	GtA_Gt_SetServerID = 3107;		// gate acceptor --> gate 设置服务器id
+	GtA_Gt_SetServerId = 3107;		// gate acceptor --> gate 设置服务器id
 
 
     //MESSAGE_ID_END

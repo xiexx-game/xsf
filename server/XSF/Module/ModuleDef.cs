@@ -41,7 +41,7 @@ namespace XSF
         }
     }
 
-    public abstract class IModule 
+    public abstract class IModule
     {
         public int ID { get; private set; }
         public string Name { get; private set; }

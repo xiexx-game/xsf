@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////////////////////
 // 
-// 文件：server/Gate/MessageExecutor.cs
+// 文件：server/Gate/Client/MessageExecutor.cs
 // 作者：Xoen Xie
 // 时间：2023/06/19
 // 描述：消息处理

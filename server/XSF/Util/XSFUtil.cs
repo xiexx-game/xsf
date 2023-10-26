@@ -18,6 +18,9 @@ namespace XSF
         public static IMessageHelper messageHelper;
 
         private static INetPacker m_ServerPacker;
+        private static INetPacker m_ClientPakcer;
+
+        private static Random m_Random;
 
         public static IServer Server 
         {
@@ -42,6 +45,17 @@ namespace XSF
                     m_ServerPacker = new ServerPacker();
 
                 return m_ServerPacker;
+            }
+        }
+
+        public static INetPacker ClientPakcer
+        {
+            get
+            {
+                if(m_ClientPakcer == null)
+                    m_ClientPakcer = new ClientPakcer();
+
+                return m_ClientPakcer;
             }
         }
 
@@ -161,7 +175,6 @@ namespace XSF
             if(name == "login") { return EP.Login; }
             if(name == "gate") { return EP.Gate; }
             if(name == "game") { return EP.Game; }
-            if(name == "db") { return EP.Db; }
             else 
                 return EP.None;
         }
@@ -175,7 +188,6 @@ namespace XSF
             case EP.Login:  return "Login";
             case EP.Gate:   return "Gate";
             case EP.Game:   return "Game";
-            case EP.Db: return "DB";
             default:    return "Unknow";
             }
         }
@@ -189,7 +201,6 @@ namespace XSF
             case EP.Login:  return "登录服";
             case EP.Gate:   return "网关服";
             case EP.Game:   return "游戏服";
-            case EP.Db: return "数据服";
             default:    return "未知";
             }
         }
@@ -203,7 +214,6 @@ namespace XSF
             case EP.Login:  return true;
             case EP.Gate:   return true;
             case EP.Game:   return true;
-            case EP.Db: return true;
             default:    return false;
             }
         }
@@ -240,6 +250,16 @@ namespace XSF
             }
 
             return !fail;
+        }
+
+        public static int RandomRange(int nMin, int nMax)
+        {
+            if(m_Random == null)
+            {
+                m_Random = new Random((int)CurrentS);
+            }
+
+            return m_Random.Next(nMin, nMax);
         }
     }
 }

@@ -13,20 +13,25 @@ using XSF;
 public class ConnectorManager : IModule
 {
     Dictionary<uint, ServerConnector> m_Connectors;
-
-    List<ServerConnector> m_Temps;
-
-    private uint m_ConnectTime;
+    List<ServerConnector>[] m_EPConnectors;
 
     public ConnectorManager()
     {
         m_Connectors = new Dictionary<uint, ServerConnector>();
-        m_Temps = new List<ServerConnector>();
+        m_EPConnectors = new List<ServerConnector>[(int)EP.Max];
+        for(int i = 0; i < m_EPConnectors.Length; i ++)
+        {
+            m_EPConnectors[i] = new List<ServerConnector>();
+        }
     }
 
     public override void DoRegist()
     {
-
+        XSFUtil.SetMessageExecutor((ushort)XsfPb.SMSGID.GtAGtHandshake, new Executor_GtA_Gt_Handshake());
+        XSFUtil.SetMessageExecutor((ushort)XsfPb.SMSGID.GtAGtClientDisconnect, new Executor_GtA_Gt_ClientDisconnect());
+        XSFUtil.SetMessageExecutor((ushort)XsfPb.SMSGID.GtAGtClientMessage, new Executor_GtA_Gt_ClientMessage());
+        XSFUtil.SetMessageExecutor((ushort)XsfPb.SMSGID.GtAGtBroadcast, new Executor_GtA_Gt_Broadcast());
+        XSFUtil.SetMessageExecutor((ushort)XsfPb.SMSGID.GtAGtSetServerId, new Executor_GtA_Gt_SetServerID());
     }
 
     public void CreateConnector(uint nID, string ip, int port)
@@ -43,14 +48,24 @@ public class ConnectorManager : IModule
         connector.Connect(ip, port);
 
         m_Connectors.Add(nID, connector);
+
+        var sid = ServerID.GetSID(nID);
+        m_EPConnectors[sid.Type].Add(connector);
     }
 
     public void DeleteConnector(uint nID)
     {
-        m_Connectors.Remove(nID);
+        ServerConnector connector = null;
+        if(m_Connectors.TryGetValue(nID, out connector))
+        {
+            m_Connectors.Remove(nID);
+            var sid = ServerID.GetSID(nID);
+
+            m_EPConnectors[sid.Type].Remove(connector);
+        }
     }
 
-    public ServerConnector GetConnector(uint nID)
+    public ServerConnector GetConnector(byte nEP, uint nID)
     {
         if(nID > 0)
         {
@@ -60,21 +75,26 @@ public class ConnectorManager : IModule
         }
         else
         {
-            
+            var list = m_EPConnectors[nEP];
+            int nTotal = list.Count;
+            if(nTotal <= 0)
+                return null;
+
+            int nIndex = XSFUtil.RandomRange(0, nTotal);
+            return list[nIndex];
         }
     }
 
-    private static ConnectorManager m_Instance;
-    public static ConnectorManager Instance { get { return m_Instance; } }
+    public static ConnectorManager Instance { get; private set; }
 
     public static void CreateModule()
     {
-        m_Instance = new ConnectorManager();
+        Instance = new ConnectorManager();
 
         ModuleInit init = new ModuleInit();
         init.ID = (int)ModuleID.ConnectorManager;
         init.Name = "ConnectorManager";
 
-        XSFUtil.Server.AddModule(m_Instance, init);
+        XSFUtil.Server.AddModule(Instance, init);
     }
 }

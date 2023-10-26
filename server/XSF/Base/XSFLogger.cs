@@ -20,8 +20,10 @@ namespace XSF
             
             var InitData = XSFServer.Instance.InitData;
 
+            string template =  "{Timestamp:yyyy-MM-dd HH:mm:ss.fff} {Level:u5} {DefaultPrefix} {Message:lj}{NewLine}{Exception}";
+
             if(InitData.OutputConsole)
-                config = config.WriteTo.Console();
+                config = config.WriteTo.Console(outputTemplate: template);
 
             string logName = "";
             int logIndex = 1;
@@ -58,7 +60,7 @@ namespace XSF
             
             string finalName = $"{dir}/{logName}-.log";
             
-            Log.Logger = config.WriteTo.File(finalName, rollingInterval: RollingInterval.Day)
+            Log.Logger = config.WriteTo.File(finalName, rollingInterval: RollingInterval.Day, outputTemplate: template)
                 .CreateLogger();
         }
 

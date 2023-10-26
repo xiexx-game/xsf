@@ -39,3 +39,8 @@ message Gt_Clt_Disconnect {
 message G_Clt_LoginResult {
     uint32 result = 1;
 }
+
+// game --> client 测试协议
+message G_Clt_TestData  {
+    string message = 1;
+}  

@@ -7,7 +7,7 @@
 // 说明：
 //
 //////////////////////////////////////////////////////////////////////////
-#pragma warning disable CS8602, CS8618, CS8604
+#pragma warning disable CS8602, CS8618, CS8604, CS8603
 using XSF;
 
 namespace GateClient
@@ -51,7 +51,7 @@ namespace GateClient
 
             m_Timers = new TimersManager((int)TimerID.Max);
 
-            m_Timers.StartTimer((byte)TimerID.HTCheck, this, XSFUtil.Config.ClientHeartbeatCheck, -1, "NetPoint.Create");
+            m_Timers.StartTimer((byte)TimerID.HTCheck, this, XSFUtil.Config.ClientHeartbeatCheck, -1, "Client.Create");
 
             return true;
         }
@@ -67,9 +67,13 @@ namespace GateClient
             m_Timers.CloseAllTimer();
         }
 
-        public void Disconnect()
+        public void Disconnect(int nReason)
         {
+            var message = XSFUtil.GetMessage((ushort)XsfPb.CMSGID.GtCltDisconnect) as XsfMsg.MSG_Gt_Clt_Disconnect;
+            message.mPB.Reason = nReason;
+            SendMessage(message);
 
+            m_Timers.StartTimer((byte)TimerID.Disconnect, this, 300, 1, "Client.Disconnect");
         }
 
         public void OnHandshake()
@@ -77,15 +81,21 @@ namespace GateClient
             m_IsHandshake = true;
         }
 
-        public ServerConnector GetConnector(EP nEP)
+        public ServerConnector GetConnector(byte nEP)
         {
             if(m_ConnectorIDs[(int)nEP] > 0)
             {
-                return ConnectorManager.Instance.GetConnector(m_ConnectorIDs[(int)nEP]);
+                return ConnectorManager.Instance.GetConnector((byte)nEP, m_ConnectorIDs[(int)nEP]);
             }
             else
             {
-                
+                var connector = ConnectorManager.Instance.GetConnector((byte)nEP, 0);
+                if(connector != null)
+                {
+                    m_ConnectorIDs[(int)nEP] = connector.ConnectorID;
+                }
+
+                return connector;
             }
         }
 
@@ -93,6 +103,17 @@ namespace GateClient
         {
             if(m_Connection != null)
                 m_Connection.SendMessage(message);
+        }
+
+        public void SendData(byte [] data)
+        {
+            if(m_Connection != null)
+                m_Connection.SendData(data);
+        }
+
+        public void SetServerID(byte nEP, uint nServerID)
+        {
+            m_ConnectorIDs[nEP] = nServerID;
         }
 
         public void OnAccept(IConnection connection) 
@@ -107,9 +128,21 @@ namespace GateClient
         
         public void OnError(IConnection connection, NetError nErrorCode) 
         {
-            Serilog.Log.Error("Client.OnError, id=[{1}]", ID);
+            Serilog.Log.Error("Client.OnError, id=[{0}]", ID);
             m_Owner.Delete(this);
             Close();
+
+            var message = XSFUtil.GetMessage((ushort)XsfPb.SMSGID.GtGtAClientClose) as XsfMsg.MSG_Gt_GtA_ClientClose;
+            message.mPB.ClientId = ID;
+            for(int i = 0; i < m_ConnectorIDs.Length; i ++)
+            {
+                if(m_ConnectorIDs[i] > 0)
+                {
+                    var connector = ConnectorManager.Instance.GetConnector((byte)i, m_ConnectorIDs[i]);
+                    if(connector != null)
+                        connector.SendMessage(message);
+                }
+            }
         }
         
         public void OnRecv(IConnection connection, IMessage message, ushort nMessageID, uint nRawID, byte[]? data) 
@@ -121,10 +154,22 @@ namespace GateClient
                 if(m_IsHandshake)
                 {
                     Serilog.Log.Information("client recv message id=" + nMessageID);
+                    var innerMsg = XSFUtil.GetMessage(nMessageID);
+                    var connector = GetConnector(innerMsg.DestEP);
+                    if(connector == null)
+                    {
+                        Disconnect((int)XsfPb.DisconnectReason.MsgInvalid);
+                        return;
+                    }
+
+                    var clientIDData = BitConverter.GetBytes(ID);
+                    Array.Copy(clientIDData, 0, data, 6, clientIDData.Length);
+                    
+                    connector.SendData(nMessageID, data);
                 }
                 else
                 {
-                    Close();
+                    Disconnect((int)XsfPb.DisconnectReason.MsgInvalid);
                 }
             }
         }
@@ -146,7 +191,7 @@ namespace GateClient
 
             case (byte)TimerID.Disconnect:
                 {
-
+                    Close();
                 }
                 break;
             }

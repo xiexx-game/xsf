@@ -18,6 +18,7 @@ enum CMSGID {
     Gt_Clt_Disconnect = 5;        // gate --> client 服务器断开连接
     Clt_G_Login = 6;              // client --> login 登录
     G_Clt_LoginResult = 7;        // game --> client 登录结果
+    G_Clt_TestData = 8;             // game --> client 测试协议
     
     //MESSAGE_ID_END
     CMSGID_Max = 100;

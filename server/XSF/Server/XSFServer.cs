@@ -185,7 +185,7 @@ namespace XSF
                 }
                 catch(Exception e)
                 {
-                    Serilog.Log.Error("MainThreadMethod Catch exception, message=" + e.Message);
+                    Serilog.Log.Error("MainThreadMethod Catch exception, message=" + e.Message + ", stack=" + e.StackTrace);
                 }
             }
 

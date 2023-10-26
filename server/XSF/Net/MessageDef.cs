@@ -17,7 +17,7 @@ namespace XSF
 
         public virtual ushort ID { get { return 0; } }
 
-        public virtual byte EP { get { return 0; } }
+        public virtual byte DestEP { get { return 0; } }
 
         public abstract byte[] Export();
 
@@ -63,7 +63,10 @@ namespace XSF
         Login,
         Gate,
         Game,
-        Db,
+        Manager,
+        Mail,
+        Robot,
+
         Max,
     }
 }

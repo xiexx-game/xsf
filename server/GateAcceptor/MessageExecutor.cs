@@ -12,71 +12,38 @@ using XSF;
 
 namespace GateA
 {
-    /*
-    internal class Executor_C_Cc_Handshake : IMessageExecutor
+    internal class Executor_Gt_GtA_Handshake : IMessageExecutor
     {
         public void OnExecute(object NetObj, IMessage message, ushort nMessageID, uint nRawID, byte[] rawData)
         {
-            var connector = NetObj as CenterConnector;
-            var localMsg = message as XsfMsg.MSG_C_Cc_Handshake;
-            connector.SetID(localMsg.mPB.ServerId);
+            var gate = NetObj as Gate;
+            var localMsg = message as XsfMsg.MSG_Gt_GtA_Handshake;
+            gate.SetID(localMsg.mPB.ServerId);
 
-            var Server = XSFUtil.Server;
-            Server.SetID(localMsg.mPB.NewId);
-            Serilog.Log.Information("收到中心服握手，更新本服ID, Server ID={0} - [{1}-{2}-{3}]", Server.ID, Server.SID.ID, Server.SID.Index, Server.SID.Type);
-
-            for(int i = 0; i < localMsg.mPB.Ports.Count; i ++)
+            if(gate.Owner.Add(gate))
             {
-                Server.SetPort((byte)i, localMsg.mPB.Ports[i]);
+                var respMsg = XSFUtil.GetMessage((ushort)XsfPb.SMSGID.GtAGtHandshake) as XsfMsg.MSG_GtA_Gt_Handshake;
+                respMsg.mPB.ServerId = XSFUtil.Server.ID;
+                gate.SendMessage(respMsg);
             }
-
-            connector.OnHandshake();
-            Server.DoStart();
-
-            if(Server.IsRunning)
-            {
-                connector.OnOK();
-            }
-
         }
     }
 
-    internal class Executor_C_Cc_ServerInfo : IMessageExecutor
+    internal class Executor_Gt_GtA_Heartbeat : IMessageExecutor
     {
         public void OnExecute(object NetObj, IMessage message, ushort nMessageID, uint nRawID, byte[] rawData)
         {
-            var connector = NetObj as CenterConnector;
-            var localMsg = message as XsfMsg.MSG_C_Cc_ServerInfo;
-            connector.AddInfo(localMsg);
+            var gate = NetObj as Gate;
+            gate.UpdateHTTime();
         }
     }
 
-    internal class Executor_C_Cc_ServerLost : IMessageExecutor
+    internal class Executor_Gt_GtA_ClientClose : IMessageExecutor
     {
         public void OnExecute(object NetObj, IMessage message, ushort nMessageID, uint nRawID, byte[] rawData)
         {
-            var connector = NetObj as CenterConnector;
-            var localMsg = message as XsfMsg.MSG_C_Cc_ServerLost;
-            connector.OnNodeLost(localMsg.mPB.ServerId);
+            var localMsg = message as XsfMsg.MSG_Gt_GtA_ClientClose;
+            IGateAcceptor.m_Instance.m_Handler.OnClientClose(localMsg.mPB.ClientId);
         }
     }
-
-    internal class Executor_C_Cc_ServerOk : IMessageExecutor
-    {
-        public void OnExecute(object NetObj, IMessage message, ushort nMessageID, uint nRawID, byte[] rawData)
-        {
-            var connector = NetObj as CenterConnector;
-            var localMsg = message as XsfMsg.MSG_C_Cc_ServerOk;
-            connector.OnNodeOk(localMsg.mPB.ServerId);
-        }
-    }
-
-    internal class Executor_C_Cc_Stop : IMessageExecutor
-    {
-        public void OnExecute(object NetObj, IMessage message, ushort nMessageID, uint nRawID, byte[] rawData)
-        {
-            XSFUtil.Server.Stop();
-        }
-    }
-    */
 }

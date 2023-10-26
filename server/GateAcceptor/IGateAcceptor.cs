@@ -19,14 +19,12 @@ namespace GateA
 
     public abstract class IGateAcceptor : FastNPManager
     {
-        private static IGateAcceptor m_Instance;
-        public static IGateAcceptor Instance
-        {
-            get { return m_Instance; }
-        }
+        internal static GateAcceptor m_Instance;
+
+        public static IGateAcceptor Instance { get { return m_Instance; } }
 
         // 断开指定客户端
-        public abstract void DisconnectClient(uint nClientID, uint nResult);
+        public abstract void DisconnectClient(uint nClientID, uint nReason);
 
         // 发送消息到网关
         public abstract void SendMessage2Gate(uint nGateID, IMessage message);
@@ -54,9 +52,10 @@ namespace GateA
             var ga = new GateAcceptor();
             ga.m_Handler = handler;
 
-            ModuleInit init = new ModuleInit();
+            FastNPManagerInit init = new FastNPManagerInit();
             init.ID = nID;
             init.Name = "GateAcceptor";
+            init.MaxSize = (int)XSFUtil.Config.MaxGate;
 
             XSFUtil.Server.AddModule(ga, init);
 

@@ -46,5 +46,6 @@
 
     <server>
         <item name="网关服" ep="gate" count="2" />
+        <item name="网关服" ep="game" count="2" />
     </server>
 </root>

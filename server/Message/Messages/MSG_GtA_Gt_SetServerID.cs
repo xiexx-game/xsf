@@ -16,7 +16,7 @@ namespace XsfMsg
 {
     public sealed class MSG_GtA_Gt_SetServerID : IMessage
     {
-        public override ushort ID { get { return (ushort)SMSGID.GtAGtSetServerID; } }
+        public override ushort ID { get { return (ushort)SMSGID.GtAGtSetServerId; } }
 
         private GtA_Gt_SetServerID m_PB;
         public GtA_Gt_SetServerID mPB

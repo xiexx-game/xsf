@@ -15,9 +15,9 @@ namespace XSF
     {
         private XSFWriter m_Writer;
 
-        public int PackMinLength { get { return 6; } }
+        public override int PackMinLength { get { return 6; } }
 
-        public int PackMaxLength { get { return int.MaxValue; } }
+        public override int PackMaxLength { get { return int.MaxValue; } }
 
         public ServerPacker()
         {
@@ -25,7 +25,7 @@ namespace XSF
             
         }
 
-        public byte[] Read(byte[] recvBuffer, int recvIndex, int nPackageLen, out IMessage message, out ushort nMessageID, out uint nRawID)
+        public override byte[] Read(byte[] recvBuffer, int recvIndex, int nPackageLen, out IMessage message, out ushort nMessageID, out uint nRawID)
         {
             int pbLen = nPackageLen - sizeof(ushort) - sizeof(uint);
             //Serilog.Log.Information("Read pbLen=" + pbLen);
@@ -42,7 +42,7 @@ namespace XSF
             return null;
         }
 
-        public byte[] Pack(IMessage message)
+        public override byte[] Pack(IMessage message)
         {
             m_Writer.Clear();
             byte[] pbData = message.Export();

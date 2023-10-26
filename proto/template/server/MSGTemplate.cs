@@ -18,6 +18,8 @@ namespace XsfMsg
     {
         public override ushort ID { get { return (ushort)_ID_PREFIX_._MSG_ID_NAME_; } }
 
+        public override byte DestEP { get { return (byte)EP._EP_NAME_; } }
+
         private _MSG_NAME_ m_PB;
         public _MSG_NAME_ mPB
         {

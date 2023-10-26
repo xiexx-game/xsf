@@ -40,7 +40,7 @@ message GtA_Gt_Broadcast {
 }
 
 // gate acceptor --> gate 设置服务器id
-message GtA_Gt_SetServerID {
+message GtA_Gt_SetServerId {
     uint32 client_id = 1;
     uint32 ep = 2;
     uint32 server_id = 3;

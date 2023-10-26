@@ -213,10 +213,10 @@ public class NetTcp
     }
 
 
-    private void Close()
+    private bool Close()
     {
         if (m_nState == NetState.Release || m_nState == NetState.Close)
-            return;
+            return false;
 
         m_nState = NetState.Close;
 
@@ -241,9 +241,9 @@ public class NetTcp
             {
 
             }
-
-            m_Socket = null;
         }
+
+        return true;
     }
 
     private void PushEventError(NetError error)
