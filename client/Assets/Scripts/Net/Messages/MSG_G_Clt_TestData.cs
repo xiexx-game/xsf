@@ -46,7 +46,7 @@ namespace XsfMsg
         public override void Execute(NetClient client)
         {
 
-
+            UnityEngine.Debug.LogWarning("message=" + mPB.Message);
 
         }
     }
