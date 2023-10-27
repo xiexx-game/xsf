@@ -9,40 +9,46 @@
 //////////////////////////////////////////////////////////////////////////
 using UnityEngine;
 
-public class Camera2D : MonoBehaviour
+namespace XSF
 {
-    // 设计分辨率
-    public float targetResolutionWidth = 1920;
-    public float targetResolutionHeight = 1080;
-
-    public float orthographicSize;
-
-    public float cameraSizeHight;
-    public float cameraSizeWidth;
-    public float aspectRatio;
-
-
-    // Use this for initialization
-    void Start()
+    public class Camera2D : MonoBehaviour
     {
-        aspectRatio = targetResolutionWidth / targetResolutionHeight;
+        // 设计分辨率
+        public float targetResolutionWidth = 1920;
+        public float targetResolutionHeight = 1080;
 
-        orthographicSize = (targetResolutionHeight / 100) / 2;
+        public float orthographicSize;
 
-        cameraSizeHight = orthographicSize * 2.0f;
-        cameraSizeWidth = cameraSizeHight * aspectRatio;
+        public float cameraSizeHight;
+        public float cameraSizeWidth;
+        public float aspectRatio;
+
+        public Camera MainCamera;
 
 
-        float fCurAspectRatio = (float)Screen.width / (float)Screen.height;
-
-        Debug.Log($"width:{Screen.width}, height:{Screen.height}, fCurAspectRatio:{fCurAspectRatio}");
-
-        if (fCurAspectRatio < aspectRatio)
+        // Use this for initialization
+        void Start()
         {
-            float height = cameraSizeWidth / fCurAspectRatio;
-            orthographicSize = height / 2;
-        }
+            aspectRatio = targetResolutionWidth / targetResolutionHeight;
 
-        XSFMain.Instance.MainCamera.orthographicSize = orthographicSize;
+            orthographicSize = (targetResolutionHeight / 100) / 2;
+
+            cameraSizeHight = orthographicSize * 2.0f;
+            cameraSizeWidth = cameraSizeHight * aspectRatio;
+
+
+            float fCurAspectRatio = (float)Screen.width / (float)Screen.height;
+
+            Debug.Log($"width:{Screen.width}, height:{Screen.height}, fCurAspectRatio:{fCurAspectRatio}");
+
+            if (fCurAspectRatio < aspectRatio)
+            {
+                float height = cameraSizeWidth / fCurAspectRatio;
+                orthographicSize = height / 2;
+            }
+
+            MainCamera.orthographicSize = orthographicSize;
+        }
     }
+
 }

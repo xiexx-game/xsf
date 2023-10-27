@@ -7,8 +7,12 @@
 // 说明：
 //
 //////////////////////////////////////////////////////////////////////////
-public class Singleton<T> where T : Singleton<T>, new()
+
+namespace XSF
 {
-    private static T s_Instance;
-    public static T Instance => s_Instance ??= new T();
+    public class Singleton<T> where T : Singleton<T>, new()
+    {
+        private static T s_Instance;
+        public static T Instance => s_Instance ??= new T();
+    }
 }

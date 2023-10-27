@@ -10,7 +10,10 @@
 
 using UnityEngine;
 using System.Collections.Generic;
+using XSF;
 
+namespace XsfScp
+{
 public class SchemaItem : ISchema
 {
     private Dictionary<uint, ScpItem> m_Datas;
@@ -62,4 +65,5 @@ public class SchemaItem : ISchema
         return scp;
     }
     //*/
+}
 }

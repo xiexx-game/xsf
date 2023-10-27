@@ -14,180 +14,183 @@ using System.IO;
 using System.Threading;
 using System.Globalization;
 
-public sealed class XSFLog : Singleton<XSFLog>
+namespace XSF
 {
-    struct LogData
+    public sealed class XSFLog : Singleton<XSFLog>
     {
-        public LogType type;         // 日志类型
-        public string message;          // 数据
-        public string date;             // 时间
-    }
-
-    private string m_sLogFilePath;
-    private bool m_bRun;
-    private object m_Lock;
-    private StreamWriter m_Writer;
-    private Thread m_Thread;
-    private XSFQueue<LogData> m_LogQueue;
-    private ManualResetEvent m_ResetEvent;
-
-    public ulong InfoCount {get; private set;}
-    public ulong ErrorCount {get; private set;}
-    public ulong WarnCount {get; private set;}
-
-    public XSFLog()
-    {
-        m_Lock = new object();
-    }
-
-    public void Init()
-    {
-        m_LogQueue = new XSFQueue<LogData>();
-        m_ResetEvent = new ManualResetEvent(true);
-
-#if UNITY_EDITOR
-        string sLogDir = Application.dataPath + "/../Log/";
-        if (!Directory.Exists(sLogDir))
+        struct LogData
         {
-            Directory.CreateDirectory(sLogDir);
+            public LogType type;         // 日志类型
+            public string message;          // 数据
+            public string date;             // 时间
         }
 
-        DateTime now = DateTime.Now;
-        m_sLogFilePath = string.Format("{0}/{1:D2}{2:D2}_{3:D2}{4:D2}{5:D2}.log", sLogDir, now.Month, now.Day, now.Hour, now.Minute, now.Second);
+        private string m_sLogFilePath;
+        private bool m_bRun;
+        private object m_Lock;
+        private StreamWriter m_Writer;
+        private Thread m_Thread;
+        private XSFQueue<LogData> m_LogQueue;
+        private ManualResetEvent m_ResetEvent;
+
+        public ulong InfoCount { get; private set; }
+        public ulong ErrorCount { get; private set; }
+        public ulong WarnCount { get; private set; }
+
+        public XSFLog()
+        {
+            m_Lock = new object();
+        }
+
+        public void Init()
+        {
+            m_LogQueue = new XSFQueue<LogData>();
+            m_ResetEvent = new ManualResetEvent(true);
+
+#if UNITY_EDITOR
+            string sLogDir = Application.dataPath + "/../Log/";
+            if (!Directory.Exists(sLogDir))
+            {
+                Directory.CreateDirectory(sLogDir);
+            }
+
+            DateTime now = DateTime.Now;
+            m_sLogFilePath = string.Format("{0}/{1:D2}{2:D2}_{3:D2}{4:D2}{5:D2}.log", sLogDir, now.Month, now.Day, now.Hour, now.Minute, now.Second);
 #else
         m_sLogFilePath = Application.persistentDataPath + "/running.html";
 #endif
 
-        UnityEngine.Debug.Log(m_sLogFilePath);
+            UnityEngine.Debug.Log(m_sLogFilePath);
 
-        m_bRun = true;
-        m_Thread = new Thread(new ThreadStart(Run));
-        m_Thread.IsBackground = true;
-        m_Thread.Start();
+            m_bRun = true;
+            m_Thread = new Thread(new ThreadStart(Run));
+            m_Thread.IsBackground = true;
+            m_Thread.Start();
 
-        UnityEngine.Application.logMessageReceived += HandleLog;
-    }
-
-    void HandleLog(string logString, string stackTrace, LogType type)
-    {
-        if (type == LogType.Log || type == LogType.Warning)
-        {
-            Push(type, logString);
+            UnityEngine.Application.logMessageReceived += HandleLog;
         }
-        else
-        {
-            Push(type, $"{logString}, trace={stackTrace}");
-        }
-        
-    }
 
-    public string [] GetLogContent()
-    {
-        if(File.Exists(m_sLogFilePath))
+        void HandleLog(string logString, string stackTrace, LogType type)
         {
-            string name = m_sLogFilePath + ".bk";
-            File.Copy(m_sLogFilePath, name);
-            string [] lines = File.ReadAllLines(name);
-            File.Delete(name);
+            if (type == LogType.Log || type == LogType.Warning)
+            {
+                Push(type, logString);
+            }
+            else
+            {
+                Push(type, $"{logString}, trace={stackTrace}");
+            }
+
+        }
+
+        public string[] GetLogContent()
+        {
+            if (File.Exists(m_sLogFilePath))
+            {
+                string name = m_sLogFilePath + ".bk";
+                File.Copy(m_sLogFilePath, name);
+                string[] lines = File.ReadAllLines(name);
+                File.Delete(name);
+                return lines;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public void Release()
+        {
+            UnityEngine.Debug.LogWarning("Log Release ...");
+
+            m_bRun = false;
+            m_ResetEvent.Set();
+        }
+
+        public void Push(LogType type, string message)
+        {
+            if (!m_bRun)
+                return;
+
+            LogData data;
+            data.type = type;
+            data.message = message;
+            data.date = DateTime.Now.ToString("u", DateTimeFormatInfo.InvariantInfo);
+
+            lock (m_Lock)
+            {
+                m_LogQueue.Push(data);
+            }
+
+            m_ResetEvent.Set();
+        }
+
+        public string[] GetAllLogs()
+        {
+            string tempPath = Application.persistentDataPath + "/temp";
+            File.Copy(m_sLogFilePath, tempPath, true);
+            string[] lines = File.ReadAllLines(tempPath);
+            File.Delete(tempPath);
             return lines;
         }
-        else
+
+        private void Run()
         {
-            return null;
-        }
-    }
+            if (File.Exists(m_sLogFilePath))
+                File.Delete(m_sLogFilePath);
 
-    public void Release()
-    {
-        UnityEngine.Debug.LogWarning("Log Release ...");
+            FileStream file = new FileStream(m_sLogFilePath, FileMode.CreateNew, FileAccess.Write, FileShare.ReadWrite);
+            StreamWriter writer = new StreamWriter(file);
 
-        m_bRun = false;
-        m_ResetEvent.Set();
-    }
-
-    public void Push(LogType type, string message)
-    {
-        if (!m_bRun)
-            return;
-
-        LogData data;
-        data.type = type;
-        data.message = message;
-        data.date = DateTime.Now.ToString("u", DateTimeFormatInfo.InvariantInfo);
-
-        lock (m_Lock)
-        {
-            m_LogQueue.Push(data);
-        }
-
-        m_ResetEvent.Set();
-    }
-
-    public string [] GetAllLogs()
-    {
-        string tempPath = Application.persistentDataPath + "/temp";
-        File.Copy(m_sLogFilePath, tempPath, true);
-        string [] lines = File.ReadAllLines(tempPath);
-        File.Delete(tempPath);
-        return lines;
-    }
-
-    private void Run()
-    {
-        if (File.Exists(m_sLogFilePath))
-            File.Delete(m_sLogFilePath);
-
-        FileStream file = new FileStream(m_sLogFilePath, FileMode.CreateNew, FileAccess.Write, FileShare.ReadWrite);
-        StreamWriter writer = new StreamWriter(file);
-
-        do
-        {
-            m_ResetEvent.WaitOne();
-
-            LogData node;
-            while (m_LogQueue.Pop(out node))
+            do
             {
-                switch (node.type)
+                m_ResetEvent.WaitOne();
+
+                LogData node;
+                while (m_LogQueue.Pop(out node))
                 {
-                    case LogType.Warning:
-                        writer.Write($"[WARN] {node.date} {node.message}<br />\n");
-                        WarnCount ++;
-                        break;
+                    switch (node.type)
+                    {
+                        case LogType.Warning:
+                            writer.Write($"[WARN] {node.date} {node.message}<br />\n");
+                            WarnCount++;
+                            break;
 
-                    case LogType.Error:
-                        ErrorCount ++;
-                        writer.Write($"[ERROR] {node.date} {node.message}<br />\n");
-                        break;
+                        case LogType.Error:
+                            ErrorCount++;
+                            writer.Write($"[ERROR] {node.date} {node.message}<br />\n");
+                            break;
 
-                    default:
-                        InfoCount ++;
-                        writer.Write($"[INFO] {node.date} {node.message}<br />\n");
-                        break;
+                        default:
+                            InfoCount++;
+                            writer.Write($"[INFO] {node.date} {node.message}<br />\n");
+                            break;
+                    }
                 }
-            }
 
-            writer.Flush();
-            m_ResetEvent.Reset();
+                writer.Flush();
+                m_ResetEvent.Reset();
 
-            if (!m_bRun)
-            {
-                break;
-            }
+                if (!m_bRun)
+                {
+                    break;
+                }
 
-        } while (true);
+            } while (true);
 
 
-        // 退出线程之前做收尾工作
+            // 退出线程之前做收尾工作
 
-        //关闭流   
-        writer.Close();
-        writer.Dispose();
+            //关闭流   
+            writer.Close();
+            writer.Dispose();
 
-        file.Close();
-        file.Dispose();
+            file.Close();
+            file.Dispose();
 
 #if UNITY_EDITOR
-        UnityEngine.Debug.Log("File Log Quit");
+            UnityEngine.Debug.Log("File Log Quit");
 #endif
+        }
     }
 }

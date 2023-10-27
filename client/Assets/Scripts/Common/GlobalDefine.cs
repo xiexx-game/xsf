@@ -10,19 +10,6 @@
 
 public enum EventID
 {
-    AllStartupStepDone = 1000,
-
-    NetConnecting,
-    NetConnected,
-    NetError,
-    NetHandshakeDone,
-
+    AllStartupStepDone = 10000,
     LoadingDone,
-}
-
-public enum EventObjectID
-{
-    UITestShow = 10001,
-    UISelectShow,
-    UILoadingShow,
 }

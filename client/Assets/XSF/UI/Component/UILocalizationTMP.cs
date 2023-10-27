@@ -10,29 +10,32 @@
 using UnityEngine;
 using TMPro;
 
-[ExecuteInEditMode]
-[RequireComponent(typeof(TextMeshProUGUI))]
-public class UILocalizationTMP : MonoBehaviour
+namespace XSF
 {
-    TextMeshProUGUI m_TMPText;
-
-    [Header("多语言key")]
-    public string Key;
-
-    void Awake()
+    [ExecuteInEditMode]
+    [RequireComponent(typeof(TextMeshProUGUI))]
+    public class UILocalizationTMP : MonoBehaviour
     {
-        m_TMPText = gameObject.GetComponent<TextMeshProUGUI>();
-        UpdateText();
-    }
+        TextMeshProUGUI m_TMPText;
 
-    public void UpdateText()
-    {
-        m_TMPText.text = XSFLocalization.Instance.GetText(Key);
-    }
+        [Header("多语言key")]
+        public string Key;
 
-    public void SetKey(string key)
-    {
-        Key = key;
-        UpdateText();
+        void Awake()
+        {
+            m_TMPText = gameObject.GetComponent<TextMeshProUGUI>();
+            UpdateText();
+        }
+
+        public void UpdateText()
+        {
+            m_TMPText.text = XSFLocalization.Instance.GetText(Key);
+        }
+
+        public void SetKey(string key)
+        {
+            Key = key;
+            UpdateText();
+        }
     }
 }

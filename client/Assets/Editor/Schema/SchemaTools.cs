@@ -12,6 +12,8 @@ using UnityEngine;
 using System.IO;
 using System.Xml;
 using System;
+using XSF;
+using XsfScp;
 
 public static class SchemaTools
 {

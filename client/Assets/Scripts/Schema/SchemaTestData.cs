@@ -10,7 +10,10 @@
 
 using System.Collections.Generic;
 using System.Xml;
+using XSF;
 
+namespace XsfScp
+{
 public class SchemaTestData : ISchema
 {
     public ScpTestData mData { get; private set; }
@@ -29,4 +32,5 @@ public class SchemaTestData : ISchema
         
         return true;
     }
+}
 }

@@ -9,15 +9,18 @@
 //////////////////////////////////////////////////////////////////////////
 using UnityEngine;
 
-public enum CoroutineID
+namespace XSF
 {
-    C0 = 0,
-    C1,
-    C2,
-    Max,
-}
+    public enum CoroutineID
+    {
+        C0 = 0,
+        C1,
+        C2,
+        Max,
+    }
 
-public class MonoCoroutine : MonoBehaviour
-{
-    public CoroutineID ID;
+    public class MonoCoroutine : MonoBehaviour
+    {
+        public CoroutineID ID;
+    }
 }

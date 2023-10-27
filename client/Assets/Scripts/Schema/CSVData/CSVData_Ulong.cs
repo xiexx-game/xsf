@@ -10,66 +10,69 @@
 using System;
 using UnityEngine;
 
-public sealed class CSVData_Ulong : CSVData
+namespace XsfScp
 {
-    public override CSVDataType DataType { get { return CSVDataType.Ulong; } }
-
-    public ulong ulValue;
-
-    public override void Read(int nRow, int nCol, string sData)
+    public sealed class CSVData_Ulong : CSVData
     {
-        if (string.IsNullOrEmpty(sData))
-        {
-            ulValue = 0;
-            return;
-        }
+        public override CSVDataType DataType { get { return CSVDataType.Ulong; } }
 
-        try
+        public ulong ulValue;
+
+        public override void Read(int nRow, int nCol, string sData)
         {
-            ulValue = Convert.ToUInt64(sData);
+            if (string.IsNullOrEmpty(sData))
+            {
+                ulValue = 0;
+                return;
+            }
+
+            try
+            {
+                ulValue = Convert.ToUInt64(sData);
+            }
+            catch (Exception)
+            {
+                Debug.LogError($"CSVData_Uint.Read error str={sData}, row={nRow}, col={nCol}");
+                throw;
+            }
         }
-        catch (Exception)
-        {
-            Debug.LogError($"CSVData_Uint.Read error str={sData}, row={nRow}, col={nCol}");
-            throw;
-        }
-    }
 
 #if UNITY_EDITOR
-    public override string Prefix
-    {
-        get
+        public override string Prefix
         {
-            return "ul";
+            get
+            {
+                return "ul";
+            }
         }
-    }
 
-    public override string ValueStr
-    {
-        get
+        public override string ValueStr
         {
-            return "ulValue";
+            get
+            {
+                return "ulValue";
+            }
         }
-    }
 
-    public override string TypeName
-    {
-        get
+        public override string TypeName
         {
-            return "ulong";
+            get
+            {
+                return "ulong";
+            }
         }
-    }
 
-    public override string GetLuaCode(string name) 
-    {
-        if(string.IsNullOrEmpty(name))
+        public override string GetLuaCode(string name)
         {
-            return ulValue.ToString();
+            if (string.IsNullOrEmpty(name))
+            {
+                return ulValue.ToString();
+            }
+            else
+            {
+                return $"{name} = {ulValue}";
+            }
         }
-        else
-        {
-            return $"{name} = {ulValue}";
-        }
-    }
 #endif
+    }
 }

@@ -11,10 +11,14 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine;
 
-public class XSFEmptyImage : Graphic
+namespace XSF
 {
-    protected override void OnPopulateMesh(VertexHelper vh)
+    public class XSFEmptyImage : Graphic
     {
-        vh.Clear();
+        protected override void OnPopulateMesh(VertexHelper vh)
+        {
+            vh.Clear();
+        }
     }
+
 }

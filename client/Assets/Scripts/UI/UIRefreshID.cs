@@ -8,9 +8,14 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-public enum UIRefreshID
+namespace XsfUI
 {
-    None = 0,
-    
-    UIAtlasTest_SetImage,
+
+    public enum UIRefreshID
+    {
+        None = 0,
+        
+        UIAtlasTest_SetImage,
+    }
+
 }

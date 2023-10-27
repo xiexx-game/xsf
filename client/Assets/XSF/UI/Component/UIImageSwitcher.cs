@@ -14,58 +14,61 @@ using UnityEngine.U2D;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
-public class UIImageSwitcher : MonoBehaviour
+namespace XSF
 {
-    private Image image;
-    private AsyncOperationHandle<SpriteAtlas> handle;
-
-    private string m_sAtlasLabel;
-    private string m_sSpriteName;
-
-    void Awake()
+    public class UIImageSwitcher : MonoBehaviour
     {
-        image = gameObject.GetComponent<Image>();
-    }
+        private Image image;
+        private AsyncOperationHandle<SpriteAtlas> handle;
 
-    public void SetImage(string sAtlasLabel, string sSpriteName)
-    {
-        m_sAtlasLabel = sAtlasLabel;
-        m_sSpriteName = sSpriteName;
+        private string m_sAtlasLabel;
+        private string m_sSpriteName;
 
-        if (handle.IsValid())
+        void Awake()
         {
-            // 如果已有异步加载操作在进行中，则先取消该操作
-            Addressables.Release(handle);
+            image = gameObject.GetComponent<Image>();
         }
 
-        handle = Addressables.LoadAssetAsync<SpriteAtlas>(sAtlasLabel);
-        handle.Completed += OnAtlasLoaded;
-    }
-
-    void OnAtlasLoaded(AsyncOperationHandle<SpriteAtlas> handle)
-    {
-        if (handle.Status == AsyncOperationStatus.Succeeded)
+        public void SetImage(string sAtlasLabel, string sSpriteName)
         {
-            SpriteAtlas atlas = handle.Result;
+            m_sAtlasLabel = sAtlasLabel;
+            m_sSpriteName = sSpriteName;
 
-            // 在图集中查找对应名称的Sprite
-            Sprite sprite = atlas.GetSprite(m_sSpriteName);
-            if (sprite != null)
+            if (handle.IsValid())
             {
-                image.sprite = sprite;
+                // 如果已有异步加载操作在进行中，则先取消该操作
+                Addressables.Release(handle);
             }
-            else
+
+            handle = Addressables.LoadAssetAsync<SpriteAtlas>(sAtlasLabel);
+            handle.Completed += OnAtlasLoaded;
+        }
+
+        void OnAtlasLoaded(AsyncOperationHandle<SpriteAtlas> handle)
+        {
+            if (handle.Status == AsyncOperationStatus.Succeeded)
             {
-                Debug.LogError("UIImageSwitcher.OnAtlasLoaded sprite not found, name=" + m_sSpriteName);
+                SpriteAtlas atlas = handle.Result;
+
+                // 在图集中查找对应名称的Sprite
+                Sprite sprite = atlas.GetSprite(m_sSpriteName);
+                if (sprite != null)
+                {
+                    image.sprite = sprite;
+                }
+                else
+                {
+                    Debug.LogError("UIImageSwitcher.OnAtlasLoaded sprite not found, name=" + m_sSpriteName);
+                }
             }
         }
-    }
 
-    void OnDestroy()
-    {
-        if (handle.IsValid())
+        void OnDestroy()
         {
-            Addressables.Release(handle);
+            if (handle.IsValid())
+            {
+                Addressables.Release(handle);
+            }
         }
     }
 }

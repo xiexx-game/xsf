@@ -13,38 +13,41 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public delegate void OnClickCallback(GameObject go);
-
-public class UIEventClick : MonoBehaviour, IPointerClickHandler
+namespace XSF
 {
-    private OnClickCallback onClick;
+    public delegate void OnClickCallback(GameObject go);
 
-    public void OnPointerClick(PointerEventData eventData)
+    public class UIEventClick : MonoBehaviour, IPointerClickHandler
     {
-        if (onClick != null)
-        {
-            onClick(gameObject);
-        }
-            
-    }
+        private OnClickCallback onClick;
 
-    public static void Set(GameObject obj, OnClickCallback callback)
-    {
-        UIEventClick mono = obj.GetComponent<UIEventClick>();
-        if (mono == null)
+        public void OnPointerClick(PointerEventData eventData)
         {
-            mono = obj.AddComponent<UIEventClick>();
-        }
-        else
-        {
-            mono.onClick = null;
+            if (onClick != null)
+            {
+                onClick(gameObject);
+            }
+
         }
 
-        mono.onClick = callback;
-    }
+        public static void Set(GameObject obj, OnClickCallback callback)
+        {
+            UIEventClick mono = obj.GetComponent<UIEventClick>();
+            if (mono == null)
+            {
+                mono = obj.AddComponent<UIEventClick>();
+            }
+            else
+            {
+                mono.onClick = null;
+            }
 
-    void OnDestroy()
-    {
-        onClick = null;
+            mono.onClick = callback;
+        }
+
+        void OnDestroy()
+        {
+            onClick = null;
+        }
     }
 }

@@ -9,21 +9,24 @@
 //////////////////////////////////////////////////////////////////////////
 using UnityEngine;
 using UnityEngine.UI;
+using XSF;
 
+namespace XsfUI
+{
 public sealed class UIAtlasTest : UIBase
 {
-// UI_PROP_START
-	public UIImageSwitcher Icon { get; private set; }	// Icon
-	public GameObject Button1 { get; private set; }	// Button1
-	public GameObject Button2 { get; private set; }	// Button2
-	public GameObject BtnClose { get; private set; }	// Close
-// UI_PROP_END
+	// UI_PROP_START
+	public UIImageSwitcher Icon { get; private set; }   // Icon
+	public GameObject Button1 { get; private set; } // Button1
+	public GameObject Button2 { get; private set; } // Button2
+	public GameObject BtnClose { get; private set; }    // Close
+														// UI_PROP_END
 
-    public override string Name { get { return "UIAtlasTest"; } }
+	public override string Name { get { return "UIAtlasTest"; } }
 
-    public override void OnInit()
-    {
-        // UI_INIT_START
+	public override void OnInit()
+	{
+		// UI_INIT_START
 		// Icon
 		Icon = RootT.Find("Icon").GetComponent<UIImageSwitcher>();
 		// Button1
@@ -35,40 +38,41 @@ public sealed class UIAtlasTest : UIBase
 		// Close
 		BtnClose = RootT.Find("Close").gameObject;
 		UIEventClick.Set(BtnClose, OnBtnCloseClick);
-        // UI_INIT_END
-    }
+		// UI_INIT_END
+	}
 
-    public override void OnRefresh(uint nFreshID, object data)
-    {
-        switch((UIRefreshID)nFreshID)
-        {
-        case UIRefreshID.UIAtlasTest_SetImage:
-            Icon.SetImage("Fruits", "Banana");
-            break;
-        }
-    }
+	public override void OnRefresh(uint nFreshID, object data)
+	{
+		switch ((UIRefreshID)nFreshID)
+		{
+			case UIRefreshID.UIAtlasTest_SetImage:
+				Icon.SetImage("Fruits", "Banana");
+				break;
+		}
+	}
 
 
-    // Button1
-    
+	// Button1
+
 
 
 	// Button1
 	private void OnButton1Click(GameObject go)
 	{
-        Icon.SetImage("Fruits", "Carrot");
+		Icon.SetImage("Fruits", "Carrot");
 	}
 
 	// Button2
 	private void OnButton2Click(GameObject go)
 	{
-        Icon.SetImage("Egg", "Egg");
+		Icon.SetImage("Egg", "Egg");
 	}
 
 	// Close
 	private void OnBtnCloseClick(GameObject go)
 	{
-        Close();
+		Close();
 	}
-    // UI_FUNC_APPEND
+	// UI_FUNC_APPEND
+}
 }

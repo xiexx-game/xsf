@@ -9,6 +9,8 @@
 //////////////////////////////////////////////////////////////////////////
 
 using UnityEngine;
+using XSF;
+using XsfUI;
 
 public sealed class StartupStepShowFirstUI : StartupStep
 {
@@ -16,7 +18,7 @@ public sealed class StartupStepShowFirstUI : StartupStep
     {
         Debug.LogWarning("StartupStepShowFirstUI Start");
 
-        Subscribe((EventID)XSF.UI_SHOW_EVENT_ID, (uint)EventObjectID.UITestShow);
+        Subscribe((EventID)XSFCore.UI_SHOW_EVENT_ID, (uint)UIObjectID.UITestShow);
 
         XSFUI.Instance.Get((int)UIID.UITest).Show();
     }

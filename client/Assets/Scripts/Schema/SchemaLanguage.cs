@@ -10,7 +10,10 @@
 
 using UnityEngine;
 using System.Collections.Generic;
+using XSF;
 
+namespace XsfScp
+{
 public class SchemaLanguage : ISchema
 {
     private Dictionary<string, ScpLanguage> m_Datas;
@@ -80,4 +83,5 @@ public class SchemaLanguage : ISchema
         }
         
     }
+}
 }

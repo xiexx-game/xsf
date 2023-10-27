@@ -8,6 +8,17 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+using XSF;
+
+namespace XsfUI
+{
+public enum UIObjectID
+{
+    UITestShow = 10001,
+    UISelectShow,
+    UILoadingShow,
+}
+
 public enum UIID
 {
     None = 0,
@@ -31,4 +42,6 @@ public sealed class UIHelper : IUIHelper
             default: return null;
         }
     }
+}
+
 }

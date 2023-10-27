@@ -10,25 +10,28 @@
 
 using XsfPb;
 
-public enum EP
+namespace XsfNet
 {
-    None = 0,
-	Client,
-	Center,
-	Login,
-	Gate,
-	Game,
-	Db,
-}
+    public enum EP
+    {
+        None = 0,
+        Client,
+        Center,
+        Login,
+        Gate,
+        Game,
+        Db,
+    }
 
-public class IMessage
-{
-    public virtual CMSGID ID { get { return CMSGID.None; } }
+    public abstract class IMessage
+    {
+        public virtual CMSGID ID { get { return CMSGID.None; } }
 
-    public virtual void Export(XSFWriter writer) { }
+        public abstract byte[] Export();
 
-    public virtual void Import(byte[] data, int offset, int length) { }
+        public virtual void Import(byte[] data, int offset, int length) { }
 
-    public virtual void Execute(NetClient client) { }
+        public virtual void Execute(NetClient client) { }
+    }
 }
 

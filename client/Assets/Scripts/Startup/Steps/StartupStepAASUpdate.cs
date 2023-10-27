@@ -14,6 +14,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 using System.Collections;
 using System.Collections.Generic;
+using XSF;
 
 public sealed class StartupStepAASUpdate : StartupStep
 {

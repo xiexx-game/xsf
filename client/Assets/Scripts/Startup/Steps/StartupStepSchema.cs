@@ -9,6 +9,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 using UnityEngine;
+using XSF;
 
 
 public sealed class StartupStepSchema : StartupStep
@@ -17,6 +18,6 @@ public sealed class StartupStepSchema : StartupStep
     {
         Debug.LogWarning("StartupStepSchema Start");
         XSFSchema.Instance.StartLoad(new GameSchemaHelper());
-        Subscribe((EventID)XSF.SCHEMA_EVENT_ID, 0);
+        Subscribe((EventID)XSFCore.SCHEMA_EVENT_ID, 0);
     }
 }

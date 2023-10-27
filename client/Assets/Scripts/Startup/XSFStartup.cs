@@ -10,6 +10,7 @@
 
 
 using UnityEngine;
+using XSF;
 
 public sealed class XSFStartup : Singleton<XSFStartup>, IUpdateNode
 {

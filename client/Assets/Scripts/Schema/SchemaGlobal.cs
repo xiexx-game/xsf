@@ -10,30 +10,34 @@
 
 using System.Collections.Generic;
 using UnityEngine;
+using XSF;
 
-public class SchemaGlobal : ISchema
+namespace XsfScp
 {
-    public ScpGlobal GlobalData { get; private set; }
-
-    public string GetSchemaName(string name)
+    public class SchemaGlobal : ISchema
     {
-        return name;
-    }
+        public ScpGlobal GlobalData { get; private set; }
 
-    public bool OnSchemaLoad(ISchemaReader reader)
-    {
-        CSVReader csv = reader as CSVReader;
-        GlobalData = new ScpGlobal();
+        public string GetSchemaName(string name)
+        {
+            return name;
+        }
 
-        // 类型， 值， 名称， 注释， client server
-        int nRowIndex = 0;
-//_CSV_LIST_BEGIN_
-		GlobalData.iIntData = (csv.GetData((int)CSVDataType.Int, nRowIndex++, 1) as CSVData_Int).iValue;	// 有符号整形
-		GlobalData.sStringData = (csv.GetData((int)CSVDataType.String, nRowIndex++, 1) as CSVData_String).sValue;	// 字符串数据
-		GlobalData.uUintData = (csv.GetData((int)CSVDataType.Uint, nRowIndex++, 1) as CSVData_Uint).uValue;	// uint整形
-		GlobalData.ulUlongData = (csv.GetData((int)CSVDataType.Ulong, nRowIndex++, 1) as CSVData_Ulong).ulValue;	// 长整形数据
-//_CSV_LIST_END_
+        public bool OnSchemaLoad(ISchemaReader reader)
+        {
+            CSVReader csv = reader as CSVReader;
+            GlobalData = new ScpGlobal();
 
-        return true;
+            // 类型， 值， 名称， 注释， client server
+            int nRowIndex = 0;
+            //_CSV_LIST_BEGIN_
+            GlobalData.iIntData = (csv.GetData((int)CSVDataType.Int, nRowIndex++, 1) as CSVData_Int).iValue;    // 有符号整形
+            GlobalData.sStringData = (csv.GetData((int)CSVDataType.String, nRowIndex++, 1) as CSVData_String).sValue;   // 字符串数据
+            GlobalData.uUintData = (csv.GetData((int)CSVDataType.Uint, nRowIndex++, 1) as CSVData_Uint).uValue; // uint整形
+            GlobalData.ulUlongData = (csv.GetData((int)CSVDataType.Ulong, nRowIndex++, 1) as CSVData_Ulong).ulValue;    // 长整形数据
+                                                                                                                        //_CSV_LIST_END_
+
+            return true;
+        }
     }
 }

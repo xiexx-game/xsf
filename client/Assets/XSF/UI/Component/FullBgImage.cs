@@ -11,44 +11,47 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FullBgImage : MonoBehaviour
+namespace XSF
 {
-    [Header("图片原始宽度")]
-    public float width;
-
-    [Header("图片原始高度")]
-    public float height;
-
-    void Start()
+    public class FullBgImage : MonoBehaviour
     {
-        UpdateFit();
-    }
+        [Header("图片原始宽度")]
+        public float width;
 
-    public void UpdateFit()
-    {
-        Rect canvasSize = gameObject.GetComponentInParent<Canvas>().GetComponent<RectTransform>().rect;
+        [Header("图片原始高度")]
+        public float height;
 
-        //当前画布尺寸长宽比
-        float screenxyRate = canvasSize.width / canvasSize.height;
-
-        Vector2 bgSize = new Vector2(width, height);
-
-        //图片尺寸长宽比
-        float texturexyRate = bgSize.x / bgSize.y;
-
-        RectTransform rt = (RectTransform)transform;
-        //图片x偏长,需要适配y
-        if (texturexyRate > screenxyRate)
+        void Start()
         {
-            int newSizeY = Mathf.CeilToInt(canvasSize.height);
-            int newSizeX = Mathf.CeilToInt((float)newSizeY / bgSize.y * bgSize.x);
-            rt.sizeDelta = new Vector2(newSizeX, newSizeY);
+            UpdateFit();
         }
-        else
+
+        public void UpdateFit()
         {
-            int newVideoSizeX = Mathf.CeilToInt(canvasSize.width);
-            int newVideoSizeY = Mathf.CeilToInt((float)newVideoSizeX / bgSize.x * bgSize.y);
-            rt.sizeDelta = new Vector2(newVideoSizeX, newVideoSizeY);
+            Rect canvasSize = gameObject.GetComponentInParent<Canvas>().GetComponent<RectTransform>().rect;
+
+            //当前画布尺寸长宽比
+            float screenxyRate = canvasSize.width / canvasSize.height;
+
+            Vector2 bgSize = new Vector2(width, height);
+
+            //图片尺寸长宽比
+            float texturexyRate = bgSize.x / bgSize.y;
+
+            RectTransform rt = (RectTransform)transform;
+            //图片x偏长,需要适配y
+            if (texturexyRate > screenxyRate)
+            {
+                int newSizeY = Mathf.CeilToInt(canvasSize.height);
+                int newSizeX = Mathf.CeilToInt((float)newSizeY / bgSize.y * bgSize.x);
+                rt.sizeDelta = new Vector2(newSizeX, newSizeY);
+            }
+            else
+            {
+                int newVideoSizeX = Mathf.CeilToInt(canvasSize.width);
+                int newVideoSizeY = Mathf.CeilToInt((float)newVideoSizeX / bgSize.x * bgSize.y);
+                rt.sizeDelta = new Vector2(newVideoSizeX, newVideoSizeY);
+            }
         }
     }
 }

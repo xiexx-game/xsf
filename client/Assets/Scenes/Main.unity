@@ -258,12 +258,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 364529244}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 54055435b73b4a643a297306219a5fd2, type: 3}
+  m_Script: {fileID: 11500000, guid: e14a1d9bf91db4005bee847a7ce61ad0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   TargetFrameRate: 60
   LoadScpInFiles: 1
-  HeartbeatInterval: 0
+  HeartbeatInterval: 10
   AASUpdateOpen: 0
 --- !u!114 &364529248
 MonoBehaviour:
@@ -279,7 +279,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowInfo: 1
   ShowLog: 0
-  ShowButton: 1
 --- !u!224 &476425866 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8660678323553645887, guid: 25a29cfdfd3512c49b77d68b35cbe74a, type: 3}
@@ -408,7 +407,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &1399451111
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -943,7 +942,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2031579824
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1106,6 +1105,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 901298558782494995, guid: 86926ed1ece9a4959b504c51486420d5, type: 3}
+      propertyPath: MainCamera
+      value: 
+      objectReference: {fileID: 963194227}
     - target: {fileID: 901298558782494999, guid: 86926ed1ece9a4959b504c51486420d5, type: 3}
       propertyPath: m_Name
       value: 2DCarema

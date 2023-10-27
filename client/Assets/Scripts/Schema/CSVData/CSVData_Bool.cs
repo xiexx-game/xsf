@@ -9,63 +9,66 @@
 //////////////////////////////////////////////////////////////////////////
 using System;
 
-public sealed class CSVData_Bool : CSVData
+namespace XsfScp
 {
-    public override CSVDataType DataType { get { return CSVDataType.Bool; } }
-
-    public bool bValue;
-
-    public override void Read(int nRow, int nCol, string sData)
+    public sealed class CSVData_Bool : CSVData
     {
-        if (string.IsNullOrEmpty(sData))
+        public override CSVDataType DataType { get { return CSVDataType.Bool; } }
+
+        public bool bValue;
+
+        public override void Read(int nRow, int nCol, string sData)
         {
-            bValue = false;
-            return;
+            if (string.IsNullOrEmpty(sData))
+            {
+                bValue = false;
+                return;
+            }
+
+
+            if (sData == "1" || sData.ToLower() == "true")
+                bValue = true;
+            else
+                bValue = false;
+
         }
-
-
-        if(sData == "1" || sData.ToLower() == "true")
-            bValue = true;
-        else
-            bValue = false;
-
-    }
 
 #if UNITY_EDITOR
-    public override string Prefix
-    {
-        get
+        public override string Prefix
         {
-            return "b";
+            get
+            {
+                return "b";
+            }
         }
-    }
 
-    public override string ValueStr
-    {
-        get
+        public override string ValueStr
         {
-            return "bValue";
+            get
+            {
+                return "bValue";
+            }
         }
-    }
 
-    public override string TypeName
-    {
-        get
+        public override string TypeName
         {
-            return "bool";
+            get
+            {
+                return "bool";
+            }
         }
-    }
 
-    public override string GetLuaCode(string name) 
-    {
-        if(string.IsNullOrEmpty(name))
+        public override string GetLuaCode(string name)
         {
-            return bValue.ToString().ToLower();
+            if (string.IsNullOrEmpty(name))
+            {
+                return bValue.ToString().ToLower();
+            }
+            else
+            {
+                return $"{name} = {bValue.ToString().ToLower()}";
+            }
         }
-        else
-        {
-            return $"{name} = {bValue.ToString().ToLower()}";
-        }
-    }
 #endif
+    }
 }

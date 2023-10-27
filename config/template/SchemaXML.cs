@@ -10,7 +10,10 @@
 
 using System.Collections.Generic;
 using System.Xml;
+using XSF;
 
+namespace XsfScp
+{
 public class _SCHEMA_NAME_ : ISchema
 {
     public _SCP_NAME_ mData { get; private set; }
@@ -29,4 +32,5 @@ public class _SCHEMA_NAME_ : ISchema
         
         return true;
     }
+}
 }

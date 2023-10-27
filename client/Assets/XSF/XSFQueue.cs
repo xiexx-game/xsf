@@ -10,61 +10,64 @@
 using System;
 using UnityEngine;
 
-public sealed class XSFQueue<T>
+namespace XSF
 {
-    class _Node
+    public sealed class XSFQueue<T>
     {
-        public T data;
-        public _Node next;
-    }
-
-    private _Node m_Head;
-    private _Node m_Tail;
-
-    private ulong m_nPushCount;
-    private ulong m_nPopCount;
-
-    public XSFQueue()
-    {
-        m_Head = new _Node();
-        m_Head.next = null;
-        m_Tail = m_Head;
-    }
-
-    public void Push(T data)
-    {
-        _Node newNode = new _Node();
-        newNode.data = data;
-        newNode.next = null;
-
-        m_Tail.next = newNode;
-        m_Tail = newNode;
-
-        ++m_nPushCount;
-    }
-
-    public bool Pop(out T data)
-    {
-        if (m_Head.next != null)
+        class _Node
         {
-            ++m_nPopCount;
-
-            m_Head = m_Head.next;
-            data = m_Head.data;
-
-            return true;
+            public T data;
+            public _Node next;
         }
 
-        data = default(T);
+        private _Node m_Head;
+        private _Node m_Tail;
 
-        return false;
-    }
+        private ulong m_nPushCount;
+        private ulong m_nPopCount;
 
-    public ulong Count
-    {
-        get
+        public XSFQueue()
         {
-            return m_nPushCount - m_nPopCount;
+            m_Head = new _Node();
+            m_Head.next = null;
+            m_Tail = m_Head;
+        }
+
+        public void Push(T data)
+        {
+            _Node newNode = new _Node();
+            newNode.data = data;
+            newNode.next = null;
+
+            m_Tail.next = newNode;
+            m_Tail = newNode;
+
+            ++m_nPushCount;
+        }
+
+        public bool Pop(out T data)
+        {
+            if (m_Head.next != null)
+            {
+                ++m_nPopCount;
+
+                m_Head = m_Head.next;
+                data = m_Head.data;
+
+                return true;
+            }
+
+            data = default(T);
+
+            return false;
+        }
+
+        public ulong Count
+        {
+            get
+            {
+                return m_nPushCount - m_nPopCount;
+            }
         }
     }
 }

@@ -8,25 +8,30 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-public interface ISchema
+namespace XSF
 {
-    string GetSchemaName(string name);
+    public interface ISchema
+    {
+        string GetSchemaName(string name);
 
-    bool OnSchemaLoad(ISchemaReader reader);
-};
+        bool OnSchemaLoad(ISchemaReader reader);
+    };
 
-public interface ISchemaHelper
-{
-    ISchema Get(int nId);
+    public interface ISchemaHelper
+    {
+        ISchema Get(int nId);
 
-    int MaxID { get; }
+        int MaxID { get; }
 
-    ICSVData GetData(int type);
+        ICSVData GetData(int type);
 
-    string GetLocalText(string key);
-}
+        string GetLocalText(string key);
 
-public interface ICSVData
-{
-    void Read(int nRow, int nCol, string sData);
+        bool LoadScpInFiles { get; }
+    }
+
+    public interface ICSVData
+    {
+        void Read(int nRow, int nCol, string sData);
+    }
 }

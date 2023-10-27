@@ -15,6 +15,7 @@ using UnityEngine;
 using System.Xml;
 using System.IO;
 using System.Linq;
+using XSF;
 
 public static class AASTools
 {

@@ -10,6 +10,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+namespace XsfUI
+{
+
 public sealed class _UI_NAME_ : UIBase
 {
 // UI_PROP_START
@@ -25,4 +28,6 @@ public sealed class _UI_NAME_ : UIBase
 
 
     // UI_FUNC_APPEND
+}
+
 }

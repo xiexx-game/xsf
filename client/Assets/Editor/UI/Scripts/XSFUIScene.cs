@@ -17,6 +17,8 @@ using UnityEditor;
 using UnityEngine.UI;
 using System.IO;
 using System.Collections.Generic;
+using XSF;
+using XsfUI;
 
 
 public class YCompare : IComparer<GameObject>

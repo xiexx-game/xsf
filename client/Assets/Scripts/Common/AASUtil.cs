@@ -10,6 +10,7 @@
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using XSF;
 public delegate bool OnUILoadCall(GameObject go);
 
 public static class AASUtil
@@ -24,7 +25,7 @@ public static class AASUtil
                 GameObject instance = op.Result;
                 if(!callback(op.Result))
                 {
-                    XSF.ReleaseAASGo(op.Result);
+                    XSFCore.ReleaseAASGo(op.Result);
                 }
             }
             else

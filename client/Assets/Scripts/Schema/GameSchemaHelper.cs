@@ -9,6 +9,8 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
+using XSF;
+using XsfScp;
 
 public enum SchemaID
 {
@@ -56,4 +58,7 @@ public class GameSchemaHelper : ISchemaHelper
     {
         return XSFSchema.Instance.Get<SchemaLanguage>((int)SchemaID.Language).Get(key);
     }
+
+    public bool LoadScpInFiles 
+    { get { return XSFConfig.Instance.LoadScpInFiles; } }
 }

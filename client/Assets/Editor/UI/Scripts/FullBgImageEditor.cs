@@ -9,6 +9,7 @@
 //////////////////////////////////////////////////////////////////////////
 using UnityEngine;
 using UnityEditor;
+using XSF;
 
 [CustomEditor(typeof(FullBgImage))]
 public class FullBgImageEditor : Editor

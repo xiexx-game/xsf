@@ -8,6 +8,9 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+namespace XsfScp
+{
+
 //全局变量配值
 public class ScpGlobal
 {
@@ -51,3 +54,5 @@ public class ScpLanguage
 }
 // SCHEMA_STRUCT
 // 不要删除上面的标签，自动生成代码需要用到
+
+}

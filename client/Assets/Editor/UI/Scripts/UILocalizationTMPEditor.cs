@@ -1,6 +1,7 @@
 
 using UnityEditor;
 using UnityEngine;
+using XSF;
 
 [CustomEditor(typeof(UILocalizationTMP))]
 public class UILocalizationTMPEditor : Editor

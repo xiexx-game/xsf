@@ -10,67 +10,70 @@
 using System;
 using UnityEngine;
 
-public sealed class CSVData_Float : CSVData
+namespace XsfScp
 {
-    public override CSVDataType DataType { get { return CSVDataType.Float; } }
-
-    public float fValue;
-
-    public override void Read(int nRow, int nCol, string sData)
+    public sealed class CSVData_Float : CSVData
     {
-        if (string.IsNullOrEmpty(sData))
-        {
-            fValue = 0;
-            return;
-        }
+        public override CSVDataType DataType { get { return CSVDataType.Float; } }
 
-        try
+        public float fValue;
+
+        public override void Read(int nRow, int nCol, string sData)
         {
-            fValue = Convert.ToSingle(sData);
+            if (string.IsNullOrEmpty(sData))
+            {
+                fValue = 0;
+                return;
+            }
+
+            try
+            {
+                fValue = Convert.ToSingle(sData);
+            }
+            catch (Exception)
+            {
+                Debug.LogError($"CSVData_Uint.Read error str={sData}, row={nRow}, col={nCol}");
+                throw;
+            }
         }
-        catch (Exception)
-        {
-            Debug.LogError($"CSVData_Uint.Read error str={sData}, row={nRow}, col={nCol}");
-            throw;
-        }
-    }
 
 #if UNITY_EDITOR
-    public override string Prefix
-    {
-        get
+        public override string Prefix
         {
-            return "f";
+            get
+            {
+                return "f";
+            }
         }
-    }
 
-    public override string ValueStr
-    {
-        get
+        public override string ValueStr
         {
-            return "fValue";
+            get
+            {
+                return "fValue";
+            }
         }
-    }
 
-    public override string TypeName
-    {
-        get
+        public override string TypeName
         {
-            return "float";
+            get
+            {
+                return "float";
+            }
         }
-    }
 
-    public override string GetLuaCode(string name) 
-    {
-        if(string.IsNullOrEmpty(name))
+        public override string GetLuaCode(string name)
         {
-            return fValue.ToString();
+            if (string.IsNullOrEmpty(name))
+            {
+                return fValue.ToString();
+            }
+            else
+            {
+                return $"{name} = {fValue}";
+            }
+
         }
-        else 
-        {
-            return $"{name} = {fValue}";
-        }
-        
-    }
 #endif
+    }
 }

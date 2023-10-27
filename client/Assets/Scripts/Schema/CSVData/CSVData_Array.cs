@@ -10,90 +10,93 @@
 using System;
 using UnityEngine;
 
-public sealed class CSVData_Array : CSVData
+namespace XsfScp
 {
-    public override CSVDataType DataType { get { return CSVDataType.Array; } }
-
-    public uint[] arValue;
-
-    public override void Read(int nRow, int nCol, string sData)
+    public sealed class CSVData_Array : CSVData
     {
-        if (string.IsNullOrEmpty(sData))
-        {
-            arValue = null;
-            return;
-        }
+        public override CSVDataType DataType { get { return CSVDataType.Array; } }
 
-        try
+        public uint[] arValue;
+
+        public override void Read(int nRow, int nCol, string sData)
         {
-            string [] datas = sData.Split(':');
-            arValue = new uint[datas.Length];
-            for(int i = 0; i < datas.Length; ++i)
+            if (string.IsNullOrEmpty(sData))
             {
-                arValue[i] = Convert.ToUInt32(datas[i]);
+                arValue = null;
+                return;
+            }
+
+            try
+            {
+                string[] datas = sData.Split(':');
+                arValue = new uint[datas.Length];
+                for (int i = 0; i < datas.Length; ++i)
+                {
+                    arValue[i] = Convert.ToUInt32(datas[i]);
+                }
+            }
+            catch (Exception)
+            {
+                Debug.LogError($"CSVData_Array.Read error str={sData}, row={nRow}, col={nCol}");
+                throw;
             }
         }
-        catch (Exception)
-        {
-            Debug.LogError($"CSVData_Array.Read error str={sData}, row={nRow}, col={nCol}");
-            throw;
-        }
-    }
 
 #if UNITY_EDITOR
-    public override string Prefix
-    {
-        get
+        public override string Prefix
         {
-            return "ar";
-        }
-    }
-
-    public override string ValueStr
-    {
-        get
-        {
-            return "arValue";
-        }
-    }
-
-    public override string TypeName
-    {
-        get
-        {
-            return "uint []";
-        }
-    }
-
-    public override string GetLuaCode(string name) 
-    {
-        string result = name + " = {";
-        if(string.IsNullOrEmpty(name))
-        {
-            result = "{";
-        }
-
-        if(arValue != null)
-        {
-            string arData = "";
-            for(int i = 0; i < arValue.Length; i ++)
+            get
             {
-                if(string.IsNullOrEmpty(arData))
-                {
-                    arData = arValue[i].ToString();
-                }
-                else 
-                {
-                    arData += " ," + arValue[i].ToString();
-                }
+                return "ar";
+            }
+        }
+
+        public override string ValueStr
+        {
+            get
+            {
+                return "arValue";
+            }
+        }
+
+        public override string TypeName
+        {
+            get
+            {
+                return "uint []";
+            }
+        }
+
+        public override string GetLuaCode(string name)
+        {
+            string result = name + " = {";
+            if (string.IsNullOrEmpty(name))
+            {
+                result = "{";
             }
 
-            result += arData;
+            if (arValue != null)
+            {
+                string arData = "";
+                for (int i = 0; i < arValue.Length; i++)
+                {
+                    if (string.IsNullOrEmpty(arData))
+                    {
+                        arData = arValue[i].ToString();
+                    }
+                    else
+                    {
+                        arData += " ," + arValue[i].ToString();
+                    }
+                }
+
+                result += arData;
+            }
+
+            result += "}";
+
+            return result;
         }
-
-        result += "}";
-
-        return result;
-    }
 #endif
+    }
 }

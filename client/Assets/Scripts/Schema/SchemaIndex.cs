@@ -8,6 +8,8 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+namespace XsfScp
+{
 public enum GlobalID
 {
 //GLOBAL_ID_START
@@ -39,6 +41,7 @@ public enum CSVIndex
 	ScpLanguage_value = 1,
 
 //CSV_INDEX_END
+}
 }
 
 

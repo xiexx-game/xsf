@@ -12,161 +12,164 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IEventSink
+namespace XSF
 {
-    // return false表示不在关心这个事件
-    bool OnEvent(uint nEventID, uint nObjectID, object context);
-}
-
-public sealed class XSFEvent : Singleton<XSFEvent>, IUpdateNode
-{
-    private struct SEventInfo
+    public interface IEventSink
     {
-        public uint nEventID;
-        public uint nObjectID;
-        public object context;
-        public ulong nIndex;
+        // return false表示不在关心这个事件
+        bool OnEvent(uint nEventID, uint nObjectID, object context);
     }
 
-    private Dictionary<ulong, List<IEventSink>> m_SubList;
-    private Queue<SEventInfo> m_EventList;
-    private float m_fTimeSkip;
-
-    public XSFEvent()
+    public sealed class XSFEvent : Singleton<XSFEvent>, IUpdateNode
     {
-        m_SubList = new Dictionary<ulong, List<IEventSink>>();
-        m_EventList = new Queue<SEventInfo>();
-
-        m_fTimeSkip = Time.fixedDeltaTime * 2;
-    }
-
-    public void Init()
-    {
-        XSFUpdate.Instance.Add(this);
-    }
-
-    public void Fire(uint nEventID, uint nObjectID = 0, object context = null, bool bFireAll = false)
-    {
-        XSF.DebugLog($"XSFEvent.Fire nEventID={nEventID}, obj id={nObjectID}");
-
-        var info = new SEventInfo
+        private struct SEventInfo
         {
-            nEventID = nEventID,
-            nObjectID = nObjectID,
-            context = context,
-            nIndex = XSF.UINT64_ID(nEventID, nObjectID)
-        };
-
-        m_EventList.Enqueue(info);
-
-        if (!bFireAll || nObjectID == 0) 
-            return;
-
-        var info0 = new SEventInfo
-        {
-            nEventID = nEventID,
-            nObjectID = nObjectID,
-            context = context,
-            nIndex = XSF.UINT64_ID(nEventID, 0)
-        };
-        
-        m_EventList.Enqueue(info0);
-    }
-
-    public bool Subscribe(IEventSink sink, uint nEventID, uint nObjectID)
-    {
-        if (null == sink)
-        {
-            Debug.LogError($"XSFEvent::Subscribe sink is null, nEventID={nEventID}, nObjectID={nObjectID}");
-            return false;
+            public uint nEventID;
+            public uint nObjectID;
+            public object context;
+            public ulong nIndex;
         }
 
-        ulong nIndex = XSF.UINT64_ID(nEventID, nObjectID);
+        private Dictionary<ulong, List<IEventSink>> m_SubList;
+        private Queue<SEventInfo> m_EventList;
+        private float m_fTimeSkip;
 
-        List<IEventSink> sinkList = null;
-        if (m_SubList.TryGetValue(nIndex, out sinkList))
+        public XSFEvent()
         {
-            if (sinkList.Contains(sink))
+            m_SubList = new Dictionary<ulong, List<IEventSink>>();
+            m_EventList = new Queue<SEventInfo>();
+
+            m_fTimeSkip = Time.fixedDeltaTime * 2;
+        }
+
+        public void Init()
+        {
+            XSFUpdate.Instance.Add(this);
+        }
+
+        public void Fire(uint nEventID, uint nObjectID = 0, object context = null, bool bFireAll = false)
+        {
+            XSFCore.DebugLog($"XSFEvent.Fire nEventID={nEventID}, obj id={nObjectID}");
+
+            var info = new SEventInfo
             {
-                XSF.DebugWarning($"XSFEvent::Subscribe sink exists, nEventID={nEventID}, nObjectID={nObjectID}");
+                nEventID = nEventID,
+                nObjectID = nObjectID,
+                context = context,
+                nIndex = XSFCore.UINT64_ID(nEventID, nObjectID)
+            };
+
+            m_EventList.Enqueue(info);
+
+            if (!bFireAll || nObjectID == 0)
+                return;
+
+            var info0 = new SEventInfo
+            {
+                nEventID = nEventID,
+                nObjectID = nObjectID,
+                context = context,
+                nIndex = XSFCore.UINT64_ID(nEventID, 0)
+            };
+
+            m_EventList.Enqueue(info0);
+        }
+
+        public bool Subscribe(IEventSink sink, uint nEventID, uint nObjectID)
+        {
+            if (null == sink)
+            {
+                Debug.LogError($"XSFEvent::Subscribe sink is null, nEventID={nEventID}, nObjectID={nObjectID}");
                 return false;
             }
-        }
-        else
-        {
-            sinkList = new List<IEventSink>();
-            m_SubList.Add(nIndex, sinkList);
-        }
 
-        XSF.DebugLog($"XSFEvent.Subscribe nEventID={nEventID}, obj id={nObjectID}");
+            ulong nIndex = XSFCore.UINT64_ID(nEventID, nObjectID);
 
-        sinkList.Add(sink);
-
-        return true;
-    }
-
-    public bool Unsubscribe(IEventSink sink, uint nEventID, uint nObjectID)
-    {
-        if (null == sink || m_SubList == null)
-        {
-            return false;
-        }
-
-        ulong nIndex = XSF.UINT64_ID(nEventID, nObjectID);
-
-        List<IEventSink> sinkList = null;
-        if (!m_SubList.TryGetValue(nIndex, out sinkList))
-        {
-            return false;
-        }
-
-        sinkList.Remove(sink);
-
-        if (sinkList.Count <= 0)
-        {
-            m_SubList.Remove(nIndex);
-        }
-
-        return true;
-    }
-
-    public bool IsUpdateWroking
-    {
-        get { return true; }
-    }
-
-    public void OnUpdate()
-    {
-        var fTimeStart = Time.realtimeSinceStartup;
-
-        while (true)
-        {
-            if (m_EventList.Count <= 0)
-                break;
-
-            var info = m_EventList.Dequeue();
-
-            if (m_SubList.TryGetValue(info.nIndex, out var sinkList)) 
+            List<IEventSink> sinkList = null;
+            if (m_SubList.TryGetValue(nIndex, out sinkList))
             {
-                for (var i = 0; i < sinkList.Count;)
+                if (sinkList.Contains(sink))
                 {
-                    XSF.DebugLog($"XSFEvent.HandleEvent OnEvent nEventID={info.nEventID}, obj id={info.nObjectID}");
-                    if (!sinkList[i].OnEvent(info.nEventID, info.nObjectID, info.context))
-                    {
-                        sinkList.RemoveAt(i);
-                    }
-                    else
-                    {
-                        i++;
-                    }
+                    XSFCore.DebugWarning($"XSFEvent::Subscribe sink exists, nEventID={nEventID}, nObjectID={nObjectID}");
+                    return false;
                 }
             }
-
-            var fCurTime = Time.realtimeSinceStartup;
-            if (fCurTime - fTimeStart >= m_fTimeSkip)
+            else
             {
-                Debug.LogWarning("XSFEvent.Dispatch cost too much time, cost=" + (fCurTime - fTimeStart));
-                break;
+                sinkList = new List<IEventSink>();
+                m_SubList.Add(nIndex, sinkList);
+            }
+
+            XSFCore.DebugLog($"XSFEvent.Subscribe nEventID={nEventID}, obj id={nObjectID}");
+
+            sinkList.Add(sink);
+
+            return true;
+        }
+
+        public bool Unsubscribe(IEventSink sink, uint nEventID, uint nObjectID)
+        {
+            if (null == sink || m_SubList == null)
+            {
+                return false;
+            }
+
+            ulong nIndex = XSFCore.UINT64_ID(nEventID, nObjectID);
+
+            List<IEventSink> sinkList = null;
+            if (!m_SubList.TryGetValue(nIndex, out sinkList))
+            {
+                return false;
+            }
+
+            sinkList.Remove(sink);
+
+            if (sinkList.Count <= 0)
+            {
+                m_SubList.Remove(nIndex);
+            }
+
+            return true;
+        }
+
+        public bool IsUpdateWroking
+        {
+            get { return true; }
+        }
+
+        public void OnUpdate()
+        {
+            var fTimeStart = Time.realtimeSinceStartup;
+
+            while (true)
+            {
+                if (m_EventList.Count <= 0)
+                    break;
+
+                var info = m_EventList.Dequeue();
+
+                if (m_SubList.TryGetValue(info.nIndex, out var sinkList))
+                {
+                    for (var i = 0; i < sinkList.Count;)
+                    {
+                        XSFCore.DebugLog($"XSFEvent.HandleEvent OnEvent nEventID={info.nEventID}, obj id={info.nObjectID}");
+                        if (!sinkList[i].OnEvent(info.nEventID, info.nObjectID, info.context))
+                        {
+                            sinkList.RemoveAt(i);
+                        }
+                        else
+                        {
+                            i++;
+                        }
+                    }
+                }
+
+                var fCurTime = Time.realtimeSinceStartup;
+                if (fCurTime - fTimeStart >= m_fTimeSkip)
+                {
+                    Debug.LogWarning("XSFEvent.Dispatch cost too much time, cost=" + (fCurTime - fTimeStart));
+                    break;
+                }
             }
         }
     }

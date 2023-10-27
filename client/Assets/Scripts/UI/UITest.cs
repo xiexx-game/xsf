@@ -10,6 +10,12 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using XSF;
+using XsfNet;
+using XsfMsg;
+
+namespace XsfUI
+{
 
 public sealed class UITest : UIBase
 {
@@ -20,11 +26,13 @@ public sealed class UITest : UIBase
 	public GameObject Button2 { get; private set; }	// Button2 click
 	public TextMeshProUGUI Button2Text { get; private set; }	// Button2Text
 	public GameObject Button3 { get; private set; }	// Button3 click
+	public GameObject Connect { get; private set; }	// Connect to server
+	public GameObject Login { get; private set; }	// Login server
 // UI_PROP_END
 
     public override string Name { get { return "UITest"; } }
 
-    public override uint EventObjID { get { return (uint)EventObjectID.UITestShow; } }
+    public override uint EventObjID { get { return (uint)UIObjectID.UITestShow; } }
 
     public override void OnInit()
     {
@@ -43,6 +51,12 @@ public sealed class UITest : UIBase
 		Button2Text = RootT.Find("Bottom/Button2/Text").GetComponent<TextMeshProUGUI>();
 		// Button3 click
 		Button3 = RootT.Find("Bottom/Button3").gameObject;
+		// Connect to server
+		Connect = RootT.Find("Bottom/Connect").gameObject;
+		UIEventClick.Set(Connect, OnConnectClick);
+		// Login server
+		Login = RootT.Find("Bottom/Login").gameObject;
+		UIEventClick.Set(Login, OnLoginClick);
         // UI_INIT_END
     }
 
@@ -60,5 +74,22 @@ public sealed class UITest : UIBase
         ui.Show();
         ui.Refresh((uint)UIRefreshID.UIAtlasTest_SetImage, null);
 	}
+
+	// Connect to server
+	private void OnConnectClick(GameObject go)
+	{
+		XSFNet.Instance.CreateNetClient("8.137.21.7", 20000);
+	}
+
+	// Login server
+	private void OnLoginClick(GameObject go)
+	{
+		MSG_Clt_G_Login msg = MessagePool.Instance.Get(XsfPb.CMSGID.CltGLogin) as MSG_Clt_G_Login;
+		msg.mPB.Account = "test";
+		XSFNet.Instance.mClient.SendMessage(msg);
+	}
+
     // UI_FUNC_APPEND
+}
+
 }

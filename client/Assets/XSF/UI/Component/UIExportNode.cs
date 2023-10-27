@@ -11,18 +11,21 @@
 using System;
 using UnityEngine;
 
-#if UNITY_EDITOR
-public class UIExportNode : MonoBehaviour
+namespace XSF
 {
-    [Header("Node Name")]
-    public string Name;
-    public string Namespace;
-    public string Comp;
+#if UNITY_EDITOR
+    public class UIExportNode : MonoBehaviour
+    {
+        [Header("Node Name")]
+        public string Name;
+        public string Namespace;
+        public string Comp;
 
-    [Header("Need Click")]
-    public bool NeedClick;
+        [Header("Need Click")]
+        public bool NeedClick;
 
-    [Header("Describe")]
-    public string Describe;
-}
+        [Header("Describe")]
+        public string Describe;
+    }
 #endif
+}

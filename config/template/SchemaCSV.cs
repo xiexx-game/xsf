@@ -9,7 +9,10 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System.Collections.Generic;
+using XSF;
 
+namespace XsfScp
+{
 public class _SCHEMA_NAME_ : ISchema
 {
     //private Dictionary<uint, _SCP_NAME_> m_Datas;
@@ -72,4 +75,5 @@ public class _SCHEMA_NAME_ : ISchema
         return m_Datas[nIndex];
     }
     //*/
+}
 }

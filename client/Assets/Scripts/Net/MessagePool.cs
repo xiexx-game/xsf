@@ -9,20 +9,24 @@
 //////////////////////////////////////////////////////////////////////////
 
 using XsfPb;
+using XSF;
+using XsfMsg;
 
-public sealed class MessagePool : Singleton<MessagePool>
+namespace XsfNet
 {
-    private IMessage[] m_MessagePool;
-
-    public MessagePool()
+    public sealed class MessagePool : Singleton<MessagePool>
     {
-        m_MessagePool = new IMessage[(int)CMSGID.Max];
-    }
+        private IMessage[] m_MessagePool;
 
-    public bool Init()
-    {
-        // 下面的注释定义必须保留，用来自动生成代码
-        //MESSAGE_START
+        public MessagePool()
+        {
+            m_MessagePool = new IMessage[(int)CMSGID.Max];
+        }
+
+        public bool Init()
+        {
+            // 下面的注释定义必须保留，用来自动生成代码
+            //MESSAGE_START
 		m_MessagePool[(int)CMSGID.CltGtHandshake] = new MSG_Clt_Gt_Handshake();
 		m_MessagePool[(int)CMSGID.GtCltHandshake] = new MSG_Gt_Clt_Handshake();
 		m_MessagePool[(int)CMSGID.CltGtHeartbeat] = new MSG_Clt_Gt_Heartbeat();
@@ -31,17 +35,19 @@ public sealed class MessagePool : Singleton<MessagePool>
 		m_MessagePool[(int)CMSGID.CltGLogin] = new MSG_Clt_G_Login();
 		m_MessagePool[(int)CMSGID.GCltLoginResult] = new MSG_G_Clt_LoginResult();
 		m_MessagePool[(int)CMSGID.GCltTestData] = new MSG_G_Clt_TestData();
-        //MESSAGE_END
-        // 上面的注释定义必须保留，用来自动生成代码
-        return true;
-    }
-
-    public IMessage Get(CMSGID nID)
-    {
-        if(nID >= CMSGID.Max) {
-            return null;
+            //MESSAGE_END
+            // 上面的注释定义必须保留，用来自动生成代码
+            return true;
         }
 
-        return m_MessagePool[(int)nID];
+        public IMessage Get(CMSGID nID)
+        {
+            if (nID >= CMSGID.Max)
+            {
+                return null;
+            }
+
+            return m_MessagePool[(int)nID];
+        }
     }
 }

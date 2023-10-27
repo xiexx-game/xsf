@@ -14,6 +14,9 @@ using System.Xml;
 using System.Collections.Generic;
 using System.Text;
 
+namespace XSF
+{
+
 public enum SchemaType
 {
     None = 0,
@@ -264,4 +267,6 @@ public sealed class XMLReader : ISchemaReader
 }
 
 #endregion
+
+}
 

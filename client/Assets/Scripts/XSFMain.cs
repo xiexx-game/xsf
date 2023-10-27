@@ -10,6 +10,9 @@
 
 using System;
 using UnityEngine;
+using XSF;
+using XsfNet;
+using XsfUI;
 
 public sealed class XSFMain : MonoSingleton<XSFMain>
 {
@@ -45,9 +48,9 @@ public sealed class XSFMain : MonoSingleton<XSFMain>
             {
                 case MainStatus.Init:
                     {
-                        XSF.Init();
+                        XSFCore.Init();
                         XSFStartup.Instance.Init();
-                        XSFUI.Instance.Init(new UIHelper());
+                        XSFUI.Instance.Init(new UIHelper(), XSFMain.Instance.UIRoot);
                         XSFNet.Instance.Init();
                         m_nStatus = MainStatus.Run;
                     }
@@ -55,7 +58,7 @@ public sealed class XSFMain : MonoSingleton<XSFMain>
 
                 case MainStatus.Run:
                     {
-                        XSF.Update();
+                        XSFCore.Update();
                     }
                     break;
             }
@@ -83,7 +86,7 @@ public sealed class XSFMain : MonoSingleton<XSFMain>
             {
                 case MainStatus.Run:
                     {
-                        XSF.FixedUpdate();
+                        XSFCore.FixedUpdate();
                     }
                     break;
             }
@@ -105,7 +108,8 @@ public sealed class XSFMain : MonoSingleton<XSFMain>
 
     private void OnApplicationQuit()
     {
-        XSF.Release();
+        XSFNet.Instance.Release();
+        XSFCore.Release();
 
         Debug.Log("App Quit");
     }

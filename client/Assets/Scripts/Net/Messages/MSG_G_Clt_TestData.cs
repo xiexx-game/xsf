@@ -9,41 +9,45 @@
 //////////////////////////////////////////////////////////////////////////
 
 using XsfPb;
+using XsfNet;
 
-public sealed class MSG_G_Clt_TestData : IMessage
+namespace XsfMsg
 {
-    public override CMSGID ID { get { return CMSGID.GCltTestData; } }
-
-    private G_Clt_TestData m_PB;
-    public G_Clt_TestData mPB
+    public sealed class MSG_G_Clt_TestData : IMessage
     {
-        get
+        public override CMSGID ID { get { return CMSGID.GCltTestData; } }
+
+        private G_Clt_TestData m_PB;
+        public G_Clt_TestData mPB
         {
-            if (m_PB == null)
-                m_PB = new G_Clt_TestData();
+            get
+            {
+                if (m_PB == null)
+                    m_PB = new G_Clt_TestData();
 
-            return m_PB;
+                return m_PB;
+            }
         }
-    }
 
-    public override void Export(XSFWriter writer)
-    {
-        // 写入PB数据
-        byte[] bytes = new byte[mPB.CalculateSize()];
-        mPB.WriteTo(new Google.Protobuf.CodedOutputStream(bytes));
-        writer.WriteBuffer(bytes);
-    }
+        public override byte[] Export()
+        {
+            byte[] bytes = new byte[mPB.CalculateSize()];
+            mPB.WriteTo(new Google.Protobuf.CodedOutputStream(bytes));
 
-    public override void Import(byte[] data, int offset, int length)
-    {
-        m_PB = G_Clt_TestData.Parser.ParseFrom(data, offset, length);
-    }
+            return bytes;
+        }
 
-    // 消息处理接口
-    public override void Execute(NetClient client)
-    {
-        
+        public override void Import(byte[] data, int offset, int length)
+        {
+            m_PB = G_Clt_TestData.Parser.ParseFrom(data, offset, length);
+        }
+
+        // 消息处理接口
+        public override void Execute(NetClient client)
+        {
 
 
+
+        }
     }
 }

@@ -9,25 +9,27 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
-
-public enum NetError
+namespace XSF
 {
-    None = 0,
-    Connect,
-    Recv,
-    Send,
-    Package,
-}
+    public enum NetError
+    {
+        None = 0,
+        Connect,
+        Recv,
+        Send,
+        Package,
+    }
 
-public interface INetHandler
-{
-    void OnConnected();
-    void OnRecv(byte[] data);
-    void OnError(NetError nErrorCode);
-}
+    public interface INetHandler
+    {
+        void OnConnected();
+        void OnRecv(byte[] data);
+        void OnError(NetError nErrorCode);
+    }
 
-public class NetPackageParseException : Exception
-{
-    public override string Message { get { return "Net ReceiveData catch Exception"; } }
+    public class NetPackageParseException : Exception
+    {
+        public override string Message { get { return "Net ReceiveData catch Exception"; } }
+    }
 }
 

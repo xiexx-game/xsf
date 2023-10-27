@@ -9,13 +9,17 @@
 //////////////////////////////////////////////////////////////////////////
 using UnityEngine;
 
-public class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
+namespace XSF
 {
-    private static T s_Instance;
-    public static T Instance => s_Instance;
-
-    protected virtual void Awake()
+    public class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
     {
-        s_Instance = (T)this;
+        private static T s_Instance;
+        public static T Instance => s_Instance;
+
+        protected virtual void Awake()
+        {
+            s_Instance = (T)this;
+        }
     }
 }
+

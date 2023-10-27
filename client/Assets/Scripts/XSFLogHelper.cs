@@ -9,7 +9,9 @@
 //////////////////////////////////////////////////////////////////////////
 
 using UnityEngine;
+using XSF;
 
+using XsfNet;
 
 public class XSFLogHelper : MonoSingleton<XSFLogHelper>
 {

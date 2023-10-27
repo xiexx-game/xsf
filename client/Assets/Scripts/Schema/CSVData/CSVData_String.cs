@@ -10,53 +10,56 @@
 using UnityEngine;
 using System;
 
-public sealed class CSVData_String : CSVData
+namespace XsfScp
 {
-    public override CSVDataType DataType { get { return CSVDataType.String; } }
-
-    public string sValue;
-
-    public override void Read(int nRow, int nCol, string sData)
+    public sealed class CSVData_String : CSVData
     {
-        sValue = sData;
-    }
+        public override CSVDataType DataType { get { return CSVDataType.String; } }
+
+        public string sValue;
+
+        public override void Read(int nRow, int nCol, string sData)
+        {
+            sValue = sData;
+        }
 
 #if UNITY_EDITOR
-    public override string Prefix
-    {
-        get
+        public override string Prefix
         {
-            return "s";
+            get
+            {
+                return "s";
+            }
         }
-    }
 
-    public override string ValueStr
-    {
-        get
+        public override string ValueStr
         {
-            return "sValue";
+            get
+            {
+                return "sValue";
+            }
         }
-    }
 
-    public override string TypeName
-    {
-        get
+        public override string TypeName
         {
-            return "string";
+            get
+            {
+                return "string";
+            }
         }
-    }
 
-    public override string GetLuaCode(string name) 
-    {
-        if(string.IsNullOrEmpty(name))
+        public override string GetLuaCode(string name)
         {
-            return $"\"{sValue}\"";
+            if (string.IsNullOrEmpty(name))
+            {
+                return $"\"{sValue}\"";
+            }
+            else
+            {
+                return $"{name} = \"{sValue}\"";
+            }
+
         }
-        else
-        {
-            return $"{name} = \"{sValue}\"";
-        }
-        
-    }
 #endif
+    }
 }
