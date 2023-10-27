@@ -37,6 +37,7 @@ public class MonoSelect : MonoBehaviour
 
     public void ShowSelect(int nType)
     {
+        gameObject.SetActive(true);
         if(nType == 0)
         {
             Anim.Play("Scale");

@@ -23,9 +23,10 @@ public class MonoBox : MonoBehaviour
     public void Move(Vector3 target)
     {
         m_Target = target;
-        m_MoveDir = m_Target - transform.position;
+        m_MoveDir = m_Target - transform.localPosition;
         m_MoveDir.Normalize();
         m_bMoving = true;
+        //Debug.Log("MonoBox move target=" + target + ", local=" + transform.localPosition);
     }
 
     void Update()
@@ -33,15 +34,18 @@ public class MonoBox : MonoBehaviour
         if(m_bMoving)
         {
             float dis = GameConfig.Instance.RunSpeed * Time.deltaTime;
-            float length = Vector3.Distance(transform.position, m_Target);
+            float length = Vector3.Distance(transform.localPosition, m_Target);
+            //Debug.Log("MonoBox move dis=" + dis + ", length=" + length + ", transform.localPosition" + transform.localPosition);
             if(dis > length)
             {
-                transform.position = m_Target;
+                transform.localPosition = m_Target;
                 m_bMoving = false;
+                //Debug.Log("transform.localPosition 1=" + transform.localPosition);
             }
             else
             {
-                transform.position += m_MoveDir * dis;
+                transform.localPosition += m_MoveDir * dis;
+                //Debug.Log("transform.localPosition 2=" + transform.localPosition);
             }
         }
         

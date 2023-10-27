@@ -114,7 +114,7 @@ public class Level : Singleton<Level>, ICharacterEvent, XSFAnimHandler
                     {
                         if(!m_Blocks[i].box.select.gameObject.activeSelf)
                         {
-                            m_Blocks[i].box.select.gameObject.SetActive(true);
+                            m_Blocks[i].box.select.ShowSelect(0);
                         }
                     }
                 }
@@ -314,6 +314,7 @@ public class Level : Singleton<Level>, ICharacterEvent, XSFAnimHandler
                 m_Blocks[i].box.select.Hide();
 
                 m_Blocks[i].select.ShowSelect(1);
+                m_Blocks[i].select.SetOK();
 
                 nObjIndex ++;
             }
@@ -468,7 +469,6 @@ public class Level : Singleton<Level>, ICharacterEvent, XSFAnimHandler
                 m_Blocks[i].SetColor(BlockColor.Road);
                 m_Blocks[i].Status = (int)BlockStatus.Road | (int)BlockStatus.Point;
                 GameObject select = GameObject.Instantiate(m_Objs[(int)SceneObjID.Select]);
-                select.SetActive(true);
                 m_Blocks[i].select = select.GetComponent<MonoSelect>();
                 m_Blocks[i].select.ShowSelect(1);
                 select.transform.position = m_Blocks[i].go.transform.position;
@@ -481,7 +481,6 @@ public class Level : Singleton<Level>, ICharacterEvent, XSFAnimHandler
 
                 GameObject select = GameObject.Instantiate(m_Objs[(int)SceneObjID.Select]);
                 select.name = "fx";
-                select.SetActive(true);
                 m_Blocks[i].box.select = select.GetComponent<MonoSelect>();
                 m_Blocks[i].box.select.ShowSelect(0); 
 
@@ -498,13 +497,14 @@ public class Level : Singleton<Level>, ICharacterEvent, XSFAnimHandler
 
                 GameObject select = GameObject.Instantiate(m_Objs[(int)SceneObjID.Select]);
                 select.transform.position = m_Blocks[i].go.transform.position;
-                select.SetActive(true);
                 m_Blocks[i].select = select.GetComponent<MonoSelect>();
                 m_Blocks[i].select.ShowSelect(1);
+                m_Blocks[i].select.SetOK();
 
                 select = GameObject.Instantiate(m_Objs[(int)SceneObjID.Select]);
                 select.name = "fx";
                 m_Blocks[i].box.select = select.GetComponent<MonoSelect>();
+                m_Blocks[i].box.select.Hide();
                 
                 select.transform.SetParent(PlayData.Objs[nObjIndex].transform);
                 float scale = PlayData.ObjFXScale[nObjIndex];
