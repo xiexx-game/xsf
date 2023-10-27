@@ -31,7 +31,7 @@ namespace CC
             init.NoWaitStart = true;
             init.NeedReconnect = true;
 
-            XSFUtil.Server.AddModule(connector, init);
+            XSFCore.Server.AddModule(connector, init);
         }
     }
 }

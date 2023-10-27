@@ -61,7 +61,7 @@ public class ActorManager : IModule
 
     public override void DoRegist()
     {
-        XSFUtil.SetMessageExecutor((ushort)XsfPb.CMSGID.CltGLogin, new Executor_Clt_G_Login());
+        XSFCore.SetMessageExecutor((ushort)XsfPb.CMSGID.CltGLogin, new Executor_Clt_G_Login());
     }
 
     public static ActorManager Instance { get; private set; }
@@ -74,6 +74,6 @@ public class ActorManager : IModule
         init.ID = (int)ModuleID.Actor;
         init.Name = "ActorManager";
 
-        XSFUtil.Server.AddModule(Instance, init);
+        XSFCore.Server.AddModule(Instance, init);
     }
 }

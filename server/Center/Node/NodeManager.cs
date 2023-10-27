@@ -47,8 +47,8 @@ public class NodeManager : DicNPManager
 
     public override bool Init(ModuleInit init)
     {
-        m_nInnerPort = XSFUtil.Config.InnerPortStart;
-        m_nOutPort = XSFUtil.Config.OutPortStart;
+        m_nInnerPort = XSFCore.Config.InnerPortStart;
+        m_nOutPort = XSFCore.Config.OutPortStart;
 
         return base.Init(init);
     }
@@ -63,20 +63,20 @@ public class NodeManager : DicNPManager
 
     public override void OnClose()
     {
-        var message = XSFUtil.GetMessage((ushort)XsfPb.SMSGID.CCcStop);
+        var message = XSFCore.GetMessage((ushort)XsfPb.SMSGID.CCcStop);
         Broadcast(message, 0);
     }
 
     public override void DoRegist()
     {
-        XSFUtil.SetMessageExecutor((ushort)XsfPb.SMSGID.CcCHandshake, new Executor_Cc_C_Handshake());
-        XSFUtil.SetMessageExecutor((ushort)XsfPb.SMSGID.CcCHeartbeat, new Executor_Cc_C_Heartbeat());
-        XSFUtil.SetMessageExecutor((ushort)XsfPb.SMSGID.CcCServerOk, new Executor_Cc_C_ServerOk());
+        XSFCore.SetMessageExecutor((ushort)XsfPb.SMSGID.CcCHandshake, new Executor_Cc_C_Handshake());
+        XSFCore.SetMessageExecutor((ushort)XsfPb.SMSGID.CcCHeartbeat, new Executor_Cc_C_Heartbeat());
+        XSFCore.SetMessageExecutor((ushort)XsfPb.SMSGID.CcCServerOk, new Executor_Cc_C_ServerOk());
     }
 
     public override ModuleRunCode OnStartCheck() 
     {
-        if(!XSFUtil.Config.AutoStart)
+        if(!XSFCore.Config.AutoStart)
         {
             return ModuleRunCode.OK;
         }
@@ -86,12 +86,12 @@ public class NodeManager : DicNPManager
             {
             case RunStep.StartServer:
                 {
-                    m_CurStartNode = XSFUtil.Config.NodeList[m_nStartIndex];
+                    m_CurStartNode = XSFCore.Config.NodeList[m_nStartIndex];
 
-                    Serilog.Log.Information("Start server type={0}",  XSFUtil.EP2CNName((byte)m_CurStartNode.ep));
+                    Serilog.Log.Information("Start server type={0}",  XSFCore.EP2CNName((byte)m_CurStartNode.ep));
 
-                    string args = $"./single_start.sh {XSFUtil.Server.InitData.ServerTag} {XSFUtil.EP2Name((byte)m_CurStartNode.ep)} {XSFUtil.Server.SID.ID}";
-                    XSFUtil.StartProcess("sh", args, XSFUtil.Server.InitData.WorkDir);
+                    string args = $"./single_start.sh {XSFCore.Server.InitData.ServerTag} {XSFCore.EP2Name((byte)m_CurStartNode.ep)} {XSFCore.Server.SID.ID}";
+                    XSFCore.StartProcess("sh", args, XSFCore.Server.InitData.WorkDir);
 
                     Serilog.Log.Information("RunStep.StartServer done ....");
 
@@ -102,7 +102,7 @@ public class NodeManager : DicNPManager
             case RunStep.HandshakeDone:
                 {
                     m_nStartIndex ++;
-                    if(m_nStartIndex >= XSFUtil.Config.NodeList.Length)
+                    if(m_nStartIndex >= XSFCore.Config.NodeList.Length)
                     {
                         m_nStep = RunStep.OK;
                     }
@@ -259,7 +259,7 @@ public class NodeManager : DicNPManager
 
     public override void OnNPConnected(NetPoint np)
     {
-        var message = XSFUtil.GetMessage((ushort)XsfPb.SMSGID.CCcServerInfo) as XsfMsg.MSG_C_Cc_ServerInfo;
+        var message = XSFCore.GetMessage((ushort)XsfPb.SMSGID.CCcServerInfo) as XsfMsg.MSG_C_Cc_ServerInfo;
         message.mPB.Infos.Clear();
 
         // 把当前已经收到的服务器信息下发给新加入的节点
@@ -320,7 +320,7 @@ public class NodeManager : DicNPManager
             return;
         }
 
-        var message = XSFUtil.GetMessage((ushort)XsfPb.SMSGID.CCcServerLost) as XsfMsg.MSG_C_Cc_ServerLost;
+        var message = XSFCore.GetMessage((ushort)XsfPb.SMSGID.CCcServerLost) as XsfMsg.MSG_C_Cc_ServerLost;
         message.mPB.ServerId = np.ID;
         Serilog.Log.Information("【中心服】有服务器节点离线, id={0}", np.ID);
 
@@ -342,7 +342,7 @@ public class NodeManager : DicNPManager
 
         Serilog.Log.Information("【中心服】收到服务器已准备好 id={0}", nID);
 
-        var message = XSFUtil.GetMessage((ushort)XsfPb.SMSGID.CCcServerOk) as XsfMsg.MSG_C_Cc_ServerOk;
+        var message = XSFCore.GetMessage((ushort)XsfPb.SMSGID.CCcServerOk) as XsfMsg.MSG_C_Cc_ServerOk;
         message.mPB.ServerId = nID;
 
         Broadcast(message, nID);
@@ -359,16 +359,16 @@ public class NodeManager : DicNPManager
         init.ID = (int)ModuleID.Node;
         init.Name = "NodeManager";
         init.NoWaitStart = true;
-        init.Port = (int)XSFUtil.Config.CenterPort;
+        init.Port = (int)XSFCore.Config.CenterPort;
 
-        XSFUtil.Server.AddModule(module, init);
+        XSFCore.Server.AddModule(module, init);
     }
 
     public static NodeManager Instance
     {
         get
         {
-            return XSFUtil.Server.GetModule((int)ModuleID.Node) as NodeManager;
+            return XSFCore.Server.GetModule((int)ModuleID.Node) as NodeManager;
         }
     }
 }

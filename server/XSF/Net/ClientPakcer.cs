@@ -18,7 +18,7 @@ namespace XSF
 
         public override int PackMinLength { get { return 6; } }
 
-        public override int PackMaxLength { get { return (int)XSFUtil.Config.ClientMsgMaxLength; } }
+        public override int PackMaxLength { get { return (int)XSFCore.Config.ClientMsgMaxLength; } }
 
         public ClientPakcer()
         {

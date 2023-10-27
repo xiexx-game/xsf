@@ -194,9 +194,9 @@ namespace XSF
             if(nt.Times == 0)
                 nt.Times = 1;
 
-            var current = XSFUtil.CurrentS;
+            var current = XSFCore.CurrentS;
             m_IDIndex ++;
-            nt.nID = XSFUtil.UINT64_ID(m_IDIndex, current);
+            nt.nID = XSFCore.UINT64_ID(m_IDIndex, current);
 
             m_Timers.Add(nt.nID, nt);
 
@@ -247,7 +247,7 @@ namespace XSF
 
         private ulong CurrentTime()
         {
-            return XSFUtil.CurrentMS/ 10;
+            return XSFCore.CurrentMS/ 10;
         }
 
         private void InnerAdd(Timer nt)
@@ -427,7 +427,7 @@ namespace XSF
 
         internal bool Dispatch()
         {
-            var current = XSFUtil.CurrentMS;
+            var current = XSFCore.CurrentMS;
 
             TimerEvent TEvent;
             while( m_bIsRunning && m_EventQueue.Pop(out TEvent) )
@@ -448,7 +448,7 @@ namespace XSF
                         m_DeleteList.Add(TEvent.nID);
                     }
                     
-                    if(XSFUtil.CurrentMS > current + 200)
+                    if(XSFCore.CurrentMS > current + 200)
                     {
                         DoDelete();
                         return true;

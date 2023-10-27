@@ -27,18 +27,18 @@ namespace CC
 
         public override bool Start()
         {
-            var config = XSFUtil.Config;
+            var config = XSFCore.Config;
 
             return Connect(config.MainCenterIP, (int)config.CenterPort);
         }
 
         public override void DoRegist()
         {
-            XSFUtil.SetMessageExecutor((ushort)XsfPb.SMSGID.CCcHandshake, new Executor_C_Cc_Handshake());
-            XSFUtil.SetMessageExecutor((ushort)XsfPb.SMSGID.CCcServerInfo, new Executor_C_Cc_ServerInfo());
-            XSFUtil.SetMessageExecutor((ushort)XsfPb.SMSGID.CCcServerLost, new Executor_C_Cc_ServerLost());
-            XSFUtil.SetMessageExecutor((ushort)XsfPb.SMSGID.CCcServerOk, new Executor_C_Cc_ServerOk());
-            XSFUtil.SetMessageExecutor((ushort)XsfPb.SMSGID.CCcStop, new Executor_C_Cc_Stop());
+            XSFCore.SetMessageExecutor((ushort)XsfPb.SMSGID.CCcHandshake, new Executor_C_Cc_Handshake());
+            XSFCore.SetMessageExecutor((ushort)XsfPb.SMSGID.CCcServerInfo, new Executor_C_Cc_ServerInfo());
+            XSFCore.SetMessageExecutor((ushort)XsfPb.SMSGID.CCcServerLost, new Executor_C_Cc_ServerLost());
+            XSFCore.SetMessageExecutor((ushort)XsfPb.SMSGID.CCcServerOk, new Executor_C_Cc_ServerOk());
+            XSFCore.SetMessageExecutor((ushort)XsfPb.SMSGID.CCcStop, new Executor_C_Cc_Stop());
         }
 
         public override ModuleRunCode OnStartCheck()
@@ -53,21 +53,21 @@ namespace CC
 
         public override void OnOK()
         {
-            var message = XSFUtil.GetMessage((ushort)XsfPb.SMSGID.CcCServerOk) as XsfMsg.MSG_Cc_C_ServerOk;
-            message.mPB.ServerId = XSFUtil.Server.ID;
+            var message = XSFCore.GetMessage((ushort)XsfPb.SMSGID.CcCServerOk) as XsfMsg.MSG_Cc_C_ServerOk;
+            message.mPB.ServerId = XSFCore.Server.ID;
             SendMessage(message);
         }
 
         public override void SendHandshake()
         {
             Serilog.Log.Information("CenterConnector SendHandshake");
-            var message = XSFUtil.GetMessage((ushort)XsfPb.SMSGID.CcCHandshake) as XsfMsg.MSG_Cc_C_Handshake;
-            message.mPB.ServerId = XSFUtil.Server.ID;
+            var message = XSFCore.GetMessage((ushort)XsfPb.SMSGID.CcCHandshake) as XsfMsg.MSG_Cc_C_Handshake;
+            message.mPB.ServerId = XSFCore.Server.ID;
 
             message.mPB.Ports.Clear();
-            for(int i = 0; i < XSFUtil.Server.Ports.Length; i ++)
+            for(int i = 0; i < XSFCore.Server.Ports.Length; i ++)
             {
-                message.mPB.Ports.Add(XSFUtil.Server.Ports[i]);
+                message.mPB.Ports.Add(XSFCore.Server.Ports[i]);
             }
 
             SendMessage(message);
@@ -76,7 +76,7 @@ namespace CC
         public override void SendHeartbeat()
         {
             //Serilog.Log.Information("CenterConnector SendHeartbeat");
-            var message = XSFUtil.GetMessage((ushort)XsfPb.SMSGID.CcCHeartbeat);
+            var message = XSFCore.GetMessage((ushort)XsfPb.SMSGID.CcCHeartbeat);
             SendMessage(message);
         }
 
@@ -112,11 +112,11 @@ namespace CC
                 }
 
                 var sid = ServerID.GetSID(info.ID);
-                Serilog.Log.Information("收到服务器信息, id={0} [{1}-{2}-{3}] status={4}", info.ID, sid.ID, sid.Index, XSFUtil.EP2CNName(sid.Type), info.Status);
+                Serilog.Log.Information("收到服务器信息, id={0} [{1}-{2}-{3}] status={4}", info.ID, sid.ID, sid.Index, XSFCore.EP2CNName(sid.Type), info.Status);
 
                 if(IsNewAdd)
                 {
-                    Serilog.Log.Information("新增服务器节点, id={0} [{1}-{2}-{3}] status={4}", info.ID, sid.ID, sid.Index, XSFUtil.EP2CNName(sid.Type), info.Status);
+                    Serilog.Log.Information("新增服务器节点, id={0} [{1}-{2}-{3}] status={4}", info.ID, sid.ID, sid.Index, XSFCore.EP2CNName(sid.Type), info.Status);
                     m_Handler.OnServerNew(info);
                 }
             }
@@ -127,7 +127,7 @@ namespace CC
             m_ServerInfos.Remove(nID);
             var sid = ServerID.GetSID(nID);
 
-            Serilog.Log.Information("【中心服连接器】有服务器节点离线, id={0} [{1}-{2}-{3}]", nID, sid.ID, sid.Index, XSFUtil.EP2CNName(sid.Type));
+            Serilog.Log.Information("【中心服连接器】有服务器节点离线, id={0} [{1}-{2}-{3}]", nID, sid.ID, sid.Index, XSFCore.EP2CNName(sid.Type));
             m_Handler.OnServerLost(nID);
         }
 
@@ -139,7 +139,7 @@ namespace CC
                 info.Status = NodeStatus.Ok;
                 var sid = ServerID.GetSID(nID);
 
-                Serilog.Log.Information("【中心服连接器】收到服务器节点已准备好, id={0} [{1}-{2}-{3}]", nID, sid.ID, sid.Index, XSFUtil.EP2CNName(sid.Type) );
+                Serilog.Log.Information("【中心服连接器】收到服务器节点已准备好, id={0} [{1}-{2}-{3}]", nID, sid.ID, sid.Index, XSFCore.EP2CNName(sid.Type) );
 
                 m_Handler.OnServerOk(info);
             }
@@ -151,7 +151,7 @@ namespace CC
 
         public void OnStop()
         {
-            XSFUtil.Server.Stop();
+            XSFCore.Server.Stop();
         }
     }
 }

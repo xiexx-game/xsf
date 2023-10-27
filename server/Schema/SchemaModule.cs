@@ -28,7 +28,7 @@ namespace XsfScp
         public override bool Start() 
         {
             Log.Information("开始加载配置");
-            XSFUtil.schemaHelper = this;
+            XSFCore.schemaHelper = this;
 
             try
             {
@@ -57,7 +57,7 @@ namespace XsfScp
             string sContent = "";
 
             string sSuffix = nType == SchemaType.CSV ? "csv" : "xml";
-            string sFilename = $"{XSFUtil.Server.InitData.WorkDir}/scp/{sName}.{sSuffix}";
+            string sFilename = $"{XSFCore.Server.InitData.WorkDir}/scp/{sName}.{sSuffix}";
             if (!File.Exists(sFilename))
             {
                 throw new XSFSchemaLoadException($"XSFSchema.LoadWithSchema file not exist, id={nID}, Name={sFilename}");
@@ -94,7 +94,7 @@ namespace XsfScp
             init.Name = "Schema";
             init.NoWaitStart = true;
 
-            XSFUtil.Server.AddModule(module, init);
+            XSFCore.Server.AddModule(module, init);
         }
     }
 }

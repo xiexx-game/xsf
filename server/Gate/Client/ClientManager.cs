@@ -27,19 +27,19 @@ namespace GateClient
 
         public ClientManager()
         {
-            m_Clients = new Client[XSFUtil.Config.GateMaxCount];
+            m_Clients = new Client[XSFCore.Config.GateMaxCount];
             m_ClientPakcer = new LocalPakcer();
         }
 
         public override void DoRegist()
         {
-            XSFUtil.SetMessageExecutor((ushort)XsfPb.CMSGID.CltGtHandshake, new Executor_Clt_Gt_Handshake());
-            XSFUtil.SetMessageExecutor((ushort)XsfPb.CMSGID.CltGtHeartbeat, new Executor_Clt_Gt_Heartbeat());
+            XSFCore.SetMessageExecutor((ushort)XsfPb.CMSGID.CltGtHandshake, new Executor_Clt_Gt_Handshake());
+            XSFCore.SetMessageExecutor((ushort)XsfPb.CMSGID.CltGtHeartbeat, new Executor_Clt_Gt_Heartbeat());
         }
 
         public override bool Start()
         {
-            m_Connection = XSFUtil.Listen(m_ClientPakcer, this, (int)XSFUtil.Server.Ports[(int)EP.Client]);
+            m_Connection = XSFCore.Listen(m_ClientPakcer, this, (int)XSFCore.Server.Ports[(int)EP.Client]);
             if(m_Connection == null)
                 return false;
 
@@ -86,7 +86,7 @@ namespace GateClient
         public void OnAccept(IConnection connection) 
         {
             Serilog.Log.Information("clientManager OnAccept ...");
-            if(m_nTotal >= XSFUtil.Config.GateMaxCount)
+            if(m_nTotal >= XSFCore.Config.GateMaxCount)
             {
                 connection.Close();
                 return;
@@ -98,7 +98,7 @@ namespace GateClient
                 {
                     Client client = new Client();
                     client.Create(this, connection);
-                    client.m_CID.Gate = XSFUtil.Server.SID.Index;
+                    client.m_CID.Gate = XSFCore.Server.SID.Index;
                     client.m_CID.ID = (ushort)i;
                     client.m_CID.Key = m_GlobalKey ++;
                     client.m_nID = ClientID.GetID(client.m_CID);
@@ -178,7 +178,7 @@ namespace GateClient
             init.ID = (int)ModuleID.Client;
             init.Name = "ClientManager";
 
-            XSFUtil.Server.AddModule(Instance, init);
+            XSFCore.Server.AddModule(Instance, init);
         }
     }
 }

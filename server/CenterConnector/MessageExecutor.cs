@@ -20,7 +20,7 @@ namespace CC
             var localMsg = message as XsfMsg.MSG_C_Cc_Handshake;
             connector.SetID(localMsg.mPB.ServerId);
 
-            var Server = XSFUtil.Server;
+            var Server = XSFCore.Server;
             Server.SetID(localMsg.mPB.NewId);
             Serilog.Log.Information("收到中心服握手，更新本服ID, Server ID={0} - [{1}-{2}-{3}]", Server.ID, Server.SID.ID, Server.SID.Index, Server.SID.Type);
 
@@ -74,7 +74,7 @@ namespace CC
     {
         public void OnExecute(object NetObj, IMessage message, ushort nMessageID, uint nRawID, byte[] rawData)
         {
-            XSFUtil.Server.Stop();
+            XSFCore.Server.Stop();
         }
     }
 }

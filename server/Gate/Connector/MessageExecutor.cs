@@ -68,7 +68,7 @@ public class Executor_GtA_Gt_SetServerID : IMessageExecutor
 {
     public void OnExecute(object NetObj, IMessage message, ushort nMessageID, uint nRawID, byte[] rawData)
     {
-        var localMsg = message as XsfMsg.MSG_GtA_Gt_SetServerID;
+        var localMsg = message as XsfMsg.MSG_GtA_Gt_SetServerId;
         var client = ClientManager.Instance.GetClient(localMsg.mPB.ClientId);
         if(client != null)
         {

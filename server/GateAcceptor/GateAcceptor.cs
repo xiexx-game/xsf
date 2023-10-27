@@ -18,7 +18,7 @@ namespace GateA
     {
         internal IGateHandler m_Handler;
 
-        public override int Port { get { return (int)XSFUtil.Server.Ports[(int)EP.Gate]; } }
+        public override int Port { get { return (int)XSFCore.Server.Ports[(int)EP.Gate]; } }
 
         protected override NetPoint NewNP()
         {
@@ -27,15 +27,16 @@ namespace GateA
 
         public override void DoRegist()
         {
-            XSFUtil.SetMessageExecutor((ushort)XsfPb.SMSGID.GtGtAHandshake, new Executor_Gt_GtA_Handshake());
-            XSFUtil.SetMessageExecutor((ushort)XsfPb.SMSGID.GtGtAHeartbeat, new Executor_Gt_GtA_Heartbeat());
+            XSFCore.SetMessageExecutor((ushort)XsfPb.SMSGID.GtGtAHandshake, new Executor_Gt_GtA_Handshake());
+            XSFCore.SetMessageExecutor((ushort)XsfPb.SMSGID.GtGtAHeartbeat, new Executor_Gt_GtA_Heartbeat());
+            XSFCore.SetMessageExecutor((ushort)XsfPb.SMSGID.GtGtAClientClose, new Executor_Gt_GtA_ClientClose());
         }
 
 
         // 断开指定客户端
         public override void DisconnectClient(uint nClientID, uint nReason)
         {
-            var message = XSFUtil.GetMessage((ushort)XsfPb.SMSGID.GtAGtClientDisconnect) as XsfMsg.MSG_GtA_Gt_ClientDisconnect;
+            var message = XSFCore.GetMessage((ushort)XsfPb.SMSGID.GtAGtClientDisconnect) as XsfMsg.MSG_GtA_Gt_ClientDisconnect;
             message.mPB.ClientId = nClientID;
             message.mPB.Reason = nReason;
             var cid = ClientID.GetCID(nClientID);
@@ -59,11 +60,11 @@ namespace GateA
         // 发送消息到客户端
         public override void SendMessage2Client(uint nClientID, IMessage message)
         {
-            var messageWrap = XSFUtil.GetMessage((ushort)XsfPb.SMSGID.GtAGtClientMessage) as XsfMsg.MSG_GtA_Gt_ClientMessage;
+            var messageWrap = XSFCore.GetMessage((ushort)XsfPb.SMSGID.GtAGtClientMessage) as XsfMsg.MSG_GtA_Gt_ClientMessage;
             messageWrap.mPB.ClientId.Clear();
             messageWrap.mPB.ClientId.Add(nClientID);
 
-            var data = XSFUtil.ClientPakcer.Pack(message);
+            var data = XSFCore.ClientPakcer.Pack(message);
             messageWrap.mPB.ClientMessage = Google.Protobuf.ByteString.CopyFrom(data);
 
             var cid = ClientID.GetCID(nClientID);
@@ -73,9 +74,9 @@ namespace GateA
         // 广播消息到所有客户端
         public override void Broadcast2AllClient(IMessage message)
         {
-            var data = XSFUtil.ClientPakcer.Pack(message);
+            var data = XSFCore.ClientPakcer.Pack(message);
 
-            var messageWrap = XSFUtil.GetMessage((ushort)XsfPb.SMSGID.GtAGtBroadcast) as XsfMsg.MSG_GtA_Gt_Broadcast;
+            var messageWrap = XSFCore.GetMessage((ushort)XsfPb.SMSGID.GtAGtBroadcast) as XsfMsg.MSG_GtA_Gt_Broadcast;
             messageWrap.mPB.ClientMessage = Google.Protobuf.ByteString.CopyFrom(data);
             Broadcast(messageWrap, 0);
         }
@@ -83,7 +84,7 @@ namespace GateA
         // 设置客户端转发内部的指定EP的服务器ID
         public override void SetServerID(uint nClientID, byte nEP, uint nServerID)
         {
-            var message = XSFUtil.GetMessage((ushort)XsfPb.SMSGID.GtAGtSetServerId) as XsfMsg.MSG_GtA_Gt_SetServerID;
+            var message = XSFCore.GetMessage((ushort)XsfPb.SMSGID.GtAGtSetServerId) as XsfMsg.MSG_GtA_Gt_SetServerId;
             message.mPB.ClientId = nClientID;
             message.mPB.Ep = nEP;
             message.mPB.ServerId = nServerID;
@@ -116,7 +117,7 @@ namespace GateA
         // 广播消息
         public override void EndBroadcast(IMessage message)
         {
-            var data = XSFUtil.ClientPakcer.Pack(message);
+            var data = XSFCore.ClientPakcer.Pack(message);
             var dataString = Google.Protobuf.ByteString.CopyFrom(data);
 
             for(int i = 0; i < m_NetPoints.Length; i ++)

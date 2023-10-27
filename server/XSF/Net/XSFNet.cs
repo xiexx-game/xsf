@@ -66,7 +66,7 @@ namespace XSF
 
         internal IConnection? Connect(INetHandler handler, string ip, int port)
         {
-            ConnectionTcp tcp = new ConnectionTcp(XSFUtil.ServerPakcer, handler, m_AsyncReceive, m_AsyncSend, m_AsyncConnect);
+            ConnectionTcp tcp = new ConnectionTcp(XSFCore.ServerPakcer, handler, m_AsyncReceive, m_AsyncSend, m_AsyncConnect);
             if(tcp.Connect(ip, port))
             {
                 return tcp;

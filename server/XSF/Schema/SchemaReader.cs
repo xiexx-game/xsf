@@ -84,13 +84,13 @@ namespace XSF
                 throw new XSFSchemaLoadException($"CSVReader.GetData, nCol:{nCol} >= mColCount:{mColCount}");
             }
 
-            if(XSFUtil.schemaHelper == null)
+            if(XSFCore.schemaHelper == null)
             {
                 throw new XSFSchemaLoadException($"CSVReader.GetData, schemaHelper is null");
             }
             else
             {
-                ICSVData d = XSFUtil.schemaHelper.GetData(nType);
+                ICSVData d = XSFCore.schemaHelper.GetData(nType);
                 if(d == null) 
                 {
                     throw new XSFSchemaLoadException($"CSVReader.GetData, csv data type:{nType} error");

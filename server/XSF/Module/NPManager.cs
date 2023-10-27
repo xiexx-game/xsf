@@ -49,7 +49,7 @@ namespace XSF
 
         public override bool Start()
         {
-            m_Connection = XSFNet.Instance.Listen(XSFUtil.ServerPakcer, this, Port);
+            m_Connection = XSFNet.Instance.Listen(XSFCore.ServerPakcer, this, Port);
             if(m_Connection == null)
                 return false;
 
@@ -148,7 +148,7 @@ namespace XSF
 
             OnNPConnected(np);
 
-            Serilog.Log.Information("DicNPManager.Add name={0}, NetPoint login, id=[{1},{2}-{3}-{4}]", Name, np.ID, np.SID.ID, XSFUtil.EP2CNName((byte)np.SID.Type), np.SID.Index);
+            Serilog.Log.Information("DicNPManager.Add name={0}, NetPoint login, id=[{1},{2}-{3}-{4}]", Name, np.ID, np.SID.ID, XSFCore.EP2CNName((byte)np.SID.Type), np.SID.Index);
 
             return true;
         }
@@ -165,7 +165,7 @@ namespace XSF
                 OnNPLost(np);
             }
 
-            Serilog.Log.Information("DicNPManager.Delete name={0}, NetPoint logout, id=[{1},{2}-{3}-{4}]", Name, np.ID, np.SID.ID, XSFUtil.EP2CNName((byte)np.SID.Type), np.SID.Index);
+            Serilog.Log.Information("DicNPManager.Delete name={0}, NetPoint logout, id=[{1},{2}-{3}-{4}]", Name, np.ID, np.SID.ID, XSFCore.EP2CNName((byte)np.SID.Type), np.SID.Index);
         }
         public override uint Total { get { return (uint)m_NetPoints.Count; } }
 
@@ -247,7 +247,7 @@ namespace XSF
 
             OnNPConnected(np);
 
-            Serilog.Log.Information("FastNPManager.Add name={0}, NetPoint login, id=[{1},{2}-{3}-{4}]", Name, np.ID, np.SID.ID, XSFUtil.EP2CNName((byte)np.SID.Type), np.SID.Index);
+            Serilog.Log.Information("FastNPManager.Add name={0}, NetPoint login, id=[{1},{2}-{3}-{4}]", Name, np.ID, np.SID.ID, XSFCore.EP2CNName((byte)np.SID.Type), np.SID.Index);
 
             return true;
         }
@@ -276,7 +276,7 @@ namespace XSF
                 OnNPLost(np);
             }
 
-            Serilog.Log.Information("FastNPManager.Delete name={0}, NetPoint logout, id=[{1},{2}-{3}-{4}]", Name, np.ID, np.SID.ID, XSFUtil.EP2CNName((byte)np.SID.Type), np.SID.Index);
+            Serilog.Log.Information("FastNPManager.Delete name={0}, NetPoint logout, id=[{1},{2}-{3}-{4}]", Name, np.ID, np.SID.ID, XSFCore.EP2CNName((byte)np.SID.Type), np.SID.Index);
         }
         public override uint Total { get { return m_nTotal; } }
 

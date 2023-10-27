@@ -22,8 +22,8 @@ namespace GateA
 
             if(gate.Owner.Add(gate))
             {
-                var respMsg = XSFUtil.GetMessage((ushort)XsfPb.SMSGID.GtAGtHandshake) as XsfMsg.MSG_GtA_Gt_Handshake;
-                respMsg.mPB.ServerId = XSFUtil.Server.ID;
+                var respMsg = XSFCore.GetMessage((ushort)XsfPb.SMSGID.GtAGtHandshake) as XsfMsg.MSG_GtA_Gt_Handshake;
+                respMsg.mPB.ServerId = XSFCore.Server.ID;
                 gate.SendMessage(respMsg);
             }
         }

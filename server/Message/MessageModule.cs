@@ -53,7 +53,7 @@ namespace XsfMsg
             //MESSAGE_END
             // 上面的注释定义必须保留，用来自动生成代码
 
-            XSFUtil.messageHelper = this;
+            XSFCore.messageHelper = this;
         }
 
         public IMessage GetMessage(ushort nID)
@@ -70,7 +70,7 @@ namespace XsfMsg
             init.Name = "Message";
             init.NoWaitStart = true;
 
-            XSFUtil.Server.AddModule(module, init);
+            XSFCore.Server.AddModule(module, init);
         }
     }
 }

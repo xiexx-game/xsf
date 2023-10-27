@@ -55,9 +55,9 @@ namespace GateA
             FastNPManagerInit init = new FastNPManagerInit();
             init.ID = nID;
             init.Name = "GateAcceptor";
-            init.MaxSize = (int)XSFUtil.Config.MaxGate;
+            init.MaxSize = (int)XSFCore.Config.MaxGate;
 
-            XSFUtil.Server.AddModule(ga, init);
+            XSFCore.Server.AddModule(ga, init);
 
             m_Instance = ga;
         }

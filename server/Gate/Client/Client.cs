@@ -47,11 +47,11 @@ namespace GateClient
         {
             m_Owner = owner;
             m_Connection = connection;
-            m_nLastHTTime = XSFUtil.CurrentS;
+            m_nLastHTTime = XSFCore.CurrentS;
 
             m_Timers = new TimersManager((int)TimerID.Max);
 
-            m_Timers.StartTimer((byte)TimerID.HTCheck, this, XSFUtil.Config.ClientHeartbeatCheck, -1, "Client.Create");
+            m_Timers.StartTimer((byte)TimerID.HTCheck, this, XSFCore.Config.ClientHeartbeatCheck, -1, "Client.Create");
 
             return true;
         }
@@ -69,7 +69,7 @@ namespace GateClient
 
         public void Disconnect(int nReason)
         {
-            var message = XSFUtil.GetMessage((ushort)XsfPb.CMSGID.GtCltDisconnect) as XsfMsg.MSG_Gt_Clt_Disconnect;
+            var message = XSFCore.GetMessage((ushort)XsfPb.CMSGID.GtCltDisconnect) as XsfMsg.MSG_Gt_Clt_Disconnect;
             message.mPB.Reason = nReason;
             SendMessage(message);
 
@@ -132,7 +132,7 @@ namespace GateClient
             m_Owner.Delete(this);
             Close();
 
-            var message = XSFUtil.GetMessage((ushort)XsfPb.SMSGID.GtGtAClientClose) as XsfMsg.MSG_Gt_GtA_ClientClose;
+            var message = XSFCore.GetMessage((ushort)XsfPb.SMSGID.GtGtAClientClose) as XsfMsg.MSG_Gt_GtA_ClientClose;
             message.mPB.ClientId = ID;
             for(int i = 0; i < m_ConnectorIDs.Length; i ++)
             {
@@ -154,7 +154,7 @@ namespace GateClient
                 if(m_IsHandshake)
                 {
                     Serilog.Log.Information("client recv message id=" + nMessageID);
-                    var innerMsg = XSFUtil.GetMessage(nMessageID);
+                    var innerMsg = XSFCore.GetMessage(nMessageID);
                     var connector = GetConnector(innerMsg.DestEP);
                     if(connector == null)
                     {
@@ -180,10 +180,10 @@ namespace GateClient
             {
             case (byte)TimerID.HTCheck:
                 {
-                    var current = XSFUtil.CurrentS;
-                    if(current > m_nLastHTTime + XSFUtil.Config.ClientHeartbeatTimeout)
+                    var current = XSFCore.CurrentS;
+                    if(current > m_nLastHTTime + XSFCore.Config.ClientHeartbeatTimeout)
                     {
-                        Serilog.Log.Error($"Client OnTimer heartbeat timeout ... {current} > {m_nLastHTTime} + {XSFUtil.Config.ClientHeartbeatTimeout}");
+                        Serilog.Log.Error($"Client OnTimer heartbeat timeout ... {current} > {m_nLastHTTime} + {XSFCore.Config.ClientHeartbeatTimeout}");
                         Close();
                     }
                 } 

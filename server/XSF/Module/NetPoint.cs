@@ -35,7 +35,7 @@ namespace XSF
         {
             Owner = owner;
             m_Connection = connection;
-            m_nLastHTTime = XSFUtil.CurrentS;
+            m_nLastHTTime = XSFCore.CurrentS;
 
             m_Timers = new TimersManager((int)TimerID.Max);
 
@@ -63,7 +63,7 @@ namespace XSF
 
         public void OnTimer(byte nTimerID, bool bLastCall)
         {
-            var current = XSFUtil.CurrentS;
+            var current = XSFCore.CurrentS;
             if(current > m_nLastHTTime + XSFServer.Instance.Config.HeartbeatTimeout)
             {
                 Serilog.Log.Error($"NetPoint OnTimer heartbeat timeout ... {current} > {m_nLastHTTime} + {XSFServer.Instance.Config.HeartbeatTimeout}");
@@ -79,7 +79,7 @@ namespace XSF
 
         public void UpdateHTTime()
         {
-            m_nLastHTTime = XSFUtil.CurrentS;
+            m_nLastHTTime = XSFCore.CurrentS;
         }
 
         public string RemoteIP
@@ -125,7 +125,7 @@ namespace XSF
 
         public void OnError(IConnection connection, NetError nErrorCode)
         {
-            Serilog.Log.Error("NetPoint.OnError, name={0}, id=[{1}|{2}-{3}-{4}]", Owner.Name, ID, SID.ID, XSFUtil.EP2CNName(SID.Type), SID.Index);
+            Serilog.Log.Error("NetPoint.OnError, name={0}, id=[{1}|{2}-{3}-{4}]", Owner.Name, ID, SID.ID, XSFCore.EP2CNName(SID.Type), SID.Index);
             Owner.Delete(this);
         }
 

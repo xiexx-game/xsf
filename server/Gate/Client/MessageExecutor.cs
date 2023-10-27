@@ -20,7 +20,7 @@ public class Executor_Clt_Gt_Handshake : IMessageExecutor
         var client = NetObj as Client;
         client.OnHandshake();
 
-        var respMsg = XSFUtil.GetMessage((ushort)XsfPb.CMSGID.GtCltHandshake);
+        var respMsg = XSFCore.GetMessage((ushort)XsfPb.CMSGID.GtCltHandshake);
         client.SendMessage(respMsg);
     }
 }
@@ -33,9 +33,9 @@ public class Executor_Clt_Gt_Heartbeat : IMessageExecutor
 
         var localMsg = message as XsfMsg.MSG_Clt_Gt_Heartbeat;
 
-        var respMsg = XSFUtil.GetMessage((ushort)XsfPb.CMSGID.GtCltHeartbeat) as XsfMsg.MSG_Gt_Clt_Heartbeat;
+        var respMsg = XSFCore.GetMessage((ushort)XsfPb.CMSGID.GtCltHeartbeat) as XsfMsg.MSG_Gt_Clt_Heartbeat;
         respMsg.mPB.ClientTime = localMsg.mPB.Time;
-        respMsg.mPB.ServerTime = XSFUtil.CurrentMS;
+        respMsg.mPB.ServerTime = XSFCore.CurrentMS;
         client.SendMessage(respMsg);
     }
 }

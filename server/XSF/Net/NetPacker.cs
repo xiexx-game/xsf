@@ -36,7 +36,7 @@ namespace XSF
 
             //Serilog.Log.Information("Read nMessageID=" + nMessageID + ", nRawID=" + nRawID);
 
-            var msg = XSFUtil.GetMessage(nMessageID);
+            var msg = XSFCore.GetMessage(nMessageID);
             message = msg.Import(reader.Buffer, reader.CurPos, pbLen);
             
             return null;

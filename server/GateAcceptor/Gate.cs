@@ -37,7 +37,7 @@ namespace GateA
         {
             if(m_ClientIDs.Count > 0)
             {
-                var messageWrap = XSFUtil.GetMessage((ushort)XsfPb.SMSGID.GtAGtClientMessage) as XsfMsg.MSG_GtA_Gt_ClientMessage;
+                var messageWrap = XSFCore.GetMessage((ushort)XsfPb.SMSGID.GtAGtClientMessage) as XsfMsg.MSG_GtA_Gt_ClientMessage;
                 messageWrap.mPB.ClientId.Clear();
 
                 for(int i = 0; i < m_ClientIDs.Count; i ++)

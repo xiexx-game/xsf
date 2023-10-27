@@ -308,7 +308,7 @@ namespace XSF
 
                     if(isAllOK)
                     {
-                        Serilog.Log.Information("==== [{0} {1}-{2}-{3}] 所有模块都已启动完毕 ====", XSFUtil.Server.ID, XSFUtil.Server.SID.ID, XSFUtil.EP2CNName(XSFUtil.Server.SID.Type), XSFUtil.Server.SID.Index);
+                        Serilog.Log.Information("==== [{0} {1}-{2}-{3}] 所有模块都已启动完毕 ====", XSFCore.Server.ID, XSFCore.Server.SID.ID, XSFCore.EP2CNName(XSFCore.Server.SID.Type), XSFCore.Server.SID.Index);
                         for(int i = 0; i < m_Modules.Length; i ++)
                         {
                             if(m_Modules[i] != null)
@@ -316,14 +316,14 @@ namespace XSF
                         }
 
                         m_nStatus = RunStatus.Running;
-                        m_LastUpdateTime = XSFUtil.CurrentMS;
+                        m_LastUpdateTime = XSFCore.CurrentMS;
                     }
                 }
                 break;
 
             case RunStatus.Running:
                 {
-                    var current = XSFUtil.CurrentMS;
+                    var current = XSFCore.CurrentMS;
                     if(current >= m_LastUpdateTime + 20)
                     {
                         var nDeltaTime = current - m_LastUpdateTime;
@@ -385,7 +385,7 @@ namespace XSF
 
             case RunStatus.Stop:
                 {
-                    Serilog.Log.Information("==== [{0} {1}-{2}-{3}] 所有模块都已正常关闭 ====", XSFUtil.Server.ID, XSFUtil.Server.SID.ID, XSFUtil.EP2CNName(XSFUtil.Server.SID.Type), XSFUtil.Server.SID.Index);
+                    Serilog.Log.Information("==== [{0} {1}-{2}-{3}] 所有模块都已正常关闭 ====", XSFCore.Server.ID, XSFCore.Server.SID.ID, XSFCore.EP2CNName(XSFCore.Server.SID.Type), XSFCore.Server.SID.Index);
                     for(int i = 0; i < m_Modules.Length; i ++)
                     {
                         if(m_Modules[i] != null)
@@ -406,7 +406,7 @@ namespace XSF
             try
             {
                 string argData = "";
-                if(XSFUtil.GetArg(args, "-tag", out argData))
+                if(XSFCore.GetArg(args, "-tag", out argData))
                 {
                     si.ServerTag = argData;
                 }
@@ -415,9 +415,9 @@ namespace XSF
                     throw new ServerArgException("启动参数中未指定 -tag 值");
                 }
 
-                si.OutputConsole = XSFUtil.GetArg(args, "-c", out argData);
+                si.OutputConsole = XSFCore.GetArg(args, "-c", out argData);
 
-                if(XSFUtil.GetArg(args, "-i", out argData))
+                if(XSFCore.GetArg(args, "-i", out argData))
                 {
                     m_SID.ID = Convert.ToUInt16(argData);
                     ID = ServerID.GetID(m_SID);
@@ -427,7 +427,7 @@ namespace XSF
                     throw new ServerArgException("启动参数中未指定 -i 值");
                 }
 
-                if(XSFUtil.GetArg(args, "-rd", out argData))
+                if(XSFCore.GetArg(args, "-rd", out argData))
                 {
                     si.WorkDir = argData;
                 }
@@ -542,9 +542,9 @@ namespace XSF
                 {
                     XmlElement eleItem = nodes[i] as XmlElement;
                     var ep = XMLReader.GetString(eleItem, "ep");
-                    var epValue = XSFUtil.Name2EP(ep);
+                    var epValue = XSFCore.Name2EP(ep);
                     //Serilog.Log.Information("ep={0}, epValue={1}", ep, epValue);
-                    if(XSFUtil.IsEPInvalid((byte)epValue))
+                    if(XSFCore.IsEPInvalid((byte)epValue))
                     {
                         uint count = XMLReader.GetUInt(eleItem, "count");
                         if(count <= 0)
@@ -573,7 +573,7 @@ namespace XSF
                 for(int i = 0; i < Config.NodeList.Length; i ++)
                 {
                     var node = Config.NodeList[i];
-                    Serilog.Log.Information("服务器节点，名称:{0}, EP:{1}", node.Name, XSFUtil.EP2CNName((byte)node.ep));
+                    Serilog.Log.Information("服务器节点，名称:{0}, EP:{1}", node.Name, XSFCore.EP2CNName((byte)node.ep));
 
                     if(node.ep == Config.Me.ep)
                     {

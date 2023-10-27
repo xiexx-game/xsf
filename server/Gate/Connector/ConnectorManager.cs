@@ -27,11 +27,11 @@ public class ConnectorManager : IModule
 
     public override void DoRegist()
     {
-        XSFUtil.SetMessageExecutor((ushort)XsfPb.SMSGID.GtAGtHandshake, new Executor_GtA_Gt_Handshake());
-        XSFUtil.SetMessageExecutor((ushort)XsfPb.SMSGID.GtAGtClientDisconnect, new Executor_GtA_Gt_ClientDisconnect());
-        XSFUtil.SetMessageExecutor((ushort)XsfPb.SMSGID.GtAGtClientMessage, new Executor_GtA_Gt_ClientMessage());
-        XSFUtil.SetMessageExecutor((ushort)XsfPb.SMSGID.GtAGtBroadcast, new Executor_GtA_Gt_Broadcast());
-        XSFUtil.SetMessageExecutor((ushort)XsfPb.SMSGID.GtAGtSetServerId, new Executor_GtA_Gt_SetServerID());
+        XSFCore.SetMessageExecutor((ushort)XsfPb.SMSGID.GtAGtHandshake, new Executor_GtA_Gt_Handshake());
+        XSFCore.SetMessageExecutor((ushort)XsfPb.SMSGID.GtAGtClientDisconnect, new Executor_GtA_Gt_ClientDisconnect());
+        XSFCore.SetMessageExecutor((ushort)XsfPb.SMSGID.GtAGtClientMessage, new Executor_GtA_Gt_ClientMessage());
+        XSFCore.SetMessageExecutor((ushort)XsfPb.SMSGID.GtAGtBroadcast, new Executor_GtA_Gt_Broadcast());
+        XSFCore.SetMessageExecutor((ushort)XsfPb.SMSGID.GtAGtSetServerId, new Executor_GtA_Gt_SetServerID());
     }
 
     public void CreateConnector(uint nID, string ip, int port)
@@ -80,7 +80,7 @@ public class ConnectorManager : IModule
             if(nTotal <= 0)
                 return null;
 
-            int nIndex = XSFUtil.RandomRange(0, nTotal);
+            int nIndex = XSFCore.RandomRange(0, nTotal);
             return list[nIndex];
         }
     }
@@ -95,6 +95,6 @@ public class ConnectorManager : IModule
         init.ID = (int)ModuleID.ConnectorManager;
         init.Name = "ConnectorManager";
 
-        XSFUtil.Server.AddModule(Instance, init);
+        XSFCore.Server.AddModule(Instance, init);
     }
 }

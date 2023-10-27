@@ -16,7 +16,7 @@ namespace XSF
         public static void Init()
         {
             var config = new LoggerConfiguration();
-            config = config.MinimumLevel.Debug().Enrich.WithProperty("DefaultPrefix", $"[{XSFUtil.EP2CNName(XSFServer.Instance.SID.Type)}]");
+            config = config.MinimumLevel.Debug().Enrich.WithProperty("DefaultPrefix", $"[{XSFCore.EP2CNName(XSFServer.Instance.SID.Type)}]");
             
             var InitData = XSFServer.Instance.InitData;
 
@@ -37,7 +37,7 @@ namespace XSF
                 do
                 {
                     checkAgain = false;
-                    logName = $"{InitData.ServerTag}-{XSFUtil.EP2Name(XSFServer.Instance.SID.Type).ToLower()}-{logIndex}";
+                    logName = $"{InitData.ServerTag}-{XSFCore.EP2Name(XSFServer.Instance.SID.Type).ToLower()}-{logIndex}";
 
                     for(int i = 0; i < files.Length; i ++)
                     {
@@ -54,7 +54,7 @@ namespace XSF
             } 
             else
             {
-                logName = $"{InitData.ServerTag}-{XSFUtil.EP2Name(XSFServer.Instance.SID.Type).ToLower()}-{logIndex}";
+                logName = $"{InitData.ServerTag}-{XSFCore.EP2Name(XSFServer.Instance.SID.Type).ToLower()}-{logIndex}";
                 Directory.CreateDirectory(dir);
             } 
             

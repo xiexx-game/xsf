@@ -10,12 +10,12 @@ namespace Center // Note: actual namespace depends on the project name.
     {
         static void Main(string[] args)
         {
-            XSF.XSFUtil.Server.Init(XSF.EP.Center, args);
+            XSF.XSFCore.Server.Init(XSF.EP.Center, args);
 
             XsfMsg.MessageModule.CreateModule();
             NodeManager.CreateModule();
 
-            XSF.XSFUtil.Server.Run();
+            XSF.XSFCore.Server.Run();
         }
     }
 }
