@@ -108,18 +108,18 @@ public sealed class UILevel : UIBase
 				}
 				else if(m_ScpLevel.sarData[i] == "-")
 				{
-					m_Blocks[i].SetColor(BlockColor.Road);
+					m_Blocks[i].SetColor(BlockColor.UIRoad);
 				}
 				else if(m_ScpLevel.sarData[i] == "@")
 				{
-					m_Blocks[i].SetColor(BlockColor.Road);
+					m_Blocks[i].SetColor(BlockColor.UIRoad);
 					Kid.transform.position = m_Blocks[i].go.transform.position;
 					Kid.SetActive(true);
 					Kid.transform.SetAsLastSibling();
 				}
 				else if(m_ScpLevel.sarData[i] == ".")
 				{
-					m_Blocks[i].SetColor(BlockColor.Road);
+					m_Blocks[i].SetColor(BlockColor.UIRoad);
 					var dot = GameObject.Instantiate(Dot);
 					dot.transform.SetParent(LevelObj.transform);
 					dot.transform.position = m_Blocks[i].go.transform.position;
