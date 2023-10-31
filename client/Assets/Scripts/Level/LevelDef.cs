@@ -42,7 +42,7 @@ public class SingleBlock
 
     private Color32[] m_Colors = new Color32[] {
         new Color32( 82, 82, 82, 255),
-        new Color32( 255, 255, 255, 128),
+        new Color32( 255, 255, 255, 200),
         new Color32( 6, 135, 245, 255),
         new Color32( 255, 255, 255, 255),
     };
