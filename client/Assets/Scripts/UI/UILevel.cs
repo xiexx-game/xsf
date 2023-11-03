@@ -21,8 +21,6 @@ public sealed class UILevel : UIBase
 	public GameObject Kid { get; private set; }	// 
 	public GameObject Left { get; private set; }	// 
 	public GameObject Right { get; private set; }	// 
-	public TextMeshProUGUI Title { get; private set; }	// 
-	public GameObject OK { get; private set; }	// 
 // UI_PROP_END
 
     public override string Name { get { return "UILevel"; } }
@@ -48,11 +46,6 @@ public sealed class UILevel : UIBase
 		// 
 		Right = RootT.Find("Right").gameObject;
 		UIEventClick.Set(Right, OnRightClick);
-		// 
-		Title = RootT.Find("Title").GetComponent<TextMeshProUGUI>();
-		// 
-		OK = RootT.Find("OK").gameObject;
-		UIEventClick.Set(OK, OnOKClick);
         // UI_INIT_END
 
 		m_Dots = new List<GameObject>();
@@ -67,6 +60,7 @@ public sealed class UILevel : UIBase
 
 		m_ScpLevel = XSFSchema.Instance.Get<SchemaLevel>((int)SchemaID.Level).Get(m_nCurLevel);
 		Refresh((uint)UIRefreshID.LevelFresh, null);
+		XSFUI.Instance.Get((int)UIID.UIMain).Refresh((uint)UIRefreshID.LevelFresh, null);
 	}
 
 	public override void OnClose()
@@ -96,7 +90,7 @@ public sealed class UILevel : UIBase
 		switch(nFreshID)
 		{
 		case (uint)UIRefreshID.LevelFresh:
-			Title.text = $"关卡{m_nCurLevel}";
+			//Title.text = $"关卡{m_nCurLevel}";
 			OnClose();
 			LevelObj.sizeDelta = new Vector2(m_ScpLevel.uColCount*80, m_ScpLevel.uRowCount * 80);
 			m_Blocks = LevelDef.CreateBlocks((int)m_ScpLevel.uRowCount, (int)m_ScpLevel.uColCount, LevelObj.transform, Block, 80.0f, true);
@@ -166,8 +160,10 @@ public sealed class UILevel : UIBase
 		{
 			m_nCurLevel --;
 			m_ScpLevel = scp;
-			Refresh((uint)UIRefreshID.LevelFresh, null);
 			Level.Instance.LevelConfig = scp;
+			Refresh((uint)UIRefreshID.LevelFresh, null);
+			XSFUI.Instance.Get((int)UIID.UIMain).Refresh((uint)UIRefreshID.LevelFresh, null);
+			
 		}
 	}
 
@@ -184,8 +180,10 @@ public sealed class UILevel : UIBase
 		{
 			m_nCurLevel ++;
 			m_ScpLevel = scp;
-			Refresh((uint)UIRefreshID.LevelFresh, null);
 			Level.Instance.LevelConfig = scp;
+
+			Refresh((uint)UIRefreshID.LevelFresh, null);
+			XSFUI.Instance.Get((int)UIID.UIMain).Refresh((uint)UIRefreshID.LevelFresh, null);
 		}
 	}
 

@@ -9,13 +9,14 @@
 //////////////////////////////////////////////////////////////////////////
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public sealed class UIMain : UIBase
 {
 // UI_PROP_START
 	public GameObject Play { get; private set; }	// 
+	public TextMeshProUGUI Title { get; private set; }	// 
 	public GameObject Change { get; private set; }	// 
-	public GameObject BtnLevel { get; private set; }	// 
 // UI_PROP_END
 
     public override string Name { get { return "UIMain"; } }
@@ -27,20 +28,29 @@ public sealed class UIMain : UIBase
 		Play = RootT.Find("frame/Play").gameObject;
 		UIEventClick.Set(Play, OnPlayClick);
 		// 
+		Title = RootT.Find("frame/Play/Title").GetComponent<TextMeshProUGUI>();
+		// 
 		Change = RootT.Find("frame/Change").gameObject;
 		UIEventClick.Set(Change, OnChangeClick);
-		// 
-		BtnLevel = RootT.Find("frame/Level").gameObject;
-		UIEventClick.Set(BtnLevel, OnBtnLevelClick);
         // UI_INIT_END
     }
 
+	public override void OnRefresh(uint nFreshID,  object data) 
+	{
+		switch(nFreshID)
+		{
+		case (uint)UIRefreshID.LevelFresh:
+			Title.text = "关卡" + Level.Instance.LevelConfig.uId;
+			break;
+		}
+	}
 
 
 	// 
 	private void OnPlayClick(GameObject go)
 	{
 		Close();
+		XSFUI.Instance.CloseUI((int)UIID.UILevel);
 		Level.Instance.Play();
 	}
 

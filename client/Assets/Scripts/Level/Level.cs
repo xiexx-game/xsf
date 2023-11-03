@@ -258,6 +258,7 @@ public class Level : Singleton<Level>, ICharacterEvent, XSFAnimHandler
         else if(m_nStatus == RunStatus.HomeWait)
         {
             XSFUI.Instance.ShowUI((int)UIID.UIMain);
+            XSFUI.Instance.ShowUI((int)UIID.UILevel);
             m_nStatus = RunStatus.None;
         }
         else
@@ -540,6 +541,7 @@ public class Level : Singleton<Level>, ICharacterEvent, XSFAnimHandler
             if(m_nStatus == RunStatus.LoadWait)
             {
                 XSFUI.Instance.ShowUI(LobbyConfig.iUIID);
+                XSFUI.Instance.ShowUI((int)UIID.UILevel);
                 m_nStatus = RunStatus.None;
             }
             else if(m_nStatus == RunStatus.HomeWait)
