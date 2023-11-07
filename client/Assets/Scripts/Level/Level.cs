@@ -83,6 +83,8 @@ public class Level : Singleton<Level>, ICharacterEvent, XSFAnimHandler
         LoadCharacter();
         m_nStatus = RunStatus.LoadWait;
         LoadAsset(SceneObjID.Select, "select");
+        
+        AudioMgr.Instance.PlayBGM(BGMID.Lobby);
 
         return true;
     }
@@ -102,6 +104,7 @@ public class Level : Singleton<Level>, ICharacterEvent, XSFAnimHandler
                     {
                         m_Blocks[i].SetColor(BlockColor.OK);
                         m_Blocks[i].box.select.Hide();
+                        AudioMgr.Instance.PlayFX(AudioID.OK);
                     }
                     else
                     {
@@ -232,6 +235,7 @@ public class Level : Singleton<Level>, ICharacterEvent, XSFAnimHandler
     {
         if(m_nStatus == RunStatus.None)
         {
+            AudioMgr.Instance.StopBGM();
             Character.PlayExit(GameConfig.Instance.ExitPos);
             m_nStatus = RunStatus.PlayWait;
             LoadAsset(SceneObjID.Playground, LevelConfig.sSceneObj);
@@ -350,6 +354,7 @@ public class Level : Singleton<Level>, ICharacterEvent, XSFAnimHandler
                 Vector3 target = blockNext.go.transform.localPosition;
                 target.y = block.box.transform.localPosition.y;
                 block.box.Move(target);
+                AudioMgr.Instance.PlayFX(AudioID.Move);
 
                 int nBoxFlag = ~(int)BlockStatus.Box;
                 //Debug.Log("nBoxFlag=" + Convert.ToString(nBoxFlag, 2).PadLeft(4, '0'));
@@ -429,6 +434,7 @@ public class Level : Singleton<Level>, ICharacterEvent, XSFAnimHandler
 
             XSFUI.Instance.HideUI((int)UIID.UIPlay);
 
+            AudioMgr.Instance.StopBGM();
             Character.Exit(PlayData.ExitPos);
             m_nStatus = RunStatus.HomeWait;
         }
@@ -536,6 +542,7 @@ public class Level : Singleton<Level>, ICharacterEvent, XSFAnimHandler
             }
             else if(m_nStatus == RunStatus.HomeWait)
             {
+                AudioMgr.Instance.PlayBGM(BGMID.Lobby);
                 Character.Born(LobbyData.BornPos, LobbyData.EnterPos);
                 Addressables.ReleaseInstance(m_Objs[(int)SceneObjID.Playground]);
             }
@@ -554,6 +561,7 @@ public class Level : Singleton<Level>, ICharacterEvent, XSFAnimHandler
         {
             if(m_nStatus == RunStatus.PlayWait)
             {
+                AudioMgr.Instance.PlayBGM(BGMID.Level);
                 Character.Born(PlayData.BornPos, PlayData.EnterPos);
             }
         }

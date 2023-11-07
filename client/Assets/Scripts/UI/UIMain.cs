@@ -49,6 +49,7 @@ public sealed class UIMain : UIBase
 	// 
 	private void OnPlayClick(GameObject go)
 	{
+		AudioMgr.Instance.PlayFX(AudioID.Click);
 		Close();
 		XSFUI.Instance.CloseUI((int)UIID.UILevel);
 		Level.Instance.Play();
@@ -57,21 +58,8 @@ public sealed class UIMain : UIBase
 	// 
 	private void OnChangeClick(GameObject go)
 	{
+		AudioMgr.Instance.PlayFX(AudioID.Click);
 		Level.Instance.ChangeCharacter();
-	}
-
-
-	// 
-	private void OnLevelClick(GameObject go)
-	{
-		
-	}
-
-
-	// 
-	private void OnBtnLevelClick(GameObject go)
-	{
-		XSFUI.Instance.ShowUI((int)UIID.UILevel);
 	}
 
     // UI_FUNC_APPEND

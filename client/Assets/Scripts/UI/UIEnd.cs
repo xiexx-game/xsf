@@ -30,6 +30,11 @@ public sealed class UIEnd : UIBase
         // UI_INIT_END
     }
 
+	public override void OnShow()
+	{
+		AudioMgr.Instance.PlayFX(AudioID.Finish);
+	}
+
 	public override void OnUpdate()
 	{
 		float a = -10 * Time.deltaTime;
@@ -39,6 +44,7 @@ public sealed class UIEnd : UIBase
 	// 
 	private void OnBtnHomeClick(GameObject go)
 	{
+		AudioMgr.Instance.PlayFX(AudioID.Click);
 		Close();
 		Level.Instance.GoHome();
 	}

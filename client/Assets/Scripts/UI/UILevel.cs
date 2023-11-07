@@ -150,6 +150,7 @@ public sealed class UILevel : UIBase
 	// 
 	private void OnLeftClick(GameObject go)
 	{
+		AudioMgr.Instance.PlayFX(AudioID.Click);
 		uint level = m_nCurLevel - 1;
 		var scp = XSFSchema.Instance.Get<SchemaLevel>((int)SchemaID.Level).Get(level);
 		if(level == 0 || scp == null)
@@ -170,6 +171,7 @@ public sealed class UILevel : UIBase
 	// 
 	private void OnRightClick(GameObject go)
 	{
+		AudioMgr.Instance.PlayFX(AudioID.Click);
 		uint level = m_nCurLevel + 1;
 		var scp = XSFSchema.Instance.Get<SchemaLevel>((int)SchemaID.Level).Get(level);
 		if(scp == null)

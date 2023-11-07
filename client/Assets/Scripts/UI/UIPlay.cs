@@ -59,33 +59,35 @@ public sealed class UIPlay : UIBase
 	// 
 	private void OnRedoClick(GameObject go)
 	{
+		AudioMgr.Instance.PlayFX(AudioID.Click);
 		Level.Instance.Redo();
 	}
 
 	// 
 	private void OnBtnUpClick(GameObject go)
 	{
-		
+		AudioMgr.Instance.PlayFX(AudioID.Click);
 		Level.Instance.MoveRight();
 	}
 
 	// 
 	private void OnBtnRightClick(GameObject go)
 	{
-		
+		AudioMgr.Instance.PlayFX(AudioID.Click);
 		Level.Instance.MoveDown();
 	}
 
 	// 
 	private void OnBtnDownClick(GameObject go)
 	{
+		AudioMgr.Instance.PlayFX(AudioID.Click);
 		Level.Instance.MoveLeft();
 	}
 
 	// 
 	private void OnBtnLeftClick(GameObject go)
 	{
-		
+		AudioMgr.Instance.PlayFX(AudioID.Click);
 		Level.Instance.MoveUp();
 	}
 
@@ -93,6 +95,7 @@ public sealed class UIPlay : UIBase
 	// 
 	private void OnReturnClick(GameObject go)
 	{
+		AudioMgr.Instance.PlayFX(AudioID.Click);
 		Level.Instance.GoHome();
 	}
 
