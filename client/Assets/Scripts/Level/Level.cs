@@ -100,12 +100,12 @@ public class Level : Singleton<Level>, ICharacterEvent, XSFAnimHandler
                 {
                     if((m_Blocks[i].Status & (int)BlockStatus.Box) == (int)BlockStatus.Box)
                     {
-                        m_Blocks[i].select.SetOK();
+                        m_Blocks[i].SetColor(BlockColor.OK);
                         m_Blocks[i].box.select.Hide();
                     }
                     else
                     {
-                        m_Blocks[i].select.ShowSelect(1);
+                        m_Blocks[i].SetColor(BlockColor.Point);
                     }
                 }
                 else
@@ -296,7 +296,7 @@ public class Level : Singleton<Level>, ICharacterEvent, XSFAnimHandler
             else if(LevelConfig.sarData[i] == ".")
             {
                 m_Blocks[i].Status = (int)BlockStatus.Road | (int)BlockStatus.Point;
-                m_Blocks[i].select.ShowSelect(1);
+                m_Blocks[i].SetColor(BlockColor.Point);
             }
             else if(LevelConfig.sarData[i] == "$")
             {
@@ -314,8 +314,7 @@ public class Level : Singleton<Level>, ICharacterEvent, XSFAnimHandler
                 m_Blocks[i].box = PlayData.Objs[nObjIndex].GetComponent<MonoBox>();
                 m_Blocks[i].box.select.Hide();
 
-                m_Blocks[i].select.ShowSelect(1);
-                m_Blocks[i].select.SetOK();
+                m_Blocks[i].SetColor(BlockColor.OK);
 
                 nObjIndex ++;
             }
@@ -467,12 +466,8 @@ public class Level : Singleton<Level>, ICharacterEvent, XSFAnimHandler
             }
             else if(LevelConfig.sarData[i] == ".")
             {
-                m_Blocks[i].SetColor(BlockColor.Road);
+                m_Blocks[i].SetColor(BlockColor.Point);
                 m_Blocks[i].Status = (int)BlockStatus.Road | (int)BlockStatus.Point;
-                GameObject select = GameObject.Instantiate(m_Objs[(int)SceneObjID.Select]);
-                m_Blocks[i].select = select.GetComponent<MonoSelect>();
-                m_Blocks[i].select.ShowSelect(1);
-                select.transform.position = m_Blocks[i].go.transform.position;
             }
             else if(LevelConfig.sarData[i] == "$")
             {
@@ -492,17 +487,12 @@ public class Level : Singleton<Level>, ICharacterEvent, XSFAnimHandler
             }
             else if(LevelConfig.sarData[i] == "*")
             {
-                m_Blocks[i].SetColor(BlockColor.Road);
+                m_Blocks[i].SetColor(BlockColor.OK);
                 m_Blocks[i].Status = (int)BlockStatus.Road | (int)BlockStatus.Box | (int)BlockStatus.Point; 
                 m_Blocks[i].box = PlayData.Objs[nObjIndex].GetComponent<MonoBox>();
 
-                GameObject select = GameObject.Instantiate(m_Objs[(int)SceneObjID.Select]);
-                select.transform.position = m_Blocks[i].go.transform.position;
-                m_Blocks[i].select = select.GetComponent<MonoSelect>();
-                m_Blocks[i].select.ShowSelect(1);
-                m_Blocks[i].select.SetOK();
 
-                select = GameObject.Instantiate(m_Objs[(int)SceneObjID.Select]);
+                GameObject select = GameObject.Instantiate(m_Objs[(int)SceneObjID.Select]);
                 select.name = "fx";
                 m_Blocks[i].box.select = select.GetComponent<MonoSelect>();
                 m_Blocks[i].box.select.Hide();

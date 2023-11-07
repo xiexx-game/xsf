@@ -26,6 +26,8 @@ public enum BlockColor
     Road,
     Box,
     UIRoad,
+    Point,
+    OK,
 }
 
 public class SingleBlock
@@ -36,8 +38,6 @@ public class SingleBlock
     public GameObject go;
     public int Status;
 
-    public MonoSelect select;
-
     public MonoBox box;
 
     private Color32[] m_Colors = new Color32[] {
@@ -45,6 +45,8 @@ public class SingleBlock
         new Color32( 255, 255, 255, 200),
         new Color32( 6, 135, 245, 255),
         new Color32( 255, 255, 255, 255),
+        new Color32( 248, 101, 0, 255),
+        new Color32( 0, 209, 27, 255),
     };
 
     public void Hide()
@@ -67,9 +69,6 @@ public class SingleBlock
 
     public void Clear()
     {
-        if(select != null)
-            GameObject.Destroy(select.gameObject);
-
         if(box != null)
         {
             GameObject.Destroy(box.select.gameObject);

@@ -23,7 +23,7 @@ MonoBehaviour:
     m_SerializedLabels:
     - 
   - m_GUID: ac87d4cda09a347b69868dea1f0b2db3
-    m_Address: lobby
+    m_Address: lobby2
     m_ReadOnly: 0
     m_SerializedLabels:
     - 
@@ -59,6 +59,11 @@ MonoBehaviour:
     - 
   - m_GUID: 5fff49f534cfb48bba18d2ccf67348d6
     m_Address: Level7
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - 
+  - m_GUID: 7656659b57b254e39a0bb4b2fa8b2400
+    m_Address: Lobby
     m_ReadOnly: 0
     m_SerializedLabels:
     - 
