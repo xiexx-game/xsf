@@ -36,7 +36,7 @@ namespace XSF
         private List<ModuleInfo> m_InitList;
         private int MaxModuleID;
         private IModule [] m_Modules;
-        private IModule [] m_StepModule;
+        private List<IModule> m_StepModule;
 
         private ServerID m_SID;
         public ServerID SID { get { return m_SID; } }
@@ -71,6 +71,8 @@ namespace XSF
         public XSFServer()
         {
             m_InitList = new List<ModuleInfo>();
+            m_StepModule = new List<IModule>();
+
             Config = new XSFConfig();
             Ports = new uint[(int)EP.Max];
         }
@@ -201,7 +203,6 @@ namespace XSF
             case RunStatus.Init:
                 {
                     m_Modules = new IModule[MaxModuleID+1];
-                    m_StepModule = new IModule[MaxModuleID+1];
                     for(int i = 0; i < m_InitList.Count; i ++)
                     {
                         var info = m_InitList[i];
@@ -210,7 +211,7 @@ namespace XSF
                         if(!info.module.Init(info.initData))
                         {
                             m_nStatus = RunStatus.Stop;
-                            break;
+                            return;
                         }
                     }
 
@@ -235,7 +236,7 @@ namespace XSF
                                 if(!m_Modules[i].Start())
                                 {
                                     m_nStatus = RunStatus.Stop;
-                                    break;
+                                    return;
                                 }
                             }
                             else
@@ -245,16 +246,13 @@ namespace XSF
                         }
                     }
 
-                    if(m_nStatus != RunStatus.Stop)
+                    if(WaitStart > 0)
                     {
-                        if(WaitStart > 0)
-                        {
-                            m_nStatus = RunStatus.WaitStart;
-                        }
-                        else
-                        {
-                            m_nStatus = RunStatus.Start;
-                        }
+                        m_nStatus = RunStatus.WaitStart;
+                    }
+                    else
+                    {
+                        m_nStatus = RunStatus.Start;
                     }
                 }
                 break;
@@ -274,7 +272,13 @@ namespace XSF
                         }
                     }
 
-                    Array.Copy(m_Modules, m_StepModule, m_Modules.Length);
+                    for(int i = 0; i < m_Modules.Length; i ++)
+                    {
+                        if(m_Modules[i] != null)
+                        {
+                            m_StepModule.Add(m_Modules[i]);
+                        }
+                    }
 
                     Serilog.Log.Information("进入开服检测 ...");
                     m_nStatus = RunStatus.RunningCheck;
@@ -283,30 +287,22 @@ namespace XSF
 
             case RunStatus.RunningCheck:
                 {
-                    var isAllOK = true;
-                    for(int i = 0; i < m_StepModule.Length; i ++)
+                    if(m_StepModule.Count > 0)
                     {
-                        if(m_StepModule[i] != null)
+                        var module = m_StepModule[0];
+                        ModuleRunCode RunCode = module.OnStartCheck();
+                        if(RunCode == ModuleRunCode.OK)
                         {
-                            ModuleRunCode RunCode = m_StepModule[i].OnStartCheck();
-                            if(RunCode == ModuleRunCode.OK)
-                            {
-                                Serilog.Log.Information("模块启动OK, id={0}, name={1}", m_StepModule[i].ID, m_StepModule[i].Name);
-                                m_StepModule[i] = null;
-                            }
-                            else if(RunCode == ModuleRunCode.Error)
-                            {
-                                m_nStatus = RunStatus.Stop;
-                                break;
-                            }
-                            else if(RunCode == ModuleRunCode.Wait)
-                            {
-                                isAllOK = false;
-                            }
+                            Serilog.Log.Information("模块启动OK, id={0}, name={1}", module.ID, module.Name);
+                            m_StepModule.RemoveAt(0);
+                        }
+                        else if(RunCode == ModuleRunCode.Error)
+                        {
+                            m_nStatus = RunStatus.Stop;
+                            break;
                         }
                     }
-
-                    if(isAllOK)
+                    else
                     {
                         Serilog.Log.Information("==== [{0} {1}-{2}-{3}] 所有模块都已启动完毕 ====", XSFCore.Server.ID, XSFCore.Server.SID.ID, XSFCore.EP2CNName(XSFCore.Server.SID.Type), XSFCore.Server.SID.Index);
                         for(int i = 0; i < m_Modules.Length; i ++)
@@ -350,33 +346,32 @@ namespace XSF
                         }
                     }
 
-                    Array.Copy(m_Modules, m_StepModule, m_Modules.Length);
+                    for(int i = m_Modules.Length - 1; i >= 0; i --)
+                    {
+                        if(m_Modules[i] != null)
+                        {
+                            m_StepModule.Add(m_Modules[i]);
+                        }
+                    }
 
+                    Serilog.Log.Information("进入关服检测 ...");
                     m_nStatus = RunStatus.StopCheck;
                 }
                 break;
 
             case RunStatus.StopCheck:
                 {
-                    var isAllOK = true;
-                    for(int i = m_StepModule.Length - 1; i >= 0; i --)
+                    if(m_StepModule.Count > 0)
                     {
-                        if(m_StepModule[i] != null)
+                        var module = m_StepModule[0];
+                        ModuleRunCode RunCode = module.OnCloseCheck();
+                        if(RunCode == ModuleRunCode.OK)
                         {
-                            ModuleRunCode RunCode = m_StepModule[i].OnCloseCheck();
-                            if(RunCode == ModuleRunCode.OK)
-                            {
-                                Serilog.Log.Information("模块关闭完成, id={0}, name={1}", m_StepModule[i].ID, m_StepModule[i].Name);
-                                m_StepModule[i] = null;
-                            }
-                            else
-                            {
-                                isAllOK = false;
-                            }
+                            Serilog.Log.Information("模块关闭完成, id={0}, name={1}", module.ID, module.Name);
+                            m_StepModule.RemoveAt(0);
                         }
                     }
-
-                    if(isAllOK)
+                    else
                     {
                         m_nStatus = RunStatus.Stop;
                     }
@@ -424,7 +419,8 @@ namespace XSF
                 }
                 else
                 {
-                    throw new ServerArgException("启动参数中未指定 -i 值");
+                    m_SID.ID = 100;
+                    ID = ServerID.GetID(m_SID);
                 }
 
                 if(XSFCore.GetArg(args, "-rd", out argData))

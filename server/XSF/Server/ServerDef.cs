@@ -10,11 +10,6 @@
 #pragma warning disable CS8618
 namespace XSF
 {
-    public interface IUpdateModule
-    {
-        void OnUpdate(uint nTimeDelta);
-    }
-
     public struct ServerInit
     {
         public string ServerTag;
