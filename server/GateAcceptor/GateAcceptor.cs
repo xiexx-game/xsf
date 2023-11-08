@@ -27,16 +27,16 @@ namespace GateA
 
         public override void DoRegist()
         {
-            XSFCore.SetMessageExecutor((ushort)XsfPb.SMSGID.GtGtAHandshake, new Executor_Gt_GtA_Handshake());
-            XSFCore.SetMessageExecutor((ushort)XsfPb.SMSGID.GtGtAHeartbeat, new Executor_Gt_GtA_Heartbeat());
-            XSFCore.SetMessageExecutor((ushort)XsfPb.SMSGID.GtGtAClientClose, new Executor_Gt_GtA_ClientClose());
+            XSFCore.SetMessageExecutor((ushort)XsfPbid.SMSGID.GtGtAHandshake, new Executor_Gt_GtA_Handshake());
+            XSFCore.SetMessageExecutor((ushort)XsfPbid.SMSGID.GtGtAHeartbeat, new Executor_Gt_GtA_Heartbeat());
+            XSFCore.SetMessageExecutor((ushort)XsfPbid.SMSGID.GtGtAClientClose, new Executor_Gt_GtA_ClientClose());
         }
 
 
         // 断开指定客户端
         public override void DisconnectClient(uint nClientID, uint nReason)
         {
-            var message = XSFCore.GetMessage((ushort)XsfPb.SMSGID.GtAGtClientDisconnect) as XsfMsg.MSG_GtA_Gt_ClientDisconnect;
+            var message = XSFCore.GetMessage((ushort)XsfPbid.SMSGID.GtAGtClientDisconnect) as XsfMsg.MSG_GtA_Gt_ClientDisconnect;
             message.mPB.ClientId = nClientID;
             message.mPB.Reason = nReason;
             var cid = ClientID.GetCID(nClientID);
@@ -60,7 +60,7 @@ namespace GateA
         // 发送消息到客户端
         public override void SendMessage2Client(uint nClientID, IMessage message)
         {
-            var messageWrap = XSFCore.GetMessage((ushort)XsfPb.SMSGID.GtAGtClientMessage) as XsfMsg.MSG_GtA_Gt_ClientMessage;
+            var messageWrap = XSFCore.GetMessage((ushort)XsfPbid.SMSGID.GtAGtClientMessage) as XsfMsg.MSG_GtA_Gt_ClientMessage;
             messageWrap.mPB.ClientId.Clear();
             messageWrap.mPB.ClientId.Add(nClientID);
 
@@ -76,7 +76,7 @@ namespace GateA
         {
             var data = XSFCore.ClientPakcer.Pack(message);
 
-            var messageWrap = XSFCore.GetMessage((ushort)XsfPb.SMSGID.GtAGtBroadcast) as XsfMsg.MSG_GtA_Gt_Broadcast;
+            var messageWrap = XSFCore.GetMessage((ushort)XsfPbid.SMSGID.GtAGtBroadcast) as XsfMsg.MSG_GtA_Gt_Broadcast;
             messageWrap.mPB.ClientMessage = Google.Protobuf.ByteString.CopyFrom(data);
             Broadcast(messageWrap, 0);
         }
@@ -84,7 +84,7 @@ namespace GateA
         // 设置客户端转发内部的指定EP的服务器ID
         public override void SetServerID(uint nClientID, byte nEP, uint nServerID)
         {
-            var message = XSFCore.GetMessage((ushort)XsfPb.SMSGID.GtAGtSetServerId) as XsfMsg.MSG_GtA_Gt_SetServerId;
+            var message = XSFCore.GetMessage((ushort)XsfPbid.SMSGID.GtAGtSetServerId) as XsfMsg.MSG_GtA_Gt_SetServerId;
             message.mPB.ClientId = nClientID;
             message.mPB.Ep = nEP;
             message.mPB.ServerId = nServerID;

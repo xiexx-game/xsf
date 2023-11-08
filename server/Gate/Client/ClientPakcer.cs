@@ -31,8 +31,8 @@ namespace GateClient
 
             switch(nMessageID)
             {
-            case (ushort)XsfPb.CMSGID.CltGtHandshake:
-            case (ushort)XsfPb.CMSGID.CltGtHeartbeat:
+            case (ushort)XsfPbid.CMSGID.CltGtHandshake:
+            case (ushort)XsfPbid.CMSGID.CltGtHeartbeat:
                 {
                     var msg = XSFCore.GetMessage(nMessageID);
                     message = msg.Import(reader.Buffer, reader.CurPos, pbLen);

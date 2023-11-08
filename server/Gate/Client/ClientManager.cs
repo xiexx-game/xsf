@@ -33,8 +33,8 @@ namespace GateClient
 
         public override void DoRegist()
         {
-            XSFCore.SetMessageExecutor((ushort)XsfPb.CMSGID.CltGtHandshake, new Executor_Clt_Gt_Handshake());
-            XSFCore.SetMessageExecutor((ushort)XsfPb.CMSGID.CltGtHeartbeat, new Executor_Clt_Gt_Heartbeat());
+            XSFCore.SetMessageExecutor((ushort)XsfPbid.CMSGID.CltGtHandshake, new Executor_Clt_Gt_Handshake());
+            XSFCore.SetMessageExecutor((ushort)XsfPbid.CMSGID.CltGtHeartbeat, new Executor_Clt_Gt_Heartbeat());
         }
 
         public override bool Start()

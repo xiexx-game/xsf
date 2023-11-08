@@ -34,11 +34,11 @@ namespace CC
 
         public override void DoRegist()
         {
-            XSFCore.SetMessageExecutor((ushort)XsfPb.SMSGID.CCcHandshake, new Executor_C_Cc_Handshake());
-            XSFCore.SetMessageExecutor((ushort)XsfPb.SMSGID.CCcServerInfo, new Executor_C_Cc_ServerInfo());
-            XSFCore.SetMessageExecutor((ushort)XsfPb.SMSGID.CCcServerLost, new Executor_C_Cc_ServerLost());
-            XSFCore.SetMessageExecutor((ushort)XsfPb.SMSGID.CCcServerOk, new Executor_C_Cc_ServerOk());
-            XSFCore.SetMessageExecutor((ushort)XsfPb.SMSGID.CCcStop, new Executor_C_Cc_Stop());
+            XSFCore.SetMessageExecutor((ushort)XsfPbid.SMSGID.CCcHandshake, new Executor_C_Cc_Handshake());
+            XSFCore.SetMessageExecutor((ushort)XsfPbid.SMSGID.CCcServerInfo, new Executor_C_Cc_ServerInfo());
+            XSFCore.SetMessageExecutor((ushort)XsfPbid.SMSGID.CCcServerLost, new Executor_C_Cc_ServerLost());
+            XSFCore.SetMessageExecutor((ushort)XsfPbid.SMSGID.CCcServerOk, new Executor_C_Cc_ServerOk());
+            XSFCore.SetMessageExecutor((ushort)XsfPbid.SMSGID.CCcStop, new Executor_C_Cc_Stop());
         }
 
         public override ModuleRunCode OnStartCheck()
@@ -53,7 +53,7 @@ namespace CC
 
         public override void OnOK()
         {
-            var message = XSFCore.GetMessage((ushort)XsfPb.SMSGID.CcCServerOk) as XsfMsg.MSG_Cc_C_ServerOk;
+            var message = XSFCore.GetMessage((ushort)XsfPbid.SMSGID.CcCServerOk) as XsfMsg.MSG_Cc_C_ServerOk;
             message.mPB.ServerId = XSFCore.Server.ID;
             SendMessage(message);
         }
@@ -61,7 +61,7 @@ namespace CC
         public override void SendHandshake()
         {
             Serilog.Log.Information("CenterConnector SendHandshake");
-            var message = XSFCore.GetMessage((ushort)XsfPb.SMSGID.CcCHandshake) as XsfMsg.MSG_Cc_C_Handshake;
+            var message = XSFCore.GetMessage((ushort)XsfPbid.SMSGID.CcCHandshake) as XsfMsg.MSG_Cc_C_Handshake;
             message.mPB.ServerId = XSFCore.Server.ID;
 
             message.mPB.Ports.Clear();
@@ -76,7 +76,7 @@ namespace CC
         public override void SendHeartbeat()
         {
             //Serilog.Log.Information("CenterConnector SendHeartbeat");
-            var message = XSFCore.GetMessage((ushort)XsfPb.SMSGID.CcCHeartbeat);
+            var message = XSFCore.GetMessage((ushort)XsfPbid.SMSGID.CcCHeartbeat);
             SendMessage(message);
         }
 

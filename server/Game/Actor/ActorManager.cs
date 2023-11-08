@@ -61,7 +61,7 @@ public class ActorManager : IModule
 
     public override void DoRegist()
     {
-        XSFCore.SetMessageExecutor((ushort)XsfPb.CMSGID.CltGLogin, new Executor_Clt_G_Login());
+        XSFCore.SetMessageExecutor((ushort)XsfPbid.CMSGID.CltGLogin, new Executor_Clt_G_Login());
     }
 
     public static ActorManager Instance { get; private set; }

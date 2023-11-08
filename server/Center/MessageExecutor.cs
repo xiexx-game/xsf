@@ -37,7 +37,7 @@ public sealed class Executor_Cc_C_Handshake : IMessageExecutor
 
         if(NodeManager.Instance.Add(node))
         {
-            var respMsg = XSFCore.GetMessage((ushort)XsfPb.SMSGID.CCcHandshake) as XsfMsg.MSG_C_Cc_Handshake;
+            var respMsg = XSFCore.GetMessage((ushort)XsfPbid.SMSGID.CCcHandshake) as XsfMsg.MSG_C_Cc_Handshake;
             respMsg.mPB.ServerId = XSFCore.Server.ID;
             respMsg.mPB.NewId = sn.ID;
             respMsg.mPB.Ports.Clear();

@@ -69,7 +69,7 @@ namespace GateClient
 
         public void Disconnect(int nReason)
         {
-            var message = XSFCore.GetMessage((ushort)XsfPb.CMSGID.GtCltDisconnect) as XsfMsg.MSG_Gt_Clt_Disconnect;
+            var message = XSFCore.GetMessage((ushort)XsfPbid.CMSGID.GtCltDisconnect) as XsfMsg.MSG_Gt_Clt_Disconnect;
             message.mPB.Reason = nReason;
             SendMessage(message);
 
@@ -132,7 +132,7 @@ namespace GateClient
             m_Owner.Delete(this);
             Close();
 
-            var message = XSFCore.GetMessage((ushort)XsfPb.SMSGID.GtGtAClientClose) as XsfMsg.MSG_Gt_GtA_ClientClose;
+            var message = XSFCore.GetMessage((ushort)XsfPbid.SMSGID.GtGtAClientClose) as XsfMsg.MSG_Gt_GtA_ClientClose;
             message.mPB.ClientId = ID;
             for(int i = 0; i < m_ConnectorIDs.Length; i ++)
             {

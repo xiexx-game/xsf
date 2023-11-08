@@ -63,15 +63,15 @@ public class NodeManager : DicNPManager
 
     public override void OnClose()
     {
-        var message = XSFCore.GetMessage((ushort)XsfPb.SMSGID.CCcStop);
+        var message = XSFCore.GetMessage((ushort)XsfPbid.SMSGID.CCcStop);
         Broadcast(message, 0);
     }
 
     public override void DoRegist()
     {
-        XSFCore.SetMessageExecutor((ushort)XsfPb.SMSGID.CcCHandshake, new Executor_Cc_C_Handshake());
-        XSFCore.SetMessageExecutor((ushort)XsfPb.SMSGID.CcCHeartbeat, new Executor_Cc_C_Heartbeat());
-        XSFCore.SetMessageExecutor((ushort)XsfPb.SMSGID.CcCServerOk, new Executor_Cc_C_ServerOk());
+        XSFCore.SetMessageExecutor((ushort)XsfPbid.SMSGID.CcCHandshake, new Executor_Cc_C_Handshake());
+        XSFCore.SetMessageExecutor((ushort)XsfPbid.SMSGID.CcCHeartbeat, new Executor_Cc_C_Heartbeat());
+        XSFCore.SetMessageExecutor((ushort)XsfPbid.SMSGID.CcCServerOk, new Executor_Cc_C_ServerOk());
     }
 
     public override ModuleRunCode OnStartCheck() 
@@ -260,7 +260,7 @@ public class NodeManager : DicNPManager
 
     public override void OnNPConnected(NetPoint np)
     {
-        var message = XSFCore.GetMessage((ushort)XsfPb.SMSGID.CCcServerInfo) as XsfMsg.MSG_C_Cc_ServerInfo;
+        var message = XSFCore.GetMessage((ushort)XsfPbid.SMSGID.CCcServerInfo) as XsfMsg.MSG_C_Cc_ServerInfo;
         message.mPB.Infos.Clear();
 
         // 把当前已经收到的服务器信息下发给新加入的节点
@@ -321,7 +321,7 @@ public class NodeManager : DicNPManager
             return;
         }
 
-        var message = XSFCore.GetMessage((ushort)XsfPb.SMSGID.CCcServerLost) as XsfMsg.MSG_C_Cc_ServerLost;
+        var message = XSFCore.GetMessage((ushort)XsfPbid.SMSGID.CCcServerLost) as XsfMsg.MSG_C_Cc_ServerLost;
         message.mPB.ServerId = np.ID;
         Serilog.Log.Information("【中心服】有服务器节点离线, id={0}", np.ID);
 
@@ -343,7 +343,7 @@ public class NodeManager : DicNPManager
 
         Serilog.Log.Information("【中心服】收到服务器已准备好 id={0}", nID);
 
-        var message = XSFCore.GetMessage((ushort)XsfPb.SMSGID.CCcServerOk) as XsfMsg.MSG_C_Cc_ServerOk;
+        var message = XSFCore.GetMessage((ushort)XsfPbid.SMSGID.CCcServerOk) as XsfMsg.MSG_C_Cc_ServerOk;
         message.mPB.ServerId = nID;
 
         Broadcast(message, nID);

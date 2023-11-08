@@ -23,12 +23,12 @@ public class Actor
 
     public void OnLoginOk()
     {
-        var message = XSFCore.GetMessage((ushort)XsfPb.CMSGID.GCltLoginResult) as XsfMsg.MSG_G_Clt_LoginResult;
+        var message = XSFCore.GetMessage((ushort)XsfPbid.CMSGID.GCltLoginResult) as XsfMsg.MSG_G_Clt_LoginResult;
         message.mPB.Result = (uint)XsfPb.LoginResult.Success;
 
         GateA.IGateAcceptor.Instance.SendMessage2Client(ClientID, message);
 
-        var testMsg = XSFCore.GetMessage((ushort)XsfPb.CMSGID.GCltTestData) as XsfMsg.MSG_G_Clt_TestData;
+        var testMsg = XSFCore.GetMessage((ushort)XsfPbid.CMSGID.GCltTestData) as XsfMsg.MSG_G_Clt_TestData;
         testMsg.mPB.Message = "test1";
         GateA.IGateAcceptor.Instance.Broadcast2AllClient(testMsg);
 

@@ -21,14 +21,14 @@ public class ServerConnector : NetConnector
 
     public override void SendHandshake()
     {
-        var message = XSFCore.GetMessage((ushort)XsfPb.SMSGID.GtGtAHandshake) as XsfMsg.MSG_Gt_GtA_Handshake;
+        var message = XSFCore.GetMessage((ushort)XsfPbid.SMSGID.GtGtAHandshake) as XsfMsg.MSG_Gt_GtA_Handshake;
         message.mPB.ServerId = XSFCore.Server.ID;
         SendMessage(message);
     }
 
     public override void SendHeartbeat()
     {
-        var message = XSFCore.GetMessage((ushort)XsfPb.SMSGID.GtGtAHeartbeat);
+        var message = XSFCore.GetMessage((ushort)XsfPbid.SMSGID.GtGtAHeartbeat);
         SendMessage(message);
     }
 
