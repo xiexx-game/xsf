@@ -22,6 +22,7 @@ public enum AudioID
     OK,
     Move,
     Finish,
+    Pop,
 }
 
 public sealed class AudioMgr : MonoSingleton<AudioMgr>

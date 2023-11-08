@@ -679,6 +679,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: ab4abc0656b5c4494a7d910758ffb986, type: 3}
   - {fileID: 8300000, guid: 386f3d5de77ce400799a582c6a8a6898, type: 3}
   - {fileID: 8300000, guid: 7fdad33762cf6493394f7f1a67f82c13, type: 3}
+  - {fileID: 8300000, guid: dc67def4b1c5e46049001a3e02d2b5b5, type: 3}
   m_ASBGM: {fileID: 343896936}
   m_Character: {fileID: 1073776595}
   m_FX: {fileID: 7266060}

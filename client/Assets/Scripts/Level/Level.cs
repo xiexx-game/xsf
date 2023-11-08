@@ -587,5 +587,9 @@ public class Level : Singleton<Level>, ICharacterEvent, XSFAnimHandler
                 XSFMain.Instance.MainCamera.GetComponent<CameraMove>().MoveTo(LobbyData.CamaraT);
             }
         }
+        else if(param == "AudioFX")
+        {
+            AudioMgr.Instance.PlayFX(AudioID.Move);
+        }
     }
 }
