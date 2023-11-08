@@ -9,7 +9,7 @@
 //////////////////////////////////////////////////////////////////////////
 using System;
 using UnityEngine;
-using XsfPb;
+using XsfPbid;
 using XSF;
 using XsfMsg;
 
@@ -154,7 +154,7 @@ namespace XsfNet
 
             Debug.Log($"NetClient OnRecv, msg id={nMsgID}");
 
-            IMessage message = MessagePool.Instance.Get((XsfPb.CMSGID)nMsgID);
+            IMessage message = MessagePool.Instance.Get((XsfPbid.CMSGID)nMsgID);
             message.Import(data, 2, data.Length - 2);
             message.Execute(this);
         }

@@ -84,7 +84,7 @@ public sealed class UITest : UIBase
 	// Login server
 	private void OnLoginClick(GameObject go)
 	{
-		MSG_Clt_G_Login msg = MessagePool.Instance.Get(XsfPb.CMSGID.CltGLogin) as MSG_Clt_G_Login;
+		MSG_Clt_G_Login msg = MessagePool.Instance.Get(XsfPbid.CMSGID.CltGLogin) as MSG_Clt_G_Login;
 		msg.mPB.Account = "test";
 		XSFNet.Instance.mClient.SendMessage(msg);
 	}

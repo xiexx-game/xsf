@@ -11,6 +11,7 @@
 using XSF;
 using Serilog;
 using XsfPb;
+using XsfPbid;
 
 namespace XsfMsg
 {

@@ -9,7 +9,7 @@ using pb = global::Google.Protobuf;
 using pbc = global::Google.Protobuf.Collections;
 using pbr = global::Google.Protobuf.Reflection;
 using scg = global::System.Collections.Generic;
-namespace XsfPb {
+namespace XsfPbid {
 
   /// <summary>Holder for reflection information generated from CMessageID.proto</summary>
   public static partial class CMessageIDReflection {
@@ -24,15 +24,15 @@ namespace XsfPb {
     static CMessageIDReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "ChBDTWVzc2FnZUlELnByb3RvEgZ4c2ZfcGIq1AEKBkNNU0dJRBIPCgtDTVNH",
-            "SURfTm9uZRAAEhQKEENsdF9HdF9IYW5kc2hha2UQARIUChBHdF9DbHRfSGFu",
-            "ZHNoYWtlEAISFAoQQ2x0X0d0X0hlYXJ0YmVhdBADEhQKEEd0X0NsdF9IZWFy",
-            "dGJlYXQQBBIVChFHdF9DbHRfRGlzY29ubmVjdBAFEg8KC0NsdF9HX0xvZ2lu",
-            "EAYSFQoRR19DbHRfTG9naW5SZXN1bHQQBxISCg5HX0NsdF9UZXN0RGF0YRAI",
-            "Eg4KCkNNU0dJRF9NYXgQZGIGcHJvdG8z"));
+            "ChBDTWVzc2FnZUlELnByb3RvEgh4c2ZfcGJpZCrUAQoGQ01TR0lEEg8KC0NN",
+            "U0dJRF9Ob25lEAASFAoQQ2x0X0d0X0hhbmRzaGFrZRABEhQKEEd0X0NsdF9I",
+            "YW5kc2hha2UQAhIUChBDbHRfR3RfSGVhcnRiZWF0EAMSFAoQR3RfQ2x0X0hl",
+            "YXJ0YmVhdBAEEhUKEUd0X0NsdF9EaXNjb25uZWN0EAUSDwoLQ2x0X0dfTG9n",
+            "aW4QBhIVChFHX0NsdF9Mb2dpblJlc3VsdBAHEhIKDkdfQ2x0X1Rlc3REYXRh",
+            "EAgSDgoKQ01TR0lEX01heBBkYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::XsfPb.CMSGID), }, null));
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::XsfPbid.CMSGID), }, null));
     }
     #endregion
 

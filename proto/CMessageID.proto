@@ -2,7 +2,7 @@
 
 syntax = "proto3";
 
-package xsf_pb;
+package xsf_pbid;
 
 
 // 客户端消息ID

@@ -34,7 +34,9 @@ public static class ProtoTools
     {
         string outputDir = Application.dataPath + "/Scripts/Net/Proto/";
         string serverOutputDir = Application.dataPath + "/../../server/Message/Proto/";
+        string cppOutputDir = Application.dataPath + "/../../server-cpp/source/message/";
         bool IsServerDirExist = Directory.Exists(serverOutputDir);
+        bool IsCppDirExist = Directory.Exists(cppOutputDir);
 
         string [] csProto = new string[] { "Client.proto", "CMessageID.proto", "Common.proto"};
 
@@ -48,18 +50,31 @@ public static class ProtoTools
                 XSFEditorUtil.StartProcess(PROTOC,
                 $"--csharp_out={serverOutputDir}  --proto_path=../../ {csProto[i]}", PROTOC_DIR);
             }
+
+            if(IsCppDirExist)
+            {
+                XSFEditorUtil.StartProcess(PROTOC,
+                $"-I=../../ --cpp_out={cppOutputDir} {csProto[i]}", PROTOC_DIR);
+            }
         }
 
-        if(IsServerDirExist)
-        {
-            string serverProtoDir = Application.dataPath + "/../../proto/server/";
-            var protos = Directory.GetFiles(serverProtoDir, "*.proto");
-            for(int i = 0; i < protos.Length; i ++)
-            {
-                FileInfo info = new FileInfo(protos[i]);
 
+        string serverProtoDir = Application.dataPath + "/../../proto/server/";
+        var protos = Directory.GetFiles(serverProtoDir, "*.proto");
+        for(int i = 0; i < protos.Length; i ++)
+        {
+            FileInfo info = new FileInfo(protos[i]);
+
+            if(IsServerDirExist)
+            {
                 XSFEditorUtil.StartProcess(PROTOC,
                     $"--csharp_out={serverOutputDir}  --proto_path=../../server {info.Name}", PROTOC_DIR);
+            }
+
+            if(IsCppDirExist)
+            {
+                XSFEditorUtil.StartProcess(PROTOC,
+                    $"-I=../../server --cpp_out={cppOutputDir} {info.Name}", PROTOC_DIR);
             }
         }
 

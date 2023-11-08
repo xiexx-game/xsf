@@ -9,7 +9,7 @@ using pb = global::Google.Protobuf;
 using pbc = global::Google.Protobuf.Collections;
 using pbr = global::Google.Protobuf.Reflection;
 using scg = global::System.Collections.Generic;
-namespace XsfPb {
+namespace XsfPbid {
 
   /// <summary>Holder for reflection information generated from SMessageID.proto</summary>
   public static partial class SMessageIDReflection {
@@ -24,21 +24,21 @@ namespace XsfPb {
     static SMessageIDReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "ChBTTWVzc2FnZUlELnByb3RvEgZ4c2ZfcGIqzAMKBlNNU0dJRBIPCgtTTVNH",
-            "SURfTm9uZRAAEgoKBVN0YXJ0ELgXEhMKDkNjX0NfSGFuZHNoYWtlELkXEhMK",
-            "DkNfQ2NfSGFuZHNoYWtlELoXEhMKDkNjX0NfSGVhcnRiZWF0ELsXEhQKD0Nj",
-            "X0NfU2VydmVySW5mbxC9FxIUCg9DX0NjX1NlcnZlckluZm8QvhcSFAoPQ2Nf",
-            "Q19TZXJ2ZXJMb3N0EL8XEhQKD0NfQ2NfU2VydmVyTG9zdBDAFxISCg1DY19D",
-            "X1NlcnZlck9rEMEXEhIKDUNfQ2NfU2VydmVyT2sQwhcSDgoJQ19DY19TdG9w",
-            "EMMXEhUKEEd0X0d0QV9IYW5kc2hha2UQnBgSFQoQR3RBX0d0X0hhbmRzaGFr",
-            "ZRCdGBIVChBHdF9HdEFfSGVhcnRiZWF0EJ4YEhcKEkd0X0d0QV9DbGllbnRD",
-            "bG9zZRCfGBIcChdHdEFfR3RfQ2xpZW50RGlzY29ubmVjdBCgGBIZChRHdEFf",
-            "R3RfQ2xpZW50TWVzc2FnZRChGBIVChBHdEFfR3RfQnJvYWRjYXN0EKIYEhcK",
-            "Ekd0QV9HdF9TZXRTZXJ2ZXJJZBCjGBIPCgpTTVNHSURfTWF4EIgnYgZwcm90",
-            "bzM="));
+            "ChBTTWVzc2FnZUlELnByb3RvEgh4c2ZfcGJpZCrMAwoGU01TR0lEEg8KC1NN",
+            "U0dJRF9Ob25lEAASCgoFU3RhcnQQuBcSEwoOQ2NfQ19IYW5kc2hha2UQuRcS",
+            "EwoOQ19DY19IYW5kc2hha2UQuhcSEwoOQ2NfQ19IZWFydGJlYXQQuxcSFAoP",
+            "Q2NfQ19TZXJ2ZXJJbmZvEL0XEhQKD0NfQ2NfU2VydmVySW5mbxC+FxIUCg9D",
+            "Y19DX1NlcnZlckxvc3QQvxcSFAoPQ19DY19TZXJ2ZXJMb3N0EMAXEhIKDUNj",
+            "X0NfU2VydmVyT2sQwRcSEgoNQ19DY19TZXJ2ZXJPaxDCFxIOCglDX0NjX1N0",
+            "b3AQwxcSFQoQR3RfR3RBX0hhbmRzaGFrZRCcGBIVChBHdEFfR3RfSGFuZHNo",
+            "YWtlEJ0YEhUKEEd0X0d0QV9IZWFydGJlYXQQnhgSFwoSR3RfR3RBX0NsaWVu",
+            "dENsb3NlEJ8YEhwKF0d0QV9HdF9DbGllbnREaXNjb25uZWN0EKAYEhkKFEd0",
+            "QV9HdF9DbGllbnRNZXNzYWdlEKEYEhUKEEd0QV9HdF9Ccm9hZGNhc3QQohgS",
+            "FwoSR3RBX0d0X1NldFNlcnZlcklkEKMYEg8KClNNU0dJRF9NYXgQiCdiBnBy",
+            "b3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::XsfPb.SMSGID), }, null));
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::XsfPbid.SMSGID), }, null));
     }
     #endregion
 

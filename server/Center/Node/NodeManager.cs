@@ -57,7 +57,7 @@ public class NodeManager : DicNPManager
     {
         m_nStartIndex = 0;
         m_nStep = RunStep.StartServer;
-
+        
         return base.Start();
     }
 
@@ -145,6 +145,7 @@ public class NodeManager : DicNPManager
             {
                 newNode = nodeLost;
                 newNode.Status = NodeStatus.New;
+                newNode.IP = ip;
 
                 Serilog.Log.Information($"NodeManager AddNode new, find lost server node id={newNode.ID}, ip1={newNode.IP}, ip2={ip}");
             }
@@ -162,7 +163,7 @@ public class NodeManager : DicNPManager
                 var nodeLost = GetLostNode(sid.Type, nID, true);
                 if(nodeLost == null)
                 {
-                    Serilog.Log.Error($"NodeManager AddNode find exist, id={nID}, ip={ip}");
+                    Serilog.Log.Error($"NodeManager AddNode nodeLost not found, id={nID}, ip={ip}");
                     return null;
                 }
                 else
