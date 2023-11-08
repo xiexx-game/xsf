@@ -538,7 +538,7 @@ MonoBehaviour:
   - {fileID: 3237387348921729448}
   - {fileID: 3237387349935475419}
   - {fileID: 375178900}
-  Interval: 1
+  Interval: 0.1
 --- !u!1 &3237387348921729448
 GameObject:
   m_ObjectHideFlags: 0

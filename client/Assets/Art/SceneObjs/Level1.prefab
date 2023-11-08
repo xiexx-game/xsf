@@ -291,7 +291,7 @@ MonoBehaviour:
   - {fileID: 8277147866699984341}
   - {fileID: 8277147865263762969}
   - {fileID: 8277147866183280103}
-  Interval: 1
+  Interval: 0.1
 --- !u!1 &8277147865213407651
 GameObject:
   m_ObjectHideFlags: 0

@@ -56,9 +56,10 @@ public sealed class UILevel : UIBase
 
 	public override void OnShow()
 	{
-		m_nCurLevel = 1;
+		m_nCurLevel = (uint)PlayerPrefs.GetInt("CurLevel", 1);
 
 		m_ScpLevel = XSFSchema.Instance.Get<SchemaLevel>((int)SchemaID.Level).Get(m_nCurLevel);
+		Level.Instance.LevelConfig = m_ScpLevel;
 		Refresh((uint)UIRefreshID.LevelFresh, null);
 		XSFUI.Instance.Get((int)UIID.UIMain).Refresh((uint)UIRefreshID.LevelFresh, null);
 	}
@@ -160,6 +161,7 @@ public sealed class UILevel : UIBase
 		else 
 		{
 			m_nCurLevel --;
+			PlayerPrefs.SetInt("CurLevel", (int)m_nCurLevel);
 			m_ScpLevel = scp;
 			Level.Instance.LevelConfig = scp;
 			Refresh((uint)UIRefreshID.LevelFresh, null);
@@ -181,6 +183,7 @@ public sealed class UILevel : UIBase
 		else 
 		{
 			m_nCurLevel ++;
+			PlayerPrefs.SetInt("CurLevel", (int)m_nCurLevel);
 			m_ScpLevel = scp;
 			Level.Instance.LevelConfig = scp;
 

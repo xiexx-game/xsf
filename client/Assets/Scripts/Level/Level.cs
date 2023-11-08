@@ -50,6 +50,8 @@ public class Level : Singleton<Level>, ICharacterEvent, XSFAnimHandler
 
     private GameObject[] m_Objs;
 
+    public int MoveStep { get; private set; }
+
     public GameObject GetGameObject(SceneObjID id)
     {
         return m_Objs[(int)id];
@@ -146,6 +148,19 @@ public class Level : Singleton<Level>, ICharacterEvent, XSFAnimHandler
         {
             m_nStatus = RunStatus.None;
             XSFUI.Instance.ShowUI((int)UIID.UIEnd);
+
+            int nBest = PlayerPrefs.GetInt($"BestMove_{LevelConfig.uId}", 0);
+            if(nBest != 0)
+            {
+                if(MoveStep < nBest)
+                {
+                    PlayerPrefs.SetInt($"BestMove_{LevelConfig.uId}", MoveStep);
+                }
+            }
+            else
+            {
+                PlayerPrefs.SetInt($"BestMove_{LevelConfig.uId}", MoveStep);
+            }
         }
     }
 
@@ -253,6 +268,8 @@ public class Level : Singleton<Level>, ICharacterEvent, XSFAnimHandler
             CreateLevelBlock();
             XSFUI.Instance.ShowUI((int)UIID.UIPlay);
             m_nStatus = RunStatus.Play;
+            MoveStep = 0;
+            XSFUI.Instance.Get((int)UIID.UIPlay).Refresh((uint)UIRefreshID.MoveStep, null);
         }
         else if(m_nStatus == RunStatus.Moving)
         {
@@ -368,8 +385,11 @@ public class Level : Singleton<Level>, ICharacterEvent, XSFAnimHandler
 
             Character.Row = nRow;
             Character.Col = nCol;
-            Debug.Log("Move to " + block.go.transform.position);
+            //Debug.Log("Move to " + block.go.transform.position);
             Character.Run(block.go.transform.position);
+
+            MoveStep ++;
+            XSFUI.Instance.Get((int)UIID.UIPlay).Refresh((uint)UIRefreshID.MoveStep, null);
 
             m_nStatus = RunStatus.Moving;
         }

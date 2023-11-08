@@ -54,7 +54,29 @@ public sealed class UIPlay : UIBase
         // UI_INIT_END
     }
 
+	public override void OnShow()
+	{
+		int nBest = PlayerPrefs.GetInt($"BestMove_{Level.Instance.LevelConfig.uId}", 0);
+		Debug.Log("Level.Instance.LevelConfig.uId=" + Level.Instance.LevelConfig.uId + ", nBest=" + nBest);
+		if(nBest == 0)
+		{
+			Best.text = "最佳步数:暂无记录";
+		}
+		else
+		{
+			Best.text = $"最佳步数:{nBest}";
+		}
+	}
 
+	public override void OnRefresh(uint nFreshID,  object data) 
+	{
+		switch(nFreshID)
+		{
+		case (uint)UIRefreshID.MoveStep:
+			CurrentValue.text = $"{Level.Instance.MoveStep}";
+			break;
+		}
+	}
 
 	// 
 	private void OnRedoClick(GameObject go)

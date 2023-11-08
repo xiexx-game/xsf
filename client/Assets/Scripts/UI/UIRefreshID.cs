@@ -14,4 +14,5 @@ public enum UIRefreshID
     
     UIAtlasTest_SetImage,
     LevelFresh,
+    MoveStep,
 }

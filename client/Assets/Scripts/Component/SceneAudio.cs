@@ -29,6 +29,7 @@ public class SceneAudio : MonoBehaviour
                 float fCurrent = Time.realtimeSinceStartup;
                 if(fCurrent >= m_fLastTime + Interval )
                 {
+                    m_fLastTime = fCurrent;
                     AudioMgr.Instance.PlayFX(AudioID.Click);
                 }
             }
