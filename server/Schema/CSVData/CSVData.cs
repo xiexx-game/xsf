@@ -92,7 +92,7 @@ namespace XsfScp
                 throw new XSFSchemaLoadException($"CSVData GetDataByName name error, name={name}");
             }
             
-            return GetData(type);
+            return GetData((int)type);
         }
     }
 }
