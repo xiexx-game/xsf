@@ -36,6 +36,8 @@ namespace GateClient
 
         private bool m_IsHandshake;
 
+        public bool IsHandshake { get { return m_IsHandshake; } }
+
         private uint[] m_ConnectorIDs;
 
         public Client()
@@ -67,6 +69,11 @@ namespace GateClient
             m_Timers.CloseAllTimer();
         }
 
+        public void UpdateHTTime()
+        {
+            m_nLastHTTime = XSFCore.CurrentS;
+        }
+
         public void Disconnect(int nReason)
         {
             var message = XSFCore.GetMessage((ushort)XsfPbid.CMSGID.GtCltDisconnect) as XsfMsg.MSG_Gt_Clt_Disconnect;
@@ -79,6 +86,7 @@ namespace GateClient
         public void OnHandshake()
         {
             m_IsHandshake = true;
+            UpdateHTTime();
         }
 
         public ServerConnector GetConnector(byte nEP)

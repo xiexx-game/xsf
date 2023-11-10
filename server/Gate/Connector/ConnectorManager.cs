@@ -34,6 +34,14 @@ public class ConnectorManager : IModule
         XSFCore.SetMessageExecutor((ushort)XsfPbid.SMSGID.GtAGtSetServerId, new Executor_GtA_Gt_SetServerID());
     }
 
+    public override void OnClose()
+    {
+        foreach(KeyValuePair<uint, ServerConnector> kv in m_Connectors)
+        {
+            kv.Value.OnClose();
+        }
+    }
+
     public void CreateConnector(uint nID, string ip, int port)
     {
         ServerConnector connector = null;

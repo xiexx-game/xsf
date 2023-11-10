@@ -74,6 +74,7 @@ namespace CC
     {
         public void OnExecute(object NetObj, IMessage message, ushort nMessageID, uint nRawID, byte[] rawData)
         {
+            Serilog.Log.Information("【中心服连接器】收到中心服关服");
             XSFCore.Server.Stop();
         }
     }

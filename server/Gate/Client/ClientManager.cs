@@ -134,6 +134,11 @@ namespace GateClient
                 {
                     return null;
                 }
+
+                if(!m_Clients[cid.ID].IsHandshake)
+                {
+                    return null;
+                }
             }
 
             return m_Clients[cid.ID];
@@ -143,7 +148,7 @@ namespace GateClient
         {
             for(int i = 0; i < m_Clients.Length; i ++)
             {
-                if(m_Clients[i] != null)
+                if(m_Clients[i] != null && m_Clients[i].IsHandshake)
                 {
                     m_Clients[i].SendData(data);
                 }

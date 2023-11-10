@@ -30,6 +30,7 @@ public class Executor_Clt_Gt_Heartbeat : IMessageExecutor
     public void OnExecute(object NetObj, IMessage message, ushort nMessageID, uint nRawID, byte[] rawData)
     {
         var client = NetObj as Client;
+        client.UpdateHTTime();
 
         var localMsg = message as XsfMsg.MSG_Clt_Gt_Heartbeat;
 

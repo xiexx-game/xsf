@@ -112,12 +112,18 @@ namespace CC
                 }
 
                 var sid = ServerID.GetSID(info.ID);
-                Serilog.Log.Information("收到服务器信息, id={0} [{1}-{2}-{3}] status={4}", info.ID, sid.ID, sid.Index, XSFCore.EP2CNName(sid.Type), info.Status);
+                Serilog.Log.Information("【中心服连接器】收到服务器信息, id={0} [{1}-{2}-{3}] status={4}", info.ID, sid.ID, sid.Index, XSFCore.EP2CNName(sid.Type), info.Status);
 
                 if(IsNewAdd)
                 {
-                    Serilog.Log.Information("新增服务器节点, id={0} [{1}-{2}-{3}] status={4}", info.ID, sid.ID, sid.Index, XSFCore.EP2CNName(sid.Type), info.Status);
+                    Serilog.Log.Information("【中心服连接器】新增服务器节点, id={0} [{1}-{2}-{3}] status={4}", info.ID, sid.ID, sid.Index, XSFCore.EP2CNName(sid.Type), info.Status);
                     m_Handler.OnServerNew(info);
+
+                    if(info.Status == NodeStatus.Ok)
+                    {
+                        Serilog.Log.Information("【中心服连接器】收到服务器节点已准备好, id={0} [{1}-{2}-{3}]", info.ID, sid.ID, sid.Index, XSFCore.EP2CNName(sid.Type) );
+                        m_Handler.OnServerOk(info);
+                    }
                 }
             }
         }
@@ -147,11 +153,6 @@ namespace CC
             {
                 Serilog.Log.Error("服务器已准备好，但是本地未找到服务器信息, id={0}", nID);
             }
-        }
-
-        public void OnStop()
-        {
-            XSFCore.Server.Stop();
         }
     }
 }

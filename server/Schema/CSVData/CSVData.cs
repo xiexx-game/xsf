@@ -91,22 +91,8 @@ namespace XsfScp
             {
                 throw new XSFSchemaLoadException($"CSVData GetDataByName name error, name={name}");
             }
-                
-
-            switch(type)
-            {
-            case CSVDataType.Int:  return new CSVData_Int();
-            case CSVDataType.Uint:  return new CSVData_Uint();
-            case CSVDataType.Ulong:  return new CSVData_Ulong();
-            case CSVDataType.Bool:  return new CSVData_Bool();
-            case CSVDataType.Float:  return new CSVData_Float();
-            case CSVDataType.Array:  return new CSVData_Array();
-            case CSVDataType.String:  return new CSVData_String();
-            case CSVDataType.IDAndCount:  return new CSVData_IDAndCount();
-            case CSVDataType.SArray:  return new CSVData_SArray();
-            default:
-                throw new XSFSchemaLoadException($"CSVData GetDataByName type error, type={(CSVDataType)type}");
-            }
+            
+            return GetData(type);
         }
     }
 }
