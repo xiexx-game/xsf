@@ -1,0 +1,11 @@
+类型,值,名称,描述,客户端,服务端
+string,string,string,string,string,string
+type,value,name,desc,client,server
+int,20,intData,有符号整形,*,*
+string,This is a test data,stringData,字符串数据,*,*
+uint,300,uintData,uint整形,*,*
+ulong,1,ulongData,长整形数据,*,*
+float,3.1415926,floatData,浮点数,,*
+array,2:3:4:5,uintArrayData,无符号整形数组,,*
+bool,FALSE,boolData,布尔数据,,*
+iac,10000:10|2000:20,iacData,id和count数据,,*

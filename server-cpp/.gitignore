@@ -1,0 +1,7 @@
+xsf-temp/
+bin/lib/
+bin/center/
+bin/gate/
+xsf-center
+xsf-gate
+.vscode/
