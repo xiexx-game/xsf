@@ -20,7 +20,7 @@ namespace XsfScp
     //SCHEMA_ID_BEGIN
 		Global = 1,
 		Item = 2,
-		TestData = 5,
+		TestData = 4,
     //SCHEMA_ID_END
 
         Max,

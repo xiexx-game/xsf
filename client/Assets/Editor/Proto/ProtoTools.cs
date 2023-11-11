@@ -27,14 +27,14 @@ public static class ProtoTools
     public static void GenProtoCode()
     {
         ProtoExport();
-        CSCodeGen();
+        CodeGen();
     }
 
     public static void ProtoExport()
     {
         string outputDir = Application.dataPath + "/Scripts/Net/Proto/";
         string serverOutputDir = Application.dataPath + "/../../server/Message/Proto/";
-        string cppOutputDir = Application.dataPath + "/../../server-cpp/source/message/";
+        string cppOutputDir = Application.dataPath + "/../../server-cpp/source/message/src/pb";
         bool IsServerDirExist = Directory.Exists(serverOutputDir);
         bool IsCppDirExist = Directory.Exists(cppOutputDir);
 
@@ -55,6 +55,18 @@ public static class ProtoTools
             {
                 XSFEditorUtil.StartProcess(PROTOC,
                 $"-I=../../ --cpp_out={cppOutputDir} {csProto[i]}", PROTOC_DIR);
+
+                int nIndex = csProto[i].IndexOf(".proto");
+                string name = csProto[i].Substring(0, nIndex);
+                string SrcH = cppOutputDir + $"/{name}.pb.h";
+                string SrcC = cppOutputDir + $"/{name}.pb.cc";
+                string DescH = Application.dataPath + "/../../server-cpp/source/message/inc" + $"/{name}.pb.h";
+                string DescC = cppOutputDir + $"/{name}.pb.cpp";
+
+                File.Delete(DescH);
+                File.Delete(DescC);
+                File.Move(SrcH, DescH);
+                File.Move(SrcC, DescC);
             }
         }
 
@@ -68,13 +80,25 @@ public static class ProtoTools
             if(IsServerDirExist)
             {
                 XSFEditorUtil.StartProcess(PROTOC,
-                    $"--csharp_out={serverOutputDir}  --proto_path=../../server {info.Name}", PROTOC_DIR);
+                    $"--csharp_out={serverOutputDir}  --proto_path=../../server  {info.Name}", PROTOC_DIR);
             }
 
             if(IsCppDirExist)
             {
                 XSFEditorUtil.StartProcess(PROTOC,
                     $"-I=../../server --cpp_out={cppOutputDir} {info.Name}", PROTOC_DIR);
+
+                int nIndex = info.Name.IndexOf(".proto");
+                string name = info.Name.Substring(0, nIndex);
+                string SrcH = cppOutputDir + $"/{name}.pb.h";
+                string SrcC = cppOutputDir + $"/{name}.pb.cc";
+                string DescH = Application.dataPath + "/../../server-cpp/source/message/inc" + $"/{name}.pb.h";
+                string DescC = cppOutputDir + $"/{name}.pb.cpp";
+
+                File.Delete(DescH);
+                File.Delete(DescC);
+                File.Move(SrcH, DescH);
+                File.Move(SrcC, DescC);
             }
         }
 
@@ -82,7 +106,7 @@ public static class ProtoTools
     }
 
     
-    private static void CSCodeGen()
+    private static void CodeGen()
     {
         string CProtoPath = Application.dataPath + "/../../proto/CMessageID.proto";
         string SProtoPath = Application.dataPath + "/../../proto/server/SMessageID.proto";
@@ -95,7 +119,13 @@ public static class ProtoTools
 
         string COutputDir = Application.dataPath + "/Scripts/Net/Messages";
         string SOutputDir = Application.dataPath + "/../../server/Message/Messages";
+        string CppOutputDir = Application.dataPath + "/../../server-cpp/source/message";
         bool IsServerDirExist = Directory.Exists(SOutputDir);
+        bool IsCppDirExist = Directory.Exists(CppOutputDir);
+
+        string CppHFile = CppOutputDir + "/inc/Messages.h";
+        string CppCFile = CppOutputDir + "/src/Messages.cpp";
+        string CppModuleFile = CppOutputDir + "/src/MessageModule.cpp";
 
         List<MessageIDData> messageIDs = new List<MessageIDData>();
         messageIDs.AddRange(GetMessageIDs(CProtoPath));
@@ -109,6 +139,10 @@ public static class ProtoTools
 
         string CMessagePoolStr = "";
         string SMessagePoolStr = "";
+
+        string CppHStr = "";
+        string CppCStr = "";
+        string CppModuleStr = "";
 
         for(int i = 0; i < messageIDs.Count; i ++)
         {
@@ -144,22 +178,39 @@ public static class ProtoTools
 
                     SMessagePoolStr += $"\t\t\tm_MessagePool[(int)CMSGID.{md.CodeID}] = new MSG_{md.MessageID}();\n";
                 }
-            }
-            else if(IsServerDirExist)
-            {
-                string SCodePath = SOutputDir + $"/MSG_{md.MessageID}.cs";
-                if(!File.Exists(SCodePath))
+
+                if(IsCppDirExist)
                 {
-                    string content = STmpContent.Replace("_MSG_NAME_", md.MessageID);
-                    content = content.Replace("_MSG_DATE_", DateStr);
-                    content = content.Replace("_MSG_DESC_", md.Desc.Trim());
-                    content = content.Replace("_MSG_ID_NAME_", md.CodeID);
-                    content = content.Replace("_ID_PREFIX_", "SMSGID");
-                    content = content.Replace("_EP_NAME_", GetDestEP(md.MessageID));
-                    File.WriteAllText(SCodePath, content);
+                    CppHStr += $"\tMESSAGE({md.MessageID}, EP_{GetDestEP(md.MessageID)}, xsf_pbid::CMSGID::{md.MessageID})\n";
+                    CppCStr += $"\tMESSAGE_FUNCTIONS({md.MessageID})\n";
+                    CppModuleStr += $"\t\tNEW_MESSAGE({md.MessageID}, xsf_pbid::CMSGID::{md.MessageID})\n";
+                }
+            }
+            else 
+            {
+                if(IsServerDirExist)
+                {
+                    string SCodePath = SOutputDir + $"/MSG_{md.MessageID}.cs";
+                    if(!File.Exists(SCodePath))
+                    {
+                        string content = STmpContent.Replace("_MSG_NAME_", md.MessageID);
+                        content = content.Replace("_MSG_DATE_", DateStr);
+                        content = content.Replace("_MSG_DESC_", md.Desc.Trim());
+                        content = content.Replace("_MSG_ID_NAME_", md.CodeID);
+                        content = content.Replace("_ID_PREFIX_", "SMSGID");
+                        content = content.Replace("_EP_NAME_", GetDestEP(md.MessageID));
+                        File.WriteAllText(SCodePath, content);
+                    }
+
+                    SMessagePoolStr += $"\t\t\tm_MessagePool[(int)SMSGID.{md.CodeID}] = new MSG_{md.MessageID}();\n";
                 }
 
-                SMessagePoolStr += $"\t\t\tm_MessagePool[(int)SMSGID.{md.CodeID}] = new MSG_{md.MessageID}();\n";
+                if(IsCppDirExist)
+                {
+                    CppHStr += $"\tMESSAGE({md.MessageID}, EP_{GetDestEP(md.MessageID)}, xsf_pbid::CMSGID::{md.MessageID})\n";
+                    CppCStr += $"\tMESSAGE_FUNCTIONS({md.MessageID})\n";
+                    CppModuleStr += $"\t\tNEW_MESSAGE({md.MessageID}, xsf_pbid::CMSGID::{md.MessageID})\n";
+                }
             }
         }
 
@@ -170,6 +221,13 @@ public static class ProtoTools
         {
             string sPoolFile = Application.dataPath + "/../../server/Message/MessageModule.cs";
             XSFEditorUtil.ReplaceContentByTag(sPoolFile, "MESSAGE_START", "MESSAGE_END", SMessagePoolStr);
+        }
+
+        if(IsCppDirExist)
+        {
+            XSFEditorUtil.ReplaceContentByTag(CppHFile, "MESSAGE_BEGIN", "MESSAGE_END", CppHStr);
+            XSFEditorUtil.ReplaceContentByTag(CppCFile, "MESSAGE_BEGIN", "MESSAGE_END", CppCStr);
+            XSFEditorUtil.ReplaceContentByTag(CppModuleFile, "MESSAGE_BEGIN", "MESSAGE_END", CppModuleStr);
         }
     }
 

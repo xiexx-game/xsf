@@ -25,6 +25,7 @@ namespace XsfScp
         {
             mData = new _SCP_NAME_();
 
+            请补充xml数据读取代码
             XMLReader xml = reader as XMLReader;
             //XmlNodeList nodeList = xml.mRootNode.SelectSingleNode("Common").ChildNodes;
             

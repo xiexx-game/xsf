@@ -15,6 +15,8 @@
 
 //SCHEMA_BEGIN
 #include "SchemaGlobal.h"
+#include "SchemaItem.h"
+#include "SchemaTestData.h"
 //SCHEMA_END
 
 

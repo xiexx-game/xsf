@@ -58,17 +58,14 @@ namespace XsfScp
             }
         }
 
-        public override string GetLuaCode(string name)
+        public override string CppTypeName
         {
-            if (string.IsNullOrEmpty(name))
+            get
             {
-                return bValue.ToString().ToLower();
-            }
-            else
-            {
-                return $"{name} = {bValue.ToString().ToLower()}";
+                return "bool";
             }
         }
+
 #endif
     }
 }

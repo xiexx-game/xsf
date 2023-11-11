@@ -10,23 +10,13 @@
 
 namespace XsfScp
 {
-public enum GlobalID
-{
-//GLOBAL_ID_START
-	intData = 1,		//有符号整形
-	stringData = 2,		//字符串数据
-	uintData = 3,		//uint整形
-	ulongData = 4,		//长整形数据
-	floatData = 5,		//浮点数
-	uintArrayData = 6,		//无符号整形数组
-	boolData = 7,		//布尔数据
-	iacData = 8,		//id和count数据
-//GLOBAL_ID_END
-}
-
 public enum CSVIndex
 {
 //CSV_INDEX_BEGIN
+	ScpGlobal_IntData = 0,
+	ScpGlobal_StringData = 1,
+	ScpGlobal_UintData = 2,
+	ScpGlobal_UlongData = 3,
 
 	ScpItem_id = 0,
 	ScpItem_type = 1,

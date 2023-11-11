@@ -17,6 +17,15 @@ namespace xsf_scp
 enum EMCSVIndex
 {
 //CSV_INDEX_BEGIN
+	CSVIndex_ScpGlobal_IntData = 0,
+	CSVIndex_ScpGlobal_StringData = 1,
+	CSVIndex_ScpGlobal_UintData = 2,
+	CSVIndex_ScpGlobal_UlongData = 3,
+	CSVIndex_ScpGlobal_FloatData = 4,
+	CSVIndex_ScpGlobal_UintArrayData = 5,
+	CSVIndex_ScpGlobal_BoolData = 6,
+	CSVIndex_ScpGlobal_IacData = 7,
+
 	CSVIndex_ScpItem_id = 0,
 	CSVIndex_ScpItem_type = 1,
 	CSVIndex_ScpItem_param1 = 2,
@@ -24,6 +33,7 @@ enum EMCSVIndex
 	CSVIndex_ScpItem_param3 = 4,
 	CSVIndex_ScpItem_param4 = 5,
 	CSVIndex_ScpItem_param5 = 6,
+
 //CSV_INDEX_END
     // 请不要删除上面的标签
 };

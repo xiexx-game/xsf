@@ -19,6 +19,7 @@ C_END = "\n"
 IN_PATH = u"../../"
 OUT_PATH = sys.argv[1]
 OUT_SERVER_PATH = sys.argv[2]
+OUT_CPP_PATH = sys.argv[3]
 
 # 获取指定后缀文件
 def getFile(dir, suffix):
@@ -128,6 +129,8 @@ def main():
                 savaToCSV(sheet_name, datalist_Client, OUT_PATH)
             if len(datalist_Server) > 0 and os.path.exists(OUT_SERVER_PATH):
                 savaToCSV(sheet_name, datalist_Server, OUT_SERVER_PATH)
+            if len(datalist_Server) > 0 and os.path.exists(OUT_CPP_PATH):
+                savaToCSV(sheet_name, datalist_Server, OUT_CPP_PATH)
     else:
         print(u"没有找到任何excel文件！")
 

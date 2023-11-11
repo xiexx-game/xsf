@@ -67,9 +67,12 @@ namespace XsfScp
             }
         }
 
-        public virtual string GetLuaCode(string name)
+        public virtual string CppTypeName
         {
-            return "";
+            get
+            {
+                return "";
+            }
         }
 #endif
 

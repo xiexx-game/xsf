@@ -18,13 +18,15 @@ namespace xsf_scp
     bool SchemaGlobal::OnSchemaLoad(int32 nSchemaID, ISchemaReader *pReader)
     {
         // 类型， 值， 名称， 注释， client server
-        int nRowIndex = 0;
-
         //_CSV_LIST_BEGIN_
-        GlobalData.iIntData = GET_DATA(CSVData_Int, CSVDataType_Int, nRowIndex++, 1)->iValue;          // 有符号整形
-        GlobalData.sStringData = GET_DATA(CSVData_String, CSVDataType_String, nRowIndex++, 1)->sValue; // 字符串数据
-        GlobalData.uUintData = GET_DATA(CSVData_Uint, CSVDataType_Uint, nRowIndex++, 1)->uValue;       // uint整形
-        GlobalData.ulUlongData = GET_DATA(CSVData_Ulong, CSVDataType_Ulong, nRowIndex++, 1)->ulValue;  // 长整形数据
+		GlobalData.iIntData = GET_DATA(CSVData_Int, CSVDataType_Int, CSVIndex_ScpGlobal_IntData, 1)->iValue;	// 有符号整形
+		GlobalData.sStringData = GET_DATA(CSVData_String, CSVDataType_String, CSVIndex_ScpGlobal_StringData, 1)->sValue;	// 字符串数据
+		GlobalData.uUintData = GET_DATA(CSVData_Uint, CSVDataType_Uint, CSVIndex_ScpGlobal_UintData, 1)->uValue;	// uint整形
+		GlobalData.ulUlongData = GET_DATA(CSVData_Ulong, CSVDataType_Ulong, CSVIndex_ScpGlobal_UlongData, 1)->ulValue;	// 长整形数据
+		GlobalData.fFloatData = GET_DATA(CSVData_Float, CSVDataType_Float, CSVIndex_ScpGlobal_FloatData, 1)->fValue;	// 浮点数
+		GlobalData.arUintArrayData = GET_DATA(CSVData_Array, CSVDataType_Array, CSVIndex_ScpGlobal_UintArrayData, 1)->arValue;	// 无符号整形数组
+		GlobalData.bBoolData = GET_DATA(CSVData_Bool, CSVDataType_Bool, CSVIndex_ScpGlobal_BoolData, 1)->bValue;	// 布尔数据
+		GlobalData.icIacData = GET_DATA(CSVData_IDAndCount, CSVDataType_IDAndCount, CSVIndex_ScpGlobal_IacData, 1)->icValue;	// id和count数据
         //_CSV_LIST_END_
 
         XSF_INFO("SchemaGlobal::OnSchemaLoad iIntData=%d", GlobalData.iIntData);

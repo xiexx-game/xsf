@@ -14,9 +14,6 @@ namespace XsfScp
 {
     public class _SCHEMA_NAME_ : ISchema
     {
-        //private Dictionary<uint, _SCP_NAME_> m_Datas;
-        //private _SCP_NAME_ [] m_Datas;
-
         public string GetSchemaName(string name)
         {
             return name;
@@ -24,52 +21,17 @@ namespace XsfScp
 
         public void OnSchemaLoad(ISchemaReader reader)
         {
-            //m_Datas = new Dictionary<uint, _SCP_NAME_>();
-            //m_Datas = new _SCP_NAME_[csv.mRowCount + 1];
             CSVReader csv = reader as CSVReader;
 
+            请补充数据管理代码
             for (int i = 0; i < csv.mRowCount; ++i)
             {
                 ScpItem scp = new ScpItem();
 
 //_CSV_LIST_BEGIN_
 //_CSV_LIST_END_
-
-                /* 使用字典
-                if (m_Datas.ContainsKey(scp.uId))
-                {
-                    throw new XSFSchemaLoadException("_SCHEMA_NAME_.OnSchemaLoad key exist, id=" + scp.uId);
-                }
-
-                m_Datas.Add(scp.uId, scp);
-                //*/
-
-                /* 使用数组
-                m_Datas[scp.nIndex] = scp;
-                //*/
             }
         }
-
-        /* 使用字典 根据ID获取
-        public _SCP_NAME_ Get(uint nID)
-        {
-            _SCP_NAME_ scp = null;
-            m_Datas.TryGetValue(nID, out scp);
-            return scp;
-        }
-        //*/
-
-        /* 使用数组 根据索引获取
-        public _SCP_NAME_ Get(uint nIndex)
-        {
-            if (nIndex >= m_Datas.Length)
-            {
-                return null;
-            }
-
-            return m_Datas[nIndex];
-        }
-        //*/
     }
 }
 

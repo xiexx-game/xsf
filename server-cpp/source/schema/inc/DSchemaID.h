@@ -21,24 +21,24 @@ enum EMSchemaID
 {
     SchemaID_Load = 0,
 
-//SCHEMAID_BEGIN
+//SCHEMA_ID_BEGIN
 	SchemaID_Global = 1,
-//SCHEMAID_END
+	SchemaID_Item = 2,
+	SchemaID_TestData = 4,
+//SCHEMA_ID_END
 
     SchemaID_Max,
 };
 
 
-//SCHEMA_BEGIN
+//SCHEMA_CREATE_BEGIN
 #define SCHEMA_CREATE				\
 	case SchemaID_Global:		m_SchemaList[nSchemaID] = new SchemaGlobal();	break;			\
-
-
-
+	case SchemaID_Item:		m_SchemaList[nSchemaID] = new SchemaItem();	break;			\
+	case SchemaID_TestData:		m_SchemaList[nSchemaID] = new SchemaTestData();	break;			\
+//SCHEMA_CREATE_END
 }
 
-
-//SCHEMA_END0
     
 
 

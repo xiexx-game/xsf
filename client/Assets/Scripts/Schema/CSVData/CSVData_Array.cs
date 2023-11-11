@@ -67,36 +67,14 @@ namespace XsfScp
             }
         }
 
-        public override string GetLuaCode(string name)
+        public override string CppTypeName
         {
-            string result = name + " = {";
-            if (string.IsNullOrEmpty(name))
+            get
             {
-                result = "{";
+                return "CSVArray";
             }
-
-            if (arValue != null)
-            {
-                string arData = "";
-                for (int i = 0; i < arValue.Length; i++)
-                {
-                    if (string.IsNullOrEmpty(arData))
-                    {
-                        arData = arValue[i].ToString();
-                    }
-                    else
-                    {
-                        arData += " ," + arValue[i].ToString();
-                    }
-                }
-
-                result += arData;
-            }
-
-            result += "}";
-
-            return result;
         }
+
 #endif
     }
 }

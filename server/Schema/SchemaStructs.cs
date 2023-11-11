@@ -20,6 +20,10 @@ public class ScpGlobal
 	public string sStringData;	//字符串数据
 	public uint uUintData;	//uint整形
 	public ulong ulUlongData;	//长整形数据
+	public float fFloatData;	//浮点数
+	public uint [] arUintArrayData;	//无符号整形数组
+	public bool bBoolData;	//布尔数据
+	public CSVIdCount[] icIacData;	//id和count数据
 //ScpGlobal_END
 }
 

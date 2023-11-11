@@ -19,8 +19,8 @@ public enum SchemaID
 //SCHEMA_ID_BEGIN
 	Global = 1,
 	Item = 2,
-	Language = 4,
-	TestData = 5,
+	Language = 3,
+	TestData = 4,
 //SCHEMA_ID_END
 
     Max,

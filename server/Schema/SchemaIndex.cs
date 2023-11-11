@@ -13,6 +13,14 @@ namespace XsfScp
 public enum CSVIndex
 {
 //CSV_INDEX_BEGIN
+	ScpGlobal_IntData = 0,
+	ScpGlobal_StringData = 1,
+	ScpGlobal_UintData = 2,
+	ScpGlobal_UlongData = 3,
+	ScpGlobal_FloatData = 4,
+	ScpGlobal_UintArrayData = 5,
+	ScpGlobal_BoolData = 6,
+	ScpGlobal_IacData = 7,
 
 	ScpItem_id = 0,
 	ScpItem_type = 1,
