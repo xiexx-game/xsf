@@ -13,6 +13,8 @@
 
 #include "XSFDef.h"
 using namespace xsf;
+#include "CSVData_Array.h"
+#include "CSVData_IDAndCount.h"
 
 namespace xsf_scp
 {

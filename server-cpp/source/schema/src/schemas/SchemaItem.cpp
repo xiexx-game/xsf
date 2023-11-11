@@ -21,18 +21,18 @@ namespace xsf_scp
         {
             ScpItem * scp = new ScpItem();
             //_CSV_LIST_BEGIN_
-			scp.uId = GET_DATA(CSVData_Uint, CSVDataType_Uint, i, CSVIndex_ScpItem_id)->uValue;;	// 编号
-			scp.iType = GET_DATA(CSVData_Int, CSVDataType_Int, i, CSVIndex_ScpItem_type)->iValue;;	// 类型
-			scp.fParam1 = GET_DATA(CSVData_Float, CSVDataType_Float, i, CSVIndex_ScpItem_param1)->fValue;;	// 参数1
-			scp.ulParam2 = GET_DATA(CSVData_Ulong, CSVDataType_Ulong, i, CSVIndex_ScpItem_param2)->ulValue;;	// 参数2
-			scp.arParam3 = GET_DATA(CSVData_Array, CSVDataType_Array, i, CSVIndex_ScpItem_param3)->arValue;;	// 参数3
-			scp.icParam4 = GET_DATA(CSVData_IDAndCount, CSVDataType_IDAndCount, i, CSVIndex_ScpItem_param4)->icValue;;	// 参数4
-			scp.bParam5 = GET_DATA(CSVData_Bool, CSVDataType_Bool, i, CSVIndex_ScpItem_param5)->bValue;;	// 参数5
+			scp->uId = GET_DATA(CSVData_Uint, CSVDataType_Uint, i, CSVIndex_ScpItem_id)->uValue;;	// 编号
+			scp->iType = GET_DATA(CSVData_Int, CSVDataType_Int, i, CSVIndex_ScpItem_type)->iValue;;	// 类型
+			scp->fParam1 = GET_DATA(CSVData_Float, CSVDataType_Float, i, CSVIndex_ScpItem_param1)->fValue;;	// 参数1
+			scp->ulParam2 = GET_DATA(CSVData_Ulong, CSVDataType_Ulong, i, CSVIndex_ScpItem_param2)->ulValue;;	// 参数2
+			scp->arParam3 = GET_DATA(CSVData_Array, CSVDataType_Array, i, CSVIndex_ScpItem_param3)->arValue;;	// 参数3
+			scp->icParam4 = GET_DATA(CSVData_IDAndCount, CSVDataType_IDAndCount, i, CSVIndex_ScpItem_param4)->icValue;;	// 参数4
+			scp->bParam5 = GET_DATA(CSVData_Bool, CSVDataType_Bool, i, CSVIndex_ScpItem_param5)->bValue;;	// 参数5
             //_CSV_LIST_END_
 
-            if(!(m_Datas.insert(DataMap::value_type(scp.uId, scp)).second))
+            if(!(m_Datas.insert(DataMap::value_type(scp->uId, scp)).second))
             {
-                XSF_ERROR("SchemaItem::OnSchemaLoad id exist, id=%u", scp.uId);
+                XSF_ERROR("SchemaItem::OnSchemaLoad id exist, id=%u", scp->uId);
                 return false;
             }
         }

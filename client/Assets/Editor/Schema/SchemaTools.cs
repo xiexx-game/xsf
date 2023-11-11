@@ -521,7 +521,7 @@ public static class SchemaTools
                     string nColIndex = $"CSVIndex_{sStructName}_{paramName[i]}";
                     sIndex += $"\tCSVIndex_{sStructName}_{paramName[i]} = {i},\n";
 
-                    sListContent += $"\t\t\tscp.{data.Prefix}{newName} = GET_DATA(CSVData_{data.DataType.ToString()}, CSVDataType_{data.DataType.ToString()}, i, {nColIndex})->{data.ValueStr};;\t// {paramDesc[i]}\n";
+                    sListContent += $"\t\t\tscp->{data.Prefix}{newName} = GET_DATA(CSVData_{data.DataType.ToString()}, CSVDataType_{data.DataType.ToString()}, i, {nColIndex})->{data.ValueStr};;\t// {paramDesc[i]}\n";
                 }
             }
             

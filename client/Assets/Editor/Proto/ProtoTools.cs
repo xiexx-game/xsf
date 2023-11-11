@@ -207,9 +207,9 @@ public static class ProtoTools
 
                 if(IsCppDirExist)
                 {
-                    CppHStr += $"\tMESSAGE({md.MessageID}, EP_{GetDestEP(md.MessageID)}, xsf_pbid::CMSGID::{md.MessageID})\n";
+                    CppHStr += $"\tMESSAGE({md.MessageID}, EP_{GetDestEP(md.MessageID)}, xsf_pbid::SMSGID::{md.MessageID})\n";
                     CppCStr += $"\tMESSAGE_FUNCTIONS({md.MessageID})\n";
-                    CppModuleStr += $"\t\tNEW_MESSAGE({md.MessageID}, xsf_pbid::CMSGID::{md.MessageID})\n";
+                    CppModuleStr += $"\t\tNEW_MESSAGE({md.MessageID}, xsf_pbid::SMSGID::{md.MessageID})\n";
                 }
             }
         }

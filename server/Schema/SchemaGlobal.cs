@@ -7,7 +7,7 @@
 // 说明：
 //
 //////////////////////////////////////////////////////////////////////////
-#pragma warning disable CS8600, CS8602, CS8618
+#pragma warning disable CS8600, CS8602, CS8618, CS8601
 
 using XSF;
 
