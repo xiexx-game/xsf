@@ -213,6 +213,7 @@ public class XSFUIScene : MonoBehaviour
 
         string csFile = Application.dataPath + $"/Scripts/UI/{name}.cs";
         string csTemplate = Application.dataPath + "/Editor/UI/UITemplate.txt";
+        string csHelper =  Application.dataPath + "/Scripts/UI/UIHelper.cs";
 
         if (!File.Exists(csFile))
         {
@@ -229,6 +230,20 @@ public class XSFUIScene : MonoBehaviour
 
         XSFEditorUtil.ReplaceContentByTag(csFile, "UI_PROP_START", "UI_PROP_END", codeProp);
         XSFEditorUtil.ReplaceContentByTag(csFile, "UI_INIT_START", "UI_INIT_END", code);
+
+        string sShortName = name.Substring(2);
+        string helperContent = File.ReadAllText(csHelper);
+        string sIDEnum = $"{sShortName},";
+        if(!helperContent.Contains(sIDEnum))
+        {
+            XSFEditorUtil.AppendFileByTag(csHelper, "UIID_APPEND", $"\t{sIDEnum}\n");
+        }
+
+        string sIDGet = $"new {name}()";
+        if(!helperContent.Contains(sIDGet))
+        {
+            XSFEditorUtil.AppendFileByTag(csHelper, "GET_UI_APPEND", $"\t\t\tcase UIID.{sShortName}:\t\treturn new {name}();\n");
+        }
 
         string[] content = File.ReadAllLines(csFile);
         

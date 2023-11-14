@@ -23,8 +23,11 @@ public enum UIID
 {
     None = 0,
 
-    UITest,
-    UIAtlasTest,
+    Test,
+    AtlasTest,
+
+	Test2,
+    //UIID_APPEND
 
     Max,
 }
@@ -37,8 +40,11 @@ public sealed class UIHelper : IUIHelper
     {
         switch((UIID)nID)
         {
-            case UIID.UITest:       return new UITest();
-            case UIID.UIAtlasTest:  return new UIAtlasTest();
+            case UIID.Test:       return new UITest();
+            case UIID.AtlasTest:  return new UIAtlasTest();
+
+			case UIID.Test2:		return new UITest2();
+            //GET_UI_APPEND
             default: return null;
         }
     }

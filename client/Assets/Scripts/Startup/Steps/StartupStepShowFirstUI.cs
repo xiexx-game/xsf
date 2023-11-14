@@ -20,6 +20,6 @@ public sealed class StartupStepShowFirstUI : StartupStep
 
         Subscribe((EventID)XSFCore.UI_SHOW_EVENT_ID, (uint)UIObjectID.UITestShow);
 
-        XSFUI.Instance.Get((int)UIID.UITest).Show();
+        XSFUI.Instance.Get((int)UIID.Test).Show();
     }
 }
