@@ -13,7 +13,7 @@ using UnityEngine;
 
 namespace XSF
 {
-    public class XSFEmptyImage : Graphic
+    public class EmptyImage : Graphic
     {
         protected override void OnPopulateMesh(VertexHelper vh)
         {

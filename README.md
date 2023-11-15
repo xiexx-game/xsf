@@ -40,6 +40,7 @@ There is also a point that needs to be explained, because of the limited persona
 还有需要说明的一点是，因为个人精力有限，所以并不能把没一点都做到最好，后面有时间我会一点一点完善。当然在我自己看来，完成好过完美。
 
 Another point is that I think in game development, the technology selection is not right or wrong, only suitable or inappropriate, of course, you will always have a better choice, all the framework code design is my own personal thinking, does not meet everyone's requirements, coding is not easy, do not spray.
+
 还有一点就是，我认为游戏开发上，技术选型没有对或错，只有合适不合适，当然你总是会有更好的选择，所有的框架代码设计都是我自己的个人思考，并不满足所有人的要求，编码不易，勿喷。
 
 The whole project is based on MIT open source protocol, please feel free to use it.
