@@ -7,7 +7,7 @@
 // 说明：
 //
 //////////////////////////////////////////////////////////////////////////
-#pragma warning disable CS8600, CS8602
+#pragma warning disable CS8600, CS8602, CS8625, CS8604, CS8618
 using System;
 using System.Net;
 using System.Net.Sockets;
@@ -26,16 +26,8 @@ namespace XSF
             NetStateError,
         }
 
-        // 客户端接受包最大大小，32K
-        private const ushort MAX_BUFFER_SIZE = 1024 * 32;
-
-        private byte[] m_TempBuffer;
-        private byte[] m_RecvBuffer;
-        private byte[] m_LengthData;
-        private byte[] m_IDData;
-
-        private int m_nUintSize;
-        private int m_nBufferLength;
+        BufferData m_BD;
+        private const int SIZE_UINT = sizeof(uint);
 
         private Socket? m_Socket;
         private NetState m_nState;
@@ -55,13 +47,7 @@ namespace XSF
         {
             m_nState = NetState.None;
 
-            m_TempBuffer = new byte[MAX_BUFFER_SIZE];
-            m_RecvBuffer = new byte[MAX_BUFFER_SIZE];
-
-            m_nUintSize = sizeof(uint);
-            m_LengthData = new byte[4];
-            m_IDData = new byte[2];
-            m_nBufferLength = 0;
+            m_BD = BufferManager.Instance.GetBuffer();
 
             m_AsyncReceive = recevie;
             m_AsyncSend = send;
@@ -76,13 +62,7 @@ namespace XSF
             m_nState = NetState.Connected;
             m_Socket = s;
 
-            m_TempBuffer = new byte[MAX_BUFFER_SIZE];
-            m_RecvBuffer = new byte[MAX_BUFFER_SIZE];
-
-            m_nUintSize = sizeof(uint);
-            m_LengthData = new byte[4];
-            m_IDData = new byte[2];
-            m_nBufferLength = 0;
+            m_BD = BufferManager.Instance.GetBuffer();
 
             m_AsyncReceive = recevie;
             m_AsyncSend = send;
@@ -218,7 +198,7 @@ namespace XSF
 
             try
             {
-                m_Socket?.BeginReceive(m_RecvBuffer, m_nBufferLength, m_RecvBuffer.Length - m_nBufferLength, SocketFlags.None, m_AsyncReceive, this);
+                m_Socket?.BeginReceive(m_BD.RecvBuffer, m_BD.BufferLength, m_BD.RecvBuffer.Length - m_BD.BufferLength, SocketFlags.None, m_AsyncReceive, this);
             }
             catch (SocketException e)
             {
@@ -356,6 +336,9 @@ namespace XSF
 
             m_nState = NetState.Close;
 
+            BufferManager.Instance.SaveBuffer(m_BD);
+            m_BD = null;
+
             if (m_Socket != null)
             {
                 try
@@ -386,25 +369,25 @@ namespace XSF
 
         private int GetPackageLength( byte [] buffer, int startPos)
         {
-            m_LengthData[0] = buffer[startPos];
-            m_LengthData[1] = buffer[startPos+1];
-            m_LengthData[2] = buffer[startPos+2];
-            m_LengthData[3] = buffer[startPos+3];
+            m_BD.LengthData[0] = buffer[startPos];
+            m_BD.LengthData[1] = buffer[startPos+1];
+            m_BD.LengthData[2] = buffer[startPos+2];
+            m_BD.LengthData[3] = buffer[startPos+3];
 
-            return BitConverter.ToInt32(m_LengthData, 0);
+            return BitConverter.ToInt32(m_BD.LengthData, 0);
         }
 
         private void OnReceiveData(int nReceiveLength)
         {
             // 总数据长度
-            int nTotalLen = m_nBufferLength + nReceiveLength;
-            if ( nTotalLen <= m_nUintSize )   // 数据太小
+            int nTotalLen = m_BD.BufferLength + nReceiveLength;
+            if ( nTotalLen <= SIZE_UINT )   // 数据太小
             {
-                m_nBufferLength += nReceiveLength;
+                m_BD.BufferLength += nReceiveLength;
                 return;
             }
 
-            int nPackageLen = GetPackageLength(m_RecvBuffer, 0);
+            int nPackageLen = GetPackageLength(m_BD.RecvBuffer, 0);
 
             if (nPackageLen < m_Packer.PackMinLength || nPackageLen > m_Packer.PackMaxLength)
             {
@@ -412,55 +395,55 @@ namespace XSF
             }
 
             // 如果总长度 < 数据长度+ 数据头， 说明数据还未接收完
-            if (nTotalLen < (int)(nPackageLen + m_nUintSize ))
+            if (nTotalLen < (int)(nPackageLen + SIZE_UINT ))
             {
-                m_nBufferLength += nReceiveLength;
+                m_BD.BufferLength += nReceiveLength;
                 return;
             }
-            else if (nTotalLen == nPackageLen + m_nUintSize)       // 刚好收到一个包
+            else if (nTotalLen == nPackageLen + SIZE_UINT)       // 刚好收到一个包
             {
                 IMessage message = null;
                 ushort nMessageID = 0;
                 uint nRawID = 0;
-                byte[] packetData = m_Packer.Read(m_RecvBuffer, 0, nPackageLen, out message, out nMessageID, out nRawID);
+                byte[] packetData = m_Packer.Read(m_BD.RecvBuffer, 0, nPackageLen, out message, out nMessageID, out nRawID);
 
                 XSFNet.Instance.PushEventData(this, m_Handler, message, nMessageID, nRawID, packetData);
-                m_nBufferLength = 0;
+                m_BD.BufferLength = 0;
                 return;
             }
             else    // 收到了多个包，要把包都拆出来
             {
-                Array.Copy(m_RecvBuffer, m_TempBuffer, nTotalLen);     // 把已经接收到的数据备份一下
+                Array.Copy(m_BD.RecvBuffer, m_BD.TempBuffer, nTotalLen);     // 把已经接收到的数据备份一下
                 int nReadPos = 0;
                 while (true)
                 {
                     IMessage message = null;
                     ushort nMessageID = 0;
                     uint nRawID = 0;
-                    byte[] packetData = m_Packer.Read(m_RecvBuffer, nReadPos, nPackageLen, out message, out nMessageID, out nRawID);
+                    byte[] packetData = m_Packer.Read(m_BD.RecvBuffer, nReadPos, nPackageLen, out message, out nMessageID, out nRawID);
 
                     XSFNet.Instance.PushEventData(this, m_Handler, message, nMessageID, nRawID, packetData);
 
-                    nReadPos += nPackageLen + m_nUintSize;
-                    m_nBufferLength = nTotalLen - nReadPos;   // 剩余数据长度
+                    nReadPos += nPackageLen + SIZE_UINT;
+                    m_BD.BufferLength = nTotalLen - nReadPos;   // 剩余数据长度
 
-                    if (m_nBufferLength <= m_nUintSize)      // 如果剩余的长度不够两个字节
+                    if (m_BD.BufferLength <= SIZE_UINT)      // 如果剩余的长度不够两个字节
                     {
-                        Array.Copy(m_TempBuffer, nReadPos, m_RecvBuffer, 0, m_nBufferLength);       // 把剩余的数据拷贝回去，等待下剩余的数据
+                        Array.Copy(m_BD.TempBuffer, nReadPos, m_BD.RecvBuffer, 0, m_BD.BufferLength);       // 把剩余的数据拷贝回去，等待下剩余的数据
                         break;
                     }
                     else    // 如果超过四个字节
                     {
-                        nPackageLen = GetPackageLength(m_TempBuffer, nReadPos);       // 得到下一个包的数据长度
+                        nPackageLen = GetPackageLength(m_BD.TempBuffer, nReadPos);       // 得到下一个包的数据长度
                         if (nPackageLen < m_Packer.PackMinLength || nPackageLen > m_Packer.PackMaxLength)
                         {
                             throw new NetPackageParseException($"OnReceiveData 2 nPackageLen:{nPackageLen} error");
                         }
 
                         // 数据不够，继续去等待下一段数据
-                        if (m_nBufferLength < nPackageLen + m_nUintSize )
+                        if (m_BD.BufferLength < nPackageLen + SIZE_UINT )
                         {
-                            Array.Copy(m_TempBuffer, nReadPos, m_RecvBuffer, 0, m_nBufferLength);
+                            Array.Copy(m_BD.TempBuffer, nReadPos, m_BD.RecvBuffer, 0, m_BD.BufferLength);
                             break;
                         }
                     }

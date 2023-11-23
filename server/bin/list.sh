@@ -1,3 +1,3 @@
 #!/bin/bash
 
-ps -ef | grep XSF_
+ps -ef | grep xsf-

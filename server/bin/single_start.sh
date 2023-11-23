@@ -6,7 +6,7 @@ NAME=$2
 
 workpath=`pwd`
 
-ProcName="./$NAME/XSF_$NAME"
+ProcName="./$NAME/xsf-$NAME"
 
 path=config/${TAG}/log_console
 content=$(cat $path)

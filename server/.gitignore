@@ -6,4 +6,5 @@ bin/*/*.dll
 bin/*/*.pdb
 bin/*/*.json
 bin/*/XSF_*
+bin/*/xsf-*
 Google.Protobuf.xml

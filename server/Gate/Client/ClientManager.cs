@@ -50,7 +50,7 @@ namespace GateClient
         {
             for(int i = 0; i < m_Clients.Length; i ++)
             {
-                if(m_Clients[i] != null)
+                if(m_Clients[i] != null && m_Clients[i].ID > 0)
                     m_Clients[i].Disconnect((int)XsfPb.DisconnectReason.ServerDown);
             }
         }
@@ -74,7 +74,7 @@ namespace GateClient
 
             if(c == m_Clients[nIndex])
             {
-                m_Clients[nIndex] = null;
+                m_Clients[nIndex].Release();
                 m_nTotal --;
             }
             else
@@ -103,8 +103,7 @@ namespace GateClient
                     client.m_CID.Key = m_GlobalKey ++;
                     client.m_nID = ClientID.GetID(client.m_CID);
 
-                    Serilog.Log.Information("clientManager OnAccept ... id=" + client.m_nID);
-
+                    Serilog.Log.Information("clientManager OnAccept new ... id=" + client.ID);
 
                     connection.DoStart(client);
 
@@ -113,6 +112,24 @@ namespace GateClient
                     m_nTotal ++;
 
                     return;
+                }
+                else
+                {
+                    if(m_Clients[i].ID <= 0)
+                    {
+                        Client client = m_Clients[i];
+                        client.Create(this, connection);
+                        client.m_CID.Gate = XSFCore.Server.SID.Index;
+                        client.m_CID.ID = (ushort)i;
+                        client.m_CID.Key = m_GlobalKey ++;
+                        client.m_nID = ClientID.GetID(client.m_CID);
+                        connection.DoStart(client);
+                        m_nTotal ++;
+
+                        Serilog.Log.Information("clientManager OnAccept get old ... id=" + client.ID);
+
+                        return;
+                    }
                 }
             }
 
@@ -128,20 +145,12 @@ namespace GateClient
                 return null;
             }
 
-            if(m_Clients[cid.ID] != null)
+            if(m_Clients[cid.ID] != null && m_Clients[cid.ID].ID == nClientID && m_Clients[cid.ID].IsHandshake)
             {
-                if(m_Clients[cid.ID].m_CID.Key != cid.Key)
-                {
-                    return null;
-                }
-
-                if(!m_Clients[cid.ID].IsHandshake)
-                {
-                    return null;
-                }
+                return m_Clients[cid.ID];
             }
 
-            return m_Clients[cid.ID];
+            return null;
         }
 
         public void Broadcast(byte[] data)

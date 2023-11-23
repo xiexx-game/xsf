@@ -43,6 +43,7 @@ namespace GateClient
         public Client()
         {
             m_ConnectorIDs = new uint[(int)EP.Max];
+            m_Timers = new TimersManager((int)TimerID.Max);
         }
 
         public bool Create(ClientManager owner, IConnection connection)
@@ -51,11 +52,20 @@ namespace GateClient
             m_Connection = connection;
             m_nLastHTTime = XSFCore.CurrentS;
 
-            m_Timers = new TimersManager((int)TimerID.Max);
-
             m_Timers.StartTimer((byte)TimerID.HTCheck, this, XSFCore.Config.ClientHeartbeatCheck, -1, "Client.Create");
 
             return true;
+        }
+
+        public void Release()
+        {
+            for(int i = 0; i < (int)EP.Max; i ++)
+            {
+                m_ConnectorIDs[i] = 0;
+            }
+
+            m_nID = 0;
+            m_IsHandshake = false;
         }
 
         public void Close()
@@ -67,6 +77,7 @@ namespace GateClient
             }
 
             m_Timers.CloseAllTimer();
+            m_IsHandshake = false;
         }
 
         public void UpdateHTTime()
@@ -192,6 +203,7 @@ namespace GateClient
                     if(current > m_nLastHTTime + XSFCore.Config.ClientHeartbeatTimeout)
                     {
                         Serilog.Log.Error($"Client OnTimer heartbeat timeout ... {current} > {m_nLastHTTime} + {XSFCore.Config.ClientHeartbeatTimeout}");
+                        m_Owner.Delete(this);
                         Close();
                     }
                 } 
@@ -199,6 +211,7 @@ namespace GateClient
 
             case (byte)TimerID.Disconnect:
                 {
+                    m_Owner.Delete(this);
                     Close();
                 }
                 break;
