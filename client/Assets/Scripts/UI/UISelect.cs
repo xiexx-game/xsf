@@ -18,6 +18,8 @@ public sealed class UISelect : UIBase
 	public Image Heart1 { get; private set; }	// 
 	public Image Heart2 { get; private set; }	// 
 	public Image Heart3 { get; private set; }	// 
+	public Image Heart4 { get; private set; }	// 
+	public Image Heart5 { get; private set; }	// 
 	public GameObject Play { get; private set; }	// 
 	public TextMeshProUGUI name { get; private set; }	// 
 	public GameObject Blocks { get; private set; }	// 
@@ -58,6 +60,10 @@ public sealed class UISelect : UIBase
 		Heart2 = RootT.Find("Life/2").GetComponent<Image>();
 		// 
 		Heart3 = RootT.Find("Life/3").GetComponent<Image>();
+		// 
+		Heart4 = RootT.Find("Life/4").GetComponent<Image>();
+		// 
+		Heart5 = RootT.Find("Life/5").GetComponent<Image>();
 		// 
 		Play = RootT.Find("play").gameObject;
 		UIEventClick.Set(Play, OnPlayClick);
@@ -101,6 +107,8 @@ public sealed class UISelect : UIBase
         m_Hearts[0] = Heart1;
         m_Hearts[1] = Heart2;
         m_Hearts[2] = Heart3;
+        m_Hearts[3] = Heart4;
+        m_Hearts[4] = Heart5;
     }
 
     public override void OnClose()

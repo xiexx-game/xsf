@@ -58,6 +58,9 @@ public enum CSVIndex
 	ScpSnakeLevels_LevelScore = 2,
 	ScpSnakeLevels_FoodScore = 3,
 
+	ScpPacManLevels_id = 0,
+	ScpPacManLevels_MoveInterval = 1,
+
 //CSV_INDEX_END
 }
 

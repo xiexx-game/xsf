@@ -98,5 +98,14 @@ public class ScpSnakeLevels
 	public uint uFoodScore;	//食物分数
 //ScpSnakeLevels_END
 }
+
+//吃豆人游戏关卡配置
+public class ScpPacManLevels
+{
+//ScpPacManLevels_START
+	public uint uId;	//编号
+	public float fMoveInterval;	//移动时间间隔
+//ScpPacManLevels_END
+}
 // SCHEMA_STRUCT
 // 不要删除上面的标签，自动生成代码需要用到
