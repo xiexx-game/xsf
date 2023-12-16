@@ -16,9 +16,21 @@ public class PacManMapBlock
     public GameObject go;
     public ScpPacManMap scp;
 
-    public int []ConnectIndex = new int[4];
+    public int[] ConnectIndex = new int[4];
 }
 
+public enum BlockType
+{
+    None = 0,
+    Bean = 0b1,             // 普通豆
+    EnergyBean = 0b10,      // 能量豆
+    PacMan = 0b100,
+    Ghost = 0b1000,     // ghost
+    RedArea = 0b10000,  // 红色区域，ghost不能往上走的区域
+    Tunnel = 0b100000,   // 隧道区域，ghost要减速
+    GhostStart = 0b1000000,   // 鬼屋
+    Max,
+}
 
 public class PacManMap
 {
@@ -29,9 +41,12 @@ public class PacManMap
 
     public const float BLOCK_Z = -3.0f;
 
+    public GameObject[] m_Beans;
+
     public PacManMap()
     {
         m_Blocks = new List<PacManMapBlock>();
+        m_Beans = new GameObject[MAX_COL * MAX_ROW];
     }
 
     public void Create(MonoPacMan mono)
@@ -48,6 +63,7 @@ public class PacManMap
 
             for (int c = 0; c < MAX_COL; c++)
             {
+                float x = XStart + c * SINGLE_BLOCK_SIZE;
                 PacManMapBlock block = new PacManMapBlock();
                 block.Index = index;
                 block.scp = datas[index++];
@@ -95,10 +111,23 @@ public class PacManMap
                     default:
                         block.go = new GameObject();
                         prefix = "_path";
+                        
+                        if ((block.scp.uBlockType & (uint)BlockType.EnergyBean) == (uint)BlockType.EnergyBean)
+                        {
+                            m_Beans[block.Index] = GameObject.Instantiate(mono.MapObjs[(int)MapObjID.EnergyBean]);
+                            m_Beans[block.Index].transform.SetParent(mono.Frame.transform);
+                            m_Beans[block.Index].transform.localPosition = new Vector3(x, y, BLOCK_Z);
+                            m_Beans[block.Index].SetActive(true);
+                        }
+                        else if((block.scp.uBlockType & (uint)BlockType.Bean) == (uint)BlockType.Bean)
+                        {
+                            m_Beans[block.Index] = GameObject.Instantiate(mono.MapObjs[(int)MapObjID.Bean]);
+                            m_Beans[block.Index].transform.SetParent(mono.Frame.transform);
+                            m_Beans[block.Index].transform.localPosition = new Vector3(x, y, BLOCK_Z);
+                            m_Beans[block.Index].SetActive(true);
+                        }
                         break;
                 }
-
-                float x = XStart + c * SINGLE_BLOCK_SIZE;
 
                 if (block.go != null)
                 {
@@ -138,12 +167,12 @@ public class PacManMap
 
                 // right
                 int rightCol = nCol + 1;
-                if(rightCol < MAX_COL)
+                if (rightCol < MAX_COL)
                 {
                     var blockRight = GetBlock(nRow, rightCol);
                     if (blockRight != null)
                     {
-                        if(blockRight.go.name.Contains("path"))
+                        if (blockRight.go.name.Contains("path"))
                         {
                             m_Blocks[i].go.name += $".r{blockRight.Index}";
                             m_Blocks[i].ConnectIndex[1] = blockRight.Index;
@@ -153,12 +182,12 @@ public class PacManMap
 
                 // down
                 int downRow = nRow + 1;
-                if(downRow < MAX_ROW)
+                if (downRow < MAX_ROW)
                 {
                     var blockDown = GetBlock(downRow, nCol);
                     if (blockDown != null)
                     {
-                        if(blockDown.go.name.Contains("path"))
+                        if (blockDown.go.name.Contains("path"))
                         {
                             m_Blocks[i].go.name += $".d{blockDown.Index}";
                             m_Blocks[i].ConnectIndex[2] = blockDown.Index;
@@ -168,12 +197,12 @@ public class PacManMap
 
                 // left
                 int leftCol = nCol - 1;
-                if(leftCol >= 0)
+                if (leftCol >= 0)
                 {
                     var blockLeft = GetBlock(nRow, leftCol);
                     if (blockLeft != null)
                     {
-                        if(blockLeft.go.name.Contains("path"))
+                        if (blockLeft.go.name.Contains("path"))
                         {
                             m_Blocks[i].go.name += $".l{blockLeft.Index}";
                             m_Blocks[i].ConnectIndex[3] = blockLeft.Index;
@@ -182,18 +211,25 @@ public class PacManMap
                 }
 
                 // 构建隧道
-                if(i == 392)
+                if (i == 392)
                 {
                     m_Blocks[i].go.name += $".l419";
                     m_Blocks[i].ConnectIndex[3] = 419;
                 }
-                else if(i == 419)
+                else if (i == 419)
                 {
                     m_Blocks[i].go.name += $".r392";
                     m_Blocks[i].ConnectIndex[1] = 392;
                 }
             }
         }
+
+
+        Debug.Log($"enum str={BlockType.GhostStart} value={(int)BlockType.GhostStart}");
+        Debug.Log($"enum str={BlockType.EnergyBean} value={(int)BlockType.EnergyBean}");
+        Debug.Log($"enum str=BlockType.Bean|BlockType.RedArea value={(int)(BlockType.Bean | BlockType.RedArea)}");
+        Debug.Log($"enum str={BlockType.PacMan} value={(int)(BlockType.PacMan)}");
+        Debug.Log($"enum str=BlockType.Bean|BlockType.RedArea value={(int)(BlockType.PacMan | BlockType.RedArea)}");
     }
 
     public void Release()

@@ -18,6 +18,8 @@ public enum MapObjID
     SingleAngleLine,
     SingleAngle,
     SingleLine,
+    Bean,
+    EnergyBean,
     Max,
 }
 

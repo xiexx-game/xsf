@@ -67,11 +67,7 @@ public enum CSVIndex
 	ScpPacManMap_XRota = 3,
 	ScpPacManMap_YRota = 4,
 	ScpPacManMap_ZRota = 5,
-	ScpPacManMap_ConnectUp = 6,
-	ScpPacManMap_ConnectRight = 7,
-	ScpPacManMap_ConnectDown = 8,
-	ScpPacManMap_ConnectLeft = 9,
-	ScpPacManMap_BlockType = 10,
+	ScpPacManMap_BlockType = 6,
 
 //CSV_INDEX_END
 }

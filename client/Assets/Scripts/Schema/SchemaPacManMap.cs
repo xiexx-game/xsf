@@ -37,10 +37,6 @@ public class SchemaPacManMap : ISchema
 			scp.fXRota = (csv.GetData((int)CSVDataType.Float, i, (int)CSVIndex.ScpPacManMap_XRota) as CSVData_Float).fValue;	// X旋转
 			scp.fYRota = (csv.GetData((int)CSVDataType.Float, i, (int)CSVIndex.ScpPacManMap_YRota) as CSVData_Float).fValue;	// Y旋转
 			scp.fZRota = (csv.GetData((int)CSVDataType.Float, i, (int)CSVIndex.ScpPacManMap_ZRota) as CSVData_Float).fValue;	// z旋转
-			scp.uConnectUp = (csv.GetData((int)CSVDataType.Uint, i, (int)CSVIndex.ScpPacManMap_ConnectUp) as CSVData_Uint).uValue;	// 上连通
-			scp.uConnectRight = (csv.GetData((int)CSVDataType.Uint, i, (int)CSVIndex.ScpPacManMap_ConnectRight) as CSVData_Uint).uValue;	// 右连通
-			scp.uConnectDown = (csv.GetData((int)CSVDataType.Uint, i, (int)CSVIndex.ScpPacManMap_ConnectDown) as CSVData_Uint).uValue;	// 下连通
-			scp.uConnectLeft = (csv.GetData((int)CSVDataType.Uint, i, (int)CSVIndex.ScpPacManMap_ConnectLeft) as CSVData_Uint).uValue;	// 左连通
 			scp.uBlockType = (csv.GetData((int)CSVDataType.Uint, i, (int)CSVIndex.ScpPacManMap_BlockType) as CSVData_Uint).uValue;	// 块类型
 //_CSV_LIST_END_
 

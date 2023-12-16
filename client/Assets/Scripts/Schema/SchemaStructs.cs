@@ -118,10 +118,6 @@ public class ScpPacManMap
 	public float fXRota;	//X旋转
 	public float fYRota;	//Y旋转
 	public float fZRota;	//z旋转
-	public uint uConnectUp;	//上连通
-	public uint uConnectRight;	//右连通
-	public uint uConnectDown;	//下连通
-	public uint uConnectLeft;	//左连通
 	public uint uBlockType;	//块类型
 //ScpPacManMap_END
 }
