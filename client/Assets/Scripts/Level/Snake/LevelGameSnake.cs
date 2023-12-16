@@ -161,7 +161,10 @@ public class LevelGameSnake : LevelGame, ILoadingHandler
                 Addressables.ReleaseInstance(m_SceneObj[i]);
         }
 
-        XSFUI.Instance.HideUI((int)UIID.UIPlay);
+        for(int i = 0; i < m_GameScp.arShowUIs.Length; i ++)
+        {
+            XSFUI.Instance.CloseUI((int)m_GameScp.arShowUIs[i]);
+        }
     }
 
     public SingleBlock GetBlock(int row, int col)

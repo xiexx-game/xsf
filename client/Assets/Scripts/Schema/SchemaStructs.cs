@@ -107,5 +107,23 @@ public class ScpPacManLevels
 	public float fMoveInterval;	//移动时间间隔
 //ScpPacManLevels_END
 }
+
+//吃豆人游戏地图配置
+public class ScpPacManMap
+{
+//ScpPacManMap_START
+	public int iRow;	//行
+	public int iCol;	//列
+	public string sSprite;	//图片
+	public float fXRota;	//X旋转
+	public float fYRota;	//Y旋转
+	public float fZRota;	//z旋转
+	public uint uConnectUp;	//上连通
+	public uint uConnectRight;	//右连通
+	public uint uConnectDown;	//下连通
+	public uint uConnectLeft;	//左连通
+	public uint uBlockType;	//块类型
+//ScpPacManMap_END
+}
 // SCHEMA_STRUCT
 // 不要删除上面的标签，自动生成代码需要用到

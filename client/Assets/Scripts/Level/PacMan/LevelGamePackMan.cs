@@ -52,10 +52,12 @@ public class LevelGamePackMan : LevelGame, ILoadingHandler
 
     public ScpPacManLevels ScpLevels { get; private set; }
 
+    public PacManMap Map { get; private set; }
 
     public override void Init()
     {
         m_SceneObj = new GameObject[(int)ObjID.Max];
+        Map = new PacManMap();
     }
 
     public override void Load()
@@ -100,9 +102,8 @@ public class LevelGamePackMan : LevelGame, ILoadingHandler
 
     public override void PreCreate()
     {
-        MonoSnakeObjects mono = m_SceneObj[(int)ObjID.Scene].GetComponent<MonoSnakeObjects>();
-
-        //m_Blocks = LevelDef.CreateBlocks(LevelGameType.Snake, ROW_COUNT, COL_COUNT, mono.Playground.transform, m_SceneObj[(int)ObjID.Block]);
+        MonoPacMan mono = m_SceneObj[(int)ObjID.Scene].GetComponent<MonoPacMan>();
+        Map.Create(mono);
     }
 
     public override void Enter()
@@ -116,11 +117,7 @@ public class LevelGamePackMan : LevelGame, ILoadingHandler
     {
         GameSocre = 0;
 
-        for(int i = 0; i < m_Blocks.Length; i ++)
-        {
-            GameObject.Destroy(m_Blocks[i].go);
-            m_Blocks[i] = null;
-        }
+        Map.Release();
         
         for(int i = 0; i < m_SceneObj.Length; i ++)
         {
@@ -128,25 +125,20 @@ public class LevelGamePackMan : LevelGame, ILoadingHandler
                 Addressables.ReleaseInstance(m_SceneObj[i]);
         }
 
-        XSFUI.Instance.HideUI((int)UIID.UIPlay);
+        for(int i = 0; i < m_GameScp.arShowUIs.Length; i ++)
+        {
+            XSFUI.Instance.CloseUI((int)m_GameScp.arShowUIs[i]);
+        }
     }
 
-    public SingleBlock GetBlock(int row, int col)
+    public PacManMapBlock GetBlock(int row, int col)
     {
-        var index = LevelDef.GetBlockIndex(row, col, COL_COUNT);
-        if(index < 0 || index >= m_Blocks.Length)
-            return null;
-
-        return m_Blocks[index];
+        return Map.GetBlock(row, col);
     }
 
     public override void Restart()
     {
-        for(int i = 0; i < m_Blocks.Length; i ++)
-        {
-            m_Blocks[i].Hide();
-            m_Blocks[i].Status = BlockStatus.None;
-        }
+        
 
         Enter();
     }

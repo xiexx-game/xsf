@@ -3,4 +3,4 @@ uint,string,array,sarray
 id,Name,ShowUIs,SceneObjects
 1,俄罗斯方块,5,tetris:block
 2,贪吃蛇,8,snake:block-v2
-3,吃豆人,5,
+3,吃豆人,8,packman

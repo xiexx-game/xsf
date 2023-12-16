@@ -61,6 +61,18 @@ public enum CSVIndex
 	ScpPacManLevels_id = 0,
 	ScpPacManLevels_MoveInterval = 1,
 
+	ScpPacManMap_Row = 0,
+	ScpPacManMap_Col = 1,
+	ScpPacManMap_Sprite = 2,
+	ScpPacManMap_XRota = 3,
+	ScpPacManMap_YRota = 4,
+	ScpPacManMap_ZRota = 5,
+	ScpPacManMap_ConnectUp = 6,
+	ScpPacManMap_ConnectRight = 7,
+	ScpPacManMap_ConnectDown = 8,
+	ScpPacManMap_ConnectLeft = 9,
+	ScpPacManMap_BlockType = 10,
+
 //CSV_INDEX_END
 }
 

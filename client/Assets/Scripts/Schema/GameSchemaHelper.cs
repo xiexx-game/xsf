@@ -24,6 +24,7 @@ public enum SchemaID
 	TetrisLevels = 8,
 	SnakeLevels = 9,
 	PacManLevels = 10,
+	PacManMap = 11,
 //SCHEMA_ID_END
 
     Max,
@@ -49,6 +50,7 @@ public class GameSchemaHelper : ISchemaHelper
 			case SchemaID.TetrisLevels: return new SchemaTetrisLevels();
 			case SchemaID.SnakeLevels: return new SchemaSnakeLevels();
 			case SchemaID.PacManLevels: return new SchemaPacManLevels();
+			case SchemaID.PacManMap: return new SchemaPacManMap();
 			//SCHEMA_END
             default:
                 throw new XSFSchemaLoadException($"GameSchemaHelper.Get schema id error, id={nId}");
