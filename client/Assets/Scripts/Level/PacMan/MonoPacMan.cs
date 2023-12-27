@@ -28,4 +28,7 @@ public class MonoPacMan : MonoBehaviour
     public GameObject Frame;
 
     public GameObject []MapObjs;
+
+    public MonoGhost []Ghosts;
+    public MonoPacManCharacter PacMan; 
 }

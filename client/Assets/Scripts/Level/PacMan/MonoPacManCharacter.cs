@@ -48,6 +48,16 @@ public class MonoPacManCharacter : MonoBehaviour
     public bool Down;
     public bool Stop;
 
+    public Vector3 BornPos;
+    public float PosZ;
+
+    void Awake()
+    {
+        transform.localPosition = BornPos;
+        Body.transform.localRotation = Quaternion.Euler(0, 0, Rota[1]);
+        Idle();
+    }
+
     public void Move(PacManMoveDir nDir)
     {
         int nIndex = (int)nDir;

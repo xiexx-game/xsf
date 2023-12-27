@@ -39,7 +39,7 @@ public class PacManMap
     public const int MAX_COL = 28;
     public const int MAX_ROW = 31;
 
-    public const float BLOCK_Z = -3.0f;
+    public const float BLOCK_Z = -0.1f;
 
     public GameObject[] m_Beans;
 

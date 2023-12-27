@@ -195,7 +195,7 @@ Transform:
   m_GameObject: {fileID: 8684916905389056519}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.85, y: 0.85, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8684916904975790972}
@@ -490,8 +490,11 @@ MonoBehaviour:
   - {x: 0.154, y: 0, z: -0.011}
   - {x: 0, y: -0.197, z: -0.011}
   - {x: -0.154, y: 0, z: -0.011}
-  MoveSpeed: 5
+  EyeSpeed: 5
   Left: 0
   Right: 0
   Up: 0
   Down: 0
+  GType: 0
+  BornPos: {x: 0, y: 0, z: 0}
+  PosZ: 0

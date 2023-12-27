@@ -19,6 +19,14 @@ public enum GhostViewType
     Max,
 }
 
+public enum GhostType 
+{
+    Blinky,
+    Pinky,
+    Inky,
+    Clyde,
+}
+
 public class MonoGhost : MonoBehaviour
 {
     public GameObject [] LeftEye;
@@ -28,7 +36,7 @@ public class MonoGhost : MonoBehaviour
     public Vector3[] RightEyePos;
     public Vector3[] EyeBluePos;
 
-    public float MoveSpeed;
+    public float EyeSpeed;
 
     private GhostViewType m_nCurType = GhostViewType.Max;
 
@@ -42,6 +50,17 @@ public class MonoGhost : MonoBehaviour
     public bool Right;
     public bool Up;
     public bool Down;
+
+    public GhostType GType;
+
+    public Vector3 BornPos;
+
+    public float PosZ;
+
+    void Awake()
+    {
+        transform.localPosition = BornPos;
+    }
 
     public void SetViewType(GhostViewType nType)
     {
@@ -92,7 +111,7 @@ public class MonoGhost : MonoBehaviour
 
         if(m_nCurType != GhostViewType.Max)
         {
-            t += Time.deltaTime * MoveSpeed;
+            t += Time.deltaTime * EyeSpeed;
             LeftEye[0].transform.localPosition = Vector3.Lerp(EyeStart[0], EyeTarget[0], t);
             RightEye[0].transform.localPosition = Vector3.Lerp(EyeStart[1], EyeTarget[1], t);
 
