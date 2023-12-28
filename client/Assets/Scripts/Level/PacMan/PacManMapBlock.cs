@@ -22,13 +22,14 @@ public class PacManMapBlock
 public enum BlockType
 {
     None = 0,
-    Bean = 0b1,             // 普通豆
-    EnergyBean = 0b10,      // 能量豆
-    PacMan = 0b100,
-    Ghost = 0b1000,     // ghost
-    RedArea = 0b10000,  // 红色区域，ghost不能往上走的区域
-    Tunnel = 0b100000,   // 隧道区域，ghost要减速
-    GhostStart = 0b1000000,   // 鬼屋
+    Path        = 0b1,         // 可行走区域
+    Bean        = 0b10,        // 普通豆
+    EnergyBean  = 0b100,      // 能量豆
+    RedArea     = 0b1000,       // 红色区域，ghost不能往上走的区域
+    Tunnel      = 0b10000,      // 隧道区域，ghost要减速
+    PacMan      = 0b100000,
+    Ghost       = 0b1000000,     // ghost
+
     Max,
 }
 
@@ -43,6 +44,9 @@ public class PacManMap
 
     public GameObject[] m_Beans;
 
+    public const float XOffset = (SINGLE_BLOCK_SIZE * MAX_COL) / 2;
+    public const float YOffset = (SINGLE_BLOCK_SIZE * MAX_ROW) / 2;
+
     public PacManMap()
     {
         m_Blocks = new List<PacManMapBlock>();
@@ -52,8 +56,10 @@ public class PacManMap
     public void Create(MonoPacMan mono)
     {
         int index = 0;
-        float XStart = (SINGLE_BLOCK_SIZE * MAX_COL) / -2 + SINGLE_BLOCK_SIZE / 2;
-        float YStart = (SINGLE_BLOCK_SIZE * MAX_ROW) / 2 - SINGLE_BLOCK_SIZE / 2;
+        float XOrigin = (SINGLE_BLOCK_SIZE * MAX_COL) / -2;
+        float YOrigin = (SINGLE_BLOCK_SIZE * MAX_ROW) / 2;
+        float XStart = XOrigin + SINGLE_BLOCK_SIZE / 2;
+        float YStart = YOrigin - SINGLE_BLOCK_SIZE / 2;
 
         var datas = XSFSchema.Instance.Get<SchemaPacManMap>((int)SchemaID.PacManMap).Datas;
 
@@ -223,13 +229,16 @@ public class PacManMap
                 }
             }
         }
+    }
 
+    public int XPos2Col(float x)
+    {
+        return (int)((x+XOffset)/SINGLE_BLOCK_SIZE);
+    }
 
-        Debug.Log($"enum str={BlockType.GhostStart} value={(int)BlockType.GhostStart}");
-        Debug.Log($"enum str={BlockType.EnergyBean} value={(int)BlockType.EnergyBean}");
-        Debug.Log($"enum str=BlockType.Bean|BlockType.RedArea value={(int)(BlockType.Bean | BlockType.RedArea)}");
-        Debug.Log($"enum str={BlockType.PacMan} value={(int)(BlockType.PacMan)}");
-        Debug.Log($"enum str=BlockType.Bean|BlockType.RedArea value={(int)(BlockType.PacMan | BlockType.RedArea)}");
+    public int YPos2Row(float y)
+    {
+        return Mathf.Abs((int)((y-YOffset)/SINGLE_BLOCK_SIZE));
     }
 
     public void Release()
