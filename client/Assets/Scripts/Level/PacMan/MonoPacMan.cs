@@ -20,6 +20,9 @@ public enum MapObjID
     SingleLine,
     Bean,
     EnergyBean,
+    Road,
+    Tunnel,
+    RedArea,
     Max,
 }
 

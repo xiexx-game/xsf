@@ -17,12 +17,30 @@ public class PacManMapBlock
     public ScpPacManMap scp;
 
     public int[] ConnectIndex = new int[4];
+
+    public bool IsRoad {
+        get {
+            return ((scp.uBlockType & (uint)BlockType.Road) == (uint)BlockType.Road);
+        }
+    }
+
+    public bool IsReadArea {
+        get {
+            return ((scp.uBlockType & (uint)BlockType.RedArea) == (uint)BlockType.RedArea);
+        }
+    }
+
+    public bool IsTunnel {
+        get {
+            return ((scp.uBlockType & (uint)BlockType.Tunnel) == (uint)BlockType.Tunnel);
+        }
+    }
 }
 
 public enum BlockType
 {
     None = 0,
-    Path        = 0b1,         // 可行走区域
+    Road        = 0b1,         // 可行走区域
     Bean        = 0b10,        // 普通豆
     EnergyBean  = 0b100,      // 能量豆
     RedArea     = 0b1000,       // 红色区域，ghost不能往上走的区域
@@ -82,8 +100,6 @@ public class PacManMap
                     return;
                 }
 
-                string prefix = "";
-
                 switch (block.scp.sSprite)
                 {
                     case "double-angle-90":
@@ -115,9 +131,19 @@ public class PacManMap
                         break;
 
                     default:
-                        block.go = new GameObject();
-                        prefix = "_path";
-                        
+                        if(block.IsReadArea)
+                        {
+                            block.go = GameObject.Instantiate(mono.MapObjs[(int)MapObjID.RedArea]);
+                        }
+                        else if(block.IsTunnel)
+                        {
+                            block.go = GameObject.Instantiate(mono.MapObjs[(int)MapObjID.Tunnel]);
+                        }
+                        else if(block.IsRoad)
+                        {
+                            block.go = GameObject.Instantiate(mono.MapObjs[(int)MapObjID.Road]);
+                        }
+
                         if ((block.scp.uBlockType & (uint)BlockType.EnergyBean) == (uint)BlockType.EnergyBean)
                         {
                             m_Beans[block.Index] = GameObject.Instantiate(mono.MapObjs[(int)MapObjID.EnergyBean]);
@@ -125,7 +151,8 @@ public class PacManMap
                             m_Beans[block.Index].transform.localPosition = new Vector3(x, y, BLOCK_Z);
                             m_Beans[block.Index].SetActive(true);
                         }
-                        else if((block.scp.uBlockType & (uint)BlockType.Bean) == (uint)BlockType.Bean)
+                        
+                        if((block.scp.uBlockType & (uint)BlockType.Bean) == (uint)BlockType.Bean)
                         {
                             m_Beans[block.Index] = GameObject.Instantiate(mono.MapObjs[(int)MapObjID.Bean]);
                             m_Beans[block.Index].transform.SetParent(mono.Frame.transform);
@@ -138,7 +165,7 @@ public class PacManMap
                 if (block.go != null)
                 {
                     block.go.SetActive(true);
-                    block.go.name = $"{block.scp.iRow}_{block.scp.iCol}_{block.Index}{prefix}";
+                    block.go.name = $"{block.scp.iRow}_{block.scp.iCol}_{block.Index}";
                     block.go.transform.SetParent(mono.Frame.transform);
                     block.go.transform.localPosition = new Vector3(x, y, BLOCK_Z);
                     block.go.transform.localRotation = Quaternion.Euler(block.scp.fXRota, block.scp.fYRota, block.scp.fZRota);
@@ -150,7 +177,7 @@ public class PacManMap
 
         for (int i = 0; i < m_Blocks.Count; i++)
         {
-            if (m_Blocks[i].go.name.Contains("path"))
+            if (m_Blocks[i].IsRoad)
             {
                 int nCol = m_Blocks[i].scp.iCol;
                 int nRow = m_Blocks[i].scp.iRow;
@@ -162,9 +189,9 @@ public class PacManMap
                     var blockUp = GetBlock(upRow, nCol);
                     if (blockUp != null)
                     {
-                        if (blockUp.go.name.Contains("path"))
+                        if (blockUp.IsRoad)
                         {
-                            m_Blocks[i].go.name += $".u{blockUp.Index}";
+                            m_Blocks[i].go.name += $".U{blockUp.Index}";
                             m_Blocks[i].ConnectIndex[0] = blockUp.Index;
                         }
                     }
@@ -178,9 +205,9 @@ public class PacManMap
                     var blockRight = GetBlock(nRow, rightCol);
                     if (blockRight != null)
                     {
-                        if (blockRight.go.name.Contains("path"))
+                        if (blockRight.IsRoad)
                         {
-                            m_Blocks[i].go.name += $".r{blockRight.Index}";
+                            m_Blocks[i].go.name += $".R{blockRight.Index}";
                             m_Blocks[i].ConnectIndex[1] = blockRight.Index;
                         }
                     }
@@ -193,9 +220,9 @@ public class PacManMap
                     var blockDown = GetBlock(downRow, nCol);
                     if (blockDown != null)
                     {
-                        if (blockDown.go.name.Contains("path"))
+                        if (blockDown.IsRoad)
                         {
-                            m_Blocks[i].go.name += $".d{blockDown.Index}";
+                            m_Blocks[i].go.name += $".D{blockDown.Index}";
                             m_Blocks[i].ConnectIndex[2] = blockDown.Index;
                         }
                     }
@@ -208,9 +235,9 @@ public class PacManMap
                     var blockLeft = GetBlock(nRow, leftCol);
                     if (blockLeft != null)
                     {
-                        if (blockLeft.go.name.Contains("path"))
+                        if (blockLeft.IsRoad)
                         {
-                            m_Blocks[i].go.name += $".l{blockLeft.Index}";
+                            m_Blocks[i].go.name += $".L{blockLeft.Index}";
                             m_Blocks[i].ConnectIndex[3] = blockLeft.Index;
                         }
                     }
@@ -219,12 +246,12 @@ public class PacManMap
                 // 构建隧道
                 if (i == 392)
                 {
-                    m_Blocks[i].go.name += $".l419";
+                    m_Blocks[i].go.name += $".L419";
                     m_Blocks[i].ConnectIndex[3] = 419;
                 }
                 else if (i == 419)
                 {
-                    m_Blocks[i].go.name += $".r392";
+                    m_Blocks[i].go.name += $".R392";
                     m_Blocks[i].ConnectIndex[1] = 392;
                 }
             }
