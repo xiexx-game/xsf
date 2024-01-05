@@ -12,11 +12,13 @@ using System.Collections.Generic;
 
 public class PacManMapBlock
 {
+    public const int CONNECT_MAX = 4;
     public int Index;
     public GameObject go;
     public ScpPacManMap scp;
 
-    public int[] ConnectIndex = new int[4];
+    public int ConnectCount;
+    public int[] ConnectIndex = new int[CONNECT_MAX];
 
     public bool IsRoad {
         get {
@@ -35,6 +37,18 @@ public class PacManMapBlock
             return ((scp.uBlockType & (uint)BlockType.Tunnel) == (uint)BlockType.Tunnel);
         }
     }
+}
+
+public class PacManPathNode 
+{
+    public PacManMapBlock block;
+
+    public PacManPathNode pre;
+
+    public PacManMoveDir enterDir;      // 进入方向，不能往这个方向往回走
+    public PacManMoveDir searchDir;     // 搜索方向
+
+    //public PacManMoveDir dir;
 }
 
 public enum BlockType
@@ -92,7 +106,7 @@ public class PacManMap
                 block.Index = index;
                 block.scp = datas[index++];
 
-                Debug.Log($"index={index}, c={c}, row={r}, block.scp.iCol={block.scp.iCol}, block.scp.iRow={block.scp.iRow}");
+                //Debug.Log($"index={index}, c={c}, row={r}, block.scp.iCol={block.scp.iCol}, block.scp.iRow={block.scp.iRow}");
 
                 if (block.scp.iCol != c || block.scp.iRow != r)
                 {
@@ -193,6 +207,7 @@ public class PacManMap
                         {
                             m_Blocks[i].go.name += $".U{blockUp.Index}";
                             m_Blocks[i].ConnectIndex[0] = blockUp.Index;
+                            m_Blocks[i].ConnectCount ++;
                         }
                     }
                 }
@@ -209,6 +224,7 @@ public class PacManMap
                         {
                             m_Blocks[i].go.name += $".R{blockRight.Index}";
                             m_Blocks[i].ConnectIndex[1] = blockRight.Index;
+                            m_Blocks[i].ConnectCount ++;
                         }
                     }
                 }
@@ -224,6 +240,7 @@ public class PacManMap
                         {
                             m_Blocks[i].go.name += $".D{blockDown.Index}";
                             m_Blocks[i].ConnectIndex[2] = blockDown.Index;
+                            m_Blocks[i].ConnectCount ++;
                         }
                     }
                 }
@@ -239,6 +256,7 @@ public class PacManMap
                         {
                             m_Blocks[i].go.name += $".L{blockLeft.Index}";
                             m_Blocks[i].ConnectIndex[3] = blockLeft.Index;
+                            m_Blocks[i].ConnectCount ++;
                         }
                     }
                 }
@@ -247,12 +265,14 @@ public class PacManMap
                 if (i == 392)
                 {
                     m_Blocks[i].go.name += $".L419";
-                    m_Blocks[i].ConnectIndex[3] = 419;
+                    m_Blocks[i].ConnectIndex[(int)PacManMoveDir.Left] = 419;
+                    m_Blocks[i].ConnectCount ++;
                 }
                 else if (i == 419)
                 {
                     m_Blocks[i].go.name += $".R392";
-                    m_Blocks[i].ConnectIndex[1] = 392;
+                    m_Blocks[i].ConnectIndex[(int)PacManMoveDir.Right] = 392;
+                    m_Blocks[i].ConnectCount ++;
                 }
             }
         }
@@ -279,9 +299,162 @@ public class PacManMap
     public PacManMapBlock GetBlock(int row, int col)
     {
         var index = LevelDef.GetBlockIndex(row, col, MAX_COL);
+        return GetBlockByIndex(index);
+    }
+
+    public PacManMapBlock GetBlockByIndex(int index)
+    {
         if (index < 0 || index >= m_Blocks.Count)
             return null;
 
         return m_Blocks[index];
+    }
+
+    private HashSet<int> CloseList = new HashSet<int>();
+    List<PacManPathNode> OpenList = new List<PacManPathNode>();
+
+    public PacManMapBlock Pos2Block(Vector3 pos)
+    {
+        int col = XPos2Col(pos.x);
+        int row = YPos2Row(pos.y);
+        if(col < 0 || col >= MAX_COL) {
+            return null;
+        }
+
+        if(row < 0 || row >= MAX_ROW) {
+            return null;
+        }
+
+        return GetBlock(row, col);
+    }
+
+    PacManMoveDir DirReverse(PacManMoveDir dir) 
+    {
+        switch(dir)
+        {
+        case PacManMoveDir.Up:  return PacManMoveDir.Down;
+        case PacManMoveDir.Right:  return PacManMoveDir.Left;
+        case PacManMoveDir.Down:  return PacManMoveDir.Up;
+        case PacManMoveDir.Left:  return PacManMoveDir.Right;
+        default: return dir;
+        }
+    }
+
+    public List<PacManMapBlock> FindPath(PacManMoveDir enterDir, PacManMapBlock startBlock, PacManMapBlock endBlock)
+    {
+        OpenList.Clear();
+        CloseList.Clear();
+
+        CloseList.Add(startBlock.Index);
+
+        PacManPathNode startNode = new PacManPathNode();
+        startNode.block = startBlock;
+        //startNode.dir = dir;
+        startNode.enterDir = enterDir;
+
+        PacManPathNode endNode = new PacManPathNode();
+        endNode.block = endBlock;
+
+        List<PacManPathNode> CheckResult = new List<PacManPathNode>();
+        CheckResult.Add(startNode);
+
+        bool Working = true;
+        while(Working)
+        {
+            OpenList.Clear();
+            OpenList.AddRange(CheckResult);
+            CheckResult.Clear();
+            for(int i = 0; i < OpenList.Count; i ++)
+            {
+                if(CheckNode(OpenList[i], CheckResult, endNode))
+                {
+                    Working = false;
+                    break;
+                }
+            }
+        }
+
+        List<PacManMapBlock> result = new List<PacManMapBlock>();
+        PacManPathNode pathNode = endNode;
+        while(pathNode != null)
+        {
+            result.Add(pathNode.block);
+            pathNode = pathNode.pre;
+        }
+
+        return result;
+    }
+
+    private bool CheckNode(PacManPathNode current, List<PacManPathNode> cacheList, PacManPathNode endNode)
+    {
+        var currentBlock = current.block;
+        Debug.Log($"CheckNode currentBlock={currentBlock.scp.iRow}, {currentBlock.scp.iCol}, enterDir={current.enterDir}, searchDir={current.searchDir}");
+
+        for(int i = 0; i < currentBlock.ConnectIndex.Length; i ++)
+        {
+            if(currentBlock.ConnectIndex[i] > 0 && i != (int)current.enterDir)
+            {
+                var nextIndex = currentBlock.ConnectIndex[i];
+                while(true)
+                {
+                    var nextBlock = GetBlockByIndex(nextIndex);
+                    if(nextIndex == endNode.block.Index)     // 找到终点了
+                    {
+                        Debug.Log("Find End node");
+                        endNode.pre = current;
+                        return true;
+                    } 
+                    else
+                    {
+                        if(nextBlock.ConnectCount >= 3)     // 说明有分叉路
+                        {
+                            if(!CloseList.Contains(nextBlock.Index))
+                            {
+                                CloseList.Add(nextBlock.Index);
+
+                                PacManPathNode node = new PacManPathNode();
+                                node.block = nextBlock;
+                                node.pre = current;
+                                node.enterDir = DirReverse((PacManMoveDir)i);
+                                cacheList.Add(node);
+
+                                Debug.Log($"CheckNode find next block 3, nextBlock={nextBlock.scp.iRow}, {nextBlock.scp.iCol}, enterDir={node.enterDir}, searchDir={node.searchDir}");
+                            }
+                            break;
+                        }
+                        else
+                        {
+                            // 如果进来的方向和搜索方向都有路，说明是直路
+                            var enterDir = DirReverse((PacManMoveDir)i);
+                            if(nextBlock.ConnectIndex[i] > 0 && nextBlock.ConnectIndex[(int)enterDir] > 0)
+                            {
+                                nextIndex = nextBlock.ConnectIndex[i];
+                                Debug.Log($"CheckNode go next, nextBlock={nextBlock.scp.iRow}, {nextBlock.scp.iCol}, enterDir={enterDir}");
+                            } 
+                            else 
+                            {
+                                // 说明有拐弯
+                                if(!CloseList.Contains(nextBlock.Index))
+                                {
+                                    CloseList.Add(nextBlock.Index);
+
+                                    PacManPathNode node = new PacManPathNode();
+                                    node.block = nextBlock;
+                                    node.pre = current;
+                                    node.enterDir = enterDir;
+
+                                    Debug.Log($"CheckNode find next block 2, nextBlock={nextBlock.scp.iRow}, {nextBlock.scp.iCol}, enterDir={node.enterDir}, searchDir={node.searchDir}");
+
+                                    cacheList.Add(node);
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 }

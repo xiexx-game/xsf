@@ -104,6 +104,18 @@ public class LevelGamePackMan : LevelGame, ILoadingHandler
     {
         MonoPacMan mono = m_SceneObj[(int)ObjID.Scene].GetComponent<MonoPacMan>();
         Map.Create(mono);
+
+        var end = new Vector3(0.0500000007f,-3.03999996f,-0.200000003f);
+        var startBlock = Map.GetBlock(11, 12);
+        var endBlock = Map.Pos2Block(end);
+        List<PacManMapBlock> result = Map.FindPath(PacManMoveDir.Right, startBlock, endBlock);
+
+        for(int i = result.Count-1; i >= 0; i --)
+        {
+            Debug.Log($"pos={result[i].scp.iRow}, {result[i].scp.iCol}");
+            var block = Map.GetBlock(result[i].scp.iRow, result[i].scp.iCol);
+            block.go.GetComponent<SpriteRenderer>().color = Color.yellow;
+        }
     }
 
     public override void Enter()

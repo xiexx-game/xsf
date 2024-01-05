@@ -344,8 +344,8 @@ Row,Col,Sprite,XRota,YRota,ZRota,BlockType
 12,4,,,,,
 12,5,double-line,,,90.000,
 12,6,,,,,3
-12,7,single-line,,,,1
-12,8,single-line,,,,1
+12,7,single-line,,,,
+12,8,single-line,,,,
 12,9,,,,,1
 12,10,double-angle-90,,,90.000,
 12,11,double-line,,,180.000,
@@ -355,7 +355,7 @@ Row,Col,Sprite,XRota,YRota,ZRota,BlockType
 12,15,double-line,,,180.000,
 12,16,double-line,,,180.000,
 12,17,double-angle-90,,,,
-12,18,,,,,1
+12,18,,,,,
 12,19,single-line,,,,
 12,20,single-line,,,,
 12,21,,,,,3
@@ -594,7 +594,7 @@ Row,Col,Sprite,XRota,YRota,ZRota,BlockType
 21,2,single-angle,,,90.000,
 21,3,single-line,,,90.000,
 21,4,single-line,,,90.000,
-21,5,single-angle,,,,3
+21,5,single-angle,,,,
 21,6,,,,,3
 21,7,single-angle,,,90.000,
 21,8,single-line,,,90.000,
@@ -728,7 +728,7 @@ Row,Col,Sprite,XRota,YRota,ZRota,BlockType
 25,24,,,,,3
 25,25,single-angle,,,-180.000,
 25,26,single-line,,,90.000,
-25,27,single-angle-line,,,,3
+25,27,single-angle-line,,,,
 26,0,double-line,,,90.000,
 26,1,,,,,3
 26,2,,,,,3
