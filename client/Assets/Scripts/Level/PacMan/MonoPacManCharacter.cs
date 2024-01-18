@@ -51,11 +51,17 @@ public class MonoPacManCharacter : MonoBehaviour
     public Vector3 BornPos;
     public float PosZ;
 
+    public PacManMoveDir MoveDir;
+    public float MoveSpeed;
+
+    public PacManMapBlock Current;
+
     void Awake()
     {
         transform.localPosition = BornPos;
         Body.transform.localRotation = Quaternion.Euler(0, 0, Rota[1]);
         Idle();
+        LevelGamePackMan.Instance.Character = this;
     }
 
     public void Move(PacManMoveDir nDir)

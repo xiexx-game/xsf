@@ -25,6 +25,7 @@ public enum GhostType
     Pinky,
     Inky,
     Clyde,
+    Max,
 }
 
 public class MonoGhost : MonoBehaviour
@@ -57,13 +58,56 @@ public class MonoGhost : MonoBehaviour
 
     public float PosZ;
 
+    private PacManMoveDir m_MoveDir;
+    public PacManMoveDir MoveDir {
+        set {
+            m_MoveDir = value;
+
+            switch(m_MoveDir)
+            {
+            case PacManMoveDir.Up:  SetViewType(GhostViewType.Up); break;
+            case PacManMoveDir.Right:  SetViewType(GhostViewType.Right); break;
+            case PacManMoveDir.Down:  SetViewType(GhostViewType.Down); break;
+            case PacManMoveDir.Left:  SetViewType(GhostViewType.Left); break;
+            }
+        }
+
+        get
+        {
+            return m_MoveDir;
+        }
+    }
+    public float MoveSpeed;
+
+    private AI_Ghost m_AI;
+
     void Awake()
     {
+        LevelGamePackMan.Instance.Ghosts[(int)GType] = this;
+
         transform.localPosition = BornPos;
+        InitAI();
+    }
+
+    void InitAI()
+    {
+        switch(GType)
+        {
+        case GhostType.Blinky: m_AI = new AI_Blinky();  break;
+        case GhostType.Pinky: m_AI = new AI_Pinky();    break;
+        case GhostType.Inky: m_AI = new AI_Inky();      break;
+        case GhostType.Clyde: m_AI = new AI_Clyde();    break;
+
+        default:
+            break;
+        }
     }
 
     public void SetViewType(GhostViewType nType)
     {
+        if(m_nCurType == nType)
+            return;
+            
         m_nCurType = nType;
 
         EyeStart[0] = LeftEye[0].transform.localPosition;
@@ -125,5 +169,7 @@ public class MonoGhost : MonoBehaviour
                 m_nCurType = GhostViewType.Max;
             }
         }
+
+        m_AI.OnUpdate();
     }
 }

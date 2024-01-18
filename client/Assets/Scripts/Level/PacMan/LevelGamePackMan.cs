@@ -39,6 +39,16 @@ public class LevelGamePackMan : LevelGame, ILoadingHandler
         EatFood,
     }
 
+    public static LevelGamePackMan m_Instance;
+    public static LevelGamePackMan Instance {
+        get {
+            if(m_Instance == null)
+                m_Instance = new LevelGamePackMan();
+
+            return m_Instance;
+        }
+    }
+
     public const int ROW_COUNT = 36;
     public const int COL_COUNT = 28;
 
@@ -46,18 +56,21 @@ public class LevelGamePackMan : LevelGame, ILoadingHandler
 
     private GameObject[] m_SceneObj;
 
-    private SingleBlock[] m_Blocks;
-
     private GameStatus m_nStatus;
 
     public ScpPacManLevels ScpLevels { get; private set; }
 
     public PacManMap Map { get; private set; }
 
+    public MonoGhost []Ghosts;
+    public MonoPacManCharacter Character;
+
     public override void Init()
     {
         m_SceneObj = new GameObject[(int)ObjID.Max];
         Map = new PacManMap();
+
+        Ghosts = new MonoGhost[(int)GhostType.Max];
     }
 
     public override void Load()
@@ -110,7 +123,7 @@ public class LevelGamePackMan : LevelGame, ILoadingHandler
         var endBlock = Map.Pos2Block(end);
         List<PacManMapBlock> result = Map.FindPath(PacManMoveDir.Right, startBlock, endBlock);
 
-        for(int i = result.Count-1; i >= 0; i --)
+        for(int i = 0; i < result.Count; i --)
         {
             Debug.Log($"pos={result[i].scp.iRow}, {result[i].scp.iCol}");
             var block = Map.GetBlock(result[i].scp.iRow, result[i].scp.iCol);

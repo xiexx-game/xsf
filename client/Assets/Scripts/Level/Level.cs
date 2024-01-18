@@ -29,7 +29,7 @@ public class Level : Singleton<Level>, IEventSink
         m_Games = new LevelGame[(int)LevelGameType.Max];
         m_Games[(int)LevelGameType.Tetris] = new LevelGameTetris();
         m_Games[(int)LevelGameType.Snake] = new LevelGameSnake();
-        m_Games[(int)LevelGameType.PacMan] = new LevelGamePackMan();
+        m_Games[(int)LevelGameType.PacMan] = LevelGamePackMan.Instance;
 
         for(int i = 0; i < (int)LevelGameType.Max; i++)
         {
