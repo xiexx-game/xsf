@@ -32,40 +32,5 @@ namespace XsfScp
                 bValue = false;
 
         }
-
-#if UNITY_EDITOR
-        public override string Prefix
-        {
-            get
-            {
-                return "b";
-            }
-        }
-
-        public override string ValueStr
-        {
-            get
-            {
-                return "bValue";
-            }
-        }
-
-        public override string TypeName
-        {
-            get
-            {
-                return "bool";
-            }
-        }
-
-        public override string CppTypeName
-        {
-            get
-            {
-                return "bool";
-            }
-        }
-
-#endif
     }
 }

@@ -21,6 +21,7 @@ namespace XSF
             public int nID;
             public string sName;
             public SchemaType nType;
+            public bool IsColTable;
         }
 
         private List<SchemaLoadInfo> m_LoadInfos;
@@ -57,6 +58,7 @@ namespace XSF
                     info.nID = nID;
                     info.sName = sName;
                     info.nType = nType;
+                    info.IsColTable = XMLReader.GetInt(ele, "col_table") > 0;
                     m_LoadInfos.Add(info);
                 }
             }
@@ -75,7 +77,7 @@ namespace XSF
 
             Debug.Log("Start load, schema=" + sName);
 
-            XSFSchema.Instance.LoadWithSchema(nID, sName, nType);
+            XSFSchema.Instance.LoadWithSchema(nID, sName, nType, info.IsColTable);
 
             Debug.Log("Load schema done, schema=" + sName);
 

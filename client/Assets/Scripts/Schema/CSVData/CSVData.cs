@@ -34,48 +34,6 @@ namespace XsfScp
 
         }
 
-#if UNITY_EDITOR
-        public virtual string CastStr
-        {
-            get
-            {
-                return "";
-            }
-        }
-
-        public virtual string Prefix
-        {
-            get
-            {
-                return "";
-            }
-        }
-
-        public virtual string ValueStr
-        {
-            get
-            {
-                return "";
-            }
-        }
-
-        public virtual string TypeName
-        {
-            get
-            {
-                return "";
-            }
-        }
-
-        public virtual string CppTypeName
-        {
-            get
-            {
-                return "";
-            }
-        }
-#endif
-
         private static CSVData[] m_Datas;
         public static CSVData GetData(int nType)
         {
@@ -102,43 +60,6 @@ namespace XsfScp
             }
 
             return m_Datas[nType];
-        }
-
-        public static CSVData GetDataByName(string name)
-        {
-            CSVDataType type = CSVDataType.None;
-            if (name.ToLower().Equals("int"))
-                type = CSVDataType.Int;
-            else if (name.ToLower().Equals("uint"))
-                type = CSVDataType.Uint;
-            else if (name.ToLower().Equals("ulong"))
-                type = CSVDataType.Ulong;
-            else if (name.ToLower().Equals("float"))
-                type = CSVDataType.Float;
-            else if (name.ToLower().Equals("bool"))
-                type = CSVDataType.Bool;
-            else if (name.ToLower().Equals("string"))
-                type = CSVDataType.String;
-            else if (name.ToLower().Equals("array"))
-                type = CSVDataType.Array;
-            else if (name.ToLower().Equals("iac"))
-                type = CSVDataType.IDAndCount;
-            else
-                UnityEngine.Debug.LogError("CSVData GetDataByName name=" + name);
-
-            switch (type)
-            {
-                case CSVDataType.Int: return new CSVData_Int();
-                case CSVDataType.Uint: return new CSVData_Uint();
-                case CSVDataType.Ulong: return new CSVData_Ulong();
-                case CSVDataType.Bool: return new CSVData_Bool();
-                case CSVDataType.Float: return new CSVData_Float();
-                case CSVDataType.Array: return new CSVData_Array();
-                case CSVDataType.String: return new CSVData_String();
-                case CSVDataType.IDAndCount: return new CSVData_IDAndCount();
-
-                default: throw new XSFSchemaLoadException($"CSVData.GetData type error, type={type}");
-            }
         }
     }
 }

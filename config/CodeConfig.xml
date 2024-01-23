@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <attribute name="int" desc="32位有符号整形" suffix="Int" prefix="i" value_str="iValue" cs_type_name="int" cpp_type_name="int32" />
+  <attribute name="uint" desc="32位无符号整形" suffix="Uint" prefix="u" value_str="uValue" cs_type_name="uint" cpp_type_name="uint32" />
+  <attribute name="ulong" desc="64位无符号整形" suffix="Ulong" prefix="ul" value_str="ulValue" cs_type_name="ulong" cpp_type_name="uint64" />
+  <attribute name="float" desc="32位浮点" suffix="Float" prefix="f" value_str="fValue" cs_type_name="float" cpp_type_name="float" />
+  <attribute name="bool" desc="布尔类型" suffix="Bool" prefix="b" value_str="bValue" cs_type_name="bool" cpp_type_name="bool" />
+  <attribute name="string" desc="字符串" suffix="String" prefix="s" value_str="sValue" cs_type_name="string" cpp_type_name="string" />
+  <attribute name="array" desc="uint数组" suffix="Array" prefix="ar" value_str="arValue" cs_type_name="uint []" cpp_type_name="CSVArray" />
+  <attribute name="iac" desc="id count组" suffix="IDAndCount" prefix="ic" value_str="icValue" cs_type_name="CSVIdCount[]" cpp_type_name="CSVIdCountArray" />
+</root>

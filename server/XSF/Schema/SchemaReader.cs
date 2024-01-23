@@ -35,13 +35,18 @@ namespace XSF
         private const char LINE_SPLIT = '\n';
         private const int START_INDEX = 3;          // CSV表头占用3行
 
+        private const int CTABLE_MAX_COL = 4;
+
         private List<string[]> m_SchemaList;
 
         public int mRowCount { get; private set; }
         public int mColCount { get; private set; }
 
-        public CSVReader()
+        private bool m_bIsColTable;
+
+        public CSVReader(bool IsColTable)
         {
+            m_bIsColTable = IsColTable;
             m_SchemaList = new List<string[]>();
         }
 
@@ -49,11 +54,20 @@ namespace XSF
         {
             string[] lines = sContent.Split(LINE_SPLIT);
 
-            string[] propertyNames = lines[START_INDEX - 1].Split(COLUMN_SPLIT);
             mRowCount = 0;
-            mColCount = propertyNames.Length;
+            int nStartIndex = 0;
+            if(m_bIsColTable)
+            {
+                mColCount = CTABLE_MAX_COL;
+            }
+            else
+            {
+                nStartIndex = START_INDEX;
+                string[] propertyNames = lines[START_INDEX - 1].Split(COLUMN_SPLIT);
+                mColCount = propertyNames.Length;
+            }
 
-            for (int i = START_INDEX; i < lines.Length; ++i)
+            for (int i = nStartIndex; i < lines.Length; ++i)
             {
                 if (string.IsNullOrEmpty(lines[i]))
                     continue;

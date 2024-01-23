@@ -73,7 +73,7 @@ namespace xsf
 
     public:
         // 配置加载
-        static bool LoadSchema( ISchema * pSchema, uint8 nType, uint32 nID, const char * sFilename);
+        static bool LoadSchema( ISchema * pSchema, uint8 nType, uint32 nID, const char * sFilename, bool IsColTable);
 
     public:
         // 创建一个网络连接对象

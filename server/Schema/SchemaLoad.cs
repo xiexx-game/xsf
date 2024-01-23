@@ -51,7 +51,8 @@ namespace XsfScp
                 {
                     Log.Information("Start load, schema=" + sName);
 
-                    m_Module.LoadWithSchema(nID, sName, nType);
+                    bool IsColTable = XMLReader.GetInt(ele, "col_table") > 0;
+                    m_Module.LoadWithSchema(nID, sName, nType, IsColTable);
 
                     Log.Information("Load schema done, schema=" + sName);
                 }

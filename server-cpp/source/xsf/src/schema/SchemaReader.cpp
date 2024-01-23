@@ -85,6 +85,17 @@ namespace xsf
 		vector<string> lines;
 		XSFCore::Split(m_pContent, '\n', lines);
 
+		int32 StartIndex = 0;
+
+		if(m_bIsColTable)
+		{
+
+		}
+		else
+		{
+			StartIndex = START_INDEX;
+		}
+
 		do
 		{
 			if(nCurRow >= (int32)lines.size())
@@ -103,7 +114,7 @@ namespace xsf
 				m_nColCount = heads.size();
 				continue;
 			}
-			else if( nCurrent < START_INDEX )	// 跳过头
+			else if( nCurrent < StartIndex )	// 跳过头
 				continue;
 
 			//XSF_INFO("2 m_nColCount=%u, str=%s", m_nColCount, pStr);

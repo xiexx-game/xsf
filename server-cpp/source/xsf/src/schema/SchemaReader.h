@@ -29,7 +29,9 @@ namespace xsf
 		using VctLine = vector<LineData *>;
 
 	public:
-		CSVReader(void) {}
+		CSVReader(bool IsColTable) 
+			: m_bIsColTable(IsColTable) {}
+			
 		~CSVReader(void) 
 		{
 			XSF_FREE(m_pContent);
@@ -59,6 +61,7 @@ namespace xsf
 		char * m_pContent = nullptr;
 
 		VctLine m_Lines;
+		bool m_bIsColTable = false;
 	};
 
 	class XMLReader : public ISchemaReader

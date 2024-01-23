@@ -14,8 +14,29 @@ using UnityEngine;
 using System.IO;
 using System.Diagnostics;
 
+public class ToolLogger : XSFTools.IToolLogger
+{
+    public void Log(string message)
+    {
+        UnityEngine.Debug.Log(message);
+    }
+
+    public void LogError(string message)
+    {
+        UnityEngine.Debug.LogError(message);
+    }
+}
+
 public static class XSFEditorUtil
 {
+
+    public static string GetRootPath()
+    {
+        string path = Application.dataPath;
+        int index = path.IndexOf("/client/Assets");
+        return path.Substring(0, index);
+    }
+    /*
     public static bool StartProcess(string sFilename, string sArgs, string sWorkDir)
     {
         Process ps = null;
@@ -194,4 +215,5 @@ public static class XSFEditorUtil
         
         return str.ToUpper();
     }
+    */
 }

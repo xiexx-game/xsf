@@ -32,7 +32,7 @@ namespace XsfScp
 
             try
             {
-                LoadWithSchema(0, "Load", SchemaType.XML);
+                LoadWithSchema(0, "Load", SchemaType.XML, false);
             }
             catch(Exception e)
             {
@@ -43,7 +43,7 @@ namespace XsfScp
             return true;
         }
 
-        internal void LoadWithSchema(int nID, string sName, SchemaType nType)
+        internal void LoadWithSchema(int nID, string sName, SchemaType nType, bool IsColTable)
         {
             if (nID != (int)SchemaID.None)
             {
@@ -65,16 +65,16 @@ namespace XsfScp
 
             sContent = File.ReadAllText(sFilename);
             
-            LoadWithReader(nID, sName, m_SchemaList[nID], nType, sContent);
+            LoadWithReader(nID, sName, m_SchemaList[nID], nType, sContent, IsColTable);
         }
 
         // 针对具体的配置类型，使用对应的Reader进行加载
-        private void LoadWithReader(int nID, string sName, ISchema schema, SchemaType nType, string sContent)
+        private void LoadWithReader(int nID, string sName, ISchema schema, SchemaType nType, string sContent, bool IsColTable)
         {
             ISchemaReader? reader = null;
             switch (nType)
             {
-                case SchemaType.CSV: reader = new CSVReader(); break;
+                case SchemaType.CSV: reader = new CSVReader(IsColTable); break;
                 case SchemaType.XML: reader = new XMLReader(); break;
                 default:
                     throw new XSFSchemaLoadException($"XSFSchema.LoadWithReader OnSchemaLoad return false type error, id={nID}, name={sName}, type={nType}");

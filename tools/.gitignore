@@ -1,0 +1,6 @@
+bin/
+obj/
+Helper.cs
+ProtoTool.cs
+SchemaReader.cs
+SchemaTools.cs

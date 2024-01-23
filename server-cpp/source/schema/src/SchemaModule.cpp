@@ -18,7 +18,7 @@ using namespace xsf;
 
 namespace xsf_scp
 {
-    bool SchemaModule::LoadSchema(uint32 nSchemaID, const char *sName, uint8 nType)
+    bool SchemaModule::LoadSchema(uint32 nSchemaID, const char *sName, uint8 nType, bool IsColTable)
     {
         if (m_SchemaList[nSchemaID] == nullptr)
         {
@@ -61,13 +61,13 @@ namespace xsf_scp
 
         XSF_INFO("Start Load Schema %s:%u", sName, nSchemaID);
 
-        return XSFCore::LoadSchema(m_SchemaList[nSchemaID], nType, nSchemaID, sSchemaPath);
+        return XSFCore::LoadSchema(m_SchemaList[nSchemaID], nType, nSchemaID, sSchemaPath, IsColTable);
     }
 
     bool SchemaModule::Start(void)
     {
         XSFCore::mSchemaHelper = this;
-        return LoadSchema(SchemaID_Load, "Load", SchemaType_XML);
+        return LoadSchema(SchemaID_Load, "Load", SchemaType_XML, false);
     }
 
     void SchemaModule::Release(void)

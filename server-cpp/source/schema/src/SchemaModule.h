@@ -23,7 +23,7 @@ namespace xsf_scp
         SchemaModule(void) {}
         ~SchemaModule(void) {}
 
-        bool LoadSchema(uint32 nSchemaID, const char *sName, uint8 nType);
+        bool LoadSchema(uint32 nSchemaID, const char *sName, uint8 nType, bool IsColTable);
 
     public:
         bool Start(void) override;

@@ -36,40 +36,5 @@ namespace XsfScp
                 throw;
             }
         }
-
-#if UNITY_EDITOR
-        public override string Prefix
-        {
-            get
-            {
-                return "u";
-            }
-        }
-
-        public override string ValueStr
-        {
-            get
-            {
-                return "uValue";
-            }
-        }
-
-        public override string TypeName
-        {
-            get
-            {
-                return "uint";
-            }
-        }
-
-        public override string CppTypeName
-        {
-            get
-            {
-                return "uint32";
-            }
-        }
-
-#endif
     }
 }

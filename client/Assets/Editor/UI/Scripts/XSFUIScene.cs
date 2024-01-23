@@ -228,21 +228,21 @@ public class XSFUIScene : MonoBehaviour
             File.WriteAllText(csFile, sContent);
         }
 
-        XSFEditorUtil.ReplaceContentByTag(csFile, "UI_PROP_START", "UI_PROP_END", codeProp);
-        XSFEditorUtil.ReplaceContentByTag(csFile, "UI_INIT_START", "UI_INIT_END", code);
+        XSFTools.Helper.ReplaceContentByTag(csFile, "UI_PROP_START", "UI_PROP_END", codeProp);
+        XSFTools.Helper.ReplaceContentByTag(csFile, "UI_INIT_START", "UI_INIT_END", code);
 
         string sShortName = name.Substring(2);
         string helperContent = File.ReadAllText(csHelper);
         string sIDEnum = $"{sShortName},";
         if(!helperContent.Contains(sIDEnum))
         {
-            XSFEditorUtil.AppendFileByTag(csHelper, "UIID_APPEND", $"\t{sIDEnum}\n");
+            XSFTools.Helper.AppendFileByTag(csHelper, "UIID_APPEND", $"\t{sIDEnum}\n");
         }
 
         string sIDGet = $"new {name}()";
         if(!helperContent.Contains(sIDGet))
         {
-            XSFEditorUtil.AppendFileByTag(csHelper, "GET_UI_APPEND", $"\t\t\tcase UIID.{sShortName}:\t\treturn new {name}();\n");
+            XSFTools.Helper.AppendFileByTag(csHelper, "GET_UI_APPEND", $"\t\t\tcase UIID.{sShortName}:\t\treturn new {name}();\n");
         }
 
         string[] content = File.ReadAllLines(csFile);
@@ -267,7 +267,7 @@ public class XSFUIScene : MonoBehaviour
                 codeFunc += funList[i].fun;
             }
 
-            XSFEditorUtil.AppendFileByTag(csFile, "UI_FUNC_APPEND", codeFunc);
+            XSFTools.Helper.AppendFileByTag(csFile, "UI_FUNC_APPEND", codeFunc);
         }
     }
 

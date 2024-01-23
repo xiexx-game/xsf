@@ -22,40 +22,5 @@ namespace XsfScp
         {
             sValue = sData;
         }
-
-#if UNITY_EDITOR
-        public override string Prefix
-        {
-            get
-            {
-                return "s";
-            }
-        }
-
-        public override string ValueStr
-        {
-            get
-            {
-                return "sValue";
-            }
-        }
-
-        public override string TypeName
-        {
-            get
-            {
-                return "string";
-            }
-        }
-
-        public override string CppTypeName
-        {
-            get
-            {
-                return "string";
-            }
-        }
-
-#endif
     }
 }

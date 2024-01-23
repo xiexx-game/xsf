@@ -41,40 +41,5 @@ namespace XsfScp
                 throw;
             }
         }
-
-#if UNITY_EDITOR
-        public override string Prefix
-        {
-            get
-            {
-                return "ar";
-            }
-        }
-
-        public override string ValueStr
-        {
-            get
-            {
-                return "arValue";
-            }
-        }
-
-        public override string TypeName
-        {
-            get
-            {
-                return "uint []";
-            }
-        }
-
-        public override string CppTypeName
-        {
-            get
-            {
-                return "CSVArray";
-            }
-        }
-
-#endif
     }
 }

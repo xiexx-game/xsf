@@ -269,11 +269,11 @@ namespace xsf
     }
 
 	// 配置加载
-	bool XSFCore::LoadSchema( ISchema * pSchema, uint8 nType, uint32 nID, const char * sFilename)
+	bool XSFCore::LoadSchema( ISchema * pSchema, uint8 nType, uint32 nID, const char * sFilename, bool IsColTable)
 	{
 		if( nType == SchemaType_CSV )
 		{
-			CSVReader reader;
+			CSVReader reader = CSVReader(IsColTable);
 			if( !reader.LoadFile(sFilename) )
 				return false;
 			

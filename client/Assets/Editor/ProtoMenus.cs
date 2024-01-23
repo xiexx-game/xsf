@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////////////////////
 //
-// 文件：Assets\Editor\Proto\ProtoTools.cs
+// 文件：Assets/Editor/ProtoMenus.cs
 // 作者：Xoen Xie
 // 时间：2023/06/19
 // 描述：pb tools
@@ -13,7 +13,7 @@ using System.IO;
 using System;
 using System.Collections.Generic;
 
-public static class ProtoTools
+public static class ProtoMenus
 {
 #if UNITY_EDITOR_WIN
     static string PROTOC_DIR = Application.dataPath + "/../../proto/bin/win/";
@@ -26,10 +26,11 @@ public static class ProtoTools
     [MenuItem("XSFTools/生成proto代码(Gen Proto Code)", false, (int)XSFMenuID.GenProtoCode)]
     public static void GenProtoCode()
     {
-        ProtoExport();
-        CodeGen();
+        //ProtoExport();
+        //CodeGen();
     }
 
+    /*
     public static void ProtoExport()
     {
         string outputDir = Application.dataPath + "/Scripts/Net/Proto/";
@@ -317,4 +318,5 @@ public static class ProtoTools
 
         return result;
     }
+    */
 }

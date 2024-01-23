@@ -59,40 +59,5 @@ namespace XsfScp
             }
 
         }
-
-#if UNITY_EDITOR
-        public override string Prefix
-        {
-            get
-            {
-                return "ic";
-            }
-        }
-
-        public override string ValueStr
-        {
-            get
-            {
-                return "icValue";
-            }
-        }
-
-        public override string TypeName
-        {
-            get
-            {
-                return "CSVIdCount[]";
-            }
-        }
-
-        public override string CppTypeName
-        {
-            get
-            {
-                return "CSVIdCountArray";
-            }
-        }
-
-#endif
     }
 }

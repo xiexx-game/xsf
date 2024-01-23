@@ -39,12 +39,14 @@ namespace xsf_scp
                 uint32 nSchemaID = 0;
                 uint32 nSchemaType = 0;
                 char sSchemaName[BUFFER_SIZE_128] = {0};
+                uint32 nColTable = 0;
 
                 XML_UINT_ATTR(pSchemaEle, "id", nSchemaID);
                 XML_UINT_ATTR(pSchemaEle, "type", nSchemaType);
+                XML_UINT_ATTR(pSchemaEle, "col_table", nColTable);
                 XML_STRING_ATTR(pSchemaEle, "name", sSchemaName);
 
-                if (m_pModule->LoadSchema(nSchemaID, sSchemaName, nSchemaType))
+                if (m_pModule->LoadSchema(nSchemaID, sSchemaName, nSchemaType, nColTable > 0))
                 {
                     XSF_INFO("Load schema success, schema:%s, id:%u", sSchemaName, nSchemaID);
                 }

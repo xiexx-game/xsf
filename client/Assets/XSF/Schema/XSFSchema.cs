@@ -89,7 +89,7 @@ namespace XSF
         // 开始加载配置
         private void StartLoadSchema()
         {
-            LoadWithSchema(0, "Load", SchemaType.XML);
+            LoadWithSchema(0, "Load", SchemaType.XML, false);
 
             IsUpdateWroking = true;
             XSFUpdate.Instance.Add(this);
@@ -140,7 +140,7 @@ namespace XSF
         #endregion
 
         // 找到配置对应的配置对象进行配置加载
-        public void LoadWithSchema(int nID, string sName, SchemaType nType)
+        public void LoadWithSchema(int nID, string sName, SchemaType nType, bool IsColTable)
         {
             if (nID != m_SchemaLoad.ID)
             {
@@ -181,17 +181,16 @@ namespace XSF
             }
 #endif
 
-
-            LoadWithReader(m_SchemaList[nID], nType, sContent);
+            LoadWithReader(m_SchemaList[nID], nType, sContent, IsColTable);
         }
 
         // 针对具体的配置类型，使用对应的Reader进行加载
-        private void LoadWithReader(ISchema schema, SchemaType nType, string sContent)
+        private void LoadWithReader(ISchema schema, SchemaType nType, string sContent, bool IsColTable)
         {
             ISchemaReader reader = null;
             switch (nType)
             {
-                case SchemaType.CSV: reader = new CSVReader(); break;
+                case SchemaType.CSV: reader = new CSVReader(IsColTable); break;
                 case SchemaType.XML: reader = new XMLReader(); break;
                 default:
                     throw new XSFSchemaLoadException($"XSFSchema.LoadWithReader Schema Type Error, Type:{nType}");
