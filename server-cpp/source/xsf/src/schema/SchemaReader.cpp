@@ -76,6 +76,7 @@ namespace xsf
 	bool CSVReader::Parse(const char * sFilename)
 	{
 	#define START_INDEX	3
+	#define CTABLE_MAX_COL 4
 	// csv 头的行数为4
 	// 0 中文说明
 	// 1 数据类型
@@ -89,11 +90,7 @@ namespace xsf
 
 		if(m_bIsColTable)
 		{
-
-		}
-		else
-		{
-			StartIndex = START_INDEX;
+			m_nColCount = CTABLE_MAX_COL;
 		}
 
 		do
@@ -107,16 +104,19 @@ namespace xsf
 
 			//XSF_INFO("2 nCurrent=%u, str=%s", nCurrent, pStr);
 			
-			if( nCurrent == 1 )	// 读取第一行说明，确定最大列数
-			{	
-				vector<string> heads;
-				XSFCore::Split(pStr, ',', heads);
-				m_nColCount = heads.size();
-				continue;
+			if(!m_bIsColTable)
+			{
+				if( nCurrent == 1 )	// 读取第一行说明，确定最大列数
+				{	
+					vector<string> heads;
+					XSFCore::Split(pStr, ',', heads);
+					m_nColCount = heads.size();
+					continue;
+				}
+				else if( nCurrent < START_INDEX )	// 跳过头
+					continue;
 			}
-			else if( nCurrent < StartIndex )	// 跳过头
-				continue;
-
+			
 			//XSF_INFO("2 m_nColCount=%u, str=%s", m_nColCount, pStr);
 			LineData * pNewLine = new LineData();
 			XSFCore::Split(pStr, ',', pNewLine->datas);

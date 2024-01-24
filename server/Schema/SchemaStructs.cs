@@ -24,6 +24,7 @@ public class ScpGlobal
 	public uint [] arUintArrayData;	//无符号整形数组
 	public bool bBoolData;	//布尔数据
 	public CSVIdCount[] icIacData;	//id和count数据
+	public uint uEnergyItem;	//体力道具ID
 //ScpGlobal_END
 }
 

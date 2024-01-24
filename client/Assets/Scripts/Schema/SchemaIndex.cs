@@ -17,6 +17,7 @@ public enum CSVIndex
 	ScpGlobal_StringData = 1,
 	ScpGlobal_UintData = 2,
 	ScpGlobal_UlongData = 3,
+	ScpGlobal_EnergyItem = 4,
 
 	ScpItem_id = 0,
 	ScpItem_type = 1,

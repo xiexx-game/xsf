@@ -25,6 +25,7 @@ enum EMCSVIndex
 	CSVIndex_ScpGlobal_UintArrayData = 5,
 	CSVIndex_ScpGlobal_BoolData = 6,
 	CSVIndex_ScpGlobal_IacData = 7,
+	CSVIndex_ScpGlobal_EnergyItem = 8,
 
 	CSVIndex_ScpItem_id = 0,
 	CSVIndex_ScpItem_type = 1,

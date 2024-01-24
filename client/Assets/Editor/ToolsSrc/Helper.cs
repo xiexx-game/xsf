@@ -177,7 +177,7 @@ namespace XSFTools // Note: actual namespace depends on the project name.
             }
             catch (Exception e)
             {
-                m_Logger.LogError(e.Message);
+                m_Logger.LogError("StartProcess Error :" + e.Message);
             }
             finally
             {

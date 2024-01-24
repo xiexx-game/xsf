@@ -22,9 +22,58 @@ namespace XSFTools // Note: actual namespace depends on the project name.
     {
         public static void Main(string[] args)
         {
-            for(int i = 0; i < args.Length; i ++)
+            XSFTools.Platform p;
+            string platform = "";
+            if(GetArg(args, "-p", out platform))
             {
-                Console.WriteLine(args[i]);
+                if(platform == "win")
+                {
+                    p = XSFTools.Platform.Windows;
+                }
+                else if(platform == "mac")
+                {
+                    p = XSFTools.Platform.Mac;
+                }
+                else
+                {
+                    p = XSFTools.Platform.Linux;
+                }
+
+                Console.WriteLine($"指定平台 {p}");
+            }
+            else
+            {
+                Console.Error.WriteLine("未指定参数-p, 请指定操作系统平台：win, mac, linux");
+                return;
+            }
+
+            string rootPath = "";
+            if(GetArg(args, "-root", out rootPath))
+            {
+                Console.WriteLine($"工程根目录： {rootPath}");
+            }
+            else
+            {
+                Console.Error.WriteLine("未指定参数-root, 请指定工程root目录");
+                return;
+            }
+
+            string c = "";
+            bool IsConfig = GetArg(args, "-c", out c);
+
+            XSFTools.Helper.Instance.Init(p, new Logger(), rootPath, IsConfig);
+            if(IsConfig)
+            {
+                Console.WriteLine("开始导出配置....");
+                XSFTools.SchemaTools.DoExport();
+                Console.WriteLine("配置导出完毕....");
+            }
+            else
+            {
+                Console.WriteLine("开始导出proto....");
+                XSFTools.ProtoTool.ProtoExport();
+                XSFTools.ProtoTool.CodeGen();
+                Console.WriteLine("proto导出完毕....");
             }
         }
 

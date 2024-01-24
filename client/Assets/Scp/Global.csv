@@ -2,3 +2,4 @@
 字符串数据,string,stringData,This is a test data
 uint整形,uint,uintData,300
 长整形数据,ulong,ulongData,1
+体力道具ID,uint,EnergyItem,100

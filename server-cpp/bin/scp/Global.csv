@@ -6,3 +6,4 @@ uint整形,uint,uintData,300
 无符号整形数组,array,uintArrayData,2:3:4:5
 布尔数据,bool,boolData,FALSE
 id和count数据,iac,iacData,10000:10|2000:20
+体力道具ID,uint,EnergyItem,100

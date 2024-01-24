@@ -39,9 +39,14 @@ namespace XSFTools
             string sServerOutput = Helper.Instance.ServerDir + "/bin/scp";
             string sCppOutput = Helper.Instance.CppServerDir + "/bin/scp";
 
-            string sLoadXml = Helper.Instance.ConfigDir + "/Load.xml";
-            File.Copy(sLoadXml, sClientOutput + "/Load.xml", true);
+            Dictionary<string, int> Enums = EnumExport();
 
+            string sLoadXml = Helper.Instance.ConfigDir + "/Load.xml";
+            if(Directory.Exists(sClientOutput))
+            {
+                File.Copy(sLoadXml, sClientOutput + "/Load.xml", true);
+            }
+            
             if(Directory.Exists(sServerOutput)) {
                 File.Copy(sLoadXml, sServerOutput + "/Load.xml", true);
             }
@@ -80,7 +85,10 @@ namespace XSFTools
 
                     if(cd.ClientLoad > 0)
                     {
-                        File.Copy(sSrcXml, sClientOutput + $"/{cd.Name}.xml", true);
+                        if(Directory.Exists(sClientOutput))
+                        {
+                            File.Copy(sSrcXml, sClientOutput + $"/{cd.Name}.xml", true);
+                        }
                     }
 
                     if(cd.ServerLoad > 0)
@@ -100,14 +108,141 @@ namespace XSFTools
                 Configs.Add(cd.Name, cd);
             }
 
-            ExcelExport(Configs, sClientOutput, sServerOutput, sCppOutput);
+            ExcelExport(Enums, Configs, sClientOutput, sServerOutput, sCppOutput);
 
             Helper.Instance.Logger.Log("configs export done ....");
 
             DoCode(Configs);
         }
 
-        private static void ExcelExport(Dictionary<string, ConfigData> configs, string sClientOutput, string sServerOutput, string sCppOutput)
+        private static Dictionary<string, int> EnumExport()
+        {
+            Dictionary<string, int> result = new Dictionary<string, int>();
+
+            string CEnumPath = Helper.Instance.ClientDir + "/Assets/Scripts/Schema/SchemaEnums.cs";
+            string SEnumPath = Helper.Instance.ServerDir + "/Schema/SchemaEnums.cs";
+            string CppEnumPath = Helper.Instance.CppServerDir + "/source/schema/inc/DSchemaEnums.h";
+
+            bool cExist = File.Exists(CEnumPath);
+            bool sExist = File.Exists(SEnumPath);
+            bool cppExist = File.Exists(CppEnumPath);
+
+            string sEnumXml = Helper.Instance.ConfigDir + "/Enum.xml";
+            string sEnumContent = File.ReadAllText(sEnumXml);
+            XMLReader reader = new XMLReader();
+            reader.Read(sEnumContent);
+
+            XmlNodeList nodeList = reader.mRootNode.ChildNodes;
+
+            string cStr = "";
+            string sStr = "";
+            string cppStr = "";
+            for (int i = 0; i < nodeList.Count; ++i)
+            {
+                XmlElement ele = nodeList[i] as XmlElement;
+                string name = XMLReader.GetString(ele, "name");
+                string desc = XMLReader.GetString(ele, "desc");
+
+                if(cExist)
+                {
+                    cStr += $"// {desc}\n";
+                    cStr += $"public enum {name}\n" + "{\n";
+                }
+
+                if(sExist)
+                {
+                    sStr += $"// {desc}\n";
+                    sStr += $"public enum {name}\n" + "{\n";
+                }
+
+                if(cppExist)
+                {
+                    cppStr += $"// {desc}\n";
+                    cppStr += $"enum EM{name}\n" + "{\n";
+                }
+
+                var enums = ele.ChildNodes;
+                int nValue = 0;
+                for(int J = 0; J < enums.Count; J ++)
+                {
+                    XmlElement subE = enums[J] as XmlElement;
+                    //<item name="None" desc="空" value="0" />
+                    string ename = XMLReader.GetString(subE, "name");
+                    string edesc = XMLReader.GetString(subE, "desc");
+                    string evalue = XMLReader.GetString(subE, "value");
+
+                    if(string.IsNullOrEmpty(evalue))
+                    {
+                        if(J < nValue)
+                        {
+                            nValue ++;
+                        }
+                        else
+                        {
+                            nValue = J;
+                        }
+                    }
+                    else
+                    {
+                        nValue = System.Convert.ToInt32(evalue);
+                    }
+
+                    string key = $"{name}.{ename}";
+
+                    //Helper.Instance.Logger.Log($"key={key}, v={nValue}");
+                    result.Add(key, nValue);
+
+                    if(cExist)
+                    {
+                        cStr += $"\t{ename} = {nValue},\t// {edesc}\n";
+                    }
+
+                    if(sExist)
+                    {
+                        sStr += $"\t{ename} = {nValue},\t// {edesc}\n";
+                    }
+
+                    if(cppExist)
+                    {
+                        cppStr += $"\t{name}_{ename} = {nValue},\t// {edesc}\n";
+                    }
+                }
+
+                if(cExist)
+                {
+                    cStr += "}\n\n";
+                }
+
+                if(sExist)
+                {
+                    sStr += "}\n\n";
+                }
+
+                if(cppExist)
+                {
+                    cppStr += "};\n\n";
+                }
+            }
+
+            if(cExist)
+            {
+                Helper.ReplaceContentByTag(CEnumPath, "SCHEMA_ENUM_START", "SCHEMA_ENUM_END", cStr);
+            }
+
+            if(sExist)
+            {
+                Helper.ReplaceContentByTag(SEnumPath, "SCHEMA_ENUM_START", "SCHEMA_ENUM_END", sStr);
+            }
+
+            if(cppExist)
+            {
+                Helper.ReplaceContentByTag(CppEnumPath, "SCHEMA_ENUM_START", "SCHEMA_ENUM_END", cppStr);
+            }
+
+            return result;
+        }
+
+        private static void ExcelExport(Dictionary<string, int> enums, Dictionary<string, ConfigData> configs, string sClientOutput, string sServerOutput, string sCppOutput)
         {
             DirectoryInfo di = new DirectoryInfo(Helper.Instance.ConfigDir);
             FileInfo[] files = di.GetFiles("*.xlsx");
@@ -133,7 +268,7 @@ namespace XSFTools
                             }
                             else
                             {
-                                ExportColTable(cd, sheet, sheet.LastRowNum+1, sClientOutput, sServerOutput, sCppOutput);
+                                ExportColTable(enums, cd, sheet, sheet.LastRowNum+1, sClientOutput, sServerOutput, sCppOutput);
                             }
                         }
                         else    // 行表
@@ -146,7 +281,7 @@ namespace XSFTools
                             }
                             else
                             {
-                                ExportTable(cd, sheet, row.LastCellNum, sClientOutput, sServerOutput, sCppOutput);
+                                ExportTable(enums, cd, sheet, row.LastCellNum, sClientOutput, sServerOutput, sCppOutput);
                             }
                         }
                     }
@@ -166,14 +301,14 @@ namespace XSFTools
                     }
                     else
                     {
-                        ExportTable(cd, sheet, row.LastCellNum, sClientOutput, sServerOutput, sCppOutput);
+                        ExportTable(enums, cd, sheet, row.LastCellNum, sClientOutput, sServerOutput, sCppOutput);
                     }
                 }
             }
         }
 
         // 列表
-        private static void ExportColTable(ConfigData cd, XSSFSheet sheet, int TotalRow, string sClientOutput, string sServerOutput, string sCppOutput)
+        private static void ExportColTable(Dictionary<string, int> enums, ConfigData cd, XSSFSheet sheet, int TotalRow, string sClientOutput, string sServerOutput, string sCppOutput)
         {
             string clientStr = "";
             string serverStr = "";
@@ -191,6 +326,16 @@ namespace XSFTools
                 {   
                     var cell = row.GetCell(c);
                     string cellStr = cell.ToString();
+
+                    if(cellStr.Contains("."))
+                    {
+                        int v = 0;
+                        if(enums.TryGetValue(cellStr, out v))
+                        {
+                            cellStr = v.ToString();
+                        }
+                    }
+
                     if(ClientExport)
                     {
                         clientLine += cellStr + ",";
@@ -218,12 +363,15 @@ namespace XSFTools
             {
                 if(Directory.Exists(sClientOutput))
                 {
+                    clientStr = clientStr.Substring(0, clientStr.Length-1);
                     File.WriteAllText(sClientOutput + $"/{sConfigName}.csv", clientStr);
                 }
             }
 
             if(serverStr.Length > 0)
             {
+                serverStr = serverStr.Substring(0, serverStr.Length-1);
+
                 if(Directory.Exists(sServerOutput))
                 {
                     File.WriteAllText(sServerOutput +$"/{sConfigName}.csv", serverStr);
@@ -237,7 +385,7 @@ namespace XSFTools
         }
 
         // 行表
-        private static void ExportTable(ConfigData cd, XSSFSheet sheet, int TotalCol, string sClientOutput, string sServerOutput, string sCppOutput)
+        private static void ExportTable(Dictionary<string, int> enums, ConfigData cd, XSSFSheet sheet, int TotalCol, string sClientOutput, string sServerOutput, string sCppOutput)
         {
             bool []ClientExport = new bool[TotalCol];
             bool []ServerExport = new bool[TotalCol];
@@ -269,7 +417,7 @@ namespace XSFTools
             }
 
             string clientStr = "";
-            string ServerStr = "";
+            string serverStr = "";
             for(int r = 2; r <= sheet.LastRowNum; r ++)
             {
                 string clientLine = "";
@@ -306,6 +454,15 @@ namespace XSFTools
                     else
                     {
                         string cellStr = cell.ToString();
+                        if(cellStr.Contains("."))
+                        {
+                            int v = 0;
+                            if(enums.TryGetValue(cellStr, out v))
+                            {
+                                cellStr = v.ToString();
+                            }
+                        }
+
                         if(ClientExport[c])
                         {
                             clientLine += cellStr + ",";
@@ -325,7 +482,7 @@ namespace XSFTools
                 
                 if(serverLine.Length > 0)
                 {
-                    ServerStr += serverLine.Substring(0, serverLine.Length-1) + "\n";
+                    serverStr += serverLine.Substring(0, serverLine.Length-1) + "\n";
                 }
             }
 
@@ -334,20 +491,22 @@ namespace XSFTools
             {
                 if(Directory.Exists(sClientOutput))
                 {
+                    clientStr = clientStr.Substring(0, clientStr.Length-1);
                     File.WriteAllText(sClientOutput + $"/{sConfigName}.csv", clientStr);
                 }
             }
 
-            if(ServerStr.Length > 0)
+            if(serverStr.Length > 0)
             {
+                serverStr = serverStr.Substring(0, serverStr.Length-1);
                 if(Directory.Exists(sServerOutput))
                 {
-                    File.WriteAllText(sServerOutput +$"/{sConfigName}.csv", ServerStr);
+                    File.WriteAllText(sServerOutput +$"/{sConfigName}.csv", serverStr);
                 }
 
                 if(Directory.Exists(sCppOutput))
                 {
-                    File.WriteAllText(sCppOutput +$"/{sConfigName}.csv", ServerStr);
+                    File.WriteAllText(sCppOutput +$"/{sConfigName}.csv", serverStr);
                 }
             }
         }
@@ -381,6 +540,7 @@ namespace XSFTools
             string SCppIndex = "";
             string SCppHeaders = "";
 
+            bool IsClientDirExist = File.Exists(CCSStructFile);
             bool IsServerDirExist = File.Exists(SCSStructFile);
             bool IsCppServerExist = File.Exists(SCppDefFile);
 
@@ -389,7 +549,7 @@ namespace XSFTools
                 ConfigData cd = kv.Value;
                 string sStructName = $"Scp{cd.Name}";
 
-                if(cd.ClientLoad > 0)
+                if(cd.ClientLoad > 0 && IsClientDirExist)
                 {
                     CCSID += $"\t{cd.Name} = {cd.ID},\n";
 
@@ -446,9 +606,12 @@ namespace XSFTools
                 }
             }
 
-            Helper.ReplaceContentByTag(CCSHelperFile, "SCHEMA_ID_BEGIN", "SCHEMA_ID_END", CCSID);
-            Helper.ReplaceContentByTag(CCSHelperFile, "SCHEMA_BEGIN", "SCHEMA_END", CCSCreate);
-            Helper.ReplaceContentByTag(CCSIndexFile, "CSV_INDEX_BEGIN", "CSV_INDEX_END", CCSIndex);
+            if(IsClientDirExist)
+            {
+                Helper.ReplaceContentByTag(CCSHelperFile, "SCHEMA_ID_BEGIN", "SCHEMA_ID_END", CCSID);
+                Helper.ReplaceContentByTag(CCSHelperFile, "SCHEMA_BEGIN", "SCHEMA_END", CCSCreate);
+                Helper.ReplaceContentByTag(CCSIndexFile, "CSV_INDEX_BEGIN", "CSV_INDEX_END", CCSIndex);
+            }
 
             if(IsServerDirExist)
             {

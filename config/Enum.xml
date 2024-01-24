@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <enum name="ItemType" desc="物品类型">
+    <item name="None" desc="空" value="0" />
+    <item name="Normal" desc="普通物品" value="1" />
+    <item name="Hero" desc="英雄物品" value="2" />
+    <item name="Max" desc= "最大值" value="3" /> 
+  </enum>
+  
+  <enum name="HeroType" desc="英雄类型">
+    <item name="None" desc="空" />
+    <item name="Attack" desc="攻击型" />
+    <item name="Defence" desc="防御型" />
+    <item name="Max" desc= "最大值" />
+  </enum>
+
+  <enum name="TestType" desc="英雄类型">
+    <item name="None" desc="空" />
+    <item name="Test0" desc="测试0" />
+    <item name="Test1" desc="测试1" value="10" />
+    <item name="Test2" desc="测试2" />
+    <item name="Test3" desc="测试3" />
+    <item name="Test4" desc="测试4" value="100" />
+    <item name="Test5" desc="测试5" />
+    <item name="Test6" desc="测试6" />
+    <item name="Test7" desc="测试7" value="30" />
+    <item name="Max" desc= "最大值" />
+  </enum>
+</root>

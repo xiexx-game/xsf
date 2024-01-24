@@ -36,6 +36,7 @@ struct ScpGlobal
 	CSVArray arUintArrayData;	//无符号整形数组
 	bool bBoolData;	//布尔数据
 	CSVIdCountArray icIacData;	//id和count数据
+	uint32 uEnergyItem;	//体力道具ID
 //ScpGlobal_END
 };
 

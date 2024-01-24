@@ -12,24 +12,35 @@ namespace XSFTools // Note: actual namespace depends on the project name.
             string outputDir = Helper.Instance.ClientDir + "/Assets/Scripts/Net/Proto/";
             string serverOutputDir = Helper.Instance.ServerDir + "/Message/Proto/";
             string cppOutputDir = Helper.Instance.CppServerDir + "/source/message/src/pb";
+
+            bool IsClientDirExist = Directory.Exists(outputDir);
             bool IsServerDirExist = Directory.Exists(serverOutputDir);
             bool IsCppDirExist = Directory.Exists(cppOutputDir);
+
+            Helper.Instance.Logger.Log($"protoc: {Helper.Instance.Protoc}");
+            Helper.Instance.Logger.Log($"ProtocDir: {Helper.Instance.ProtocDir}");
 
             string [] csProto = new string[] { "Client.proto", "CMessageID.proto", "Common.proto"};
 
             for(int i = 0; i < csProto.Length; i ++)
             {
-                Helper.Instance.StartProcess(Helper.Instance.Protoc,
-                    $"--csharp_out={outputDir}  --proto_path=../../ {csProto[i]}", Helper.Instance.ProtocDir);
+                if(IsClientDirExist)
+                {
+                    Helper.Instance.Logger.Log($"protoc export file: {csProto[i]}");
+                    Helper.Instance.StartProcess(Helper.Instance.Protoc,
+                        $"--csharp_out={outputDir}  --proto_path=../../ {csProto[i]}", Helper.Instance.ProtocDir);
+                }
 
                 if(IsServerDirExist)
                 {
+                    Helper.Instance.Logger.Log($"server protoc export file: {csProto[i]}");
                     Helper.Instance.StartProcess(Helper.Instance.Protoc,
                     $"--csharp_out={serverOutputDir}  --proto_path=../../ {csProto[i]}", Helper.Instance.ProtocDir);
                 }
 
                 if(IsCppDirExist)
                 {
+                    Helper.Instance.Logger.Log($"cpp server protoc export file: {csProto[i]}");
                     Helper.Instance.StartProcess(Helper.Instance.Protoc,
                     $"-I=../../ --cpp_out={cppOutputDir} {csProto[i]}", Helper.Instance.ProtocDir);
 
@@ -56,12 +67,14 @@ namespace XSFTools // Note: actual namespace depends on the project name.
 
                 if(IsServerDirExist)
                 {
+                    Helper.Instance.Logger.Log($"2 server protoc export file: {info.Name}");
                     Helper.Instance.StartProcess(Helper.Instance.Protoc,
                         $"--csharp_out={serverOutputDir}  --proto_path=../../server  {info.Name}", Helper.Instance.ProtocDir);
                 }
 
                 if(IsCppDirExist)
                 {
+                    Helper.Instance.Logger.Log($"cpp server protoc export file: {info.Name}");
                     Helper.Instance.StartProcess(Helper.Instance.Protoc,
                         $"-I=../../server --cpp_out={cppOutputDir} {info.Name}", Helper.Instance.ProtocDir);
 
@@ -82,7 +95,7 @@ namespace XSFTools // Note: actual namespace depends on the project name.
             Helper.Instance.Logger.Log("Export to proto done...");
         }
 
-        private static void CodeGen()
+        public static void CodeGen()
         {
             string CProtoPath = Helper.Instance.ProtoDir + "/CMessageID.proto";
             string SProtoPath = Helper.Instance.ProtoDir + "/server/SMessageID.proto";
@@ -96,6 +109,8 @@ namespace XSFTools // Note: actual namespace depends on the project name.
             string COutputDir = Helper.Instance.ClientDir + "/Assets/Scripts/Net/Messages";
             string SOutputDir = Helper.Instance.ServerDir + "/Message/Messages";
             string CppOutputDir = Helper.Instance.CppServerDir + "/source/message";
+
+            bool IsClientDirExist = Directory.Exists(COutputDir);
             bool IsServerDirExist = Directory.Exists(SOutputDir);
             bool IsCppDirExist = Directory.Exists(CppOutputDir);
 
@@ -126,17 +141,20 @@ namespace XSFTools // Note: actual namespace depends on the project name.
 
                 if(md.MessageID.Contains("Clt_"))
                 {
-                    string codePath = COutputDir + $"/MSG_{md.MessageID}.cs";
-                    if(!File.Exists(codePath))
+                    if(IsClientDirExist)
                     {
-                        string content = CTmpContent.Replace("_MSG_NAME_", md.MessageID);
-                        content = content.Replace("_MSG_DATE_", DateStr);
-                        content = content.Replace("_MSG_DESC_", md.Desc.Trim());
-                        content = content.Replace("_MSG_ID_NAME_", md.CodeID);
-                        File.WriteAllText(codePath, content);
-                    }
+                        string codePath = COutputDir + $"/MSG_{md.MessageID}.cs";
+                        if(!File.Exists(codePath))
+                        {
+                            string content = CTmpContent.Replace("_MSG_NAME_", md.MessageID);
+                            content = content.Replace("_MSG_DATE_", DateStr);
+                            content = content.Replace("_MSG_DESC_", md.Desc.Trim());
+                            content = content.Replace("_MSG_ID_NAME_", md.CodeID);
+                            File.WriteAllText(codePath, content);
+                        }
 
-                    CMessagePoolStr += $"\t\tm_MessagePool[(int)CMSGID.{md.CodeID}] = new MSG_{md.MessageID}();\n";
+                        CMessagePoolStr += $"\t\tm_MessagePool[(int)CMSGID.{md.CodeID}] = new MSG_{md.MessageID}();\n";
+                    }
 
                     if(IsServerDirExist)
                     {
@@ -190,8 +208,11 @@ namespace XSFTools // Note: actual namespace depends on the project name.
                 }
             }
 
-            string cPoolFile = Helper.Instance.ClientDir + "/Assets/Scripts/Net/MessagePool.cs";
-            Helper.ReplaceContentByTag(cPoolFile, "MESSAGE_START", "MESSAGE_END", CMessagePoolStr);
+            if(IsClientDirExist)
+            {
+                string cPoolFile = Helper.Instance.ClientDir + "/Assets/Scripts/Net/MessagePool.cs";
+                Helper.ReplaceContentByTag(cPoolFile, "MESSAGE_START", "MESSAGE_END", CMessagePoolStr);
+            }
 
             if(IsServerDirExist)
             {

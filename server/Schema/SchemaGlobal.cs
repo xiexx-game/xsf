@@ -37,6 +37,7 @@ namespace XsfScp
 			GlobalData.arUintArrayData = (csv.GetData((int)CSVDataType.Array, (int)CSVIndex.ScpGlobal_UintArrayData, 3) as CSVData_Array).arValue;	// 无符号整形数组
 			GlobalData.bBoolData = (csv.GetData((int)CSVDataType.Bool, (int)CSVIndex.ScpGlobal_BoolData, 3) as CSVData_Bool).bValue;	// 布尔数据
 			GlobalData.icIacData = (csv.GetData((int)CSVDataType.IDAndCount, (int)CSVIndex.ScpGlobal_IacData, 3) as CSVData_IDAndCount).icValue;	// id和count数据
+			GlobalData.uEnergyItem = (csv.GetData((int)CSVDataType.Uint, (int)CSVIndex.ScpGlobal_EnergyItem, 3) as CSVData_Uint).uValue;	// 体力道具ID
 //_CSV_LIST_END_
         }
     }

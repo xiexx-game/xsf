@@ -19,6 +19,7 @@ public class ScpGlobal
 	public string sStringData;	//字符串数据
 	public uint uUintData;	//uint整形
 	public ulong ulUlongData;	//长整形数据
+	public uint uEnergyItem;	//体力道具ID
 //ScpGlobal_END
 }
 

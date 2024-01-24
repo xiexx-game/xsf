@@ -27,6 +27,7 @@ namespace xsf_scp
 		GlobalData.arUintArrayData = GET_DATA(CSVData_Array, CSVDataType_Array, CSVIndex_ScpGlobal_UintArrayData, 3)->arValue;	// 无符号整形数组
 		GlobalData.bBoolData = GET_DATA(CSVData_Bool, CSVDataType_Bool, CSVIndex_ScpGlobal_BoolData, 3)->bValue;	// 布尔数据
 		GlobalData.icIacData = GET_DATA(CSVData_IDAndCount, CSVDataType_IDAndCount, CSVIndex_ScpGlobal_IacData, 3)->icValue;	// id和count数据
+		GlobalData.uEnergyItem = GET_DATA(CSVData_Uint, CSVDataType_Uint, CSVIndex_ScpGlobal_EnergyItem, 3)->uValue;	// 体力道具ID
         //_CSV_LIST_END_
 
         XSF_INFO("SchemaGlobal::OnSchemaLoad iIntData=%d", GlobalData.iIntData);
