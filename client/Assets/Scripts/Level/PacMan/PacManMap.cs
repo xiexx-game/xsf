@@ -46,10 +46,7 @@ public class PacManPathNode
 
     public PacManPathNode pre;
 
-    public PacManMoveDir enterDir;      // 进入方向，不能往这个方向往回走
-    public PacManMoveDir searchDir;     // 搜索方向
-
-    //public PacManMoveDir dir;
+    public PacManMoveDir enterDir;
 }
 
 public enum BlockType
@@ -352,7 +349,6 @@ public class PacManMap
 
         PacManPathNode startNode = new PacManPathNode();
         startNode.block = startBlock;
-        //startNode.dir = dir;
         startNode.enterDir = enterDir;
 
         PacManPathNode endNode = new PacManPathNode();
@@ -395,7 +391,7 @@ public class PacManMap
     private bool CheckNode(PacManPathNode current, List<PacManPathNode> cacheList, PacManPathNode endNode)
     {
         var currentBlock = current.block;
-        Debug.Log($"CheckNode currentBlock={currentBlock.scp.iRow}, {currentBlock.scp.iCol}, enterDir={current.enterDir}, searchDir={current.searchDir}");
+        Debug.Log($"CheckNode currentBlock={currentBlock.scp.iRow}, {currentBlock.scp.iCol}, enterDir={current.enterDir}");
 
         for(int i = 0; i < currentBlock.ConnectIndex.Length; i ++)
         {
@@ -406,6 +402,7 @@ public class PacManMap
             {
                 var nextIndex = currentBlock.ConnectIndex[i];
                 PacManPathNode preNode = current;
+                PacManMoveDir currentEnterDir = DirReverse((PacManMoveDir)i);
                 
                 while(true)
                 {
@@ -428,12 +425,12 @@ public class PacManMap
                                 PacManPathNode node = new PacManPathNode();
                                 node.block = nextBlock;
                                 node.pre = preNode;
-                                node.enterDir = DirReverse((PacManMoveDir)i);
+                                node.enterDir = currentEnterDir;
                                 cacheList.Add(node);
 
                                 preNode = node;
 
-                                Debug.Log($"CheckNode find next block 3, nextBlock={nextBlock.scp.iRow}, {nextBlock.scp.iCol}, enterDir={node.enterDir}, searchDir={node.searchDir}");
+                                Debug.Log($"CheckNode find next block 3, nextBlock={nextBlock.scp.iRow}, {nextBlock.scp.iCol}, enterDir={currentEnterDir}");
                             }
                             break;
                         }
@@ -442,19 +439,22 @@ public class PacManMap
                             PacManPathNode node = new PacManPathNode();
                             node.block = nextBlock;
                             node.pre = preNode;
-                            node.enterDir = DirReverse((PacManMoveDir)i);
-                            cacheList.Add(node);
 
                             preNode = node;
 
-                            for(int J = 0; J < nextBlock.ConnectIndex.Length; i ++)
+                            Debug.Log($"CheckNode find next block 2, nextBlock={nextBlock.scp.iRow}, {nextBlock.scp.iCol}, enterDir={currentEnterDir}");
+
+                            for(int J = 0; J < nextBlock.ConnectIndex.Length; J ++)
                             {
-                                if(J != (int)node.enterDir && nextBlock.ConnectIndex[J] > 0)
+                                if(J != (int)currentEnterDir && nextBlock.ConnectIndex[J] > 0)
                                 {
                                     nextIndex = nextBlock.ConnectIndex[J];
+                                    currentEnterDir = DirReverse((PacManMoveDir)J);
                                     break;
                                 }
                             }
+
+                            Debug.Log("nextIndex=" + nextIndex + ", currentEnterDir=" + currentEnterDir);
                         }
                     }
                 }

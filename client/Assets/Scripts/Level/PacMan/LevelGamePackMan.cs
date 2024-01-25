@@ -121,9 +121,11 @@ public class LevelGamePackMan : LevelGame, ILoadingHandler
         var end = new Vector3(0.0500000007f,-3.03999996f,-0.200000003f);
         var startBlock = Map.GetBlock(11, 12);
         var endBlock = Map.Pos2Block(end);
+
+        //return;
         List<PacManMapBlock> result = Map.FindPath(PacManMoveDir.Right, startBlock, endBlock);
 
-        for(int i = 0; i < result.Count; i --)
+        for(int i = 0; i < result.Count; i ++)
         {
             Debug.Log($"pos={result[i].scp.iRow}, {result[i].scp.iCol}");
             var block = Map.GetBlock(result[i].scp.iRow, result[i].scp.iCol);

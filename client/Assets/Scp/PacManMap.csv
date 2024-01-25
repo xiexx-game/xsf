@@ -355,7 +355,7 @@ Row,Col,Sprite,XRota,YRota,ZRota,BlockType
 12,15,double-line,,,180.000,
 12,16,double-line,,,180.000,
 12,17,double-angle-90,,,,
-12,18,,,,,
+12,18,,,,,1
 12,19,single-line,,,,
 12,20,single-line,,,,
 12,21,,,,,3
