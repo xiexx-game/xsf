@@ -56,12 +56,15 @@ public class MonoPacManCharacter : MonoBehaviour
 
     public PacManMapBlock Current;
 
+    private bool WaitBorn;
+
     void Awake()
     {
+        WaitBorn = true;
         transform.localPosition = BornPos;
         Body.transform.localRotation = Quaternion.Euler(0, 0, Rota[1]);
-        Idle();
         LevelGamePackMan.Instance.Character = this;
+        Idle();
     }
 
     public void Move(PacManMoveDir nDir)
@@ -111,6 +114,14 @@ public class MonoPacManCharacter : MonoBehaviour
         {
             Stop = false;
             Idle();
+        }
+
+        if(WaitBorn && LevelGamePackMan.Instance.Map.IsReady)
+        {
+            WaitBorn = false;
+
+            Current = LevelGamePackMan.Instance.Map.Pos2Block(transform.localPosition);
+            Debug.LogWarning("MonoPacManCharacter Current=" + Current);
         }
 
 

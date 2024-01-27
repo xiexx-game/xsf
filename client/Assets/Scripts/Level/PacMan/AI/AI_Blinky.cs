@@ -7,17 +7,21 @@
 // 说明：
 //
 //////////////////////////////////////////////////////////////////////////
+using UnityEngine;
 
 public class AI_Blinky : AI_Ghost
 {
     public override void OnBorn()
     {
         m_Ghost.MoveDir = PacManMoveDir.Left;
-        DoMove(true);
+        Debug.Log("AI_Blinky OnBorn");
+        DoMove(true);   
+        Debug.Log("AI_Blinky OnBorn state=" + m_nState);
     }
 
     public override PacManMapBlock GetTarget()
     {
+        Debug.Log("LevelGamePackMan.Instance.Character.Current" + LevelGamePackMan.Instance.Character.Current);
         return LevelGamePackMan.Instance.Character.Current;
     }
 }

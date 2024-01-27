@@ -88,7 +88,8 @@ public class Level : Singleton<Level>, IEventSink
     public uint CurrentLifeCount
     {
         get {
-            return (uint)PlayerPrefs.GetInt(G.PR_LIFE, (int)MaxLife);
+            return MaxLife;
+            //return (uint)PlayerPrefs.GetInt(G.PR_LIFE, (int)MaxLife);
         }
 
         set {

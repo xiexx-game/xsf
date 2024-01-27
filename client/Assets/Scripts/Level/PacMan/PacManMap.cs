@@ -77,6 +77,8 @@ public class PacManMap
     public const float XOffset = (SINGLE_BLOCK_SIZE * MAX_COL) / 2;
     public const float YOffset = (SINGLE_BLOCK_SIZE * MAX_ROW) / 2;
 
+    public bool IsReady { get; private set; }
+
     public PacManMap()
     {
         m_Blocks = new List<PacManMapBlock>();
@@ -276,6 +278,8 @@ public class PacManMap
                 }
             }
         }
+
+        IsReady = true;
     }
 
     public int XPos2Col(float x)
@@ -294,19 +298,24 @@ public class PacManMap
         {
             GameObject.Destroy(m_Blocks[i].go);
         }
+
+        IsReady = false;
     }
 
     public PacManMapBlock GetBlock(int row, int col)
     {
         var index = LevelDef.GetBlockIndex(row, col, MAX_COL);
+        //Debug.Log($"GetBlock index={index}");
         return GetBlockByIndex(index);
     }
 
     public PacManMapBlock GetBlockByIndex(int index)
     {
+        //Debug.Log($"GetBlockByIndex index={index} m_Blocks.Count={m_Blocks.Count}");
         if (index < 0 || index >= m_Blocks.Count)
             return null;
 
+        //Debug.Log($"GetBlockByIndex m_Blocks[index]={m_Blocks[index]}");
         return m_Blocks[index];
     }
 
@@ -317,6 +326,7 @@ public class PacManMap
     {
         int col = XPos2Col(pos.x);
         int row = YPos2Row(pos.y);
+        //Debug.Log($"Pos2Block col={col}, row={row}");
         if(col < 0 || col >= MAX_COL) {
             return null;
         }
@@ -353,6 +363,7 @@ public class PacManMap
 
         PacManPathNode endNode = new PacManPathNode();
         endNode.block = endBlock;
+        Debug.Log($"FindPath endNode.block={endNode.block}");
 
         List<PacManPathNode> CheckResult = new List<PacManPathNode>();
         CheckResult.Add(startNode);

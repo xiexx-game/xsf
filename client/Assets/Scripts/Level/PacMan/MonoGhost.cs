@@ -101,6 +101,8 @@ public class MonoGhost : MonoBehaviour
         default:
             break;
         }
+
+        m_AI.Init(this);
     }
 
     public void SetViewType(GhostViewType nType)
@@ -170,6 +172,10 @@ public class MonoGhost : MonoBehaviour
             }
         }
 
-        m_AI.OnUpdate();
+        if(GType == GhostType.Blinky)
+        {
+            m_AI.OnUpdate();
+        }
+        
     }
 }

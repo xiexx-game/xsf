@@ -13,6 +13,7 @@ using System.Collections.Generic;
 public enum AIState
 {
     None = 0,
+    WaitReady,
     Born,
     MoveInPath,
     MoveForward,
@@ -33,8 +34,9 @@ public abstract class AI_Ghost
 
     public void Init(MonoGhost ghost)
     {
-        m_nState = AIState.Born;
+        m_nState = AIState.WaitReady;
         m_Ghost = ghost;
+        m_path = new List<PacManMapBlock>();
     }
 
     public abstract void OnBorn();
@@ -51,12 +53,14 @@ public abstract class AI_Ghost
             else
             {
                 var DirReverse = LevelGamePackMan.Instance.Map.DirReverse(m_Ghost.MoveDir);
+                Debug.Log($"DoMove m_Ghost.MoveDir={m_Ghost.MoveDir}, DirReverse={DirReverse}");
                 for(int i = 0; i < m_Current.ConnectIndex.Length; i++)
                 {
                     if((int)DirReverse != i && m_Current.ConnectIndex[i] > 0)
                     {
                         m_Ghost.MoveDir = (PacManMoveDir)i;
                         m_Target = LevelGamePackMan.Instance.Map.GetBlockByIndex(m_Current.ConnectIndex[i]);
+                        Debug.Log($"DoMove m_Target={m_Target}, m_Ghost.MoveDir={m_Ghost.MoveDir}");
                         break;
                     }
                 }
@@ -72,11 +76,22 @@ public abstract class AI_Ghost
 
     public void OnUpdate()
     {
+        Debug.Log("======== AI_Ghost m_nState=" + m_nState + ", m_Ghost GType=" + m_Ghost.GType);
         switch(m_nState)
         {
+        case AIState.WaitReady:
+            {
+                if(LevelGamePackMan.Instance.Map.IsReady)
+                {
+                    m_nState = AIState.Born;
+                }
+            }
+            break;
+
         case AIState.Born:
             {
                 m_Current = LevelGamePackMan.Instance.Map.Pos2Block(m_Ghost.transform.localPosition);
+                Debug.Log("AIState.Born =" + m_Current.Index);
                 m_Ghost.transform.localPosition = new Vector3(m_Current.pos.x, m_Current.pos.y, m_Ghost.PosZ);
                 OnBorn();
             }
@@ -117,6 +132,7 @@ public abstract class AI_Ghost
                         m_nPathIndex ++;
                         if(m_nPathIndex >= m_path.Count)
                         {
+                            Debug.Log("MoveInPath end ...");
                             DoMove(true);
                         }
                         else
@@ -160,7 +176,7 @@ public abstract class AI_Ghost
                 {
                     end.z = m_Ghost.PosZ;
                     m_Ghost.transform.localPosition = end;
-
+                    Debug.Log($"Move Forward end ..., m_Current={m_Current}");
                     DoMove(true);
                 }
             }

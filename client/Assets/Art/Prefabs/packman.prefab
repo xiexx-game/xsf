@@ -1370,6 +1370,10 @@ PrefabInstance:
       propertyPath: BornPos.z
       value: -0.3
       objectReference: {fileID: 0}
+    - target: {fileID: 2498980237374325434, guid: 9e8333e1e10314e26a1e7656262a126c, type: 3}
+      propertyPath: MoveSpeed
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8684916906224878640, guid: 9e8333e1e10314e26a1e7656262a126c, type: 3}
       propertyPath: m_Name
       value: Blinky
@@ -1459,6 +1463,10 @@ PrefabInstance:
       propertyPath: BornPos.z
       value: -0.2
       objectReference: {fileID: 0}
+    - target: {fileID: 365182919216757952, guid: 19e7d43c402854559b4f08f10157e2d8, type: 3}
+      propertyPath: MoveSpeed
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8967615168260701335, guid: 19e7d43c402854559b4f08f10157e2d8, type: 3}
       propertyPath: m_LocalPosition.z
       value: -0.01
@@ -1469,7 +1477,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8967615168266331886, guid: 19e7d43c402854559b4f08f10157e2d8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.096
+      value: 0.512
       objectReference: {fileID: 0}
     - target: {fileID: 8967615168266331886, guid: 19e7d43c402854559b4f08f10157e2d8, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1620,6 +1628,10 @@ PrefabInstance:
       value: -0.4
       objectReference: {fileID: 0}
     - target: {fileID: 2498980237374325434, guid: 9e8333e1e10314e26a1e7656262a126c, type: 3}
+      propertyPath: GType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2498980237374325434, guid: 9e8333e1e10314e26a1e7656262a126c, type: 3}
       propertyPath: EyeSpeed
       value: 5
       objectReference: {fileID: 0}
@@ -1719,6 +1731,10 @@ PrefabInstance:
     - target: {fileID: 2498980237374325434, guid: 9e8333e1e10314e26a1e7656262a126c, type: 3}
       propertyPath: PosZ
       value: -0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2498980237374325434, guid: 9e8333e1e10314e26a1e7656262a126c, type: 3}
+      propertyPath: GType
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2498980237374325434, guid: 9e8333e1e10314e26a1e7656262a126c, type: 3}
       propertyPath: EyeSpeed
@@ -1824,6 +1840,10 @@ PrefabInstance:
     - target: {fileID: 2498980237374325434, guid: 9e8333e1e10314e26a1e7656262a126c, type: 3}
       propertyPath: PosZ
       value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2498980237374325434, guid: 9e8333e1e10314e26a1e7656262a126c, type: 3}
+      propertyPath: GType
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2498980237374325434, guid: 9e8333e1e10314e26a1e7656262a126c, type: 3}
       propertyPath: EyeSpeed
