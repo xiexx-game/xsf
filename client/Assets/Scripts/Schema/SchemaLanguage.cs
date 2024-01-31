@@ -44,7 +44,7 @@ public class SchemaLanguage : ISchema
 			scp.sValue = (csv.GetData((int)CSVDataType.String, i, (int)CSVIndex.ScpLanguage_value) as CSVData_String).sValue;	// 值
 //_CSV_LIST_END_
 
-            scp.sValue = scp.sValue.Replace("[comma]", ",");
+            scp.sValue = scp.sValue.Replace("[-c]", ",");
 
             //* 使用字典
             if (m_Datas.ContainsKey(scp.sKey))

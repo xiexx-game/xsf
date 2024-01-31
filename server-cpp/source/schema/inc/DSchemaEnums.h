@@ -35,7 +35,7 @@ enum EMHeroType
 	HeroType_Max = 3,	// 最大值
 };
 
-// 英雄类型
+// 英雄测试类型
 enum EMTestType
 {
 	TestType_None = 0,	// 空

@@ -27,6 +27,13 @@ namespace XSFTools
         public SchemaType nType;
         public int ClientLoad;
         public int ServerLoad;
+
+        public List<string> ExSheets;
+
+        public ConfigData()
+        {
+            ExSheets = new List<string>();
+        }
     }
 
     public class SchemaTools
@@ -41,71 +48,71 @@ namespace XSFTools
 
             Dictionary<string, int> Enums = EnumExport();
 
-            string sLoadXml = Helper.Instance.ConfigDir + "/Load.xml";
-            if(Directory.Exists(sClientOutput))
-            {
-                File.Copy(sLoadXml, sClientOutput + "/Load.xml", true);
-            }
-            
-            if(Directory.Exists(sServerOutput)) {
-                File.Copy(sLoadXml, sServerOutput + "/Load.xml", true);
-            }
-
-            if(Directory.Exists(sCppOutput)) {
-                File.Copy(sLoadXml, sCppOutput + "/Load.xml", true);
-            }
-
-            string sLoadContent = File.ReadAllText(sLoadXml);
-
-            XMLReader reader = new XMLReader();
-            reader.Read(sLoadContent);
+            string sLoadXlsx = Helper.Instance.ConfigDir + "/Load.xlsx";
+            Helper.Instance.Logger.Log("准备导出Load配置:" + sLoadXlsx);
+            XSSFWorkbook workbook = new XSSFWorkbook(sLoadXlsx);
+            XSSFSheet sheet = (XSSFSheet)workbook.GetSheetAt(0);
 
             Dictionary<string, ConfigData> Configs = new Dictionary<string, ConfigData>();
-            
-            XmlNodeList nodeList = reader.mRootNode.ChildNodes;
-            for (int i = 0; i < nodeList.Count; ++i)
+
+            string xmlContent = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<root>\n";
+
+            for(int r = 1; r <= sheet.LastRowNum; r ++)
             {
-                XmlElement ele = nodeList[i] as XmlElement;
+                var row = sheet.GetRow(r);
 
                 ConfigData cd = new ConfigData();
 
-                cd.ID = XMLReader.GetUInt(ele, "id");
-                cd.Name = XMLReader.GetString(ele, "name");
+                int c = 0;
+                
+                cd.ID = System.Convert.ToUInt32(row.GetCell(c++).ToString());
+                cd.Desc = row.GetCell(c++).ToString();
+                cd.nType = (SchemaType)System.Convert.ToUInt32(row.GetCell(c++).ToString());
+                cd.Name = row.GetCell(c++).ToString();
 
-                cd.Desc = XMLReader.GetString(ele, "desc");
+                string temp = row.GetCell(c++).ToString();
+                if(!string.IsNullOrEmpty(temp))
+                {
+                    cd.ColTable = System.Convert.ToInt32(temp);
+                }
 
-                cd.ClientLoad = XMLReader.GetInt(ele, "client");
-                cd.ServerLoad = XMLReader.GetInt(ele, "server");
-                cd.ColTable = XMLReader.GetInt(ele, "col_table");
+                temp = row.GetCell(c++).ToString();
+                if(!string.IsNullOrEmpty(temp))
+                {
+                    cd.ClientLoad = System.Convert.ToInt32(temp);
+                }
 
-                cd.nType = (SchemaType)XMLReader.GetUInt(ele, "type");
-                if(cd.nType == SchemaType.XML) 
-                {   
-                    string sSrcXml = Helper.Instance.ConfigDir + $"/{cd.Name}.xml";
+                temp = row.GetCell(c++).ToString();
+                if(!string.IsNullOrEmpty(temp))
+                {
+                    cd.ServerLoad = System.Convert.ToInt32(temp);
+                }
 
-                    if(cd.ClientLoad > 0)
-                    {
-                        if(Directory.Exists(sClientOutput))
-                        {
-                            File.Copy(sSrcXml, sClientOutput + $"/{cd.Name}.xml", true);
-                        }
-                    }
-
-                    if(cd.ServerLoad > 0)
-                    {
-                        if(Directory.Exists(sServerOutput))
-                        {
-                            File.Copy(sSrcXml, sServerOutput + $"/{cd.Name}.xml", true);
-                        }
-
-                        if(Directory.Exists(sCppOutput))
-                        {
-                            File.Copy(sSrcXml, sCppOutput + $"/{cd.Name}.xml", true);
-                        }
-                    }
+                xmlContent += $"\t<Schema id=\"{cd.ID}\" desc=\"{cd.Desc}\" type=\"{(int)cd.nType}\" name=\"{cd.Name}\" col_table=\"{cd.ColTable}\" client=\"{cd.ClientLoad}\" server=\"{cd.ServerLoad}\" />\n";
+                
+                string ex = row.GetCell(c++).ToString();
+                if(!string.IsNullOrEmpty(ex))
+                {
+                    string [] exData = ex.Split(",");
+                    cd.ExSheets.AddRange(exData);
                 }
 
                 Configs.Add(cd.Name, cd);
+            }
+
+            xmlContent += "</root>";
+
+            if(Directory.Exists(sClientOutput))
+            {
+                File.WriteAllText(sClientOutput + "/Load.xml", xmlContent);
+            }
+            
+            if(Directory.Exists(sServerOutput)) {
+                File.WriteAllText(sServerOutput + "/Load.xml", xmlContent);
+            }
+
+            if(Directory.Exists(sCppOutput)) {
+                File.WriteAllText(sCppOutput + "/Load.xml", xmlContent);
             }
 
             ExcelExport(Enums, Configs, sClientOutput, sServerOutput, sCppOutput);
@@ -127,101 +134,115 @@ namespace XSFTools
             bool sExist = File.Exists(SEnumPath);
             bool cppExist = File.Exists(CppEnumPath);
 
-            string sEnumXml = Helper.Instance.ConfigDir + "/Enum.xml";
-            string sEnumContent = File.ReadAllText(sEnumXml);
-            XMLReader reader = new XMLReader();
-            reader.Read(sEnumContent);
+            string sEnumXlsx = Helper.Instance.ConfigDir + "/Enum.xlsx";
+            Helper.Instance.Logger.Log("准备生成枚举代码:" + sEnumXlsx);
+            XSSFWorkbook workbook = new XSSFWorkbook(sEnumXlsx);
+            XSSFSheet sheet = (XSSFSheet)workbook.GetSheetAt(0);
 
-            XmlNodeList nodeList = reader.mRootNode.ChildNodes;
+            XSSFRow row = (XSSFRow)sheet.GetRow(0);
+            Helper.Instance.Logger.Log($"枚举表, 总共 {sheet.LastRowNum+1}行，4列");
 
             string cStr = "";
             string sStr = "";
             string cppStr = "";
-            for (int i = 0; i < nodeList.Count; ++i)
+
+            string EnumName = "";
+            int nValue = 0;
+            int nIndex = 0;
+            for(int r = 1; r <= sheet.LastRowNum; r ++)
             {
-                XmlElement ele = nodeList[i] as XmlElement;
-                string name = XMLReader.GetString(ele, "name");
-                string desc = XMLReader.GetString(ele, "desc");
-
-                if(cExist)
+                row = (XSSFRow)sheet.GetRow(r);
+                string name = row.GetCell(0).StringCellValue;
+                if(!string.IsNullOrEmpty(name))
                 {
-                    cStr += $"// {desc}\n";
-                    cStr += $"public enum {name}\n" + "{\n";
-                }
+                    EnumName = name;
+                    nValue = 0;
+                    nIndex = 0;
+                    string desc = row.GetCell(2).StringCellValue;
 
-                if(sExist)
-                {
-                    sStr += $"// {desc}\n";
-                    sStr += $"public enum {name}\n" + "{\n";
-                }
+                    //Helper.Instance.Logger.Log($"enum name={EnumName}, desc={desc}");
 
-                if(cppExist)
-                {
-                    cppStr += $"// {desc}\n";
-                    cppStr += $"enum EM{name}\n" + "{\n";
-                }
-
-                var enums = ele.ChildNodes;
-                int nValue = 0;
-                for(int J = 0; J < enums.Count; J ++)
-                {
-                    XmlElement subE = enums[J] as XmlElement;
-                    //<item name="None" desc="空" value="0" />
-                    string ename = XMLReader.GetString(subE, "name");
-                    string edesc = XMLReader.GetString(subE, "desc");
-                    string evalue = XMLReader.GetString(subE, "value");
-
-                    if(string.IsNullOrEmpty(evalue))
                     {
-                        if(J < nValue)
+                        if(!string.IsNullOrEmpty(cStr))
+                        {
+                            cStr += "}\n\n";
+                        }
+
+                        cStr += $"// {desc}\n";
+                        cStr += $"public enum {EnumName}\n" + "{\n";
+                    }
+
+                    {
+                        if(!string.IsNullOrEmpty(sStr))
+                        {
+                            sStr += "}\n\n";
+                        }
+
+                        sStr += $"// {desc}\n";
+                        sStr += $"public enum {EnumName}\n" + "{\n";
+                    }
+
+                    {
+                        if(!string.IsNullOrEmpty(cppStr))
+                        {
+                            cppStr += "};\n\n";
+                        }
+
+                        cppStr += $"// {desc}\n";
+                        cppStr += $"enum EM{EnumName}\n" + "{\n";
+                    }
+
+                    continue;
+                }
+
+                string subName = row.GetCell(1).StringCellValue;
+                if(!string.IsNullOrEmpty(subName))
+                {
+                    string subDesc = row.GetCell(2).ToString();
+                    string eValue = row.GetCell(3).ToString();
+
+                    if(string.IsNullOrEmpty(eValue))
+                    {
+                        if(nIndex < nValue)
                         {
                             nValue ++;
                         }
                         else
                         {
-                            nValue = J;
+                            nValue = nIndex;
                         }
                     }
                     else
                     {
-                        nValue = System.Convert.ToInt32(evalue);
+                        nValue = System.Convert.ToInt32(eValue);
                     }
 
-                    string key = $"{name}.{ename}";
-
-                    //Helper.Instance.Logger.Log($"key={key}, v={nValue}");
+                    string key = $"{EnumName}.{subName}";
+                    //Helper.Instance.Logger.Log( "enum key=" + key);
                     result.Add(key, nValue);
 
-                    if(cExist)
-                    {
-                        cStr += $"\t{ename} = {nValue},\t// {edesc}\n";
-                    }
-
-                    if(sExist)
-                    {
-                        sStr += $"\t{ename} = {nValue},\t// {edesc}\n";
-                    }
-
-                    if(cppExist)
-                    {
-                        cppStr += $"\t{name}_{ename} = {nValue},\t// {edesc}\n";
-                    }
+                    cStr += $"\t{subName} = {nValue},\t// {subDesc}\n";
+                    sStr += $"\t{subName} = {nValue},\t// {subDesc}\n";
+                    cppStr += $"\t{EnumName}_{subName} = {nValue},\t// {subDesc}\n";
+                    nIndex ++;
                 }
+            }
 
-                if(cExist)
-                {
-                    cStr += "}\n\n";
-                }
+            if(!string.IsNullOrEmpty(cStr))
+            {
+                cStr += "}\n\n";
+            }
 
-                if(sExist)
-                {
-                    sStr += "}\n\n";
-                }
 
-                if(cppExist)
-                {
-                    cppStr += "};\n\n";
-                }
+            if(!string.IsNullOrEmpty(sStr))
+            {
+                sStr += "}\n\n";
+            }
+
+
+            if(!string.IsNullOrEmpty(cppStr))
+            {
+                cppStr += "};\n\n";
             }
 
             if(cExist)
@@ -248,11 +269,14 @@ namespace XSFTools
             FileInfo[] files = di.GetFiles("*.xlsx");
             for(int i = 0; i < files.Length; i ++)
             {
+                if(files[i].FullName.Contains("Load.xlsx") || files[i].FullName.Contains("Enum.xlsx"))
+                    continue;
+
                 Helper.Instance.Logger.Log("准备导出配置:" + files[i].FullName);
+
                 XSSFWorkbook workbook = new XSSFWorkbook(files[i].FullName);
                 XSSFSheet sheet = (XSSFSheet)workbook.GetSheetAt(0);
                 
-
                 ConfigData cd = null;
                 if(configs.TryGetValue(sheet.SheetName, out cd))
                 {
@@ -270,6 +294,25 @@ namespace XSFTools
                             {
                                 ExportColTable(enums, cd, sheet, sheet.LastRowNum+1, sClientOutput, sServerOutput, sCppOutput);
                             }
+
+                            string srcName = cd.Name;
+                            // 导出额外的表单
+                            for(int J = 0; J < cd.ExSheets.Count; J ++ )
+                            {
+                                XSSFSheet exSheet = (XSSFSheet)workbook.GetSheet(cd.ExSheets[J]);
+                                if(exSheet != null)
+                                {
+                                    cd.Name = cd.ExSheets[J];
+                                    ExportColTable(enums, cd, exSheet, exSheet.LastRowNum+1, sClientOutput, sServerOutput, sCppOutput);
+                                }
+                                else
+                                {
+                                    Helper.Instance.Logger.LogError($"导出的表单不存在, name=" + cd.ExSheets[J]);
+                                }
+                            }
+
+                            cd.Name = srcName;
+                            
                         }
                         else    // 行表
                         {
@@ -283,26 +326,34 @@ namespace XSFTools
                             {
                                 ExportTable(enums, cd, sheet, row.LastCellNum, sClientOutput, sServerOutput, sCppOutput);
                             }
+
+                            string srcName = cd.Name;
+                            // 导出额外的表单
+                            for(int J = 0; J < cd.ExSheets.Count; J ++ )
+                            {
+                                XSSFSheet exSheet = (XSSFSheet)workbook.GetSheet(cd.ExSheets[J]);
+                                if(exSheet != null)
+                                {
+                                    cd.Name = cd.ExSheets[J];
+                                    ExportTable(enums, cd, exSheet, exSheet.LastRowNum+1, sClientOutput, sServerOutput, sCppOutput);
+                                }
+                                else
+                                {
+                                    Helper.Instance.Logger.LogError($"导出的表单不存在, name=" + cd.ExSheets[J]);
+                                }
+                            }
+
+                            cd.Name = srcName;
                         }
                     }
                     else
                     {
-                        Helper.Instance.Logger.Log($"表名：{sheet.SheetName} 未在Load.xml中配置导出项，跳过导出");
+                        Helper.Instance.Logger.Log($"表名：{sheet.SheetName} 未在Load.xlsx中配置导出项，跳过导出");
                     }   
                 }
                 else
                 {
-                    Helper.Instance.Logger.Log($"表名：{sheet.SheetName} 未在Load.xml中配置，按行表导出");
-                    XSSFRow row = (XSSFRow)sheet.GetRow(2);
-                    Helper.Instance.Logger.Log($"行表：表名{sheet.SheetName}, 总共 {sheet.LastRowNum+1}行，{row.LastCellNum}列");
-                    if(sheet.LastRowNum < RTABLE_LAST_ROW)
-                    {
-                        Helper.Instance.Logger.LogError($"行表：表名{sheet.SheetName}, 格式错误，表头不足5行");
-                    }
-                    else
-                    {
-                        ExportTable(enums, cd, sheet, row.LastCellNum, sClientOutput, sServerOutput, sCppOutput);
-                    }
+                    Helper.Instance.Logger.Log($"表名：{sheet.SheetName} 未在Load.xlsx中配置，跳过");
                 }
             }
         }
@@ -334,6 +385,11 @@ namespace XSFTools
                         {
                             cellStr = v.ToString();
                         }
+                    }
+
+                    if(cellStr.Contains(","))
+                    {
+                        cellStr = cellStr.Replace(",", "[-c]");
                     }
 
                     if(ClientExport)
@@ -461,6 +517,11 @@ namespace XSFTools
                             {
                                 cellStr = v.ToString();
                             }
+                        }
+
+                        if(cellStr.Contains(","))
+                        {
+                            cellStr = cellStr.Replace(",", "[-c]");
                         }
 
                         if(ClientExport[c])

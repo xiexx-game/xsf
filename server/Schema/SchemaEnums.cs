@@ -29,7 +29,7 @@ public enum HeroType
 	Max = 3,	// 最大值
 }
 
-// 英雄类型
+// 英雄测试类型
 public enum TestType
 {
 	None = 0,	// 空

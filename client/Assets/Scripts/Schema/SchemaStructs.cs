@@ -53,6 +53,15 @@ public class ScpLanguage
 	public string sValue;	//值
 //ScpLanguage_END
 }
+
+//多语言配置
+public class ScpLanguage_TW
+{
+//ScpLanguage_TW_START
+	public string sKey;	//键
+	public string sValue;	//值
+//ScpLanguage_TW_END
+}
 // SCHEMA_STRUCT
 // 不要删除上面的标签，自动生成代码需要用到
 
