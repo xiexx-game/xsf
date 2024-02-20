@@ -123,14 +123,14 @@ public class LevelGamePackMan : LevelGame, ILoadingHandler
         var endBlock = Map.Pos2Block(end);
 
         //return;
-        List<PacManMapBlock> result = Map.FindPath(PacManMoveDir.Right, startBlock, endBlock);
+        //List<PacManMapBlock> result = Map.FindPath(PacManMoveDir.Right, startBlock, endBlock);
 
-        for(int i = 0; i < result.Count; i ++)
-        {
-            Debug.Log($"pos={result[i].scp.iRow}, {result[i].scp.iCol}");
-            var block = Map.GetBlock(result[i].scp.iRow, result[i].scp.iCol);
-            block.go.GetComponent<SpriteRenderer>().color = Color.yellow;
-        }
+        //for(int i = 0; i < result.Count; i ++)
+        //{
+        //    Debug.Log($"pos={result[i].scp.iRow}, {result[i].scp.iCol}");
+        //    var block = Map.GetBlock(result[i].scp.iRow, result[i].scp.iCol);
+        //    block.go.GetComponent<SpriteRenderer>().color = Color.yellow;
+        //}
     }
 
     public override void Enter()

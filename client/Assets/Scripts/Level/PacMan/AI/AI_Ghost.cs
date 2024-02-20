@@ -76,7 +76,7 @@ public abstract class AI_Ghost
 
     public void OnUpdate()
     {
-        Debug.Log("======== AI_Ghost m_nState=" + m_nState + ", m_Ghost GType=" + m_Ghost.GType);
+        //Debug.Log("======== AI_Ghost m_nState=" + m_nState + ", m_Ghost GType=" + m_Ghost.GType);
         switch(m_nState)
         {
         case AIState.WaitReady:
@@ -188,8 +188,8 @@ public abstract class AI_Ghost
                 m_path.Clear();
 
                 var map = LevelGamePackMan.Instance.Map;
-                var dir = map.DirReverse(LevelGamePackMan.Instance.Character.MoveDir);
-                var path = LevelGamePackMan.Instance.Map.FindPath(dir, m_Current, target);
+                var dir = map.DirReverse(m_Ghost.MoveDir);
+                var path = LevelGamePackMan.Instance.Map.FindPath(dir, m_Current, target, m_Ghost.ShowPath);
                 m_path.AddRange(path);
                 m_nPathIndex = 1;
 

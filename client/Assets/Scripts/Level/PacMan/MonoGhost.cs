@@ -58,10 +58,14 @@ public class MonoGhost : MonoBehaviour
 
     public float PosZ;
 
+    public bool ShowPath;
+
     private PacManMoveDir m_MoveDir;
     public PacManMoveDir MoveDir {
         set {
             m_MoveDir = value;
+
+            //Debug.LogWarning($"Ghost MoveDir={m_MoveDir}");
 
             switch(m_MoveDir)
             {

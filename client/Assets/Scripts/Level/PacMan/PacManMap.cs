@@ -350,7 +350,8 @@ public class PacManMap
         }
     }
 
-    public List<PacManMapBlock> FindPath(PacManMoveDir enterDir, PacManMapBlock startBlock, PacManMapBlock endBlock)
+    private List<PacManMapBlock> m_LastPath;
+    public List<PacManMapBlock> FindPath(PacManMoveDir enterDir, PacManMapBlock startBlock, PacManMapBlock endBlock, bool showPath)
     {
         OpenList.Clear();
         CloseList.Clear();
@@ -363,7 +364,7 @@ public class PacManMap
 
         PacManPathNode endNode = new PacManPathNode();
         endNode.block = endBlock;
-        Debug.Log($"FindPath endNode.block={endNode.block}");
+        //Debug.LogWarning($"FindPath endNode.block={endNode.block.Index} enterDir={enterDir}");
 
         List<PacManPathNode> CheckResult = new List<PacManPathNode>();
         CheckResult.Add(startNode);
@@ -395,6 +396,26 @@ public class PacManMap
         }
 
         result.Reverse();
+
+        if(showPath)
+        {
+            if(m_LastPath != null)
+            {
+                for(int i = 0; i < m_LastPath.Count; i ++)
+                {
+                var block = GetBlock(m_LastPath[i].scp.iRow, m_LastPath[i].scp.iCol);
+                block.go.GetComponent<SpriteRenderer>().color = Color.white;
+                }
+            }
+
+            m_LastPath = result;
+            for(int i = 0; i < m_LastPath.Count; i ++)
+            {
+                Debug.Log($"pos={m_LastPath[i].scp.iRow}, {m_LastPath[i].scp.iCol}");
+                var block = GetBlock(m_LastPath[i].scp.iRow, m_LastPath[i].scp.iCol);
+                block.go.GetComponent<SpriteRenderer>().color = Color.yellow;
+            }
+        }
 
         return result;
     }
