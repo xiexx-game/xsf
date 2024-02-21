@@ -12,7 +12,7 @@ public class AI_Clyde : AI_Ghost
 {
     public override void OnBorn()
     {
-
+        m_nState = AIState.IdleRight;
     }
 
     public override PacManMapBlock GetTarget()

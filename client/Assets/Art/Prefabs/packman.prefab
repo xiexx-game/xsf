@@ -1647,6 +1647,10 @@ PrefabInstance:
       propertyPath: BornPos.z
       value: -0.4
       objectReference: {fileID: 0}
+    - target: {fileID: 2498980237374325434, guid: 9e8333e1e10314e26a1e7656262a126c, type: 3}
+      propertyPath: MoveSpeed
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8684916905389056513, guid: 9e8333e1e10314e26a1e7656262a126c, type: 3}
       propertyPath: m_Color.b
       value: 1
@@ -1751,6 +1755,10 @@ PrefabInstance:
     - target: {fileID: 2498980237374325434, guid: 9e8333e1e10314e26a1e7656262a126c, type: 3}
       propertyPath: BornPos.z
       value: -0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2498980237374325434, guid: 9e8333e1e10314e26a1e7656262a126c, type: 3}
+      propertyPath: MoveSpeed
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8684916905389056513, guid: 9e8333e1e10314e26a1e7656262a126c, type: 3}
       propertyPath: m_Color.b
@@ -1860,6 +1868,10 @@ PrefabInstance:
     - target: {fileID: 2498980237374325434, guid: 9e8333e1e10314e26a1e7656262a126c, type: 3}
       propertyPath: BornPos.z
       value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2498980237374325434, guid: 9e8333e1e10314e26a1e7656262a126c, type: 3}
+      propertyPath: MoveSpeed
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8684916905389056513, guid: 9e8333e1e10314e26a1e7656262a126c, type: 3}
       propertyPath: m_Color.b

@@ -13,7 +13,7 @@ public class AI_Pinky : AI_Ghost
 {
     public override void OnBorn()
     {
-
+        m_nState = AIState.GoOut2End;
     }
 
     public override PacManMapBlock GetTarget()

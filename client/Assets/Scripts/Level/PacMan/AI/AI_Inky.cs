@@ -12,7 +12,7 @@ public class AI_Inky : AI_Ghost
 {
     public override void OnBorn()
     {
-
+        m_nState = AIState.IdleLeft;
     }
 
     public override PacManMapBlock GetTarget()

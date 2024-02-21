@@ -176,7 +176,7 @@ public class MonoGhost : MonoBehaviour
             }
         }
 
-        if(GType == GhostType.Blinky)
+        //if(GType == GhostType.Blinky)
         {
             m_AI.OnUpdate();
         }

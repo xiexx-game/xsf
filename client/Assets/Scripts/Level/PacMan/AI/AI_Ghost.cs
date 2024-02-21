@@ -18,6 +18,11 @@ public enum AIState
     MoveInPath,
     MoveForward,
     Think,
+    IdleRight,
+    IdleLeft,
+    GoOut2Start,
+    GoOut2End,
+    GoOutDone,
     Max,
 }
 
@@ -31,6 +36,12 @@ public abstract class AI_Ghost
     protected PacManMapBlock m_Target;
     protected List<PacManMapBlock> m_path;
     protected int m_nPathIndex;
+
+    protected readonly Vector3 OutStart = new Vector3(0.0199999996f,0.379999995f,-0.400000006f);
+    protected readonly Vector3 OutEnd = new Vector3(0.0199999996f,1.49000001f,-0.400000006f);
+
+    protected readonly Vector3 RoomRight = new Vector3(0.75999999f,0.379999995f,-0.400000006f);
+    protected readonly Vector3 RoomLeft = new Vector3(-0.74000001f,0.379999995f,-0.400000006f);
 
     public void Init(MonoGhost ghost)
     {
@@ -74,6 +85,28 @@ public abstract class AI_Ghost
         }
     }
 
+    private void Move2Pos(Vector3 target, AIState endState)
+    {
+        var start = m_Ghost.transform.localPosition; start.z = 0;
+        var end = target; end.z = 0;
+        var dir = (end - start).normalized;
+        float dis = Vector3.Distance(start, end);
+        float disMove = m_Ghost.MoveSpeed * Time.deltaTime;
+
+        if(dis > disMove)
+        {
+            Vector3 pos = start + disMove * dir;
+            pos.z = m_Ghost.PosZ;
+            m_Ghost.transform.localPosition = pos;
+        }
+        else
+        {
+            end.z = m_Ghost.PosZ;
+            m_Ghost.transform.localPosition = end;
+            m_nState = endState;
+        }
+    }
+
     public void OnUpdate()
     {
         //Debug.Log("======== AI_Ghost m_nState=" + m_nState + ", m_Ghost GType=" + m_Ghost.GType);
@@ -94,6 +127,41 @@ public abstract class AI_Ghost
                 Debug.Log("AIState.Born =" + m_Current.Index);
                 m_Ghost.transform.localPosition = new Vector3(m_Current.pos.x, m_Current.pos.y, m_Ghost.PosZ);
                 OnBorn();
+            }
+            break;
+
+        case AIState.IdleRight:  
+            {
+                m_Ghost.MoveDir = PacManMoveDir.Right;
+                Move2Pos(RoomRight, AIState.IdleLeft);
+            }
+            break;
+
+        case AIState.IdleLeft:
+            {
+                m_Ghost.MoveDir = PacManMoveDir.Left;
+                Move2Pos(RoomLeft, AIState.IdleRight);
+            }
+            break;
+
+        case AIState.GoOut2Start:
+            {
+
+            }
+            break;
+
+        case AIState.GoOut2End:
+            {
+                m_Ghost.MoveDir = PacManMoveDir.Up;
+                Move2Pos(OutEnd, AIState.GoOutDone);
+            }
+            break;
+
+        case AIState.GoOutDone:
+            {
+                m_Current = LevelGamePackMan.Instance.Map.Pos2Block(m_Ghost.transform.localPosition);
+                m_Ghost.MoveDir = PacManMoveDir.Left;
+                DoMove(true); 
             }
             break;
 
