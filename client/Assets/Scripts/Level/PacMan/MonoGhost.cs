@@ -81,9 +81,10 @@ public class MonoGhost : MonoBehaviour
             return m_MoveDir;
         }
     }
-    public float MoveSpeed;
 
-    private AI_Ghost m_AI;
+    public AI_Ghost m_AI;
+
+    public SpeedManager Speed;
 
     void Awake()
     {
@@ -91,6 +92,9 @@ public class MonoGhost : MonoBehaviour
 
         transform.localPosition = BornPos;
         InitAI();
+
+        Speed = new SpeedManager();
+        Speed.Init(true);
     }
 
     void InitAI()
@@ -180,6 +184,8 @@ public class MonoGhost : MonoBehaviour
         {
             m_AI.OnUpdate();
         }
+
+        Speed.Update();
         
     }
 }

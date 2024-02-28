@@ -14,6 +14,8 @@ public enum GlobalID
 	RowScore = 1,		//一行消除的分数
 	ScoreAddition = 2,		//分数加成
 	MaxLifeCount = 3,		//最大生命值
+	SpeedDownTime = 4,		//吃豆人赤豆减速时间
+	StdSpeed = 5,		//标准移动速度
 //GLOBAL_ID_END
 }
 
@@ -59,7 +61,13 @@ public enum CSVIndex
 	ScpSnakeLevels_FoodScore = 3,
 
 	ScpPacManLevels_id = 0,
-	ScpPacManLevels_MoveInterval = 1,
+	ScpPacManLevels_MoveSpeed = 1,
+	ScpPacManLevels_BeanMoveSpeed = 2,
+	ScpPacManLevels_EnergyMoveSpeed = 3,
+	ScpPacManLevels_GhostSpeed = 4,
+	ScpPacManLevels_GhostTunnelMoveSpeed = 5,
+	ScpPacManLevels_EnergyGhostSpeed = 6,
+	ScpPacManLevels_EnergyTime = 7,
 
 	ScpPacManMap_Row = 0,
 	ScpPacManMap_Col = 1,

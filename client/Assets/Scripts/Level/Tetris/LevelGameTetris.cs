@@ -185,29 +185,6 @@ public class LevelGameTetris : LevelGame, ILoadingHandler, IBlockDisappearEvent
 
     public override void OnUpdate()
     {
-#if UNITY_EDITOR
-        if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            Change();
-        }
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            MoveLeft();
-        }
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            MoveRight();
-        }
-        if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            MoveDown();
-        }
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Ultra();
-        }
-#endif
-
         switch (m_nStatus)
         {
         case GameStatus.CreateTetris:
@@ -469,7 +446,7 @@ public class LevelGameTetris : LevelGame, ILoadingHandler, IBlockDisappearEvent
         }
     }
 
-    public override void MoveLeft()
+    public override void DoLeft()
     {
         if(m_nStatus != GameStatus.Play)
         {
@@ -483,7 +460,7 @@ public class LevelGameTetris : LevelGame, ILoadingHandler, IBlockDisappearEvent
         }
     }
 
-    public override void MoveRight()
+    public override void DoRight()
     {
         if(m_nStatus != GameStatus.Play)
         {
@@ -497,12 +474,12 @@ public class LevelGameTetris : LevelGame, ILoadingHandler, IBlockDisappearEvent
         }
     }
 
-    public override void MoveDown()
+    public override void DoDown()
     {
         TetrisMoveDown();
     }
 
-    public override void Change()
+    public override void DoUp()
     {
         if(m_nStatus != GameStatus.Play)
         {
@@ -759,7 +736,7 @@ public class LevelGameTetris : LevelGame, ILoadingHandler, IBlockDisappearEvent
         return true;
     }
 
-    public override void Ultra()
+    public override void DoUltra()
     {
         if(m_nStatus != GameStatus.Play)
         {

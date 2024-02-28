@@ -11,6 +11,8 @@ using UnityEngine;
 
 public class AI_Blinky : AI_Ghost
 {
+    public override BlockType SetType { get { return BlockType.GhostBlinky; } }
+    
     public override void OnBorn()
     {
         m_Ghost.MoveDir = PacManMoveDir.Left;

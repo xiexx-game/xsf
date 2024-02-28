@@ -95,12 +95,6 @@ public class LevelGamePackMan : LevelGame, ILoadingHandler
         load.AASName = m_GameScp.sarSceneObjects[load.LoadingID];
         LoadingManager.Instance.AddLoading(load);
 
-        // load = new LoadingGameObject();
-        // load.Handler = this;
-        // load.LoadingID = (int)ObjID.Block;
-        // load.AASName = m_GameScp.sarSceneObjects[load.LoadingID];
-        // LoadingManager.Instance.AddLoading(load);
-
         for(int i = 0; i < m_GameScp.arShowUIs.Length; i ++)
         {
             var loadUI = new LoadingUI();
@@ -136,7 +130,7 @@ public class LevelGamePackMan : LevelGame, ILoadingHandler
     public override void Enter()
     {
         GameSocre = 0;
-
+        m_nStatus = GameStatus.Play;
         AudioManager.Instance.PlayBGM(BGMID.Snake);
     }
 
@@ -172,25 +166,6 @@ public class LevelGamePackMan : LevelGame, ILoadingHandler
 
     public override void OnUpdate()
     {
-#if UNITY_EDITOR
-        if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            Change();
-        }
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            MoveLeft();
-        }
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            MoveRight();
-        }
-        if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            MoveDown();
-        }
-#endif
-
         switch(m_nStatus)
         {
         case GameStatus.Play:
@@ -212,40 +187,209 @@ public class LevelGamePackMan : LevelGame, ILoadingHandler
 
     }
 
+    public void GameOver()
+    {
+        m_nStatus = GameStatus.End;
+    }
+
     public void OnGoLoadingDone(int id, GameObject go)
     {
         m_SceneObj[id] = go;
         
     }
 
-    public override void MoveLeft()
+    public override void DoLeft()
     {
         if(m_nStatus != GameStatus.Play)
             return;
+
+        var current = Character.Current;
+        var currentDir = Character.MoveDir;
+
+        var leftIndex = current.ConnectIndex[(int)PacManMoveDir.Left];
+        if(leftIndex > 0)
+        {
+            var block = Map.GetBlockByIndex(leftIndex);
+            Character.Move(PacManMoveDir.Left, block.pos);
+        }
+        else
+        {
+            if(currentDir == PacManMoveDir.Up)
+            {
+                var upIndex = current.ConnectIndex[(int)PacManMoveDir.Up];
+                if(upIndex > 0)
+                {
+                    var upBlock = Map.GetBlockByIndex(upIndex);
+                    var upLeftIndex = upBlock.ConnectIndex[(int)PacManMoveDir.Left];
+                    if(upLeftIndex > 0)
+                    {
+                        var block = Map.GetBlockByIndex(upLeftIndex);
+                        Character.Move(PacManMoveDir.Left, block.pos);
+                    }
+                }
+            }
+            else if(currentDir == PacManMoveDir.Down)
+            {
+                var downIndex = current.ConnectIndex[(int)PacManMoveDir.Down];
+                if(downIndex > 0)
+                {
+                    var downBlock = Map.GetBlockByIndex(downIndex);
+                    var downLeftIndex = downBlock.ConnectIndex[(int)PacManMoveDir.Left];
+                    if(downLeftIndex > 0)
+                    {
+                        var block = Map.GetBlockByIndex(downLeftIndex);
+                        Character.Move(PacManMoveDir.Left, block.pos);
+                    }
+                }
+            }
+        }
     }
 
-    public override void MoveRight()
+    public override void DoRight()
     {
         if(m_nStatus != GameStatus.Play)
             return;
+
+        var current = Character.Current;
+        var currentDir = Character.MoveDir;
+
+        var rightIndex = current.ConnectIndex[(int)PacManMoveDir.Right];
+        if(rightIndex > 0)
+        {
+            var block = Map.GetBlockByIndex(rightIndex);
+            Character.Move(PacManMoveDir.Right, block.pos);
+        }
+        else
+        {
+            if(currentDir == PacManMoveDir.Up)
+            {
+                var upIndex = current.ConnectIndex[(int)PacManMoveDir.Up];
+                if(upIndex > 0)
+                {
+                    var upBlock = Map.GetBlockByIndex(upIndex);
+                    var upRightIndex = upBlock.ConnectIndex[(int)PacManMoveDir.Right];
+                    if(upRightIndex > 0)
+                    {
+                        var block = Map.GetBlockByIndex(upRightIndex);
+                        Character.Move(PacManMoveDir.Right, block.pos);
+                    }
+                }
+            }
+            else if(currentDir == PacManMoveDir.Down)
+            {
+                var downIndex = current.ConnectIndex[(int)PacManMoveDir.Down];
+                if(downIndex > 0)
+                {
+                    var downBlock = Map.GetBlockByIndex(downIndex);
+                    var downRightIndex = downBlock.ConnectIndex[(int)PacManMoveDir.Right];
+                    if(downRightIndex > 0)
+                    {
+                        var block = Map.GetBlockByIndex(downRightIndex);
+                        Character.Move(PacManMoveDir.Right, block.pos);
+                    }
+                }
+            }
+        }
     }
 
-    public override void MoveDown()
+    public override void DoDown()
     {
         if(m_nStatus != GameStatus.Play)
             return;
 
+        var current = Character.Current;
+        var currentDir = Character.MoveDir;
+
+        var downIndex = current.ConnectIndex[(int)PacManMoveDir.Down];
+        if(downIndex > 0)
+        {
+            var block = Map.GetBlockByIndex(downIndex);
+            Character.Move(PacManMoveDir.Down, block.pos);
+        }
+        else
+        {
+            if(currentDir == PacManMoveDir.Left)
+            {
+                var leftIndex = current.ConnectIndex[(int)PacManMoveDir.Left];
+                if(leftIndex > 0)
+                {
+                    var leftBlock = Map.GetBlockByIndex(leftIndex);
+                    var downLeftIndex = leftBlock.ConnectIndex[(int)PacManMoveDir.Down];
+                    if(downLeftIndex > 0)
+                    {
+                        var block = Map.GetBlockByIndex(downLeftIndex);
+                        Character.Move(PacManMoveDir.Down, block.pos);
+                    }
+                }
+                
+            }
+            else if(currentDir == PacManMoveDir.Right)
+            {
+                var RightIndex = current.ConnectIndex[(int)PacManMoveDir.Right];
+                if(RightIndex > 0)
+                {
+                    var rightBlock = Map.GetBlockByIndex(RightIndex);
+                    var downRightIndex = rightBlock.ConnectIndex[(int)PacManMoveDir.Down];
+                    if(downRightIndex > 0)
+                    {
+                        var block = Map.GetBlockByIndex(downRightIndex);
+                        Character.Move(PacManMoveDir.Down, block.pos);
+                    }
+                }
+            }
+        }
     }
 
-    public override void Change()
+    public override void DoUp()
     {
         if(m_nStatus != GameStatus.Play)
             return;
+
+        var current = Character.Current;
+        var currentDir = Character.MoveDir;
+
+        var upIndex = current.ConnectIndex[(int)PacManMoveDir.Up];
+        if(upIndex > 0)
+        {
+            var block = Map.GetBlockByIndex(upIndex);
+            Character.Move(PacManMoveDir.Up, block.pos);
+        }
+        else
+        {
+            if(currentDir == PacManMoveDir.Left)
+            {
+                var leftIndex = current.ConnectIndex[(int)PacManMoveDir.Left];
+                if(leftIndex > 0)
+                {
+                    var leftBlock = Map.GetBlockByIndex(leftIndex);
+                    var upLeftIndex = leftBlock.ConnectIndex[(int)PacManMoveDir.Up];
+                    if(upLeftIndex > 0)
+                    {
+                        var block = Map.GetBlockByIndex(upLeftIndex);
+                        Character.Move(PacManMoveDir.Up, block.pos);
+                    }
+                }
+            }
+            else if(currentDir == PacManMoveDir.Right)
+            {
+                var RightIndex = current.ConnectIndex[(int)PacManMoveDir.Right];
+                if(RightIndex > 0)
+                {
+                    var rightBlock = Map.GetBlockByIndex(RightIndex);
+                    var upRightIndex = rightBlock.ConnectIndex[(int)PacManMoveDir.Up];
+                    if(upRightIndex > 0)
+                    {
+                        var block = Map.GetBlockByIndex(upRightIndex);
+                        Character.Move(PacManMoveDir.Up, block.pos);
+                    }
+                }
+            }
+        }
     }
 
     
 
-    public override void Ultra()
+    public override void DoUltra()
     {
 
     }

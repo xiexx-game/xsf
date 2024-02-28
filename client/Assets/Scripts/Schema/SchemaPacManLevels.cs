@@ -32,7 +32,13 @@ public class SchemaPacManLevels : ISchema
 
 //_CSV_LIST_BEGIN_
 			scp.uId = (csv.GetData((int)CSVDataType.Uint, i, (int)CSVIndex.ScpPacManLevels_id) as CSVData_Uint).uValue;	// 编号
-			scp.fMoveInterval = (csv.GetData((int)CSVDataType.Float, i, (int)CSVIndex.ScpPacManLevels_MoveInterval) as CSVData_Float).fValue;	// 移动时间间隔
+			scp.fMoveSpeed = (csv.GetData((int)CSVDataType.Float, i, (int)CSVIndex.ScpPacManLevels_MoveSpeed) as CSVData_Float).fValue;	// 吃豆人速度
+			scp.fBeanMoveSpeed = (csv.GetData((int)CSVDataType.Float, i, (int)CSVIndex.ScpPacManLevels_BeanMoveSpeed) as CSVData_Float).fValue;	// 吃豆人速度
+			scp.fEnergyMoveSpeed = (csv.GetData((int)CSVDataType.Float, i, (int)CSVIndex.ScpPacManLevels_EnergyMoveSpeed) as CSVData_Float).fValue;	// 恐惧吃豆人速度
+			scp.fGhostSpeed = (csv.GetData((int)CSVDataType.Float, i, (int)CSVIndex.ScpPacManLevels_GhostSpeed) as CSVData_Float).fValue;	// 鬼速度
+			scp.fGhostTunnelMoveSpeed = (csv.GetData((int)CSVDataType.Float, i, (int)CSVIndex.ScpPacManLevels_GhostTunnelMoveSpeed) as CSVData_Float).fValue;	// 鬼隧道速度
+			scp.fEnergyGhostSpeed = (csv.GetData((int)CSVDataType.Float, i, (int)CSVIndex.ScpPacManLevels_EnergyGhostSpeed) as CSVData_Float).fValue;	// 恐惧鬼速度
+			scp.fEnergyTime = (csv.GetData((int)CSVDataType.Float, i, (int)CSVIndex.ScpPacManLevels_EnergyTime) as CSVData_Float).fValue;	// 恐惧时间
 //_CSV_LIST_END_
 
 

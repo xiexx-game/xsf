@@ -17,26 +17,51 @@ public class PacManMapBlock
     public GameObject go;
     public ScpPacManMap scp;
     public Vector3 pos;
+    public uint TypeValue;
 
     public int ConnectCount;
     public int[] ConnectIndex = new int[CONNECT_MAX];
 
     public bool IsRoad {
         get {
-            return ((scp.uBlockType & (uint)BlockType.Road) == (uint)BlockType.Road);
+            return HasType(BlockType.Road);
         }
     }
 
     public bool IsReadArea {
         get {
-            return ((scp.uBlockType & (uint)BlockType.RedArea) == (uint)BlockType.RedArea);
+            return HasType(BlockType.RedArea);
         }
     }
 
     public bool IsTunnel {
         get {
-            return ((scp.uBlockType & (uint)BlockType.Tunnel) == (uint)BlockType.Tunnel);
+            return HasType(BlockType.Tunnel);
         }
+    }
+
+    public bool HasGhost {
+        get
+        {
+            return HasType(BlockType.GhostBlinky) || HasType(BlockType.GhostClyde) || HasType(BlockType.GhostInky) || HasType(BlockType.GhostPinky);
+        }
+    }
+
+    public bool HasType(BlockType nType)
+    {
+        return ((TypeValue & (uint)nType) == (uint)nType);
+    }
+
+    public void ClearType(BlockType nType)
+    {
+        uint nTypeClear = (uint)nType;
+        nTypeClear = ~nTypeClear;
+        TypeValue = TypeValue & nTypeClear;
+    }
+
+    public void SetType(BlockType nType)
+    {
+        TypeValue = TypeValue & (uint)nType;
     }
 }
 
@@ -49,6 +74,13 @@ public class PacManPathNode
     public PacManMoveDir enterDir;
 }
 
+public struct PacManPathResult
+{
+    public PacManMapBlock block;
+    public Vector3 pos;
+    public bool Teleport;
+}
+
 public enum BlockType
 {
     None = 0,
@@ -57,8 +89,11 @@ public enum BlockType
     EnergyBean  = 0b100,      // 能量豆
     RedArea     = 0b1000,       // 红色区域，ghost不能往上走的区域
     Tunnel      = 0b10000,      // 隧道区域，ghost要减速
-    PacMan      = 0b100000,
-    Ghost       = 0b1000000,     // ghost
+    PacMan           = 0b100000,
+    GhostBlinky      = 0b1000000,     // ghost
+    GhostClyde       = 0b10000000,     // ghost
+    GhostInky        = 0b100000000,     // ghost
+    GhostPinky       = 0b1000000000,     // ghost
 
     Max,
 }
@@ -78,6 +113,14 @@ public class PacManMap
     public const float YOffset = (SINGLE_BLOCK_SIZE * MAX_ROW) / 2;
 
     public bool IsReady { get; private set; }
+
+    public PacManMapBlock []FleeTargets { get; private set; }
+
+    public readonly int TunnelLeftIndex = 392;
+    public readonly int TunnelRightIndex = 419;
+
+    public readonly float TunnelLeft = -5.318f;
+    public readonly float TunnelRight = 5.318f;
 
     public PacManMap()
     {
@@ -105,6 +148,7 @@ public class PacManMap
                 PacManMapBlock block = new PacManMapBlock();
                 block.Index = index;
                 block.scp = datas[index++];
+                block.TypeValue = block.scp.uBlockType;
 
                 //Debug.Log($"index={index}, c={c}, row={r}, block.scp.iCol={block.scp.iCol}, block.scp.iRow={block.scp.iRow}");
 
@@ -158,7 +202,7 @@ public class PacManMap
                             block.go = GameObject.Instantiate(mono.MapObjs[(int)MapObjID.Road]);
                         }
 
-                        if ((block.scp.uBlockType & (uint)BlockType.EnergyBean) == (uint)BlockType.EnergyBean)
+                        if (block.HasType(BlockType.EnergyBean))
                         {
                             m_Beans[block.Index] = GameObject.Instantiate(mono.MapObjs[(int)MapObjID.EnergyBean]);
                             m_Beans[block.Index].transform.SetParent(mono.Frame.transform);
@@ -166,7 +210,7 @@ public class PacManMap
                             m_Beans[block.Index].SetActive(true);
                         }
                         
-                        if((block.scp.uBlockType & (uint)BlockType.Bean) == (uint)BlockType.Bean)
+                        if(block.HasType(BlockType.Bean))
                         {
                             m_Beans[block.Index] = GameObject.Instantiate(mono.MapObjs[(int)MapObjID.Bean]);
                             m_Beans[block.Index].transform.SetParent(mono.Frame.transform);
@@ -264,20 +308,26 @@ public class PacManMap
                 }
 
                 // 构建隧道
-                if (i == 392)
+                if (i == TunnelLeftIndex)
                 {
-                    m_Blocks[i].go.name += $".L419";
-                    m_Blocks[i].ConnectIndex[(int)PacManMoveDir.Left] = 419;
+                    m_Blocks[i].go.name += $".L{TunnelRightIndex}";
+                    m_Blocks[i].ConnectIndex[(int)PacManMoveDir.Left] = TunnelRightIndex;
                     m_Blocks[i].ConnectCount ++;
                 }
-                else if (i == 419)
+                else if (i == TunnelRightIndex)
                 {
-                    m_Blocks[i].go.name += $".R392";
-                    m_Blocks[i].ConnectIndex[(int)PacManMoveDir.Right] = 392;
+                    m_Blocks[i].go.name += $".R{TunnelLeftIndex}";
+                    m_Blocks[i].ConnectIndex[(int)PacManMoveDir.Right] = TunnelLeftIndex;
                     m_Blocks[i].ConnectCount ++;
                 }
             }
         }
+
+        FleeTargets = new PacManMapBlock[(int)GhostType.Max];
+        FleeTargets[(int)GhostType.Blinky] = GetBlockByIndex(54);
+        FleeTargets[(int)GhostType.Pinky] = GetBlockByIndex(29);
+        FleeTargets[(int)GhostType.Inky] = GetBlockByIndex(838);
+        FleeTargets[(int)GhostType.Clyde] = GetBlockByIndex(813);
 
         IsReady = true;
     }
@@ -351,7 +401,7 @@ public class PacManMap
     }
 
     private List<PacManMapBlock> m_LastPath;
-    public List<PacManMapBlock> FindPath(PacManMoveDir enterDir, PacManMapBlock startBlock, PacManMapBlock endBlock, bool showPath)
+    public List<PacManPathResult> FindPath(PacManMoveDir enterDir, PacManMapBlock startBlock, PacManMapBlock endBlock, bool showPath)
     {
         OpenList.Clear();
         CloseList.Clear();
@@ -411,13 +461,59 @@ public class PacManMap
             m_LastPath = result;
             for(int i = 0; i < m_LastPath.Count; i ++)
             {
-                Debug.Log($"pos={m_LastPath[i].scp.iRow}, {m_LastPath[i].scp.iCol}");
+                //Debug.Log($"pos={m_LastPath[i].scp.iRow}, {m_LastPath[i].scp.iCol}");
                 var block = GetBlock(m_LastPath[i].scp.iRow, m_LastPath[i].scp.iCol);
                 block.go.GetComponent<SpriteRenderer>().color = Color.yellow;
             }
         }
 
-        return result;
+        List<PacManPathResult> finalPath = new List<PacManPathResult>();
+        for(int i = 0; i < result.Count; i ++)
+        {
+            PacManPathResult res;
+            res.block = result[i];
+            res.pos = result[i].pos;
+            res.Teleport = false;
+            finalPath.Add(res);
+
+            if(i +1 < result.Count)
+            {
+                if(result[i].Index == TunnelLeftIndex && result[i+1].Index == TunnelRightIndex)
+                {
+                    PacManPathResult teleStart;
+                    teleStart.pos = result[i].pos;
+                    teleStart.pos.x = TunnelLeft;
+                    teleStart.Teleport = true;
+                    teleStart.block = result[i];
+                    finalPath.Add(teleStart);
+
+                    PacManPathResult teleEnd;
+                    teleEnd.pos = result[i].pos;
+                    teleEnd.pos.x = TunnelRight;
+                    teleEnd.block = result[i+1];
+                    teleEnd.Teleport = false;
+                    finalPath.Add(teleEnd);
+                }
+                else if(result[i].Index == TunnelRightIndex && result[i+1].Index == TunnelLeftIndex)
+                {
+                    PacManPathResult teleStart;
+                    teleStart.pos = result[i].pos;
+                    teleStart.pos.x = TunnelRight;
+                    teleStart.Teleport = true;
+                    teleStart.block = result[i];
+                    finalPath.Add(teleStart);
+
+                    PacManPathResult teleEnd;
+                    teleEnd.pos = result[i].pos;
+                    teleEnd.pos.x = TunnelLeft;
+                    teleEnd.block = result[i+1];
+                    teleEnd.Teleport = false;
+                    finalPath.Add(teleEnd);
+                }
+            }
+        }
+
+        return finalPath;
     }
 
     private bool CheckNode(PacManPathNode current, List<PacManPathNode> cacheList, PacManPathNode endNode)
@@ -486,7 +582,7 @@ public class PacManMap
                                 }
                             }
 
-                            Debug.Log("nextIndex=" + nextIndex + ", currentEnterDir=" + currentEnterDir);
+                            //Debug.Log("nextIndex=" + nextIndex + ", currentEnterDir=" + currentEnterDir);
                         }
                     }
                 }
@@ -494,5 +590,89 @@ public class PacManMap
         }
 
         return false;
+    }
+
+    public void OnPacManEnterBlock(PacManMapBlock block)
+    {
+        block.SetType(BlockType.PacMan);
+        var character = LevelGamePackMan.Instance.Character;
+
+        bool HasBlinky = block.HasType(BlockType.GhostBlinky);
+        bool HasClyde = block.HasType(BlockType.GhostClyde);
+        bool HasInky = block.HasType(BlockType.GhostInky);
+        bool HasPinky = block.HasType(BlockType.GhostPinky);
+        if(HasBlinky || HasClyde || HasInky || HasPinky)
+        {
+            if(character.Speed.HasEnergy)
+            {
+                // 鬼死了
+            }
+            else
+            {
+                LevelGamePackMan.Instance.GameOver();
+            }
+        }
+        else
+        {
+            if(block.HasType(BlockType.Bean))
+            {
+                m_Beans[block.Index].SetActive(false);
+                character.Speed.EatBean();
+                block.ClearType(BlockType.Bean);
+                Level.Instance.Current.GameSocre += 1;
+            }
+            else if(block.HasType(BlockType.EnergyBean))
+            {
+                block.ClearType(BlockType.EnergyBean);
+
+                m_Beans[block.Index].SetActive(false);
+
+                character.Speed.OnEnergy();
+
+                for(int i = 0; i < LevelGamePackMan.Instance.Ghosts.Length; i ++)
+                {
+                    LevelGamePackMan.Instance.Ghosts[i].Speed.OnEnergy();
+                }
+
+                Level.Instance.Current.GameSocre += 10;
+            }
+        }
+        
+    }
+
+    public void OnPacManExitBlock(PacManMapBlock block)
+    {
+        block.ClearType(BlockType.PacMan);
+    }
+
+    public void OnGhostEnterBlock(MonoGhost ghost, PacManMapBlock block)
+    {
+        block.SetType(ghost.m_AI.SetType);
+        if(block.HasType(BlockType.PacMan))
+        {
+            var character = LevelGamePackMan.Instance.Character;
+            if(character.Speed.HasEnergy)
+            {
+                // 鬼死了
+            }
+            else
+            {
+                LevelGamePackMan.Instance.GameOver();
+            }
+        }
+        else if(block.HasType(BlockType.Tunnel))
+        {
+            ghost.Speed.EnterTunnel();
+        }
+    }
+
+    public void OnGhostExitBlock(MonoGhost ghost, PacManMapBlock block)
+    {
+        block.ClearType(ghost.m_AI.SetType);
+
+        if(block.HasType(BlockType.Tunnel))
+        {
+            ghost.Speed.ExitTunnel();
+        }
     }
 }

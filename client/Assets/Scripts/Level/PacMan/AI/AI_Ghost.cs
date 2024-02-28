@@ -15,8 +15,7 @@ public enum AIState
     None = 0,
     WaitReady,
     Born,
-    MoveInPath,
-    MoveForward,
+    Move,
     Think,
     IdleRight,
     IdleLeft,
@@ -32,9 +31,9 @@ public abstract class AI_Ghost
 
     protected MonoGhost m_Ghost;
 
-    protected PacManMapBlock m_Current;
-    protected PacManMapBlock m_Target;
-    protected List<PacManMapBlock> m_path;
+    public PacManMapBlock m_Current;
+    
+    protected List<PacManPathResult> m_path;
     protected int m_nPathIndex;
 
     protected readonly Vector3 OutStart = new Vector3(0.0199999996f,0.379999995f,-0.400000006f);
@@ -43,11 +42,13 @@ public abstract class AI_Ghost
     protected readonly Vector3 RoomRight = new Vector3(0.75999999f,0.379999995f,-0.400000006f);
     protected readonly Vector3 RoomLeft = new Vector3(-0.74000001f,0.379999995f,-0.400000006f);
 
+    public abstract BlockType SetType { get; }
+
     public void Init(MonoGhost ghost)
     {
         m_nState = AIState.WaitReady;
         m_Ghost = ghost;
-        m_path = new List<PacManMapBlock>();
+        m_path = new List<PacManPathResult>();
     }
 
     public abstract void OnBorn();
@@ -63,20 +64,78 @@ public abstract class AI_Ghost
             }
             else
             {
-                var DirReverse = LevelGamePackMan.Instance.Map.DirReverse(m_Ghost.MoveDir);
-                Debug.Log($"DoMove m_Ghost.MoveDir={m_Ghost.MoveDir}, DirReverse={DirReverse}");
+                var map = LevelGamePackMan.Instance.Map;
+                var DirReverse = map.DirReverse(m_Ghost.MoveDir);
+
+                m_path.Clear();
+                m_nPathIndex = 0;
+                
                 for(int i = 0; i < m_Current.ConnectIndex.Length; i++)
                 {
                     if((int)DirReverse != i && m_Current.ConnectIndex[i] > 0)
                     {
                         m_Ghost.MoveDir = (PacManMoveDir)i;
-                        m_Target = LevelGamePackMan.Instance.Map.GetBlockByIndex(m_Current.ConnectIndex[i]);
-                        Debug.Log($"DoMove m_Target={m_Target}, m_Ghost.MoveDir={m_Ghost.MoveDir}");
+
+                        var nextBlock = map.GetBlockByIndex(m_Current.ConnectIndex[i]);
+                        if(m_Current.Index == map.TunnelLeftIndex && nextBlock.Index == map.TunnelRightIndex)
+                        {
+                            PacManPathResult teleStart;
+                            teleStart.pos = m_Current.pos;
+                            teleStart.pos.x = map.TunnelLeft;
+                            teleStart.Teleport = true;
+                            teleStart.block = m_Current;
+                            m_path.Add(teleStart);
+
+                            PacManPathResult teleEnd;
+                            teleEnd.pos = nextBlock.pos;
+                            teleEnd.pos.x = map.TunnelRight;
+                            teleEnd.block = nextBlock;
+                            teleEnd.Teleport = false;
+                            m_path.Add(teleEnd);
+
+                            PacManPathResult teleEnd2;
+                            teleEnd2.pos = nextBlock.pos;
+                            teleEnd2.block = nextBlock;
+                            teleEnd2.Teleport = false;
+                            m_path.Add(teleEnd2);
+                        }
+                        else if(m_Current.Index == map.TunnelRightIndex && nextBlock.Index == map.TunnelLeftIndex)
+                        {
+                            PacManPathResult teleStart;
+                            teleStart.pos = m_Current.pos;
+                            teleStart.pos.x = map.TunnelRight;
+                            teleStart.Teleport = true;
+                            teleStart.block = m_Current;
+                            m_path.Add(teleStart);
+
+                            PacManPathResult teleEnd;
+                            teleEnd.pos = nextBlock.pos;
+                            teleEnd.pos.x = map.TunnelLeft;
+                            teleEnd.block = nextBlock;
+                            teleEnd.Teleport = false;
+                            m_path.Add(teleEnd);
+
+                            PacManPathResult teleEnd2;
+                            teleEnd2.pos = nextBlock.pos;
+                            teleEnd2.block = nextBlock;
+                            teleEnd2.Teleport = false;
+                            m_path.Add(teleEnd2);
+                        }
+                        else
+                        {
+                            var block = map.GetBlockByIndex(m_Current.ConnectIndex[i]);
+                            PacManPathResult teleEnd;
+                            teleEnd.pos = block.pos;
+                            teleEnd.block = block;
+                            teleEnd.Teleport = false;
+                            m_path.Add(teleEnd);
+                        }
+
                         break;
                     }
                 }
 
-                m_nState = AIState.MoveForward;
+                m_nState = AIState.Move;
             }
         }
         else 
@@ -91,7 +150,7 @@ public abstract class AI_Ghost
         var end = target; end.z = 0;
         var dir = (end - start).normalized;
         float dis = Vector3.Distance(start, end);
-        float disMove = m_Ghost.MoveSpeed * Time.deltaTime;
+        float disMove = m_Ghost.Speed.CurrentSpeed * Time.deltaTime;
 
         if(dis > disMove)
         {
@@ -124,6 +183,8 @@ public abstract class AI_Ghost
         case AIState.Born:
             {
                 m_Current = LevelGamePackMan.Instance.Map.Pos2Block(m_Ghost.transform.localPosition);
+                LevelGamePackMan.Instance.Map.OnGhostEnterBlock(m_Ghost, m_Current);
+
                 Debug.Log("AIState.Born =" + m_Current.Index);
                 m_Ghost.transform.localPosition = new Vector3(m_Current.pos.x, m_Current.pos.y, m_Ghost.PosZ);
                 OnBorn();
@@ -146,7 +207,7 @@ public abstract class AI_Ghost
 
         case AIState.GoOut2Start:
             {
-
+                
             }
             break;
 
@@ -165,14 +226,14 @@ public abstract class AI_Ghost
             }
             break;
 
-        case AIState.MoveInPath:
+        case AIState.Move:
             {
                 var start = m_Ghost.transform.localPosition; start.z = 0;
                 var end = m_path[m_nPathIndex].pos; end.z = 0;
                 var dir = (end - start).normalized;
                 float dis = Vector3.Distance(start, end);
 
-                float disMove = m_Ghost.MoveSpeed * Time.deltaTime;
+                float disMove = m_Ghost.Speed.CurrentSpeed * Time.deltaTime;
 
                 if(dis > disMove)
                 {
@@ -188,8 +249,22 @@ public abstract class AI_Ghost
                 }
                 else 
                 {
-                    end.z = m_Ghost.PosZ;
-                    m_Ghost.transform.localPosition = end;
+                    if(m_path[m_nPathIndex].Teleport)
+                    {
+                        m_nPathIndex ++;
+                        end = m_path[m_nPathIndex].pos;
+                        end.z = m_Ghost.PosZ;
+                        m_Ghost.transform.localPosition = end;
+                        m_Current = LevelGamePackMan.Instance.Map.Pos2Block(m_Ghost.transform.localPosition);
+
+                        m_nPathIndex ++;
+                        return;
+                    }
+                    else
+                    {
+                        end.z = m_Ghost.PosZ;
+                        m_Ghost.transform.localPosition = end;
+                    }
 
                     if(m_Current.ConnectCount >= 3)
                     {
@@ -207,7 +282,7 @@ public abstract class AI_Ghost
                         {
                             for(int i = 0; i < m_Current.ConnectIndex.Length; i ++)
                             {
-                                if(m_path[m_nPathIndex].Index == m_Current.ConnectIndex[i])
+                                if(m_path[m_nPathIndex].block.Index == m_Current.ConnectIndex[i])
                                 {
                                     m_Ghost.MoveDir = (PacManMoveDir)i;
                                     break;
@@ -215,37 +290,6 @@ public abstract class AI_Ghost
                             }
                         }
                     }
-                }
-            }
-            break;
-
-        case AIState.MoveForward:
-            {
-                var start = m_Ghost.transform.localPosition; start.z = 0;
-                var end = m_Target.pos; end.z = 0;
-                var dir = (end - start).normalized;
-                float dis = Vector3.Distance(start, end);
-
-                float disMove = m_Ghost.MoveSpeed * Time.deltaTime;
-
-                if(dis > disMove)
-                {
-                    Vector3 pos = start + disMove * dir;
-                    pos.z = m_Ghost.PosZ; 
-                    m_Ghost.transform.localPosition = pos;
-
-                    var block = LevelGamePackMan.Instance.Map.Pos2Block(m_Ghost.transform.localPosition);
-                    if(block != m_Current)
-                    {
-                        m_Current = block;
-                    }
-                }
-                else 
-                {
-                    end.z = m_Ghost.PosZ;
-                    m_Ghost.transform.localPosition = end;
-                    Debug.Log($"Move Forward end ..., m_Current={m_Current}");
-                    DoMove(true);
                 }
             }
             break;
@@ -263,14 +307,14 @@ public abstract class AI_Ghost
 
                 for(int i = 0; i < m_Current.ConnectIndex.Length; i ++)
                 {
-                    if(m_path[1].Index == m_Current.ConnectIndex[i])
+                    if(m_path[1].block.Index == m_Current.ConnectIndex[i])
                     {
                         m_Ghost.MoveDir = (PacManMoveDir)i;
                         break;
                     }
                 }
 
-                m_nState = AIState.MoveInPath;
+                m_nState = AIState.Move;
             }
             break;
         }

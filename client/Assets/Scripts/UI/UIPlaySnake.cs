@@ -101,28 +101,28 @@ public sealed class UIPlaySnake : UIBase
 	private void OnleftClick(GameObject go)
 	{
 		AudioManager.Instance.PlayUIAudio(ClipID.SngleSelect);
-		Level.Instance.Current.MoveLeft();
+		Level.Instance.Current.DoLeft();
 	}
 
 	// 
 	private void OnrightClick(GameObject go)
 	{
 		AudioManager.Instance.PlayUIAudio(ClipID.SngleSelect);
-		Level.Instance.Current.MoveRight();
+		Level.Instance.Current.DoRight();
 	}
 
 	// 
 	private void OndownClick(GameObject go)
 	{
 		AudioManager.Instance.PlayUIAudio(ClipID.SngleSelect);
-		Level.Instance.Current.MoveDown();
+		Level.Instance.Current.DoDown();
 	}
 
 	// 
 	private void OnupClick(GameObject go)
 	{
 		AudioManager.Instance.PlayUIAudio(ClipID.SngleSelect);
-		Level.Instance.Current.Change();
+		Level.Instance.Current.DoUp();
 	}
 
 	// 暂停

@@ -105,35 +105,35 @@ public sealed class UIPlay : UIBase
 	private void OnleftClick(GameObject go)
 	{
 		AudioManager.Instance.PlayUIAudio(ClipID.SngleSelect);
-		Level.Instance.Current.MoveLeft();
+		Level.Instance.Current.DoLeft();
 	}
 
 	// 向右
 	private void OnrightClick(GameObject go)
 	{
 		AudioManager.Instance.PlayUIAudio(ClipID.SngleSelect);
-		Level.Instance.Current.MoveRight();
+		Level.Instance.Current.DoRight();
 	}
 
 	// 向下
 	private void OndownClick(GameObject go)
 	{
 		AudioManager.Instance.PlayUIAudio(ClipID.SngleSelect);
-		Level.Instance.Current.MoveDown();
+		Level.Instance.Current.DoDown();
 	}
 
 	// 变形
 	private void OnchangeClick(GameObject go)
 	{
 		AudioManager.Instance.PlayUIAudio(ClipID.SngleSelect);
-		Level.Instance.Current.Change();
+		Level.Instance.Current.DoUp();
 	}
 
 
 	// 
 	private void OnultraClick(GameObject go)
 	{
-		Level.Instance.Current.Ultra();
+		Level.Instance.Current.DoUltra();
 	}
 
 

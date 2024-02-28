@@ -34,15 +34,15 @@ public abstract class LevelGame
 
     public abstract void OnUpdate();
 
-    public abstract void MoveLeft();
+    public abstract void DoLeft();
 
-    public abstract void MoveRight();
+    public abstract void DoRight();
 
-    public abstract void MoveDown();
+    public abstract void DoDown();
 
-    public abstract void Change();
+    public abstract void DoUp();
 
-    public abstract void Ultra();
+    public abstract void DoUltra();
 
     public abstract void Restart();
 

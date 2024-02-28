@@ -104,7 +104,13 @@ public class ScpPacManLevels
 {
 //ScpPacManLevels_START
 	public uint uId;	//编号
-	public float fMoveInterval;	//移动时间间隔
+	public float fMoveSpeed;	//吃豆人速度
+	public float fBeanMoveSpeed;	//吃豆人速度
+	public float fEnergyMoveSpeed;	//恐惧吃豆人速度
+	public float fGhostSpeed;	//鬼速度
+	public float fGhostTunnelMoveSpeed;	//鬼隧道速度
+	public float fEnergyGhostSpeed;	//恐惧鬼速度
+	public float fEnergyTime;	//恐惧时间
 //ScpPacManLevels_END
 }
 

@@ -192,25 +192,6 @@ public class LevelGameSnake : LevelGame, ILoadingHandler
 
     public override void OnUpdate()
     {
-#if UNITY_EDITOR
-        if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            Change();
-        }
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            MoveLeft();
-        }
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            MoveRight();
-        }
-        if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            MoveDown();
-        }
-#endif
-
         switch(m_nStatus)
         {
         case GameStatus.CreateSnake:
@@ -549,7 +530,7 @@ public class LevelGameSnake : LevelGame, ILoadingHandler
         }
     }
 
-    public override void MoveLeft()
+    public override void DoLeft()
     {
         if(m_nStatus != GameStatus.Play)
             return;
@@ -558,7 +539,7 @@ public class LevelGameSnake : LevelGame, ILoadingHandler
             m_SnakeHead.moveDir = SnakeMoveDir.Left;
     }
 
-    public override void MoveRight()
+    public override void DoRight()
     {
         if(m_nStatus != GameStatus.Play)
             return;
@@ -567,7 +548,7 @@ public class LevelGameSnake : LevelGame, ILoadingHandler
             m_SnakeHead.moveDir = SnakeMoveDir.Right;
     }
 
-    public override void MoveDown()
+    public override void DoDown()
     {
         if(m_nStatus != GameStatus.Play)
             return;
@@ -576,7 +557,7 @@ public class LevelGameSnake : LevelGame, ILoadingHandler
             m_SnakeHead.moveDir = SnakeMoveDir.Down;
     }
 
-    public override void Change()
+    public override void DoUp()
     {
         if(m_nStatus != GameStatus.Play)
             return;
@@ -587,7 +568,7 @@ public class LevelGameSnake : LevelGame, ILoadingHandler
 
     
 
-    public override void Ultra()
+    public override void DoUltra()
     {
 
     }

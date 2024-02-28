@@ -71,6 +71,30 @@ public class Level : Singleton<Level>, IEventSink
         if(Pause)
             return;
 
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            Current.DoUp();
+        }
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            Current.DoLeft();
+        }
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            Current.DoRight();
+        }
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            Current.DoDown();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Current.DoUltra();
+        }
+#endif
+
         Current.OnUpdate();
     }
 
