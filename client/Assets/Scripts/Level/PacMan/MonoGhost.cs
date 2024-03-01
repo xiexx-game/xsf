@@ -28,7 +28,7 @@ public enum GhostType
     Max,
 }
 
-public class MonoGhost : MonoBehaviour
+public class MonoGhost : MonoBehaviour, ISMHandler
 {
     public GameObject [] LeftEye;
     public GameObject [] RightEye;
@@ -94,7 +94,7 @@ public class MonoGhost : MonoBehaviour
         InitAI();
 
         Speed = new SpeedManager();
-        Speed.Init(true);
+        Speed.Init(this);
     }
 
     void InitAI()
@@ -187,5 +187,17 @@ public class MonoGhost : MonoBehaviour
 
         Speed.Update();
         
+    }
+
+    public void OnPacManEatEnergy()
+    {
+        Speed.OnEnergy();
+        m_AI.DoThink();
+    }
+
+    public bool IsGhost { get { return true; } }
+    public void OnEnergyEnd()
+    {
+        m_AI.DoThink();
     }
 }

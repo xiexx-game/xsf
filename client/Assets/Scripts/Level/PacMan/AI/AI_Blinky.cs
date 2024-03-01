@@ -19,11 +19,20 @@ public class AI_Blinky : AI_Ghost
         Debug.Log("AI_Blinky OnBorn");
         DoMove(true);   
         Debug.Log("AI_Blinky OnBorn state=" + m_nState);
+        m_Ghost.ShowPath = true;
     }
 
     public override PacManMapBlock GetTarget()
     {
-        Debug.Log("LevelGamePackMan.Instance.Character.Current" + LevelGamePackMan.Instance.Character.Current);
-        return LevelGamePackMan.Instance.Character.Current;
+        if(LevelGamePackMan.Instance.Character.Speed.HasEnergy)
+        {
+            Debug.LogError("Energy time");
+            return LevelGamePackMan.Instance.Map.FleeTargets[(int)GhostType.Blinky];
+        }
+        else
+        {
+            //Debug.Log("LevelGamePackMan.Instance.Character.Current" + LevelGamePackMan.Instance.Character.Current);
+            return LevelGamePackMan.Instance.Character.Current;
+        }
     }
 }

@@ -19,7 +19,7 @@ public enum PacManMoveDir
     Max,
 }
 
-public class MonoPacManCharacter : MonoBehaviour
+public class MonoPacManCharacter : MonoBehaviour, ISMHandler
 {
     public GameObject Eye;
 
@@ -75,7 +75,7 @@ public class MonoPacManCharacter : MonoBehaviour
         MoveDir = PacManMoveDir.Right;
 
         Speed = new SpeedManager();
-        Speed.Init(false);
+        Speed.Init(this);
     }
 
     public void Move(PacManMoveDir nDir, Vector3 target)
@@ -114,6 +114,8 @@ public class MonoPacManCharacter : MonoBehaviour
 
     void Update()
     {
+        Speed.Update();
+
         var map = LevelGamePackMan.Instance.Map;
         if(WaitBorn && map.IsReady)
         {
@@ -252,5 +254,12 @@ public class MonoPacManCharacter : MonoBehaviour
             }
             break;
         }
+    }
+
+    public bool IsGhost { get { return false; } }
+
+    public void OnEnergyEnd()
+    {
+        
     }
 }

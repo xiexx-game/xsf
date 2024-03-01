@@ -49,7 +49,9 @@ public class PacManMapBlock
 
     public bool HasType(BlockType nType)
     {
-        return ((TypeValue & (uint)nType) == (uint)nType);
+        uint nTypeCheck = (uint)nType;
+        //Debug.Log($"TypeValue={TypeValue}, nType={nTypeCheck}， v1={(TypeValue & nTypeCheck)}, v2={nTypeCheck}");
+        return ((TypeValue & nTypeCheck) == nTypeCheck);
     }
 
     public void ClearType(BlockType nType)
@@ -61,7 +63,7 @@ public class PacManMapBlock
 
     public void SetType(BlockType nType)
     {
-        TypeValue = TypeValue & (uint)nType;
+        TypeValue = TypeValue | (uint)nType;
     }
 }
 
@@ -220,7 +222,7 @@ public class PacManMap
                         break;
                 }
 
-                block.pos = new Vector3(x, y, BLOCK_Z);
+                block.pos = new Vector3(x, y, BLOCK_Z+0.001f);
 
                 if (block.go != null)
                 {
@@ -519,7 +521,7 @@ public class PacManMap
     private bool CheckNode(PacManPathNode current, List<PacManPathNode> cacheList, PacManPathNode endNode)
     {
         var currentBlock = current.block;
-        Debug.Log($"CheckNode currentBlock={currentBlock.scp.iRow}, {currentBlock.scp.iCol}, enterDir={current.enterDir}");
+        //Debug.Log($"CheckNode currentBlock={currentBlock.scp.iRow}, {currentBlock.scp.iCol}, enterDir={current.enterDir}");
 
         for(int i = 0; i < currentBlock.ConnectIndex.Length; i ++)
         {
@@ -538,7 +540,7 @@ public class PacManMap
 
                     if(nextIndex == endNode.block.Index)     // 找到终点了
                     {
-                        Debug.Log("Find End node");
+                        //Debug.Log("Find End node");
                         endNode.pre = preNode;
                         return true;
                     } 
@@ -558,7 +560,7 @@ public class PacManMap
 
                                 preNode = node;
 
-                                Debug.Log($"CheckNode find next block 3, nextBlock={nextBlock.scp.iRow}, {nextBlock.scp.iCol}, enterDir={currentEnterDir}");
+                                //Debug.Log($"CheckNode find next block 3, nextBlock={nextBlock.scp.iRow}, {nextBlock.scp.iCol}, enterDir={currentEnterDir}");
                             }
                             break;
                         }
@@ -570,7 +572,7 @@ public class PacManMap
 
                             preNode = node;
 
-                            Debug.Log($"CheckNode find next block 2, nextBlock={nextBlock.scp.iRow}, {nextBlock.scp.iCol}, enterDir={currentEnterDir}");
+                            //Debug.Log($"CheckNode find next block 2, nextBlock={nextBlock.scp.iRow}, {nextBlock.scp.iCol}, enterDir={currentEnterDir}");
 
                             for(int J = 0; J < nextBlock.ConnectIndex.Length; J ++)
                             {
@@ -594,6 +596,7 @@ public class PacManMap
 
     public void OnPacManEnterBlock(PacManMapBlock block)
     {
+        Debug.Log("OnPacManEnterBlock index=" + block.Index);
         block.SetType(BlockType.PacMan);
         var character = LevelGamePackMan.Instance.Character;
 
@@ -610,38 +613,41 @@ public class PacManMap
             else
             {
                 LevelGamePackMan.Instance.GameOver();
+                return;
             }
         }
-        else
+        
+        Debug.Log("OnPacManEnterBlock 1");
+        if(block.HasType(BlockType.Bean))
         {
-            if(block.HasType(BlockType.Bean))
+            Debug.Log("OnPacManEnterBlock HasType(BlockType.Bean)");
+            m_Beans[block.Index].SetActive(false);
+            character.Speed.EatBean();
+            block.ClearType(BlockType.Bean);
+            Level.Instance.Current.GameSocre += 1;
+        }
+        else if(block.HasType(BlockType.EnergyBean))
+        {
+            Debug.Log("OnPacManEnterBlock HasType(BlockType.EnergyBean)");
+            block.ClearType(BlockType.EnergyBean);
+
+            m_Beans[block.Index].SetActive(false);
+
+            character.Speed.OnEnergy();
+
+            for(int i = 0; i < LevelGamePackMan.Instance.Ghosts.Length; i ++)
             {
-                m_Beans[block.Index].SetActive(false);
-                character.Speed.EatBean();
-                block.ClearType(BlockType.Bean);
-                Level.Instance.Current.GameSocre += 1;
+                LevelGamePackMan.Instance.Ghosts[i].OnPacManEatEnergy();
             }
-            else if(block.HasType(BlockType.EnergyBean))
-            {
-                block.ClearType(BlockType.EnergyBean);
 
-                m_Beans[block.Index].SetActive(false);
-
-                character.Speed.OnEnergy();
-
-                for(int i = 0; i < LevelGamePackMan.Instance.Ghosts.Length; i ++)
-                {
-                    LevelGamePackMan.Instance.Ghosts[i].Speed.OnEnergy();
-                }
-
-                Level.Instance.Current.GameSocre += 10;
-            }
+            Level.Instance.Current.GameSocre += 10;
         }
         
     }
 
     public void OnPacManExitBlock(PacManMapBlock block)
     {
+        Debug.Log("OnPacManExitBlock index=" + block.Index);
         block.ClearType(BlockType.PacMan);
     }
 

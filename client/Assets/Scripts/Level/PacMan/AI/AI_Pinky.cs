@@ -21,41 +21,50 @@ public class AI_Pinky : AI_Ghost
 
     public override PacManMapBlock GetTarget()
     {
-        var current = LevelGamePackMan.Instance.Character.Current;
-        var dir = LevelGamePackMan.Instance.Character.MoveDir;
-
-        int nCount = 0;
-        while(nCount < 4)
+        if(LevelGamePackMan.Instance.Character.Speed.HasEnergy)
         {
-            if(current.ConnectIndex[(int)dir] > 0)
-            {
-                current = LevelGamePackMan.Instance.Map.GetBlockByIndex(current.ConnectIndex[(int)dir]);
-                nCount ++;
-            }
-            else
-            {
-                int nextDir = (int)dir +1;
+            Debug.LogError("Energy time");
+            return LevelGamePackMan.Instance.Map.FleeTargets[(int)GhostType.Pinky];
+        }
+        else
+        {
+            var current = LevelGamePackMan.Instance.Character.Current;
+            var dir = LevelGamePackMan.Instance.Character.MoveDir;
 
-                while(true)
+            int nCount = 0;
+            while(nCount < 4)
+            {
+                if(current.ConnectIndex[(int)dir] > 0)
                 {
-                    if(nextDir >= (int)PacManMoveDir.Max)
-                        nextDir = (int)PacManMoveDir.Up;
+                    current = LevelGamePackMan.Instance.Map.GetBlockByIndex(current.ConnectIndex[(int)dir]);
+                    nCount ++;
+                }
+                else
+                {
+                    int nextDir = (int)dir +1;
 
-                    if(nextDir == (int)dir)
-                        return current;
-
-                    if(current.ConnectIndex[(int)nextDir] > 0)
+                    while(true)
                     {
-                        current = LevelGamePackMan.Instance.Map.GetBlockByIndex(current.ConnectIndex[(int)nextDir]);
-                        nCount ++;
-                        break;
-                    }
+                        if(nextDir >= (int)PacManMoveDir.Max)
+                            nextDir = (int)PacManMoveDir.Up;
 
-                    nextDir ++;
+                        if(nextDir == (int)dir)
+                            return current;
+
+                        if(current.ConnectIndex[(int)nextDir] > 0)
+                        {
+                            current = LevelGamePackMan.Instance.Map.GetBlockByIndex(current.ConnectIndex[(int)nextDir]);
+                            nCount ++;
+                            break;
+                        }
+
+                        nextDir ++;
+                    }
                 }
             }
-        }
 
-        return current;
+            return current;
+        }
+        
     }
 }

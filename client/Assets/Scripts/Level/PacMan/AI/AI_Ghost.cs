@@ -166,6 +166,16 @@ public abstract class AI_Ghost
         }
     }
 
+    public void DoThink()
+    {
+        switch(m_nState)
+        {
+        case AIState.Move:
+            m_nState = AIState.Think;
+            break;
+        }
+    }
+
     public void OnUpdate()
     {
         //Debug.Log("======== AI_Ghost m_nState=" + m_nState + ", m_Ghost GType=" + m_Ghost.GType);

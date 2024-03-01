@@ -20,15 +20,22 @@ public class AI_Clyde : AI_Ghost
 
     public override PacManMapBlock GetTarget()
     {
-        var start = LevelGamePackMan.Instance.Character.transform.localPosition; start.z = 0;
-        var end = m_Ghost.transform.localPosition; end.z = 0;
-        if(Vector3.Distance(start, end) > PacManMap.SINGLE_BLOCK_SIZE * 8)
-        {
-            return LevelGamePackMan.Instance.Character.Current;
-        } 
-        else 
+        if(LevelGamePackMan.Instance.Character.Speed.HasEnergy)
         {
             return LevelGamePackMan.Instance.Map.FleeTargets[(int)GhostType.Clyde];
+        }
+        else
+        {
+            var start = LevelGamePackMan.Instance.Character.transform.localPosition; start.z = 0;
+            var end = m_Ghost.transform.localPosition; end.z = 0;
+            if(Vector3.Distance(start, end) > PacManMap.SINGLE_BLOCK_SIZE * 8)
+            {
+                return LevelGamePackMan.Instance.Character.Current;
+            } 
+            else 
+            {
+                return LevelGamePackMan.Instance.Map.FleeTargets[(int)GhostType.Clyde];
+            }
         }
     }
 }

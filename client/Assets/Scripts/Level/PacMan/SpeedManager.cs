@@ -9,6 +9,13 @@
 //////////////////////////////////////////////////////////////////////////
 using UnityEngine;
 
+
+public interface ISMHandler 
+{
+    bool IsGhost { get; }
+    void OnEnergyEnd();
+}
+
 public class SpeedManager
 {
     public float CurrentSpeed {
@@ -19,16 +26,16 @@ public class SpeedManager
         }
     }
 
-    private bool m_IsGhost;
+    private ISMHandler m_Handler;
 
-    public void Init(bool IsGhost)
+    public void Init(ISMHandler handler)
     {
-        m_IsGhost = IsGhost;
+        m_Handler = handler;
 
         var data = XSFSchema.Instance.Get<SchemaGlobal>((int)SchemaID.Global).Get((int)GlobalID.StdSpeed);
         StdSpeed = (data.data as CSVData_Float).fValue;
         
-        if(m_IsGhost)
+        if(m_Handler.IsGhost)
         {
             BaseSpeed = LevelGamePackMan.Instance.ScpLevels.fGhostSpeed;
         }
@@ -55,7 +62,7 @@ public class SpeedManager
 
     public void ResetBaseSpeed()
     {
-        if(m_IsGhost)
+        if(m_Handler.IsGhost)
         {
             BaseSpeed = LevelGamePackMan.Instance.ScpLevels.fGhostSpeed;
         }
@@ -69,7 +76,7 @@ public class SpeedManager
 
     public void EatBean()
     {
-        if(!m_IsGhost)
+        if(!m_Handler.IsGhost)
         {
             StackSpeed = LevelGamePackMan.Instance.ScpLevels.fBeanMoveSpeed;
 
@@ -80,7 +87,7 @@ public class SpeedManager
 
     public void EnterTunnel()
     {
-        if(m_IsGhost)
+        if(m_Handler.IsGhost)
         {
             StackSpeed = LevelGamePackMan.Instance.ScpLevels.fGhostTunnelMoveSpeed;
             StackSpeedTime = -1;
@@ -89,7 +96,7 @@ public class SpeedManager
 
     public void ExitTunnel()
     {
-        if(m_IsGhost)
+        if(m_Handler.IsGhost)
         {
             StackSpeed = 1;
             StackSpeedTime = -1;
@@ -98,7 +105,7 @@ public class SpeedManager
 
     public void OnEnergy()
     {
-        if(m_IsGhost)
+        if(m_Handler.IsGhost)
         {
             BaseSpeed = LevelGamePackMan.Instance.ScpLevels.fEnergyGhostSpeed;
         }
@@ -109,6 +116,7 @@ public class SpeedManager
         }
 
         BaseSpeedTime = LevelGamePackMan.Instance.ScpLevels.fEnergyTime;
+        Debug.LogError("BaseSpeed=" + BaseSpeed + ", BaseSpeedTime=" + BaseSpeedTime);
     }
 
     public void Update()
@@ -127,8 +135,10 @@ public class SpeedManager
             BaseSpeedTime -= Time.deltaTime;
             if(BaseSpeedTime < 0)
             {
+                Debug.LogError("BaseSpeedTime end");
                 HasEnergy = false;
                 ResetBaseSpeed();
+                m_Handler.OnEnergyEnd();
             }
         }
     }

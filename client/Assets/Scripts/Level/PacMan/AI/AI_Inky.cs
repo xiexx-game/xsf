@@ -19,28 +19,35 @@ public class AI_Inky : AI_Ghost
 
     public override PacManMapBlock GetTarget()
     {
-        PacManMapBlock center = GetCenterBlock();
-
-        int colOffset = m_Current.scp.iCol - center.scp.iCol;
-        int rowOffset = m_Current.scp.iRow - center.scp.iRow;
-
-        int colTarget = center.scp.iCol - colOffset;
-        int rowTarget = center.scp.iRow - rowOffset;
-
-        PacManMapBlock target = LevelGamePackMan.Instance.Map.GetBlock(rowTarget, colTarget);
-        if( target == null )
+        if(LevelGamePackMan.Instance.Character.Speed.HasEnergy)
         {
-            return center;
+            return LevelGamePackMan.Instance.Map.FleeTargets[(int)GhostType.Inky];
         }
         else
         {
-            if(target.IsRoad)
+            PacManMapBlock center = GetCenterBlock();
+
+            int colOffset = m_Current.scp.iCol - center.scp.iCol;
+            int rowOffset = m_Current.scp.iRow - center.scp.iRow;
+
+            int colTarget = center.scp.iCol - colOffset;
+            int rowTarget = center.scp.iRow - rowOffset;
+
+            PacManMapBlock target = LevelGamePackMan.Instance.Map.GetBlock(rowTarget, colTarget);
+            if( target == null )
             {
-                return target;
+                return center;
             }
             else
             {
-                return center;
+                if(target.IsRoad)
+                {
+                    return target;
+                }
+                else
+                {
+                    return center;
+                }
             }
         }
     }
