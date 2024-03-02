@@ -13,7 +13,6 @@ using System.Collections.Generic;
 public enum AIState
 {
     None = 0,
-    WaitReady,
     Born,
     Move,
     Think,
@@ -46,7 +45,7 @@ public abstract class AI_Ghost
 
     public void Init(MonoGhost ghost)
     {
-        m_nState = AIState.WaitReady;
+        m_nState = AIState.Born;
         m_Ghost = ghost;
         m_path = new List<PacManPathResult>();
     }
@@ -166,14 +165,16 @@ public abstract class AI_Ghost
         }
     }
 
-    public void DoThink()
+    public bool DoThink()
     {
         switch(m_nState)
         {
         case AIState.Move:
             m_nState = AIState.Think;
-            break;
+            return true;
         }
+
+        return false;
     }
 
     public void OnUpdate()
@@ -181,21 +182,12 @@ public abstract class AI_Ghost
         //Debug.Log("======== AI_Ghost m_nState=" + m_nState + ", m_Ghost GType=" + m_Ghost.GType);
         switch(m_nState)
         {
-        case AIState.WaitReady:
-            {
-                if(LevelGamePackMan.Instance.Map.IsReady)
-                {
-                    m_nState = AIState.Born;
-                }
-            }
-            break;
-
         case AIState.Born:
             {
                 m_Current = LevelGamePackMan.Instance.Map.Pos2Block(m_Ghost.transform.localPosition);
                 LevelGamePackMan.Instance.Map.OnGhostEnterBlock(m_Ghost, m_Current);
 
-                Debug.Log("AIState.Born =" + m_Current.Index);
+                //Debug.Log("AIState.Born =" + m_Current.Index);
                 m_Ghost.transform.localPosition = new Vector3(m_Current.pos.x, m_Current.pos.y, m_Ghost.PosZ);
                 OnBorn();
             }
@@ -328,5 +320,10 @@ public abstract class AI_Ghost
             }
             break;
         }
+    }
+
+    public void OnDie()
+    {
+        
     }
 }

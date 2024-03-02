@@ -114,8 +114,6 @@ public class PacManMap
     public const float XOffset = (SINGLE_BLOCK_SIZE * MAX_COL) / 2;
     public const float YOffset = (SINGLE_BLOCK_SIZE * MAX_ROW) / 2;
 
-    public bool IsReady { get; private set; }
-
     public PacManMapBlock []FleeTargets { get; private set; }
 
     public readonly int TunnelLeftIndex = 392;
@@ -331,7 +329,7 @@ public class PacManMap
         FleeTargets[(int)GhostType.Inky] = GetBlockByIndex(838);
         FleeTargets[(int)GhostType.Clyde] = GetBlockByIndex(813);
 
-        IsReady = true;
+        LevelGamePackMan.Instance.IsMapReady = true;
     }
 
     public int XPos2Col(float x)
@@ -351,7 +349,7 @@ public class PacManMap
             GameObject.Destroy(m_Blocks[i].go);
         }
 
-        IsReady = false;
+        LevelGamePackMan.Instance.IsMapReady = false;
     }
 
     public PacManMapBlock GetBlock(int row, int col)
@@ -405,6 +403,12 @@ public class PacManMap
     private List<PacManMapBlock> m_LastPath;
     public List<PacManPathResult> FindPath(PacManMoveDir enterDir, PacManMapBlock startBlock, PacManMapBlock endBlock, bool showPath)
     {
+        if(!endBlock.IsRoad)
+        {
+            Debug.LogError("FindPath end block  is not road....");
+            return null;
+        }
+
         OpenList.Clear();
         CloseList.Clear();
 
@@ -596,7 +600,7 @@ public class PacManMap
 
     public void OnPacManEnterBlock(PacManMapBlock block)
     {
-        Debug.Log("OnPacManEnterBlock index=" + block.Index);
+        //Debug.Log("OnPacManEnterBlock index=" + block.Index);
         block.SetType(BlockType.PacMan);
         var character = LevelGamePackMan.Instance.Character;
 
@@ -617,10 +621,10 @@ public class PacManMap
             }
         }
         
-        Debug.Log("OnPacManEnterBlock 1");
+        //Debug.Log("OnPacManEnterBlock 1");
         if(block.HasType(BlockType.Bean))
         {
-            Debug.Log("OnPacManEnterBlock HasType(BlockType.Bean)");
+            //Debug.Log("OnPacManEnterBlock HasType(BlockType.Bean)");
             m_Beans[block.Index].SetActive(false);
             character.Speed.EatBean();
             block.ClearType(BlockType.Bean);
@@ -628,7 +632,7 @@ public class PacManMap
         }
         else if(block.HasType(BlockType.EnergyBean))
         {
-            Debug.Log("OnPacManEnterBlock HasType(BlockType.EnergyBean)");
+            //Debug.Log("OnPacManEnterBlock HasType(BlockType.EnergyBean)");
             block.ClearType(BlockType.EnergyBean);
 
             m_Beans[block.Index].SetActive(false);
@@ -647,7 +651,7 @@ public class PacManMap
 
     public void OnPacManExitBlock(PacManMapBlock block)
     {
-        Debug.Log("OnPacManExitBlock index=" + block.Index);
+        //Debug.Log("OnPacManExitBlock index=" + block.Index);
         block.ClearType(BlockType.PacMan);
     }
 

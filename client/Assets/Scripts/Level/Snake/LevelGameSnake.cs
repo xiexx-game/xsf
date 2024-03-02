@@ -409,7 +409,7 @@ public class LevelGameSnake : LevelGame, ILoadingHandler
 
                 for(int i = 0; i < SNAKE_DEFULAT_SIZE; i ++)
                 {
-                    Debug.Log("Create Snake node ...");
+                    //Debug.Log("Create Snake node ...");
                     var node = new SnakeNode();
                     node.block = GetBlock(nRowStart, nColStart);
                     node.block.SetSnakeNode(color);

@@ -164,6 +164,16 @@ public class LevelGamePackMan : LevelGame, ILoadingHandler
         Enter();
     }
 
+    public bool IsMapReady;
+
+    public bool IsPlaying
+    {
+        get
+        {
+            return IsMapReady && (m_nStatus == GameStatus.Play);
+        }
+    }
+
     public override void OnUpdate()
     {
         switch(m_nStatus)
@@ -212,7 +222,7 @@ public class LevelGamePackMan : LevelGame, ILoadingHandler
             var block = Map.GetBlockByIndex(leftIndex);
             Character.Move(PacManMoveDir.Left, block.pos);
         }
-        else
+        else if(Character.transform.localPosition.x <= current.pos.x)
         {
             if(currentDir == PacManMoveDir.Up)
             {
@@ -259,7 +269,7 @@ public class LevelGamePackMan : LevelGame, ILoadingHandler
             var block = Map.GetBlockByIndex(rightIndex);
             Character.Move(PacManMoveDir.Right, block.pos);
         }
-        else
+        else if(Character.transform.localPosition.x >= current.pos.x)
         {
             if(currentDir == PacManMoveDir.Up)
             {
@@ -306,7 +316,7 @@ public class LevelGamePackMan : LevelGame, ILoadingHandler
             var block = Map.GetBlockByIndex(downIndex);
             Character.Move(PacManMoveDir.Down, block.pos);
         }
-        else
+        else if(Character.transform.localPosition.y >= current.pos.y)
         {
             if(currentDir == PacManMoveDir.Left)
             {
@@ -354,7 +364,7 @@ public class LevelGamePackMan : LevelGame, ILoadingHandler
             var block = Map.GetBlockByIndex(upIndex);
             Character.Move(PacManMoveDir.Up, block.pos);
         }
-        else
+        else if(Character.transform.localPosition.y <= current.pos.y)
         {
             if(currentDir == PacManMoveDir.Left)
             {
@@ -386,8 +396,6 @@ public class LevelGamePackMan : LevelGame, ILoadingHandler
             }
         }
     }
-
-    
 
     public override void DoUltra()
     {

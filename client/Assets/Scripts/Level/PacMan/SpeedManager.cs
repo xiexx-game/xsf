@@ -116,7 +116,7 @@ public class SpeedManager
         }
 
         BaseSpeedTime = LevelGamePackMan.Instance.ScpLevels.fEnergyTime;
-        Debug.LogError("BaseSpeed=" + BaseSpeed + ", BaseSpeedTime=" + BaseSpeedTime);
+        //Debug.LogError("BaseSpeed=" + BaseSpeed + ", BaseSpeedTime=" + BaseSpeedTime);
     }
 
     public void Update()
@@ -135,7 +135,7 @@ public class SpeedManager
             BaseSpeedTime -= Time.deltaTime;
             if(BaseSpeedTime < 0)
             {
-                Debug.LogError("BaseSpeedTime end");
+                //Debug.LogError("BaseSpeedTime end");
                 HasEnergy = false;
                 ResetBaseSpeed();
                 m_Handler.OnEnergyEnd();

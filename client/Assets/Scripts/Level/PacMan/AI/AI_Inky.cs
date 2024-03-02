@@ -54,7 +54,7 @@ public class AI_Inky : AI_Ghost
     
     private PacManMapBlock GetCenterBlock()
     {
-        var current = LevelGamePackMan.Instance.Character.Current;
+        var current = LevelGamePackMan.Instance.Character.RoadCurrent;
         var dir = LevelGamePackMan.Instance.Character.MoveDir;
 
         int nCount = 0;

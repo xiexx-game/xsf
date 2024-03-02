@@ -86,6 +86,14 @@ public class MonoGhost : MonoBehaviour, ISMHandler
 
     public SpeedManager Speed;
 
+    private Color BodyColor;
+
+    public Color DieEyeColor;
+
+    public Color FleeBodyColor;
+
+    private SpriteRenderer Body;
+
     void Awake()
     {
         LevelGamePackMan.Instance.Ghosts[(int)GType] = this;
@@ -95,6 +103,9 @@ public class MonoGhost : MonoBehaviour, ISMHandler
 
         Speed = new SpeedManager();
         Speed.Init(this);
+
+        Body = transform.Find("body").GetComponent<SpriteRenderer>();
+        BodyColor = Body.color;
     }
 
     void InitAI()
@@ -137,8 +148,26 @@ public class MonoGhost : MonoBehaviour, ISMHandler
         }
     }
 
+    public void DoFlee(bool isFlee)
+    {   
+
+    }
+
+    public void Die()
+    {
+        m_AI.OnDie();
+    }
+
+    public void ReBorn()
+    {
+
+    }
+
     void Update()
     {
+        if(!LevelGamePackMan.Instance.IsPlaying)
+            return;
+
         if(Up)
         {
             Up = false;
@@ -186,18 +215,27 @@ public class MonoGhost : MonoBehaviour, ISMHandler
         }
 
         Speed.Update();
-        
     }
 
     public void OnPacManEatEnergy()
-    {
-        Speed.OnEnergy();
-        m_AI.DoThink();
+    {   
+        if(m_AI.DoThink())
+        {
+            Speed.OnEnergy();
+        
+            DoFlee(true);
+            Body.color = FleeBodyColor;
+        }
     }
 
     public bool IsGhost { get { return true; } }
     public void OnEnergyEnd()
     {
-        m_AI.DoThink();
+        if(m_AI.DoThink())
+        {
+            DoFlee(false);
+        
+            Body.color = BodyColor;
+        }
     }
 }

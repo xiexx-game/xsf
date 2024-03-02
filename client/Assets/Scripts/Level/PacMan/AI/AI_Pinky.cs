@@ -28,7 +28,7 @@ public class AI_Pinky : AI_Ghost
         }
         else
         {
-            var current = LevelGamePackMan.Instance.Character.Current;
+            var current = LevelGamePackMan.Instance.Character.RoadCurrent;
             var dir = LevelGamePackMan.Instance.Character.MoveDir;
 
             int nCount = 0;
@@ -54,6 +54,7 @@ public class AI_Pinky : AI_Ghost
                         if(current.ConnectIndex[(int)nextDir] > 0)
                         {
                             current = LevelGamePackMan.Instance.Map.GetBlockByIndex(current.ConnectIndex[(int)nextDir]);
+                            dir = (PacManMoveDir)nextDir;
                             nCount ++;
                             break;
                         }

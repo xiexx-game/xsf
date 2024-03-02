@@ -47,7 +47,33 @@ public class MonoPacManCharacter : MonoBehaviour, ISMHandler
 
     public PacManMoveDir MoveDir;
 
-    public PacManMapBlock Current;
+    private PacManMapBlock m_RoadCurrent;
+    private PacManMapBlock m_Current;
+    public PacManMapBlock Current {
+        set {
+            if(value.IsRoad)
+            {
+                m_RoadCurrent = value;
+            }
+            else
+            {
+                Debug.LogError("Current is not a road");
+            }
+
+            m_Current = value;
+        }
+
+        get {
+            return m_Current;
+        }
+    }
+
+    public PacManMapBlock RoadCurrent {
+        get
+        {
+            return m_RoadCurrent;
+        }
+    }
 
     private bool WaitBorn;
 
@@ -114,17 +140,22 @@ public class MonoPacManCharacter : MonoBehaviour, ISMHandler
 
     void Update()
     {
-        Speed.Update();
+        if(!LevelGamePackMan.Instance.IsPlaying)
+        {
+            return;
+        }
 
         var map = LevelGamePackMan.Instance.Map;
-        if(WaitBorn && map.IsReady)
+        if(WaitBorn)
         {
             WaitBorn = false;
 
             Current = map.Pos2Block(transform.localPosition);
             map.OnPacManEnterBlock(Current);
-            Debug.LogWarning("MonoPacManCharacter Current=" + Current);
+            //Debug.LogWarning("MonoPacManCharacter Current=" + Current);
         }
+
+        Speed.Update();
 
         if(IsRota)
         {
