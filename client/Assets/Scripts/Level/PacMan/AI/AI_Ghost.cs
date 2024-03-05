@@ -15,12 +15,15 @@ public enum AIState
     None = 0,
     Born,
     Move,
+    DieMove,
     Think,
     IdleRight,
     IdleLeft,
     GoOut2Start,
     GoOut2End,
     GoOutDone,
+    GoIn,
+    ReBorn,
     Max,
 }
 
@@ -52,6 +55,8 @@ public abstract class AI_Ghost
 
     public abstract void OnBorn();
     public abstract PacManMapBlock GetTarget();
+
+    private bool IsDie;
 
     public void DoMove(bool isForward)
     {
@@ -246,7 +251,9 @@ public abstract class AI_Ghost
                     var block = LevelGamePackMan.Instance.Map.Pos2Block(m_Ghost.transform.localPosition);
                     if(block != m_Current)
                     {
+                        LevelGamePackMan.Instance.Map.OnGhostExitBlock(m_Ghost, m_Current);
                         m_Current = block;
+                        LevelGamePackMan.Instance.Map.OnGhostEnterBlock(m_Ghost, m_Current);
                     }
                 }
                 else 
@@ -257,7 +264,9 @@ public abstract class AI_Ghost
                         end = m_path[m_nPathIndex].pos;
                         end.z = m_Ghost.PosZ;
                         m_Ghost.transform.localPosition = end;
+                        LevelGamePackMan.Instance.Map.OnGhostExitBlock(m_Ghost, m_Current);
                         m_Current = LevelGamePackMan.Instance.Map.Pos2Block(m_Ghost.transform.localPosition);
+                        LevelGamePackMan.Instance.Map.OnGhostEnterBlock(m_Ghost, m_Current);
 
                         m_nPathIndex ++;
                         return;
@@ -296,6 +305,85 @@ public abstract class AI_Ghost
             }
             break;
 
+        case AIState.GoIn:
+            {
+                m_Ghost.MoveDir = PacManMoveDir.Down;
+                Move2Pos(OutStart, AIState.ReBorn);
+            }
+            break;
+
+        case AIState.ReBorn:
+            {
+                
+            }
+            break;
+
+        case AIState.DieMove:
+            {
+                var start = m_Ghost.transform.localPosition; start.z = 0;
+                var end = m_path[m_nPathIndex].pos; end.z = 0;
+                var end2 = OutEnd; end2.z = 0;
+                var dir = (end - start).normalized;
+                float dis = Vector3.Distance(start, end);
+                float dis2 = Vector3.Distance(start, end2);
+
+                float disMove = m_Ghost.Speed.CurrentSpeed * Time.deltaTime;
+                if(disMove > dis2)
+                {
+                    m_nState = AIState.GoIn;
+                    end2.z = m_Ghost.PosZ;
+                    m_Ghost.transform.localPosition = end2;
+                    return;
+                }
+
+                if(dis > disMove)
+                {
+                    Vector3 pos = start + disMove * dir;
+                    pos.z = m_Ghost.PosZ;
+                    m_Ghost.transform.localPosition = pos;
+                }
+                else 
+                {
+                    if(m_path[m_nPathIndex].Teleport)
+                    {
+                        m_nPathIndex ++;
+                        end = m_path[m_nPathIndex].pos;
+                        end.z = m_Ghost.PosZ;
+                        m_Ghost.transform.localPosition = end;
+
+                        m_nPathIndex ++;
+                        return;
+                    }
+                    else
+                    {
+                        end.z = m_Ghost.PosZ;
+                        m_Ghost.transform.localPosition = end;
+                    }
+
+
+                    m_nPathIndex ++;
+                    if(m_nPathIndex >= m_path.Count)
+                    {
+                        m_nState = AIState.GoIn;
+                        end2.z = m_Ghost.PosZ;
+                        m_Ghost.transform.localPosition = end2;
+                        return;
+                    }
+                    else
+                    {
+                        for(int i = 0; i < m_Current.ConnectIndex.Length; i ++)
+                        {
+                            if(m_path[m_nPathIndex].block.Index == m_Current.ConnectIndex[i])
+                            {
+                                m_Ghost.MoveDir = (PacManMoveDir)i;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+
         case AIState.Think:
             {
                 var target = GetTarget();
@@ -324,6 +412,26 @@ public abstract class AI_Ghost
 
     public void OnDie()
     {
-        
+        IsDie = true;
+        var map = LevelGamePackMan.Instance.Map;
+        var dir = map.DirReverse(m_Ghost.MoveDir);
+
+        var block = LevelGamePackMan.Instance.Map.Pos2Block(OutEnd);
+
+        m_path.Clear();
+        var path = LevelGamePackMan.Instance.Map.FindPath(dir, m_Current, block, m_Ghost.ShowPath);
+        m_path.AddRange(path);
+        m_nPathIndex = 1;
+
+        for(int i = 0; i < m_Current.ConnectIndex.Length; i ++)
+        {
+            if(m_path[1].block.Index == m_Current.ConnectIndex[i])
+            {
+                m_Ghost.MoveDir = (PacManMoveDir)i;
+                break;
+            }
+        }
+
+        m_nState = AIState.DieMove;
     }
 }

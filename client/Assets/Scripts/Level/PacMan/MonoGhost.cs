@@ -33,6 +33,16 @@ public class MonoGhost : MonoBehaviour, ISMHandler
     public GameObject [] LeftEye;
     public GameObject [] RightEye;
 
+    private readonly Color32[] EyeColor = new Color32[] {
+        new Color32(255, 255, 255, 255), 
+        new Color32(0, 0, 255, 255)
+    };
+
+    private readonly Color32[] DieEyeColor = new Color32[] {
+        new Color32(183, 183, 183, 255), 
+        new Color32(70, 70, 70, 255)
+    };
+
     public Vector3[] LeftEyePos;
     public Vector3[] RightEyePos;
     public Vector3[] EyeBluePos;
@@ -59,6 +69,8 @@ public class MonoGhost : MonoBehaviour, ISMHandler
     public float PosZ;
 
     public bool ShowPath;
+
+    
 
     private PacManMoveDir m_MoveDir;
     public PacManMoveDir MoveDir {
@@ -87,8 +99,6 @@ public class MonoGhost : MonoBehaviour, ISMHandler
     public SpeedManager Speed;
 
     private Color BodyColor;
-
-    public Color DieEyeColor;
 
     public Color FleeBodyColor;
 
@@ -148,19 +158,32 @@ public class MonoGhost : MonoBehaviour, ISMHandler
         }
     }
 
-    public void DoFlee(bool isFlee)
-    {   
-
-    }
-
     public void Die()
     {
         m_AI.OnDie();
+
+        var color = Body.color;
+        color.a = 0;
+        Body.color = color;
+
+        for(int i = 0; i < LeftEye.Length; i ++)
+        {
+            LeftEye[i].GetComponent<SpriteRenderer>().color = DieEyeColor[i];
+            RightEye[i].GetComponent<SpriteRenderer>().color = DieEyeColor[i];
+        }
     }
 
     public void ReBorn()
     {
+        var color = Body.color;
+        color.a = 255;
+        Body.color = color;
 
+        for(int i = 0; i < LeftEye.Length; i ++)
+        {
+            LeftEye[i].GetComponent<SpriteRenderer>().color = EyeColor[i];
+            RightEye[i].GetComponent<SpriteRenderer>().color = EyeColor[i];
+        }
     }
 
     void Update()
@@ -222,8 +245,6 @@ public class MonoGhost : MonoBehaviour, ISMHandler
         if(m_AI.DoThink())
         {
             Speed.OnEnergy();
-        
-            DoFlee(true);
             Body.color = FleeBodyColor;
         }
     }
@@ -233,8 +254,6 @@ public class MonoGhost : MonoBehaviour, ISMHandler
     {
         if(m_AI.DoThink())
         {
-            DoFlee(false);
-        
             Body.color = BodyColor;
         }
     }

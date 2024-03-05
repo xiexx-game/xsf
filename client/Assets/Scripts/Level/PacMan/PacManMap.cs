@@ -613,6 +613,7 @@ public class PacManMap
             if(character.Speed.HasEnergy)
             {
                 // 鬼死了
+                
             }
             else
             {
@@ -658,12 +659,15 @@ public class PacManMap
     public void OnGhostEnterBlock(MonoGhost ghost, PacManMapBlock block)
     {
         block.SetType(ghost.m_AI.SetType);
+        Debug.Log($"OnGhostEnterBlock block index={block.Index}, type={block.TypeValue}, gost set type={ghost.m_AI.SetType}");
         if(block.HasType(BlockType.PacMan))
         {
             var character = LevelGamePackMan.Instance.Character;
             if(character.Speed.HasEnergy)
             {
                 // 鬼死了
+                block.ClearType(ghost.m_AI.SetType);
+                ghost.Die();
             }
             else
             {
@@ -679,6 +683,8 @@ public class PacManMap
     public void OnGhostExitBlock(MonoGhost ghost, PacManMapBlock block)
     {
         block.ClearType(ghost.m_AI.SetType);
+
+        Debug.Log($"OnGhostExitBlock block index={block.Index}, type={block.TypeValue}, gost set type={ghost.m_AI.SetType}");
 
         if(block.HasType(BlockType.Tunnel))
         {
