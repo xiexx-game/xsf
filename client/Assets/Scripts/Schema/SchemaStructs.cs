@@ -111,6 +111,10 @@ public class ScpPacManLevels
 	public float fGhostTunnelMoveSpeed;	//鬼隧道速度
 	public float fEnergyGhostSpeed;	//恐惧鬼速度
 	public float fEnergyTime;	//恐惧时间
+	public uint uDotsLeft1;	//幽灵离开1
+	public float fGhostSpeed1;	//幽灵速度1
+	public uint uDotsLeft2;	//幽灵离开2
+	public float fGhostSpeed2;	//幽灵速度2
 //ScpPacManLevels_END
 }
 

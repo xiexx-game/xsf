@@ -68,6 +68,10 @@ public enum CSVIndex
 	ScpPacManLevels_GhostTunnelMoveSpeed = 5,
 	ScpPacManLevels_EnergyGhostSpeed = 6,
 	ScpPacManLevels_EnergyTime = 7,
+	ScpPacManLevels_DotsLeft1 = 8,
+	ScpPacManLevels_GhostSpeed1 = 9,
+	ScpPacManLevels_DotsLeft2 = 10,
+	ScpPacManLevels_GhostSpeed2 = 11,
 
 	ScpPacManMap_Row = 0,
 	ScpPacManMap_Col = 1,

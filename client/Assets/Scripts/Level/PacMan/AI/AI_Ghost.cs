@@ -56,6 +56,8 @@ public abstract class AI_Ghost
     public abstract void OnBorn();
     public abstract PacManMapBlock GetTarget();
 
+    public virtual void OnAIUpdate() {}
+
     private bool IsDie;
 
     public void DoMove(bool isForward)
@@ -184,11 +186,14 @@ public abstract class AI_Ghost
 
     public void OnUpdate()
     {
+        OnAIUpdate();
+
         //Debug.Log("======== AI_Ghost m_nState=" + m_nState + ", m_Ghost GType=" + m_Ghost.GType);
         switch(m_nState)
         {
         case AIState.Born:
             {
+                m_Ghost.OnBorn();
                 m_Current = LevelGamePackMan.Instance.Map.Pos2Block(m_Ghost.transform.localPosition);
                 LevelGamePackMan.Instance.Map.OnGhostEnterBlock(m_Ghost, m_Current);
 
@@ -214,7 +219,17 @@ public abstract class AI_Ghost
 
         case AIState.GoOut2Start:
             {
-                
+                var pos = m_Ghost.transform.localPosition;
+                if(OutStart.x <= pos.x)
+                {
+                    m_Ghost.MoveDir = PacManMoveDir.Left;
+                }
+                else
+                {
+                    m_Ghost.MoveDir = PacManMoveDir.Right;
+                }
+
+                Move2Pos(OutStart, AIState.GoOut2End);
             }
             break;
 
@@ -314,7 +329,8 @@ public abstract class AI_Ghost
 
         case AIState.ReBorn:
             {
-                
+                m_Ghost.ReBorn();
+                m_nState = AIState.GoOut2End;
             }
             break;
 

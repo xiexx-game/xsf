@@ -122,6 +122,8 @@ public class PacManMap
     public readonly float TunnelLeft = -5.318f;
     public readonly float TunnelRight = 5.318f;
 
+    public int BeanCount { get; private set;}
+
     public PacManMap()
     {
         m_Blocks = new List<PacManMapBlock>();
@@ -208,6 +210,7 @@ public class PacManMap
                             m_Beans[block.Index].transform.SetParent(mono.Frame.transform);
                             m_Beans[block.Index].transform.localPosition = new Vector3(x, y, BLOCK_Z);
                             m_Beans[block.Index].SetActive(true);
+                            BeanCount ++;
                         }
                         
                         if(block.HasType(BlockType.Bean))
@@ -216,6 +219,7 @@ public class PacManMap
                             m_Beans[block.Index].transform.SetParent(mono.Frame.transform);
                             m_Beans[block.Index].transform.localPosition = new Vector3(x, y, BLOCK_Z);
                             m_Beans[block.Index].SetActive(true);
+                            BeanCount ++;
                         }
                         break;
                 }
@@ -630,6 +634,10 @@ public class PacManMap
             character.Speed.EatBean();
             block.ClearType(BlockType.Bean);
             Level.Instance.Current.GameSocre += 1;
+            if(BeanCount > 0)
+            {
+                BeanCount --;
+            }
         }
         else if(block.HasType(BlockType.EnergyBean))
         {
@@ -646,6 +654,11 @@ public class PacManMap
             }
 
             Level.Instance.Current.GameSocre += 10;
+
+            if(BeanCount > 0)
+            {
+                BeanCount --;
+            }
         }
         
     }

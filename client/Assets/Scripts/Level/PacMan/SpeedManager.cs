@@ -37,7 +37,7 @@ public class SpeedManager
         
         if(m_Handler.IsGhost)
         {
-            BaseSpeed = LevelGamePackMan.Instance.ScpLevels.fGhostSpeed;
+            BaseSpeed = GetGhostSpeed();
         }
         else
         {
@@ -64,7 +64,7 @@ public class SpeedManager
     {
         if(m_Handler.IsGhost)
         {
-            BaseSpeed = LevelGamePackMan.Instance.ScpLevels.fGhostSpeed;
+            BaseSpeed = GetGhostSpeed();
         }
         else
         {
@@ -107,7 +107,7 @@ public class SpeedManager
     {
         if(m_Handler.IsGhost)
         {
-            BaseSpeed = LevelGamePackMan.Instance.ScpLevels.fEnergyGhostSpeed;
+            BaseSpeed = GetGhostSpeed();
         }
         else
         {
@@ -119,8 +119,29 @@ public class SpeedManager
         //Debug.LogError("BaseSpeed=" + BaseSpeed + ", BaseSpeedTime=" + BaseSpeedTime);
     }
 
+    public float GetGhostSpeed()
+    {
+        var map = LevelGamePackMan.Instance.Map;
+        var scp = LevelGamePackMan.Instance.ScpLevels;
+        if(map.BeanCount <= scp.uDotsLeft2)
+        {
+            return scp.fGhostSpeed2;
+        }
+        else if(map.BeanCount <= scp.uDotsLeft1)
+        {
+            return scp.fGhostSpeed1;
+        }
+        else
+        {
+            return scp.fGhostSpeed;
+        }
+    }
+
     public void Update()
     {
+        if(m_Handler == null)
+            return;
+
         if(StackSpeedTime > 0)
         {
             StackSpeedTime -= Time.deltaTime;

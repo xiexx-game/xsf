@@ -17,6 +17,17 @@ public class AI_Inky : AI_Ghost
         m_nState = AIState.IdleLeft;
     }
 
+    public override void OnAIUpdate()
+    {
+        if(m_nState == AIState.IdleLeft || m_nState == AIState.IdleRight)
+        {
+            if(LevelGamePackMan.Instance.Map.BeanCount <= LevelGamePackMan.Instance.ScpLevels.uDotsLeft1)
+            {
+                m_nState = AIState.GoOut2Start;
+            }
+        }
+    }
+
     public override PacManMapBlock GetTarget()
     {
         if(LevelGamePackMan.Instance.Character.Speed.HasEnergy)

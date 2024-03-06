@@ -39,6 +39,10 @@ public class SchemaPacManLevels : ISchema
 			scp.fGhostTunnelMoveSpeed = (csv.GetData((int)CSVDataType.Float, i, (int)CSVIndex.ScpPacManLevels_GhostTunnelMoveSpeed) as CSVData_Float).fValue;	// 鬼隧道速度
 			scp.fEnergyGhostSpeed = (csv.GetData((int)CSVDataType.Float, i, (int)CSVIndex.ScpPacManLevels_EnergyGhostSpeed) as CSVData_Float).fValue;	// 恐惧鬼速度
 			scp.fEnergyTime = (csv.GetData((int)CSVDataType.Float, i, (int)CSVIndex.ScpPacManLevels_EnergyTime) as CSVData_Float).fValue;	// 恐惧时间
+			scp.uDotsLeft1 = (csv.GetData((int)CSVDataType.Uint, i, (int)CSVIndex.ScpPacManLevels_DotsLeft1) as CSVData_Uint).uValue;	// 幽灵离开1
+			scp.fGhostSpeed1 = (csv.GetData((int)CSVDataType.Float, i, (int)CSVIndex.ScpPacManLevels_GhostSpeed1) as CSVData_Float).fValue;	// 幽灵速度1
+			scp.uDotsLeft2 = (csv.GetData((int)CSVDataType.Uint, i, (int)CSVIndex.ScpPacManLevels_DotsLeft2) as CSVData_Uint).uValue;	// 幽灵离开2
+			scp.fGhostSpeed2 = (csv.GetData((int)CSVDataType.Float, i, (int)CSVIndex.ScpPacManLevels_GhostSpeed2) as CSVData_Float).fValue;	// 幽灵速度2
 //_CSV_LIST_END_
 
 

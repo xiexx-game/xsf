@@ -18,6 +18,17 @@ public class AI_Clyde : AI_Ghost
         m_nState = AIState.IdleRight;
     }
 
+    public override void OnAIUpdate()
+    {
+        if(m_nState == AIState.IdleLeft || m_nState == AIState.IdleRight)
+        {
+            if(LevelGamePackMan.Instance.Map.BeanCount <= LevelGamePackMan.Instance.ScpLevels.uDotsLeft2)
+            {
+                m_nState = AIState.GoOut2Start;
+            }
+        }
+    }
+
     public override PacManMapBlock GetTarget()
     {
         if(LevelGamePackMan.Instance.Character.Speed.HasEnergy)

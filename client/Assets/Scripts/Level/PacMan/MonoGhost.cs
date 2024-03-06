@@ -112,7 +112,6 @@ public class MonoGhost : MonoBehaviour, ISMHandler
         InitAI();
 
         Speed = new SpeedManager();
-        Speed.Init(this);
 
         Body = transform.Find("body").GetComponent<SpriteRenderer>();
         BodyColor = Body.color;
@@ -175,8 +174,7 @@ public class MonoGhost : MonoBehaviour, ISMHandler
 
     public void ReBorn()
     {
-        var color = Body.color;
-        color.a = 255;
+        var color = BodyColor;
         Body.color = color;
 
         for(int i = 0; i < LeftEye.Length; i ++)
@@ -184,6 +182,11 @@ public class MonoGhost : MonoBehaviour, ISMHandler
             LeftEye[i].GetComponent<SpriteRenderer>().color = EyeColor[i];
             RightEye[i].GetComponent<SpriteRenderer>().color = EyeColor[i];
         }
+    }
+
+    public void OnBorn()
+    {
+        Speed.Init(this);
     }
 
     void Update()
