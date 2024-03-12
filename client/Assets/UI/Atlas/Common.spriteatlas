@@ -45,9 +45,11 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 9782dbf12a25f4da8a2c195714399931, type: 3}
   - {fileID: 21300000, guid: b4e01c63102844f71be5b82991b606c5, type: 3}
   - {fileID: 21300000, guid: 8a3ee683ca9964ddfa5c1d7d67b35f75, type: 3}
+  - {fileID: 21300000, guid: ca849af3016b645d391723e25c308b56, type: 3}
   - {fileID: 21300000, guid: 9d3339d44d8514f11a8d52eb7993f094, type: 3}
   - {fileID: 21300000, guid: 6d71cd25924ae4897b0cd7a8b688bf2f, type: 3}
   - {fileID: 21300000, guid: e45a79d89e8f83143bbdd96bbd6593e1, type: 3}
+  - {fileID: 21300000, guid: 7c52df992e4ef4abfb720a3418b9aa55, type: 3}
   - {fileID: 21300000, guid: fcabfa8e9532d425d9282953ae936545, type: 3}
   - {fileID: 21300000, guid: b084d2efbddd048a8a15a60cba6426e2, type: 3}
   m_PackedSpriteNamesToIndex:
@@ -57,9 +59,11 @@ SpriteAtlas:
   - logo
   - logo-supper-wings
   - star
+  - half-cycle
   - jxz
   - square-white
   - white-block-bg
+  - pac-man-logo
   - puase
   - arrow
   m_RenderDataMap: {}

@@ -201,6 +201,19 @@ public sealed class UISelect : UIBase
         {
             HighScore.text = "暂无记录";
         }
+
+        if(m_Current == LevelGameType.PacMan)
+        {
+            LevelRight.SetActive(false);
+            LevelLeft.SetActive(false);
+            LevelValue.gameObject.SetActive(false);
+        }
+        else
+        {
+            LevelRight.SetActive(true);
+            LevelLeft.SetActive(true);
+            LevelValue.gameObject.SetActive(true);
+        }
     }
 
 	// 

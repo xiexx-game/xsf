@@ -655,7 +655,7 @@ public class PacManMap
             }
             else
             {
-                LevelGamePackMan.Instance.GameOver();
+                //LevelGamePackMan.Instance.GameOver();
                 return;
             }
         }
@@ -718,7 +718,7 @@ public class PacManMap
             }
             else
             {
-                LevelGamePackMan.Instance.GameOver();
+                //LevelGamePackMan.Instance.GameOver();
             }
         }
         else if(block.HasType(BlockType.Tunnel))

@@ -20,6 +20,7 @@ public enum UIID
     UIPause,
     UIExam,
     UIPlaySnake,
+    UIPlayPacMan,
 
     Max,
 }
@@ -40,6 +41,7 @@ public sealed class UIHelper : IUIHelper
             case UIID.UIPause:      return new UIPause();
             case UIID.UIExam: return new UIExam();
             case UIID.UIPlaySnake:  return new UIPlaySnake();
+            case UIID.UIPlayPacMan: return new UIPlayPacMan();
             default: return null;
         }
     }
