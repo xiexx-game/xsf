@@ -138,12 +138,26 @@ public class MonoPacManCharacter : MonoBehaviour, ISMHandler
         IsMoving = false;
     }
 
+    public void Restart()
+    {
+        WaitBorn = true;
+        transform.localPosition = BornPos;
+        Body.transform.localRotation = Quaternion.Euler(0, 0, Rota[1]);
+        LevelGamePackMan.Instance.Character = this;
+        Idle();
+        MoveDir = PacManMoveDir.Right;
+        Speed.Init(this);
+    }
+
     void Update()
     {
         if(!LevelGamePackMan.Instance.IsPlaying)
         {
             return;
         }
+
+        if(Level.Instance.Pause)
+            return;
 
         var map = LevelGamePackMan.Instance.Map;
         if(WaitBorn)

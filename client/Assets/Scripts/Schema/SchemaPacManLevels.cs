@@ -62,8 +62,7 @@ public class SchemaPacManLevels : ISchema
     {
         if (nIndex >= m_Datas.Length)
         {
-            UnityEngine.Debug.LogError(string.Format("SchemaPacManLevels.Get nIndex[{0}] >= m_Datas.Length[{1}]", nIndex, m_Datas.Length));
-            return null;
+            return m_Datas[m_Datas.Length-1];
         }
 
         return m_Datas[nIndex];

@@ -348,6 +348,20 @@ public class PacManMap
         LevelGamePackMan.Instance.IsMapReady = true;
     }
 
+    public void Reset()
+    {
+        
+        for(int i = 0; i < m_Blocks.Count; i ++)
+        {
+            m_Blocks[i].TypeValue = m_Blocks[i].scp.uBlockType;
+            if(m_Blocks[i].HasType(BlockType.Bean) || m_Blocks[i].HasType(BlockType.EnergyBean))
+            {
+                m_Beans[i].SetActive(true);
+                BeanCount ++;
+            }
+        }
+    }
+
     public int XPos2Col(float x)
     {
         return (int)((x+XOffset)/SINGLE_BLOCK_SIZE);
@@ -655,7 +669,7 @@ public class PacManMap
             }
             else
             {
-                //LevelGamePackMan.Instance.GameOver();
+                LevelGamePackMan.Instance.GameOver();
                 return;
             }
         }
@@ -667,11 +681,12 @@ public class PacManMap
             m_Beans[block.Index].SetActive(false);
             character.Speed.EatBean();
             block.ClearType(BlockType.Bean);
-            Level.Instance.Current.GameSocre += 1;
             if(BeanCount > 0)
             {
                 BeanCount --;
             }
+
+            LevelGamePackMan.Instance.OnBeanEat(false);
         }
         else if(block.HasType(BlockType.EnergyBean))
         {
@@ -687,12 +702,12 @@ public class PacManMap
                 LevelGamePackMan.Instance.Ghosts[i].OnPacManEatEnergy();
             }
 
-            Level.Instance.Current.GameSocre += 10;
-
             if(BeanCount > 0)
             {
                 BeanCount --;
             }
+
+            LevelGamePackMan.Instance.OnBeanEat(true);
         }
         
     }
@@ -718,7 +733,7 @@ public class PacManMap
             }
             else
             {
-                //LevelGamePackMan.Instance.GameOver();
+                LevelGamePackMan.Instance.GameOver();
             }
         }
         else if(block.HasType(BlockType.Tunnel))

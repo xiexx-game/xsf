@@ -56,6 +56,11 @@ public abstract class AI_Ghost
     public abstract void OnBorn();
     public abstract PacManMapBlock GetTarget();
 
+    public void Restart()
+    {
+        m_nState = AIState.Born;
+    }
+
     public virtual void OnAIUpdate() {}
 
     private bool IsDie;

@@ -117,6 +117,13 @@ public class MonoGhost : MonoBehaviour, ISMHandler
         BodyColor = Body.color;
     }
 
+    public void Restart()
+    {
+        LevelGamePackMan.Instance.Map.OnGhostExitBlock(this, m_AI.m_Current);
+        transform.localPosition = BornPos;
+        m_AI.Restart();
+    }
+
     void InitAI()
     {
         switch(GType)
@@ -192,6 +199,9 @@ public class MonoGhost : MonoBehaviour, ISMHandler
     void Update()
     {
         if(!LevelGamePackMan.Instance.IsPlaying)
+            return;
+
+        if(Level.Instance.Pause)
             return;
 
         if(Up)

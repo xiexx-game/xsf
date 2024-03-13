@@ -64,6 +64,7 @@ public class LevelGamePackMan : LevelGame, ILoadingHandler
 
     public MonoGhost []Ghosts;
     public MonoPacManCharacter Character;
+    private uint m_nCurHighScore;
 
     public override void Init()
     {
@@ -132,6 +133,7 @@ public class LevelGamePackMan : LevelGame, ILoadingHandler
         GameSocre = 0;
         m_nStatus = GameStatus.Play;
         AudioManager.Instance.PlayBGM(BGMID.Snake);
+        m_nCurHighScore = Level.Instance.GetHighScore((int)LevelGameType.PacMan);
     }
 
     public override void Exit()
@@ -159,9 +161,22 @@ public class LevelGamePackMan : LevelGame, ILoadingHandler
 
     public override void Restart()
     {
-        
-
+        CurrentLevel = 1;
+        ScpLevels = XSFSchema.Instance.Get<SchemaPacManLevels>((int)SchemaID.PacManLevels).Get(CurrentLevel);
         Enter();
+
+        var ui = XSFUI.Instance.Get((int)UIID.UIPlayPacMan);
+        ui.Refresh((uint)UIRefreshID.PlayScore, null);
+        ui.Refresh((uint)UIRefreshID.PlayLevel, null);
+
+        Character.Restart();
+
+        for(int i = 0; i < Ghosts.Length; i ++)
+        {
+            Ghosts[i].Restart();
+        }
+
+        Map.Reset();
     }
 
     public bool IsMapReady;
@@ -195,6 +210,43 @@ public class LevelGamePackMan : LevelGame, ILoadingHandler
             break;
         }
 
+    }
+
+    public void OnBeanEat(bool IsEnergy)
+    {
+        GameSocre += IsEnergy ? (uint)10 : (uint)1;
+
+        var ui = XSFUI.Instance.Get((int)UIID.UIPlayPacMan);
+        ui.Refresh((uint)UIRefreshID.PlayScore, null);
+
+        if(GameSocre > m_nCurHighScore)
+        {
+            m_nCurHighScore = GameSocre;
+            Level.Instance.SetHighScore((int)LevelGameType.PacMan, GameSocre);
+        }
+
+        if(LevelGamePackMan.Instance.Map.BeanCount <= 0)
+        {
+            CurrentLevel ++;
+            ScpLevels = XSFSchema.Instance.Get<SchemaPacManLevels>((int)SchemaID.PacManLevels).Get(CurrentLevel);
+            ui.Refresh((uint)UIRefreshID.PlayLevel, null);
+            ui.Refresh((uint)UIRefreshID.ShowFireworks, null);
+            AudioManager.Instance.PlayFXAudio(ClipID.HighScore);
+
+            EnterNewLevel();
+        }
+    }
+
+    public void EnterNewLevel()
+    {
+        Map.Reset();
+
+        Character.Restart();
+
+        for(int i = 0; i < Ghosts.Length; i ++)
+        {
+            Ghosts[i].Restart();
+        }
     }
 
     public void GameOver()
