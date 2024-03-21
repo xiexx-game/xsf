@@ -122,6 +122,8 @@ public class MonoGhost : MonoBehaviour, ISMHandler
         LevelGamePackMan.Instance.Map.OnGhostExitBlock(this, m_AI.m_Current);
         transform.localPosition = BornPos;
         m_AI.Restart();
+
+        ReBorn();
     }
 
     void InitAI()
@@ -177,7 +179,8 @@ public class MonoGhost : MonoBehaviour, ISMHandler
             LeftEye[i].GetComponent<SpriteRenderer>().color = DieEyeColor[i];
             RightEye[i].GetComponent<SpriteRenderer>().color = DieEyeColor[i];
         }
-        AudioManager.Instance.PlayPMFx(PMClipID.EatGhost);
+
+        AudioManager.Instance.PlayFXAudio(ClipID.Cycle);
     }
 
     public void ReBorn()

@@ -311,6 +311,6 @@ public class MonoPacManCharacter : MonoBehaviour, ISMHandler
 
     public void OnEnergyEnd()
     {
-        AudioManager.Instance.StopBGM();
+        //AudioManager.Instance.StopBGM();
     }
 }

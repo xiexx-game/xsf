@@ -17,7 +17,7 @@ public class AI_Blinky : AI_Ghost
     {
         m_Ghost.MoveDir = PacManMoveDir.Left;
         //Debug.Log("AI_Blinky OnBorn");
-        DoMove(true);   
+        DoMove(true, false);   
         //Debug.Log("AI_Blinky OnBorn state=" + m_nState);
         //m_Ghost.ShowPath = true;
     }

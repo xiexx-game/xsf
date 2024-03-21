@@ -439,6 +439,19 @@ public class PacManMap
             return null;
         }
 
+        if(startBlock.Index == endBlock.Index)
+        {
+            List<PacManPathResult> path = new List<PacManPathResult>();
+
+            PacManPathResult res;
+            res.block = endBlock;
+            res.pos = endBlock.pos;
+            res.Teleport = false;
+            path.Add(res);
+
+            return path;
+        }
+
         OpenList.Clear();
         CloseList.Clear();
 
@@ -687,7 +700,7 @@ public class PacManMap
             }
 
             LevelGamePackMan.Instance.OnBeanEat(false);
-            AudioManager.Instance.PlayPMFx(PMClipID.Bean);
+            AudioManager.Instance.PlayFXAudio(ClipID.SngleSelect);
         }
         else if(block.HasType(BlockType.EnergyBean))
         {
@@ -709,8 +722,7 @@ public class PacManMap
             }
 
             LevelGamePackMan.Instance.OnBeanEat(true);
-            AudioManager.Instance.PlayPMFx(PMClipID.EnergyBean);
-            AudioManager.Instance.PlayPMMove(PMClipID.EnergyMove);
+            AudioManager.Instance.PlayFXAudio(ClipID.LinkDone);
         }
         
     }

@@ -382,6 +382,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: f0c69ffb7bf004b04974aabe93fff250, type: 3}
   - {fileID: 8300000, guid: 5f1d653ef72ba461ea5b18ed8474902c, type: 3}
   - {fileID: 8300000, guid: 629196baaab90415d89865ca59e35820, type: 3}
+  - {fileID: 8300000, guid: 0eabd5bef807147a98c789e46d223217, type: 3}
   Clips:
   - {fileID: 8300000, guid: 70c25922943914ad49848d41c1c1c97e, type: 3}
   - {fileID: 8300000, guid: 2202ebc1b3f474b56a7de8dd01813f95, type: 3}
@@ -394,15 +395,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 9654391f9775646d9a4443afbe9312fc, type: 3}
   - {fileID: 8300000, guid: 5c694204b3b8c4740b1b30e2e04fe71c, type: 3}
   - {fileID: 8300000, guid: 0f2c1314198484ce798ca747392f34f4, type: 3}
-  PacMans:
-  - {fileID: 8300000, guid: 87ff1e10811fb4cbd9e49fa867d8d6ef, type: 3}
-  - {fileID: 8300000, guid: 9387fcee802124c09a725a98148e2931, type: 3}
-  - {fileID: 8300000, guid: 61c046aac966842d5916fe99a0bf725a, type: 3}
-  - {fileID: 8300000, guid: f2129b418f2da4976914670d2b9084a7, type: 3}
-  - {fileID: 8300000, guid: ec34ec0b18e8b413f8bb7b14ceebe934, type: 3}
-  - {fileID: 8300000, guid: 158fe2f81f3e04722a93c020d3353332, type: 3}
-  - {fileID: 8300000, guid: 55f7b48e17de941c39b6b8b2062c0c9e, type: 3}
-  - {fileID: 8300000, guid: eafcfc9b7b08a4f5d8c6758c82632803, type: 3}
 --- !u!82 &1009354915
 AudioSource:
   m_ObjectHideFlags: 0

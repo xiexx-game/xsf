@@ -132,13 +132,15 @@ public class LevelGamePackMan : LevelGame, ILoadingHandler
     {
         GameSocre = 0;
         m_nStatus = GameStatus.Play;
-        AudioManager.Instance.StopBGM();
-        AudioManager.Instance.PlayPMFx(PMClipID.Start);
+        AudioManager.Instance.PlayBGM(BGMID.PacMan);
+        AudioManager.Instance.SetBGMVolumn(0.1f);
         m_nCurHighScore = Level.Instance.GetHighScore((int)LevelGameType.PacMan);
     }
 
     public override void Exit()
     {
+        AudioManager.Instance.SetBGMVolumn(1.0f);
+        AudioManager.Instance.StopBGM();
         GameSocre = 0;
 
         Map.Release();
@@ -170,14 +172,14 @@ public class LevelGamePackMan : LevelGame, ILoadingHandler
         ui.Refresh((uint)UIRefreshID.PlayScore, null);
         ui.Refresh((uint)UIRefreshID.PlayLevel, null);
 
-        Character.Restart();
+        Map.Reset();
 
         for(int i = 0; i < Ghosts.Length; i ++)
         {
             Ghosts[i].Restart();
         }
 
-        Map.Reset();
+        Character.Restart();
     }
 
     public bool IsMapReady;
@@ -233,7 +235,6 @@ public class LevelGamePackMan : LevelGame, ILoadingHandler
             ui.Refresh((uint)UIRefreshID.PlayLevel, null);
             ui.Refresh((uint)UIRefreshID.ShowFireworks, null);
             AudioManager.Instance.PlayFXAudio(ClipID.HighScore);
-            AudioManager.Instance.PlayPMFx(PMClipID.LevelUp);
 
             EnterNewLevel();
         }
@@ -254,7 +255,6 @@ public class LevelGamePackMan : LevelGame, ILoadingHandler
     public void GameOver()
     {
         m_nStatus = GameStatus.End;
-        AudioManager.Instance.PlayPMFx(PMClipID.Die);
     }
 
     public void OnGoLoadingDone(int id, GameObject go)

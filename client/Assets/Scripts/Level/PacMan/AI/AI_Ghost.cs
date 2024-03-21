@@ -63,11 +63,11 @@ public abstract class AI_Ghost
 
     public virtual void OnAIUpdate() {}
 
-    public void DoMove(bool isForward)
+    public void DoMove(bool isForward, bool IsForce)
     {
         if(isForward)
         {
-            if(m_Current.ConnectCount >= 3)
+            if(!IsForce && m_Current.ConnectCount >= 3)
             {
                 m_nState = AIState.Think;
             }
@@ -247,7 +247,7 @@ public abstract class AI_Ghost
             {
                 m_Current = LevelGamePackMan.Instance.Map.Pos2Block(m_Ghost.transform.localPosition);
                 m_Ghost.MoveDir = PacManMoveDir.Left;
-                DoMove(true); 
+                DoMove(true, false); 
             }
             break;
 
@@ -305,7 +305,7 @@ public abstract class AI_Ghost
                         if(m_nPathIndex >= m_path.Count)
                         {
                             Debug.Log("MoveInPath end ...");
-                            DoMove(true);
+                            DoMove(true, false);
                         }
                         else
                         {
@@ -411,6 +411,12 @@ public abstract class AI_Ghost
                 var map = LevelGamePackMan.Instance.Map;
                 var dir = map.DirReverse(m_Ghost.MoveDir);
                 var path = LevelGamePackMan.Instance.Map.FindPath(dir, m_Current, target, m_Ghost.ShowPath);
+                if(path.Count == 1)
+                {
+                    DoMove(true, true);
+                    break;
+                }
+                
                 m_path.AddRange(path);
                 m_nPathIndex = 1;
 
