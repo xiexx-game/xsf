@@ -132,7 +132,8 @@ public class LevelGamePackMan : LevelGame, ILoadingHandler
     {
         GameSocre = 0;
         m_nStatus = GameStatus.Play;
-        AudioManager.Instance.PlayBGM(BGMID.Snake);
+        AudioManager.Instance.StopBGM();
+        AudioManager.Instance.PlayPMFx(PMClipID.Start);
         m_nCurHighScore = Level.Instance.GetHighScore((int)LevelGameType.PacMan);
     }
 
@@ -232,6 +233,7 @@ public class LevelGamePackMan : LevelGame, ILoadingHandler
             ui.Refresh((uint)UIRefreshID.PlayLevel, null);
             ui.Refresh((uint)UIRefreshID.ShowFireworks, null);
             AudioManager.Instance.PlayFXAudio(ClipID.HighScore);
+            AudioManager.Instance.PlayPMFx(PMClipID.LevelUp);
 
             EnterNewLevel();
         }
@@ -252,6 +254,7 @@ public class LevelGamePackMan : LevelGame, ILoadingHandler
     public void GameOver()
     {
         m_nStatus = GameStatus.End;
+        AudioManager.Instance.PlayPMFx(PMClipID.Die);
     }
 
     public void OnGoLoadingDone(int id, GameObject go)

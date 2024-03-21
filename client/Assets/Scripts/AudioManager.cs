@@ -32,6 +32,19 @@ public enum ClipID
     Wrong,
 }
 
+public enum PMClipID
+{
+    Bean = 0,
+    Die,
+    EatGhost,
+    EnergyBean,
+    EnergyMove,
+    LevelUp,
+    NormalMove,
+    Start,
+    Max,
+}
+
 public sealed class AudioManager : MonoSingleton<AudioManager>
 {
     public AudioSource Background;
@@ -44,10 +57,28 @@ public sealed class AudioManager : MonoSingleton<AudioManager>
 
     public AudioClip[] Clips;
 
+    public AudioClip[] PacMans;
+
     public void PlayBGM(BGMID id)
     {
         Background.clip = BGM[(int)id];
         Background.Play();
+    }
+
+    public void StopBGM()
+    {
+        Background.Stop();
+    }
+
+    public void PlayPMMove(PMClipID id)
+    {
+        Background.clip = PacMans[(int)id];
+        Background.Play();
+    }
+
+    public void PlayPMFx(PMClipID id)
+    {
+        FX.PlayOneShot(PacMans[(int)id]);
     }
 
     public void PlayUIAudio(ClipID id)

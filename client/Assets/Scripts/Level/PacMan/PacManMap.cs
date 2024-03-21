@@ -687,6 +687,7 @@ public class PacManMap
             }
 
             LevelGamePackMan.Instance.OnBeanEat(false);
+            AudioManager.Instance.PlayPMFx(PMClipID.Bean);
         }
         else if(block.HasType(BlockType.EnergyBean))
         {
@@ -708,6 +709,8 @@ public class PacManMap
             }
 
             LevelGamePackMan.Instance.OnBeanEat(true);
+            AudioManager.Instance.PlayPMFx(PMClipID.EnergyBean);
+            AudioManager.Instance.PlayPMMove(PMClipID.EnergyMove);
         }
         
     }

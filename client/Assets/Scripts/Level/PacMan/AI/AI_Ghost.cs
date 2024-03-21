@@ -63,8 +63,6 @@ public abstract class AI_Ghost
 
     public virtual void OnAIUpdate() {}
 
-    private bool IsDie;
-
     public void DoMove(bool isForward)
     {
         if(isForward)
@@ -433,7 +431,6 @@ public abstract class AI_Ghost
 
     public void OnDie()
     {
-        IsDie = true;
         var map = LevelGamePackMan.Instance.Map;
         var dir = map.DirReverse(m_Ghost.MoveDir);
 

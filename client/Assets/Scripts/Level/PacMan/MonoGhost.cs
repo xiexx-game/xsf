@@ -177,6 +177,7 @@ public class MonoGhost : MonoBehaviour, ISMHandler
             LeftEye[i].GetComponent<SpriteRenderer>().color = DieEyeColor[i];
             RightEye[i].GetComponent<SpriteRenderer>().color = DieEyeColor[i];
         }
+        AudioManager.Instance.PlayPMFx(PMClipID.EatGhost);
     }
 
     public void ReBorn()

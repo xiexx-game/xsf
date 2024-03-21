@@ -126,6 +126,11 @@ public class MonoPacManCharacter : MonoBehaviour, ISMHandler
         if(m_nStatus == MouthStatus.Idle)
             m_nStatus = MouthStatus.Open;
 
+        // if(!IsMoving)
+        // {
+        //     AudioManager.Instance.PlayPMMove(PMClipID.NormalMove);
+        // }
+
         IsMoving = true;
     }
 
@@ -135,6 +140,7 @@ public class MonoPacManCharacter : MonoBehaviour, ISMHandler
         Mouth[1].transform.localRotation = Quaternion.Euler(0, 0, IdleAngel);
         m_nStatus = MouthStatus.Idle;
 
+        // AudioManager.Instance.StopBGM();
         IsMoving = false;
     }
 
@@ -305,6 +311,6 @@ public class MonoPacManCharacter : MonoBehaviour, ISMHandler
 
     public void OnEnergyEnd()
     {
-        
+        AudioManager.Instance.StopBGM();
     }
 }
