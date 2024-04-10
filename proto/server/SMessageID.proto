@@ -33,6 +33,17 @@ enum SMSGID
 	GtA_Gt_Broadcast = 3106;       // gate acceptor --> gate 广播消息
 	GtA_Gt_SetServerId = 3107;		// gate acceptor --> gate 设置服务器id
 
+	Dbc_Db_Handshake = 3200;		// db connector --> db 握手
+	Db_Dbc_Handshake = 3201;		// db --> db connector 握手反馈
+	Dbc_Db_Heartbeat = 3202;  		// db connector --> db 心跳
+	Dbc_Db_Request = 3203;			// db connector --> db 请求
+	Db_Dbc_Response = 3204;			// db --> db connector 请求结果
+
+	Hc_H_Handshake = 3300;			// hub connector --> hub 握手
+	H_Hc_Handshake = 3301;			// hub --> hub connector 握手反馈
+	Hc_H_Heartbeat = 3302;  		// hub connector --> hub 心跳
+
+	G_G_HubTest = 3400;				// game --> game 中转测试
 
     //MESSAGE_ID_END
     SMSGID_Max = 5000;

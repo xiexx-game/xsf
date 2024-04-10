@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package xsf_pb;
+
+// game --> game 中转测试
+message G_G_HubTest {
+    uint32 code = 1;
+}

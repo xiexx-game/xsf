@@ -7,7 +7,7 @@
 // 说明：
 //
 //////////////////////////////////////////////////////////////////////////
-#pragma warning disable CS8600, CS8602, CS8618, CS8604, CS8603
+#pragma warning disable CS8600, CS8602, CS8618, CS8604, CS8603, CS8601
 
 using System.IO;
 using System.Xml;
@@ -115,6 +115,7 @@ namespace XSFTools
                 File.WriteAllText(sCppOutput + "/Load.xml", xmlContent);
             }
 
+            XmlExport(Configs, sClientOutput, sServerOutput, sCppOutput);
             ExcelExport(Enums, Configs, sClientOutput, sServerOutput, sCppOutput);
 
             Helper.Instance.Logger.Log("configs export done ....");
@@ -261,6 +262,39 @@ namespace XSFTools
             }
 
             return result;
+        }
+
+        private static void XmlExport(Dictionary<string, ConfigData> configs, string sClientOutput, string sServerOutput, string sCppOutput)
+        {
+
+            foreach(var kv in configs)
+            {
+                var c = kv.Value;
+                if(c.nType == SchemaType.XML)
+                {
+                    string src = Helper.Instance.ConfigDir + $"/{c.Name}.xml";
+                    if(c.ClientLoad > 0 && Directory.Exists(sClientOutput))
+                    {
+                        File.Copy(src, sClientOutput + $"/{c.Name}.xml", true);
+                        Helper.Instance.Logger.Log($"输出客户端配置 " + src);
+                    }
+                    
+                    if(c.ServerLoad > 0)
+                    {
+                        if(Directory.Exists(sServerOutput))
+                        {
+                            File.Copy(src, sServerOutput + $"/{c.Name}.xml", true);
+                            Helper.Instance.Logger.Log($"输出C#服务器配置 " + src);
+                        }
+
+                        if(Directory.Exists(sCppOutput))
+                        {
+                            File.Copy(src, sCppOutput + $"/{c.Name}.xml", true);
+                            Helper.Instance.Logger.Log($"输出C++服务器配置 " + src);
+                        }
+                    }
+                }
+            }
         }
 
         private static void ExcelExport(Dictionary<string, int> enums, Dictionary<string, ConfigData> configs, string sClientOutput, string sServerOutput, string sCppOutput)

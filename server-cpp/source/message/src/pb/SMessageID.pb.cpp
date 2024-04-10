@@ -24,7 +24,7 @@ static constexpr ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema* schemas = n
 static constexpr ::PROTOBUF_NAMESPACE_ID::Message* const* file_default_instances = nullptr;
 
 const char descriptor_table_protodef_SMessageID_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\020SMessageID.proto\022\010xsf_pbid*\314\003\n\006SMSGID\022"
+  "\n\020SMessageID.proto\022\010xsf_pbid*\215\005\n\006SMSGID\022"
   "\017\n\013SMSGID_None\020\000\022\n\n\005Start\020\270\027\022\023\n\016Cc_C_Han"
   "dshake\020\271\027\022\023\n\016C_Cc_Handshake\020\272\027\022\023\n\016Cc_C_H"
   "eartbeat\020\273\027\022\024\n\017Cc_C_ServerInfo\020\275\027\022\024\n\017C_C"
@@ -35,8 +35,13 @@ const char descriptor_table_protodef_SMessageID_2eproto[] PROTOBUF_SECTION_VARIA
   "\030\022\025\n\020Gt_GtA_Heartbeat\020\236\030\022\027\n\022Gt_GtA_Clien"
   "tClose\020\237\030\022\034\n\027GtA_Gt_ClientDisconnect\020\240\030\022"
   "\031\n\024GtA_Gt_ClientMessage\020\241\030\022\025\n\020GtA_Gt_Bro"
-  "adcast\020\242\030\022\027\n\022GtA_Gt_SetServerId\020\243\030\022\017\n\nSM"
-  "SGID_Max\020\210\'b\006proto3"
+  "adcast\020\242\030\022\027\n\022GtA_Gt_SetServerId\020\243\030\022\025\n\020Db"
+  "c_Db_Handshake\020\200\031\022\025\n\020Db_Dbc_Handshake\020\201\031"
+  "\022\025\n\020Dbc_Db_Heartbeat\020\202\031\022\023\n\016Dbc_Db_Reques"
+  "t\020\203\031\022\024\n\017Db_Dbc_Response\020\204\031\022\023\n\016Hc_H_Hands"
+  "hake\020\344\031\022\023\n\016H_Hc_Handshake\020\345\031\022\023\n\016Hc_H_Hea"
+  "rtbeat\020\346\031\022\020\n\013G_G_HubTest\020\310\032\022\017\n\nSMSGID_Ma"
+  "x\020\210\'b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_SMessageID_2eproto_deps[1] = {
 };
@@ -45,7 +50,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_SMe
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_SMessageID_2eproto_once;
 static bool descriptor_table_SMessageID_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_SMessageID_2eproto = {
-  &descriptor_table_SMessageID_2eproto_initialized, descriptor_table_protodef_SMessageID_2eproto, "SMessageID.proto", 499,
+  &descriptor_table_SMessageID_2eproto_initialized, descriptor_table_protodef_SMessageID_2eproto, "SMessageID.proto", 692,
   &descriptor_table_SMessageID_2eproto_once, descriptor_table_SMessageID_2eproto_sccs, descriptor_table_SMessageID_2eproto_deps, 0, 0,
   schemas, file_default_instances, TableStruct_SMessageID_2eproto::offsets,
   file_level_metadata_SMessageID_2eproto, 0, file_level_enum_descriptors_SMessageID_2eproto, file_level_service_descriptors_SMessageID_2eproto,
@@ -80,6 +85,15 @@ bool SMSGID_IsValid(int value) {
     case 3105:
     case 3106:
     case 3107:
+    case 3200:
+    case 3201:
+    case 3202:
+    case 3203:
+    case 3204:
+    case 3300:
+    case 3301:
+    case 3302:
+    case 3400:
     case 5000:
       return true;
     default:

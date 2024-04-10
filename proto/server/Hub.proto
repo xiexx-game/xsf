@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package xsf_pb;
+
+// hub connector --> hub 握手
+message Hc_H_Handshake {
+    uint32 server_id = 1;   // 服务器id
+}
+
+// hub --> hub connector 握手反馈
+message H_Hc_Handshake {
+    uint32 server_id = 1;   // 服务器id
+}
+
+// hub connector --> hub 心跳
+message Hc_H_Heartbeat {
+    
+}

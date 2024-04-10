@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package xsf_pb;
+
+// db connector --> db 握手
+message Dbc_Db_Handshake {
+    uint32 server_id = 1;   // 服务器id
+}
+
+// db --> db connector 握手反馈
+message Db_Dbc_Handshake {
+    uint32 server_id = 1;   // 服务器id
+}
+
+// db connector --> db 心跳
+message Dbc_Db_Heartbeat {
+    
+}
+
+// db connector --> db 请求
+message Dbc_Db_Request {
+    uint64 serial_id = 1;
+    uint32 db_request_id = 2;
+    uint32 queue_id = 3;
+    bytes datas = 4;
+}
+
+// db --> db connector 请求结果
+message Db_Dbc_Response {
+    uint64 serial_id = 1;
+    uint32 code = 2;
+    uint32 total = 3;
+    bytes datas = 4;
+}

@@ -159,7 +159,7 @@ namespace XSFTools // Note: actual namespace depends on the project name.
                     if(IsServerDirExist)
                     {
                         string SCodePath = SOutputDir + $"/MSG_{md.MessageID}.cs";
-                        if(!File.Exists(SCodePath))
+
                         {
                             string content = STmpContent.Replace("_MSG_NAME_", md.MessageID);
                             content = content.Replace("_MSG_DATE_", DateStr);
@@ -185,7 +185,7 @@ namespace XSFTools // Note: actual namespace depends on the project name.
                     if(IsServerDirExist)
                     {
                         string SCodePath = SOutputDir + $"/MSG_{md.MessageID}.cs";
-                        if(!File.Exists(SCodePath))
+
                         {
                             string content = STmpContent.Replace("_MSG_NAME_", md.MessageID);
                             content = content.Replace("_MSG_DATE_", DateStr);
@@ -241,6 +241,14 @@ namespace XSFTools // Note: actual namespace depends on the project name.
             else if(messageID.Contains("C_"))
             {
                 return "Center";
+            }
+            else if(messageID.Contains("Db_"))
+            {
+                return "DB";
+            }
+            else if(messageID.Contains("H_"))
+            {
+                return "Hub";
             }
             else
             {

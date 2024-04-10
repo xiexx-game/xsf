@@ -44,6 +44,15 @@ namespace xsf_msg
 		NEW_MESSAGE(GtA_Gt_ClientMessage, xsf_pbid::SMSGID::GtA_Gt_ClientMessage)
 		NEW_MESSAGE(GtA_Gt_Broadcast, xsf_pbid::SMSGID::GtA_Gt_Broadcast)
 		NEW_MESSAGE(GtA_Gt_SetServerId, xsf_pbid::SMSGID::GtA_Gt_SetServerId)
+		NEW_MESSAGE(Dbc_Db_Handshake, xsf_pbid::SMSGID::Dbc_Db_Handshake)
+		NEW_MESSAGE(Db_Dbc_Handshake, xsf_pbid::SMSGID::Db_Dbc_Handshake)
+		NEW_MESSAGE(Dbc_Db_Heartbeat, xsf_pbid::SMSGID::Dbc_Db_Heartbeat)
+		NEW_MESSAGE(Dbc_Db_Request, xsf_pbid::SMSGID::Dbc_Db_Request)
+		NEW_MESSAGE(Db_Dbc_Response, xsf_pbid::SMSGID::Db_Dbc_Response)
+		NEW_MESSAGE(Hc_H_Handshake, xsf_pbid::SMSGID::Hc_H_Handshake)
+		NEW_MESSAGE(H_Hc_Handshake, xsf_pbid::SMSGID::H_Hc_Handshake)
+		NEW_MESSAGE(Hc_H_Heartbeat, xsf_pbid::SMSGID::Hc_H_Heartbeat)
+		NEW_MESSAGE(G_G_HubTest, xsf_pbid::SMSGID::G_G_HubTest)
 //MESSAGE_END
 
         XSFCore::mMessageHelper = this;

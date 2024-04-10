@@ -18,3 +18,13 @@ enum LoginResult {
     SystemError = 1;  // 系统错误
 }
 
+enum OpResult {
+    Ok = 0;
+    
+    Mysql_SchemaError = 1;
+    Mysql_PoolNotExist = 2;
+    Mysql_SqlBaseNotExist = 3;
+    Mysql_ExecuteError = 4;
+    
+}
+

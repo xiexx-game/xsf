@@ -60,6 +60,15 @@ namespace xsf_msg
 	MESSAGE(GtA_Gt_ClientMessage, EP_Gate, xsf_pbid::SMSGID::GtA_Gt_ClientMessage)
 	MESSAGE(GtA_Gt_Broadcast, EP_Gate, xsf_pbid::SMSGID::GtA_Gt_Broadcast)
 	MESSAGE(GtA_Gt_SetServerId, EP_Gate, xsf_pbid::SMSGID::GtA_Gt_SetServerId)
+	MESSAGE(Dbc_Db_Handshake, EP_DB, xsf_pbid::SMSGID::Dbc_Db_Handshake)
+	MESSAGE(Db_Dbc_Handshake, EP_DB, xsf_pbid::SMSGID::Db_Dbc_Handshake)
+	MESSAGE(Dbc_Db_Heartbeat, EP_DB, xsf_pbid::SMSGID::Dbc_Db_Heartbeat)
+	MESSAGE(Dbc_Db_Request, EP_DB, xsf_pbid::SMSGID::Dbc_Db_Request)
+	MESSAGE(Db_Dbc_Response, EP_DB, xsf_pbid::SMSGID::Db_Dbc_Response)
+	MESSAGE(Hc_H_Handshake, EP_Hub, xsf_pbid::SMSGID::Hc_H_Handshake)
+	MESSAGE(H_Hc_Handshake, EP_Hub, xsf_pbid::SMSGID::H_Hc_Handshake)
+	MESSAGE(Hc_H_Heartbeat, EP_Hub, xsf_pbid::SMSGID::Hc_H_Heartbeat)
+	MESSAGE(G_G_HubTest, EP_Game, xsf_pbid::SMSGID::G_G_HubTest)
 //MESSAGE_END
 }
 

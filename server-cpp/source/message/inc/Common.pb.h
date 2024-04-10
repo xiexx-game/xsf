@@ -111,6 +111,34 @@ inline bool LoginResult_Parse(
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<LoginResult>(
     LoginResult_descriptor(), name, value);
 }
+enum OpResult : int {
+  Ok = 0,
+  Mysql_SchemaError = 1,
+  Mysql_PoolNotExist = 2,
+  Mysql_SqlBaseNotExist = 3,
+  Mysql_ExecuteError = 4,
+  OpResult_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
+  OpResult_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
+};
+bool OpResult_IsValid(int value);
+constexpr OpResult OpResult_MIN = Ok;
+constexpr OpResult OpResult_MAX = Mysql_ExecuteError;
+constexpr int OpResult_ARRAYSIZE = OpResult_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* OpResult_descriptor();
+template<typename T>
+inline const std::string& OpResult_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, OpResult>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function OpResult_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    OpResult_descriptor(), enum_t_value);
+}
+inline bool OpResult_Parse(
+    const std::string& name, OpResult* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<OpResult>(
+    OpResult_descriptor(), name, value);
+}
 // ===================================================================
 
 
@@ -142,6 +170,11 @@ template <> struct is_proto_enum< ::xsf_pb::LoginResult> : ::std::true_type {};
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::xsf_pb::LoginResult>() {
   return ::xsf_pb::LoginResult_descriptor();
+}
+template <> struct is_proto_enum< ::xsf_pb::OpResult> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::xsf_pb::OpResult>() {
+  return ::xsf_pb::OpResult_descriptor();
 }
 
 PROTOBUF_NAMESPACE_CLOSE
