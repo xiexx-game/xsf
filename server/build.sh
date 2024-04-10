@@ -15,6 +15,8 @@ BuildServer() {
 
 BuildServer Center
 BuildServer Gate
+BuildServer DB
+BuildServer Hub
 BuildServer Game
 
 mkdir -p ~/XSFServer

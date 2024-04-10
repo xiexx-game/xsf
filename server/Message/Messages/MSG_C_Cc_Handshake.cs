@@ -2,7 +2,7 @@
 // 
 // 文件：server/Message/Messages/MSG_C_Cc_Handshake.cs
 // 作者：Xoen Xie
-// 时间：10/26/2023
+// 时间：2024/4/10
 // 描述：center  --> center connector 握手反馈
 // 说明：
 //

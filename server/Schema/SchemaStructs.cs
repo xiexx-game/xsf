@@ -48,6 +48,19 @@ public class ScpTestData
 //ScpTestData_START
 //ScpTestData_END
 }
+
+//DB sql 配置
+public class ScpDBSql
+{
+//ScpDBSql_START
+//ScpDBSql_END
+	public string sDBName;
+	public uint uID;
+	public string sContent;
+
+	public string[] inParams;
+	public string[] outParams;
+}
 // SCHEMA_STRUCT
 // 不要删除上面的标签，自动生成代码需要用到
 

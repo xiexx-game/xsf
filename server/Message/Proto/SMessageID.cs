@@ -24,7 +24,7 @@ namespace XsfPbid {
     static SMessageIDReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "ChBTTWVzc2FnZUlELnByb3RvEgh4c2ZfcGJpZCrMAwoGU01TR0lEEg8KC1NN",
+            "ChBTTWVzc2FnZUlELnByb3RvEgh4c2ZfcGJpZCqNBQoGU01TR0lEEg8KC1NN",
             "U0dJRF9Ob25lEAASCgoFU3RhcnQQuBcSEwoOQ2NfQ19IYW5kc2hha2UQuRcS",
             "EwoOQ19DY19IYW5kc2hha2UQuhcSEwoOQ2NfQ19IZWFydGJlYXQQuxcSFAoP",
             "Q2NfQ19TZXJ2ZXJJbmZvEL0XEhQKD0NfQ2NfU2VydmVySW5mbxC+FxIUCg9D",
@@ -34,8 +34,12 @@ namespace XsfPbid {
             "YWtlEJ0YEhUKEEd0X0d0QV9IZWFydGJlYXQQnhgSFwoSR3RfR3RBX0NsaWVu",
             "dENsb3NlEJ8YEhwKF0d0QV9HdF9DbGllbnREaXNjb25uZWN0EKAYEhkKFEd0",
             "QV9HdF9DbGllbnRNZXNzYWdlEKEYEhUKEEd0QV9HdF9Ccm9hZGNhc3QQohgS",
-            "FwoSR3RBX0d0X1NldFNlcnZlcklkEKMYEg8KClNNU0dJRF9NYXgQiCdiBnBy",
-            "b3RvMw=="));
+            "FwoSR3RBX0d0X1NldFNlcnZlcklkEKMYEhUKEERiY19EYl9IYW5kc2hha2UQ",
+            "gBkSFQoQRGJfRGJjX0hhbmRzaGFrZRCBGRIVChBEYmNfRGJfSGVhcnRiZWF0",
+            "EIIZEhMKDkRiY19EYl9SZXF1ZXN0EIMZEhQKD0RiX0RiY19SZXNwb25zZRCE",
+            "GRITCg5IY19IX0hhbmRzaGFrZRDkGRITCg5IX0hjX0hhbmRzaGFrZRDlGRIT",
+            "Cg5IY19IX0hlYXJ0YmVhdBDmGRIQCgtHX0dfSHViVGVzdBDIGhIPCgpTTVNH",
+            "SURfTWF4EIgnYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::XsfPbid.SMSGID), }, null));
@@ -123,6 +127,42 @@ namespace XsfPbid {
     /// gate acceptor --> gate 设置服务器id
     /// </summary>
     [pbr::OriginalName("GtA_Gt_SetServerId")] GtAGtSetServerId = 3107,
+    /// <summary>
+    /// db connector --> db 握手
+    /// </summary>
+    [pbr::OriginalName("Dbc_Db_Handshake")] DbcDbHandshake = 3200,
+    /// <summary>
+    /// db --> db connector 握手反馈
+    /// </summary>
+    [pbr::OriginalName("Db_Dbc_Handshake")] DbDbcHandshake = 3201,
+    /// <summary>
+    /// db connector --> db 心跳
+    /// </summary>
+    [pbr::OriginalName("Dbc_Db_Heartbeat")] DbcDbHeartbeat = 3202,
+    /// <summary>
+    /// db connector --> db 请求
+    /// </summary>
+    [pbr::OriginalName("Dbc_Db_Request")] DbcDbRequest = 3203,
+    /// <summary>
+    /// db --> db connector 请求结果
+    /// </summary>
+    [pbr::OriginalName("Db_Dbc_Response")] DbDbcResponse = 3204,
+    /// <summary>
+    /// hub connector --> hub 握手
+    /// </summary>
+    [pbr::OriginalName("Hc_H_Handshake")] HcHHandshake = 3300,
+    /// <summary>
+    /// hub --> hub connector 握手反馈
+    /// </summary>
+    [pbr::OriginalName("H_Hc_Handshake")] HHcHandshake = 3301,
+    /// <summary>
+    /// hub connector --> hub 心跳
+    /// </summary>
+    [pbr::OriginalName("Hc_H_Heartbeat")] HcHHeartbeat = 3302,
+    /// <summary>
+    /// game --> game 中转测试
+    /// </summary>
+    [pbr::OriginalName("G_G_HubTest")] GGHubTest = 3400,
     /// <summary>
     ///MESSAGE_ID_END
     /// </summary>

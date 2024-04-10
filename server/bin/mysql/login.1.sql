@@ -1,0 +1,15 @@
+
+
+--BEGIN
+DROP TABLE IF EXISTS `account`;
+--END
+
+--BEGIN
+CREATE TABLE `account`
+(
+    `email` CHAR(128) PRIMARY KEY NOT NULL DEFAULT '' COMMENT '邮箱',
+    `pwd` CHAR(128) NOT NULL DEFAULT '' COMMENT '密码',
+    `actor_id` INT UNSIGNED DEFAULT 0 COMMENT  '玩家ID列表',
+    `create_time` INT UNSIGNED DEFAULT 0 COMMENT '创建时间'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+--END

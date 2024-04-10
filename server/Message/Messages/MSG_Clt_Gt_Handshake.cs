@@ -2,7 +2,7 @@
 // 
 // 文件：server/Message/Messages/MSG_Clt_Gt_Handshake.cs
 // 作者：Xoen Xie
-// 时间：10/26/2023
+// 时间：2024/4/10
 // 描述：client --> Gate 握手
 // 说明：
 //

@@ -51,6 +51,15 @@ namespace XsfMsg
 			m_MessagePool[(int)SMSGID.GtAGtClientMessage] = new MSG_GtA_Gt_ClientMessage();
 			m_MessagePool[(int)SMSGID.GtAGtBroadcast] = new MSG_GtA_Gt_Broadcast();
 			m_MessagePool[(int)SMSGID.GtAGtSetServerId] = new MSG_GtA_Gt_SetServerId();
+			m_MessagePool[(int)SMSGID.DbcDbHandshake] = new MSG_Dbc_Db_Handshake();
+			m_MessagePool[(int)SMSGID.DbDbcHandshake] = new MSG_Db_Dbc_Handshake();
+			m_MessagePool[(int)SMSGID.DbcDbHeartbeat] = new MSG_Dbc_Db_Heartbeat();
+			m_MessagePool[(int)SMSGID.DbcDbRequest] = new MSG_Dbc_Db_Request();
+			m_MessagePool[(int)SMSGID.DbDbcResponse] = new MSG_Db_Dbc_Response();
+			m_MessagePool[(int)SMSGID.HcHHandshake] = new MSG_Hc_H_Handshake();
+			m_MessagePool[(int)SMSGID.HHcHandshake] = new MSG_H_Hc_Handshake();
+			m_MessagePool[(int)SMSGID.HcHHeartbeat] = new MSG_Hc_H_Heartbeat();
+			m_MessagePool[(int)SMSGID.GGHubTest] = new MSG_G_G_HubTest();
             //MESSAGE_END
             // 上面的注释定义必须保留，用来自动生成代码
 

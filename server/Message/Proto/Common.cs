@@ -27,11 +27,13 @@ namespace XsfPb {
             "CgxDb21tb24ucHJvdG8SBnhzZl9wYipoChBEaXNjb25uZWN0UmVhc29uEgsK",
             "B0RSX05vbmUQABIICgRGdWxsEAESDQoJSFRUaW1lb3V0EAISDgoKU2VydmVy",
             "RG93bhADEg4KCk1zZ0ludmFsaWQQBBIOCgpMb2dpbkVycm9yEAUqKwoLTG9n",
-            "aW5SZXN1bHQSCwoHU3VjY2VzcxAAEg8KC1N5c3RlbUVycm9yEAFiBnByb3Rv",
-            "Mw=="));
+            "aW5SZXN1bHQSCwoHU3VjY2VzcxAAEg8KC1N5c3RlbUVycm9yEAEqdAoIT3BS",
+            "ZXN1bHQSBgoCT2sQABIVChFNeXNxbF9TY2hlbWFFcnJvchABEhYKEk15c3Fs",
+            "X1Bvb2xOb3RFeGlzdBACEhkKFU15c3FsX1NxbEJhc2VOb3RFeGlzdBADEhYK",
+            "Ek15c3FsX0V4ZWN1dGVFcnJvchAEYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::XsfPb.DisconnectReason), typeof(global::XsfPb.LoginResult), }, null));
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::XsfPb.DisconnectReason), typeof(global::XsfPb.LoginResult), typeof(global::XsfPb.OpResult), }, null));
     }
     #endregion
 
@@ -70,6 +72,14 @@ namespace XsfPb {
     /// 系统错误
     /// </summary>
     [pbr::OriginalName("SystemError")] SystemError = 1,
+  }
+
+  public enum OpResult {
+    [pbr::OriginalName("Ok")] Ok = 0,
+    [pbr::OriginalName("Mysql_SchemaError")] MysqlSchemaError = 1,
+    [pbr::OriginalName("Mysql_PoolNotExist")] MysqlPoolNotExist = 2,
+    [pbr::OriginalName("Mysql_SqlBaseNotExist")] MysqlSqlBaseNotExist = 3,
+    [pbr::OriginalName("Mysql_ExecuteError")] MysqlExecuteError = 4,
   }
 
   #endregion

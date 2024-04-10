@@ -4,4 +4,5 @@
 	<Schema id="2" desc="物品配置" type="1" name="Item" col_table="0" client="1" server="1" />
 	<Schema id="3" desc="多语言配置" type="1" name="Language" col_table="0" client="1" server="0" />
 	<Schema id="4" desc="测试XML配置" type="2" name="TestData" col_table="0" client="1" server="1" />
+	<Schema id="5" desc="DB sql 配置" type="2" name="DBSql" col_table="0" client="0" server="1" />
 </root>

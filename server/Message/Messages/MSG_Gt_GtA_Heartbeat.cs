@@ -2,7 +2,7 @@
 // 
 // 文件：server/Message/Messages/MSG_Gt_GtA_Heartbeat.cs
 // 作者：Xoen Xie
-// 时间：10/26/2023
+// 时间：2024/4/10
 // 描述：gate --> gate acceptor 心跳
 // 说明：
 //

@@ -2,7 +2,7 @@
 // 
 // 文件：server/Message/Messages/MSG_GtA_Gt_Broadcast.cs
 // 作者：Xoen Xie
-// 时间：10/26/2023
+// 时间：2024/4/10
 // 描述：gate acceptor --> gate 广播消息
 // 说明：
 //

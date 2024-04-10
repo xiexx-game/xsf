@@ -2,7 +2,7 @@
 // 
 // 文件：server/Message/Messages/MSG_C_Cc_ServerOk.cs
 // 作者：Xoen Xie
-// 时间：10/26/2023
+// 时间：2024/4/10
 // 描述：center --> connector 服务器已准备好
 // 说明：
 //

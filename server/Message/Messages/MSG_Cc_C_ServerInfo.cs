@@ -2,7 +2,7 @@
 // 
 // 文件：server/Message/Messages/MSG_Cc_C_ServerInfo.cs
 // 作者：Xoen Xie
-// 时间：10/26/2023
+// 时间：2024/4/10
 // 描述：connector --> center 上行服务器信息数据
 // 说明：
 //

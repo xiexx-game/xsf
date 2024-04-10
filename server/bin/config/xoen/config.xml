@@ -24,28 +24,18 @@
     </config>
 
     <redis>
-        <item id="1" desc="登录redis" ip="127.0.0.1" passwd="root123" port="6379" count="10" />
+        <item id="1" desc="登录redis" ip="127.0.0.1" passwd="root123" port="6379" count="2" />
     </redis>
 
-    <mongo>
-        <item id="1" desc="账号登录" ip="127.0.0.1" user="wyb" passwd="wyb123" port="27017" count="5">
-            <db name="login">
-                <collection name="account"/>
-            </db>
-        </item>
-        <item id="2" desc="游戏库" ip="127.0.0.1" user="wyb" passwd="wyb123" port="27017" count="5">
-            <db name="game">
-                <collection name="actor"/>
-                <collection name="item"/>
-                <collection name="character"/>
-                <collection name="logic"/>
-                <collection name="task"/>
-            </db>
-        </item>
-    </mongo>
+    <mysql>
+        <item id="1" desc="账号登录" db="login" ip="127.0.0.1" user="root" passwd="root123" port="3306" count="2" />
+        <item id="2" desc="游戏数据" db="game" ip="127.0.0.1" user="root" passwd="root123" port="3306" count="2" />
+    </mysql>
 
     <server>
         <item name="网关服" ep="gate" count="2" />
         <item name="网关服" ep="game" count="2" />
+        <item name="登录db" ep="db" ext="redis1,mysql1,mysql2" />
+        <item name="中转服" ep="hub" />
     </server>
 </root>
