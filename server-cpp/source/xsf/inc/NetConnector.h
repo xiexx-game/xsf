@@ -59,7 +59,7 @@ namespace xsf
 
     public:
         virtual bool Init( ModuleInit * pInit ) override;
-        virtual void OnClose(void) override;
+        virtual void DoClose(void) override;
 
     public:
         // 接受到连接

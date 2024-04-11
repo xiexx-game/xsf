@@ -95,13 +95,13 @@ namespace xsf
         delete this;
     }
 
-    void XSFServer::Speedup(void)
+    void XSFServer::SpeedUp(void)
     {
         uint64 nData = 1;
         int32 nRet = write(m_nEventFD, &nData, sizeof(nData));
         if (nRet != sizeof(nData))
         {
-            XSF_ERROR("XSFServer::Speedup write error, nRet != sizeof(nData), nRet=%d", nRet);
+            XSF_ERROR("XSFServer::SpeedUp write error, nRet != sizeof(nData), nRet=%d", nRet);
         }
     }
 
@@ -599,9 +599,11 @@ namespace xsf
                 {
                     if(m_Modules[i] != nullptr)
                     {
-                        m_Modules[i].DoClose();
+                        m_Modules[i]->DoClose();
                     }
                 }
+
+                m_nStatus = ServerStatus_Release;
             }
             break;
 

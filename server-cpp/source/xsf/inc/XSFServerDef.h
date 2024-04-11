@@ -26,7 +26,7 @@ namespace xsf
         EP_Login,        // 登录服务器
         EP_Gate,        // 网关服务器
         EP_Game,          // 游戏服务器
-        EP_Db,
+        EP_DB,
         EP_Hub,
 
         EP_Max,         // 最大只能为30
@@ -38,7 +38,7 @@ namespace xsf
         else if(strcasecmp(name, "gate") == 0)  return EP_Gate;
         else if(strcasecmp(name, "login") == 0)  return EP_Login;
         else if(strcasecmp(name, "game") == 0)  return EP_Game;
-        else if(strcasecmp(name, "db") == 0)  return EP_Db;
+        else if(strcasecmp(name, "db") == 0)  return EP_DB;
         else if(strcasecmp(name, "hub") == 0)  return EP_Hub;
         else return EP_None;
     }
@@ -52,7 +52,7 @@ namespace xsf
         case EP_Login:   return "login";
         case EP_Gate:   return "gate";
         case EP_Game:   return "game";
-        case EP_Db:   return "db";
+        case EP_DB:   return "db";
         case EP_Hub:   return "hub";
 
         default:           return "unkown";
@@ -68,7 +68,7 @@ namespace xsf
         case EP_Login:   return "登录服";
         case EP_Gate:   return "网关服";
         case EP_Game:   return "游戏服";
-        case EP_Db:   return "数据服";
+        case EP_DB:   return "数据服";
         case EP_Hub:   return "中转服";
 
         default:           return "未知";

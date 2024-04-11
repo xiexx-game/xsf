@@ -17,7 +17,6 @@ using namespace xsf;
 enum CenterModule
 {
     CenterModule_NodeManager = DEFAULT_START_MODULE_ID,
-
 };
 
 

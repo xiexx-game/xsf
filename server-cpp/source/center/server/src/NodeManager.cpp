@@ -36,7 +36,7 @@ bool NodeManager::Start(void)
     return NormalNetPointManager::Start();
 }
 
-void NodeManager::OnClose(void)
+void NodeManager::OnStartClose(void)
 {
     auto pMessage = XSFCore::GetMessage(xsf_pbid::SMSGID::C_Cc_Stop);
     Broadcast(pMessage, 0);
@@ -308,8 +308,8 @@ void NodeManager::GetPort(byte nEP, ServerInfo * pInfo)
         pInfo->Ports[EP_Gate] = GetNextPort(true);
         break;
 
-    case EP_Db:
-        pInfo->Ports[EP_Db] = GetNextPort(true);
+    case EP_DB:
+        pInfo->Ports[EP_DB] = GetNextPort(true);
         break;
 
     case EP_Hub:

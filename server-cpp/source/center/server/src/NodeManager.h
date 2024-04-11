@@ -33,7 +33,7 @@ public:
 
     bool Start(void) override;
 
-    void OnClose(void) override;
+    void OnStartClose(void) override;
     
     void DoRegist(void) override;
 

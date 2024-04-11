@@ -41,7 +41,7 @@ public:
 
     bool Start() override;
 
-    void OnClose(void) override;
+    void OnStartClose(void) override;
 
     uint8 OnCloseCheck() override;
 

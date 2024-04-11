@@ -39,7 +39,7 @@ public:
 public:
     void DoRegist() override;
 
-    void OnClose(void) override;
+    void DoClose(void) override;
     
 private:
     ConnMap m_Connectors;

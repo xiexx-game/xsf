@@ -290,7 +290,7 @@ namespace xsf
         }
 
         if( bSpeedup )
-            XSFServer::Instance()->Speedup();
+            XSFServer::Instance()->SpeedUp();
     }
     
     void XSFTimer::TimerExecute(void)

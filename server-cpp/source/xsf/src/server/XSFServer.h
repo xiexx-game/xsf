@@ -93,7 +93,7 @@ namespace xsf
 
         void Stop(void) override;
 
-        void Speedup(void) override;
+        void SpeedUp(void) override;
 
     private:
         bool ReadArgv(int argc, char* argv[]);

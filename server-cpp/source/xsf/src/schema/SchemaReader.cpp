@@ -86,8 +86,6 @@ namespace xsf
 		vector<string> lines;
 		XSFCore::Split(m_pContent, '\n', lines);
 
-		int32 StartIndex = 0;
-
 		if(m_bIsColTable)
 		{
 			m_nColCount = CTABLE_MAX_COL;

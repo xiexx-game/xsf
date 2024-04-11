@@ -20,6 +20,9 @@
 #include "Gate.pb.h"
 #include "Client.pb.h"
 #include "Common.pb.h"
+#include "DB.pb.h"
+#include "Hub.pb.h"
+#include "Game.pb.h"
 
 #include "IXSFMessage.h"
 #include "DMessageDef.h"

@@ -64,7 +64,7 @@ namespace xsf
             m_EventOut.Push(pEvent);
 
             // 触发主线程加速处理
-            XSFServer::Instance()->Speedup();
+            XSFServer::Instance()->SpeedUp();
         }
 
     public:
