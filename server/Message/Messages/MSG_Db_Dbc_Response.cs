@@ -2,7 +2,7 @@
 // 
 // 文件：server/Message/Messages/MSG_Db_Dbc_Response.cs
 // 作者：Xoen Xie
-// 时间：2024/4/10
+// 时间：4/11/2024
 // 描述：db --> db connector 请求结果
 // 说明：
 //

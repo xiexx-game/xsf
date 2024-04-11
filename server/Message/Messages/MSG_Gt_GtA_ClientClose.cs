@@ -2,7 +2,7 @@
 // 
 // 文件：server/Message/Messages/MSG_Gt_GtA_ClientClose.cs
 // 作者：Xoen Xie
-// 时间：2024/4/10
+// 时间：4/11/2024
 // 描述：gete --> gate acceptor 客户端连接关闭
 // 说明：
 //
