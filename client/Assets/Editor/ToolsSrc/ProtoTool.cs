@@ -120,7 +120,7 @@ namespace XSFTools // Note: actual namespace depends on the project name.
 
             List<MessageIDData> messageIDs = new List<MessageIDData>();
             messageIDs.AddRange(GetMessageIDs(CProtoPath));
-            if(IsServerDirExist)
+            if(IsServerDirExist || IsCppDirExist)
             {
                 messageIDs.AddRange(GetMessageIDs(SProtoPath));
             }
