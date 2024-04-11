@@ -18,6 +18,8 @@ public class Executor_GtA_Gt_Handshake : IMessageExecutor
     public void OnExecute(object NetObj, IMessage message, ushort nMessageID, uint nRawID, byte[] rawData)
     {
         var connector = NetObj as ServerConnector;
+        var localMsg = message as XsfMsg.MSG_GtA_Gt_Handshake;
+        connector.SetID(localMsg.mPB.ServerId);
         connector.OnHandshake();
     }
 }

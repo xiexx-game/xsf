@@ -14,6 +14,7 @@ namespace XSF
     public class NPManagerInit : ModuleInit
     {
         public int Port;
+        public INetPacker packer;
     }
 
     public abstract class NPManager : IModule, INetHandler
@@ -26,6 +27,8 @@ namespace XSF
 
         private IConnection? m_Connection;
 
+        private INetPacker m_Packer;
+
         public NPManager()
         {
             m_WaitList = new List<NetPoint>();
@@ -37,6 +40,7 @@ namespace XSF
 
             var localInit = init as NPManagerInit;
             m_nPort = localInit.Port;
+            m_Packer = localInit.packer;
 
             return true;
         }
@@ -49,7 +53,7 @@ namespace XSF
 
         public override bool Start()
         {
-            m_Connection = XSFNet.Instance.Listen(XSFCore.ServerPakcer, this, Port);
+            m_Connection = XSFNet.Instance.Listen(m_Packer == null ? XSFCore.ServerPakcer : m_Packer, this, Port);
             if(m_Connection == null)
                 return false;
 
@@ -82,6 +86,7 @@ namespace XSF
         public abstract NetPoint Get(uint nID);
 
         public abstract void Broadcast(IMessage message, uint nSkipID);
+        public abstract void BroadcastData(ushort nMessageID, byte[] data, uint nSkipID);
 
         public virtual void OnNPLost(NetPoint np) {}
         public virtual void OnNPConnected(NetPoint np) {}
@@ -187,6 +192,17 @@ namespace XSF
                 if(kv.Value.ID != nSkipID)
                 {
                     kv.Value.SendMessage(message);
+                }
+            }
+        }
+
+        public override void BroadcastData(ushort nMessageID, byte[] data, uint nSkipID)
+        {
+            foreach(KeyValuePair<uint, NetPoint> kv in m_NetPoints)
+            {
+                if(kv.Value.ID != nSkipID)
+                {
+                    kv.Value.SendData(nMessageID, data);
                 }
             }
         }
@@ -305,5 +321,16 @@ namespace XSF
                 }
             }
         }   
+
+        public override void BroadcastData(ushort nMessageID, byte[] data, uint nSkipID)
+        {
+            for(int i = 0; i < m_NetPoints.Length; i++)
+            {
+                if(m_NetPoints[i] != null && m_NetPoints[i].ID != nSkipID)
+                {
+                    m_NetPoints[i].SendData(nMessageID, data);
+                }
+            }
+        }
     }
 }

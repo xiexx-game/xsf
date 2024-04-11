@@ -16,7 +16,6 @@
 using namespace xsf;
 
 #include "ICenterConnector.h"
-#include "ServerInfoHandler.h"
 #include "IGateAcceptor.h"
 #include "GateHandler.h"
 #include "ActorManager.h"
@@ -28,7 +27,7 @@ int main(int argc, char* argv[])
 	xsf_msg::SetMessageModule();
 	xsf_scp::SetSchemaModule();
 
-	CC::SetCenterConnector(GameModule_CC, new ServerInfoHandler());
+	CC::SetCenterConnector(GameModule_CC, nullptr);
 	GateA::SetGateAcceptor(GameModule_GateA, new GateHandler());
 	SetActorManager();
 

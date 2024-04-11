@@ -174,7 +174,7 @@ bool ClientManager::Start()
     return m_pConnection->Listen(ports[EP_Client]);
 }
 
-void ClientManager::OnClose(void)
+void ClientManager::OnStartClose(void)
 {
     for( uint32 i = 0; i < m_nSize; ++ i )
     {

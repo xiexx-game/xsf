@@ -12,6 +12,8 @@ namespace Gate // Note: actual namespace depends on the project name.
             CC.ICenterConnector.CreateModule((int)ModuleID.CenterConnector, ServerInfoHandler.Instance);
             GateA.IGateAcceptor.CreateModule((int)ModuleID.GateAcceptor, new GateHandler());
             ActorManager.CreateModule();
+            DBC.IDBConnector.CreateModule((int)ModuleID.DBConnector);
+            HubC.IHubConnector.CreateModule((int)ModuleID.HubConnector);
 
             XSF.XSFCore.Server.Run();
         }

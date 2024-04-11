@@ -18,7 +18,7 @@ namespace CC
     {
         private Dictionary<uint, ServerInfo> m_ServerInfos;
 
-        internal IServerInfoHandler m_Handler;
+        internal IServerInfoHandler? m_Handler;
 
         public CenterConnector()
         {
@@ -117,12 +117,14 @@ namespace CC
                 if(IsNewAdd)
                 {
                     Serilog.Log.Information("【中心服连接器】新增服务器节点, id={0} [{1}-{2}-{3}] status={4}", info.ID, sid.ID, sid.Index, XSFCore.EP2CNName(sid.Type), info.Status);
-                    m_Handler.OnServerNew(info);
+                    if(m_Handler != null)
+                        m_Handler.OnServerNew(info);
 
                     if(info.Status == NodeStatus.Ok)
                     {
                         Serilog.Log.Information("【中心服连接器】收到服务器节点已准备好, id={0} [{1}-{2}-{3}]", info.ID, sid.ID, sid.Index, XSFCore.EP2CNName(sid.Type) );
-                        m_Handler.OnServerOk(info);
+                        if(m_Handler != null)
+                            m_Handler.OnServerOk(info);
                     }
                 }
             }
@@ -134,7 +136,8 @@ namespace CC
             var sid = ServerID.GetSID(nID);
 
             Serilog.Log.Information("【中心服连接器】有服务器节点离线, id={0} [{1}-{2}-{3}]", nID, sid.ID, sid.Index, XSFCore.EP2CNName(sid.Type));
-            m_Handler.OnServerLost(nID);
+            if(m_Handler != null)
+                m_Handler.OnServerLost(nID);
         }
 
         public void OnNodeOk(uint nID)
@@ -147,7 +150,8 @@ namespace CC
 
                 Serilog.Log.Information("【中心服连接器】收到服务器节点已准备好, id={0} [{1}-{2}-{3}]", nID, sid.ID, sid.Index, XSFCore.EP2CNName(sid.Type) );
 
-                m_Handler.OnServerOk(info);
+                if(m_Handler != null)
+                    m_Handler.OnServerOk(info);
             }
             else
             {

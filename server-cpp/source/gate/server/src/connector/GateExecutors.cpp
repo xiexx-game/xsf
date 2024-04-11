@@ -16,6 +16,8 @@
 MESSAGE_EXECUTOR_EXECUTE(GtA_Gt_Handshake)
 {
     XSF_CAST(pConnector, pNetObj, ServerConnector);
+    XSF_CAST(pLocalMsg, pMessage, xsf_msg::MSG_GtA_Gt_Handshake);
+    pConnector->SetRemoteID(pLocalMsg->mPB.server_id());
     pConnector->OnHandshake();
 }
 

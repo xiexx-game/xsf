@@ -41,14 +41,14 @@ namespace XSF
             m_Tail.next = newNode;
             m_Tail = newNode;
 
-            ++m_nPushCount;
+            Interlocked.Increment(ref m_nPushCount);
         }
 
         public bool Pop(out T? data)
         {
             if (m_Head.next != null)
             {
-                ++m_nPopCount;
+                Interlocked.Increment(ref m_nPopCount);
 
                 m_Head = m_Head.next;
                 data = m_Head.data;
@@ -65,7 +65,7 @@ namespace XSF
         {
             get
             {
-                return m_nPushCount - m_nPopCount;
+                return Interlocked.Read(ref m_nPushCount) - Interlocked.Read(ref m_nPopCount);
             }
         }
     }

@@ -23,6 +23,7 @@ namespace xsf
 
         NetPointManagerInit * pLocalInit = (NetPointManagerInit*)pInit;
         m_nListenPort = pLocalInit->nPort;
+        m_Packer = pLocalInit->packer;
 
         return true;
     }
@@ -31,7 +32,7 @@ namespace xsf
     {
         XSF_INFO("INetPointManager::Start name:%s, port=%u", m_sName, GetListenPort());
 
-        m_pConnection = XSFCore::CreateConnection(this, XSFCore::GetServerPacker());
+        m_pConnection = XSFCore::CreateConnection(this, m_Packer != nullptr ? m_Packer : XSFCore::GetServerPacker());
         if( m_pConnection == nullptr )
         {
             XSF_ERROR("INetPointManager::Start name:%s m_pConnection == nullptr", m_sName);

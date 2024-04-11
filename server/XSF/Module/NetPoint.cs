@@ -118,7 +118,7 @@ namespace XSF
             Serilog.Log.Error("NetPoint.OnConnected error call, name={0}", Owner.Name);
         }
 
-        public void OnRecv(IConnection connection, IMessage message, ushort nMessageID, uint nRawID, byte[]? data)
+        public virtual void OnRecv(IConnection connection, IMessage message, ushort nMessageID, uint nRawID, byte[]? data)
         {
             message.Execute(this, nMessageID, nRawID, data);
         }

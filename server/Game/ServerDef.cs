@@ -12,6 +12,9 @@ public enum ModuleID
     Schema = 0,
     Message,
     CenterConnector,
+    DBConnector,
+    HubConnector,
     GateAcceptor,
     Actor,
+    
 }

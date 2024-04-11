@@ -69,7 +69,7 @@ namespace XSF
             return true;
         }
 
-        public override void OnClose()
+        public override void DoClose()
         {
             m_Timers.CloseAllTimer();
 

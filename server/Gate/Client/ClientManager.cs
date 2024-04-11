@@ -28,7 +28,7 @@ namespace GateClient
         public ClientManager()
         {
             m_Clients = new Client[XSFCore.Config.GateMaxCount];
-            m_ClientPakcer = new LocalPakcer();
+            m_ClientPakcer = new LocalPacker();
         }
 
         public override void DoRegist()
@@ -46,7 +46,7 @@ namespace GateClient
             return true;
         }
 
-        public override void OnClose()
+        public override void OnStartClose()
         {
             for(int i = 0; i < m_Clients.Length; i ++)
             {

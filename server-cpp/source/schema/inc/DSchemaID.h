@@ -25,6 +25,7 @@ enum EMSchemaID
 	SchemaID_Global = 1,
 	SchemaID_Item = 2,
 	SchemaID_TestData = 4,
+	SchemaID_DBSql = 5,
 //SCHEMA_ID_END
 
     SchemaID_Max,
@@ -36,6 +37,7 @@ enum EMSchemaID
 	case SchemaID_Global:		m_SchemaList[nSchemaID] = new SchemaGlobal();	break;			\
 	case SchemaID_Item:		m_SchemaList[nSchemaID] = new SchemaItem();	break;			\
 	case SchemaID_TestData:		m_SchemaList[nSchemaID] = new SchemaTestData();	break;			\
+	case SchemaID_DBSql:		m_SchemaList[nSchemaID] = new SchemaDBSql();	break;			\
 //SCHEMA_CREATE_END
 }
 

@@ -308,6 +308,14 @@ void NodeManager::GetPort(byte nEP, ServerInfo * pInfo)
         pInfo->Ports[EP_Gate] = GetNextPort(true);
         break;
 
+    case EP_Db:
+        pInfo->Ports[EP_Db] = GetNextPort(true);
+        break;
+
+    case EP_Hub:
+        pInfo->Ports[EP_Hub] = GetNextPort(true);
+        break;
+
     default:
         break;
     }

@@ -12,6 +12,8 @@ using XSF;
 
 public class ServerInfoHandler : Singleton<ServerInfoHandler>, IServerInfoHandler
 {
+    public static uint TargetServerID;
+
     // 有一个服务器连入到集群
     public void OnServerNew(ServerInfo info)
     {
@@ -26,6 +28,27 @@ public class ServerInfoHandler : Singleton<ServerInfoHandler>, IServerInfoHandle
 
     public void OnServerOk(ServerInfo info)
     {
+        var sid = ServerID.GetSID(info.ID);
+        switch((EP)sid.Type)
+        {
+        case EP.DB:
+            {
+                DBC.IDBConnector.Get((int)ModuleID.DBConnector).Connect(info.IP, (int)info.Ports[(int)EP.DB]);
+            }
+            break;
 
+        case EP.Game:
+            {
+                TargetServerID = info.ID;
+                Serilog.Log.Information("Target Game ID=" + TargetServerID);
+            }
+            break;
+
+        case EP.Hub:
+            {
+                HubC.IHubConnector.Get((int)ModuleID.HubConnector).Connect(info.IP, (int)info.Ports[(int)EP.Hub]);
+            }
+            break;
+        }
     }
 }

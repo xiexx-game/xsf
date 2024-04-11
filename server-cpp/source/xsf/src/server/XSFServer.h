@@ -31,7 +31,8 @@ namespace xsf
         ServerStatus_Running,
         ServerStatus_StopCheck0,
         ServerStatus_StopCheck,
-        ServerStatus_Stop,
+        ServerStatus_Close,
+        ServerStatus_Release,
     };
 
     struct ModuleInfo
@@ -59,8 +60,6 @@ namespace xsf
         XSFLogger * GetLogger(void) { return m_pLogger; }
         XSFTimer * GetTimer(void) { return m_pTimer; }
         XSFNet * GetNet(void) { return m_pNet; }
-
-        void Speedup(void);
 
     public:
         // 获取当前服务器ID
@@ -93,6 +92,8 @@ namespace xsf
         void DoStart(void) override;
 
         void Stop(void) override;
+
+        void Speedup(void) override;
 
     private:
         bool ReadArgv(int argc, char* argv[]);

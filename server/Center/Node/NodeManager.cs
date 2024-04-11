@@ -61,7 +61,7 @@ public class NodeManager : DicNPManager
         return base.Start();
     }
 
-    public override void OnClose()
+    public override void OnStartClose()
     {
         var message = XSFCore.GetMessage((ushort)XsfPbid.SMSGID.CCcStop);
         Broadcast(message, 0);
@@ -217,6 +217,14 @@ public class NodeManager : DicNPManager
             ports[(int)EP.Gate] = GetNextPort(true);
             break;
 
+        case EP.DB:
+            ports[(int)EP.DB] = GetNextPort(true);
+            break;
+
+        case EP.Hub:
+            ports[(int)EP.Hub] = GetNextPort(true);
+            break;
+
         default:
             break;
         }
@@ -297,10 +305,10 @@ public class NodeManager : DicNPManager
                 info.Ports.Add(nodeAdd.Ports[i]);
             info.Status = (uint)nodeAdd.Status;
             message.mPB.Infos.Add(info);
-            
+                    
             Broadcast(message, np.ID);
         }
-        
+
         if(m_CurStartNode != null && (byte)m_CurStartNode.ep == np.SID.Type)
         {
             m_nStep = RunStep.HandshakeDone;

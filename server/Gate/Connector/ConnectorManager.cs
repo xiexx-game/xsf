@@ -34,11 +34,11 @@ public class ConnectorManager : IModule
         XSFCore.SetMessageExecutor((ushort)XsfPbid.SMSGID.GtAGtSetServerId, new Executor_GtA_Gt_SetServerID());
     }
 
-    public override void OnClose()
+    public override void DoClose()
     {
         foreach(KeyValuePair<uint, ServerConnector> kv in m_Connectors)
         {
-            kv.Value.OnClose();
+            kv.Value.DoClose();
         }
     }
 

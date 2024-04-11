@@ -69,7 +69,7 @@ namespace xsf
         return IModule::Init(pInit);
     }
 
-    void NetConnector::OnClose(void)
+    void NetConnector::DoClose(void)
     {
         m_bHandshake = false;
         CONNECTION_CLOSE(m_pConnection);

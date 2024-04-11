@@ -69,13 +69,21 @@ namespace XSF
 
         public virtual bool Start() { return true; }
 
+        // 服务器所有模块开启完毕后调用
         public virtual void OnOK() {}
 
-        public virtual void OnClose() {}
+        // 服务器所有模块都检测关闭完成后调用
+        public virtual void DoClose() {}
+
+        // 服务器关服前调用
+        public virtual void OnStartClose() {}
 
         public virtual void OnUpdate(uint nDeltaTime) {}
 
+        // 检查本模块是否开启完成
         public virtual ModuleRunCode OnStartCheck() { return ModuleRunCode.OK; }
+
+        // 检查本模块是否关闭完成
         public virtual ModuleRunCode OnCloseCheck() { return ModuleRunCode.OK; }
     }
 }

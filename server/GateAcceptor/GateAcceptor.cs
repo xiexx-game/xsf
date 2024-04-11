@@ -129,5 +129,15 @@ namespace GateA
                 }
             }
         }
+
+        public override void OnNPConnected(NetPoint np)
+        {
+            Serilog.Log.Information($"网关连入 {np.SID.ID}-{np.SID.Index}");
+        }
+
+        public override void OnNPLost(NetPoint np)
+        {
+            Serilog.Log.Information($"网关断开 {np.SID.ID}-{np.SID.Index}");
+        }
     }
 }

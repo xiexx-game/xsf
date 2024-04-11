@@ -175,6 +175,8 @@ namespace XSF
             if(name == "login") { return EP.Login; }
             if(name == "gate") { return EP.Gate; }
             if(name == "game") { return EP.Game; }
+            if(name == "db") { return EP.DB; }
+            if(name == "hub") { return EP.Hub; }
             else 
                 return EP.None;
         }
@@ -188,6 +190,8 @@ namespace XSF
             case EP.Login:  return "Login";
             case EP.Gate:   return "Gate";
             case EP.Game:   return "Game";
+            case EP.DB:   return "DB";
+            case EP.Hub:   return "Hub";
             default:    return "Unknow";
             }
         }
@@ -201,6 +205,8 @@ namespace XSF
             case EP.Login:  return "登录服";
             case EP.Gate:   return "网关服";
             case EP.Game:   return "游戏服";
+            case EP.DB:   return "数据服";
+            case EP.Hub:   return "中转服";
             default:    return "未知";
             }
         }
@@ -214,6 +220,8 @@ namespace XSF
             case EP.Login:  return true;
             case EP.Gate:   return true;
             case EP.Game:   return true;
+            case EP.DB:     return true;
+            case EP.Hub:    return true;
             default:    return false;
             }
         }

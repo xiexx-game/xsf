@@ -60,6 +60,13 @@ struct ScpTestData
 //ScpTestData_START
 //ScpTestData_END
 };
+
+//DB sql 配置
+struct ScpDBSql
+{
+//ScpDBSql_START
+//ScpDBSql_END
+};
 //SCHEMA_STRUCT
 // 不要删除上面的标签，这是用来自动生成代码
 

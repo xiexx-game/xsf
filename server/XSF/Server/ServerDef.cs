@@ -45,6 +45,8 @@ namespace XSF
         void DoStart();
 
         void Stop();
+
+        void SpeedUp();
     }
 
     public struct ServerID
@@ -146,8 +148,27 @@ namespace XSF
     {
         public string Name = "";
         public EP ep;
-        public uint MongoID;
-        public uint RedisID;
+        public string Ext;
+    }
+
+    public class RedisConfig
+    {
+        public uint id;
+        public string ip;
+        public string pwd;
+        public uint port;
+        public uint count;
+    }
+
+    public class MysqlConfig
+    {
+        public uint id;
+        public string db;
+        public string ip;
+        public string user;
+        public string pwd;
+        public uint port;
+        public uint count;
     }
 
     public class XSFConfig
@@ -176,5 +197,9 @@ namespace XSF
         public ServerNode Me;
 
         public ServerNode[] NodeList;
+
+        public RedisConfig[] redis;
+
+        public MysqlConfig[] mysql;
     }
 }

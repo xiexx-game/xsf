@@ -24,7 +24,8 @@ namespace XSF
             Running,
             StopCheck0,
             StopCheck,
-            Stop,
+            Close,
+            Release,
         }
 
         struct ModuleInfo
@@ -133,7 +134,7 @@ namespace XSF
             XSFLogger.End();
         }
 
-        internal void SpeedUp()
+        public void SpeedUp()
         {
             m_MainEvent.Set();
         }
@@ -158,7 +159,7 @@ namespace XSF
             if(m_nStatus == RunStatus.Running)
                 m_nStatus = RunStatus.StopCheck0;
             else
-                m_nStatus = RunStatus.Stop;
+                m_nStatus = RunStatus.Release;
 
             m_MainEvent.Set();
         }
@@ -210,7 +211,7 @@ namespace XSF
                         Serilog.Log.Information("模块初始化, id={0}, name={1}", info.initData.ID, info.initData.Name);
                         if(!info.module.Init(info.initData))
                         {
-                            m_nStatus = RunStatus.Stop;
+                            m_nStatus = RunStatus.Release;
                             return;
                         }
                     }
@@ -235,7 +236,8 @@ namespace XSF
                                 Serilog.Log.Information("模块不等待开始, id={0}, name={1}", m_Modules[i].ID, m_Modules[i].Name);
                                 if(!m_Modules[i].Start())
                                 {
-                                    m_nStatus = RunStatus.Stop;
+                                    Serilog.Log.Error("模块Start失败, id={0}, name={1}", m_Modules[i].ID, m_Modules[i].Name);
+                                    m_nStatus = RunStatus.Release;
                                     return;
                                 }
                             }
@@ -266,8 +268,9 @@ namespace XSF
                             Serilog.Log.Information("模块等待开始, id={0}, name={1}", m_Modules[i].ID, m_Modules[i].Name);
                             if(!m_Modules[i].Start())
                             {
-                                m_nStatus = RunStatus.Stop;
-                                break;
+                                Serilog.Log.Error("模块Start失败, id={0}, name={1}", m_Modules[i].ID, m_Modules[i].Name);
+                                m_nStatus = RunStatus.Release;
+                                return;
                             }
                         }
                     }
@@ -298,7 +301,7 @@ namespace XSF
                         }
                         else if(RunCode == ModuleRunCode.Error)
                         {
-                            m_nStatus = RunStatus.Stop;
+                            m_nStatus = RunStatus.Release;
                             break;
                         }
                     }
@@ -342,7 +345,7 @@ namespace XSF
                     {
                         if(m_Modules[i] != null) {
                             Serilog.Log.Information("模块开始关闭, id={0}, name={1}", m_Modules[i].ID, m_Modules[i].Name);
-                            m_Modules[i].OnClose();
+                            m_Modules[i].OnStartClose();
                         }
                     }
 
@@ -373,14 +376,27 @@ namespace XSF
                     }
                     else
                     {
-                        m_nStatus = RunStatus.Stop;
+                        m_nStatus = RunStatus.Close;
                     }
                 }
                 break;
 
-            case RunStatus.Stop:
+            case RunStatus.Close:
                 {
-                    Serilog.Log.Information("==== [{0} {1}-{2}-{3}] 所有模块都已正常关闭 ====", XSFCore.Server.ID, XSFCore.Server.SID.ID, XSFCore.EP2CNName(XSFCore.Server.SID.Type), XSFCore.Server.SID.Index);
+                    Serilog.Log.Information("==== [{0} {1}-{2}-{3}] 所有模块都已正常关闭 执行最后关闭操作 ====", XSFCore.Server.ID, XSFCore.Server.SID.ID, XSFCore.EP2CNName(XSFCore.Server.SID.Type), XSFCore.Server.SID.Index);
+                    for(int i = 0; i < m_Modules.Length; i ++)
+                    {
+                        if(m_Modules[i] != null)
+                            m_Modules[i].DoClose();
+                    }
+
+                    m_nStatus = RunStatus.Release;
+                }
+                break;
+
+            case RunStatus.Release:
+                {
+                    Serilog.Log.Information("==== [{0} {1}-{2}-{3}] 开始释放所有模块 ====", XSFCore.Server.ID, XSFCore.Server.SID.ID, XSFCore.EP2CNName(XSFCore.Server.SID.Type), XSFCore.Server.SID.Index);
                     for(int i = 0; i < m_Modules.Length; i ++)
                     {
                         if(m_Modules[i] != null)
@@ -523,6 +539,57 @@ namespace XSF
 
                 }
 
+                {
+                    XmlElement eleRedis = reader.mRootNode.SelectSingleNode("redis") as XmlElement;
+                    var redisNodes = eleRedis.ChildNodes;
+                    List<RedisConfig> redisList = new List<RedisConfig>();
+                    for(int i = 0; i < redisNodes.Count; i ++)
+                    {
+                        XmlElement eleItem = redisNodes[i] as XmlElement;
+                        var r = new RedisConfig();
+                        r.id = XMLReader.GetUInt(eleItem, "id");
+                        r.ip = XMLReader.GetString(eleItem, "ip");
+                        r.pwd = XMLReader.GetString(eleItem, "passwd");
+                        r.port = XMLReader.GetUInt(eleItem, "port");
+                        r.count = XMLReader.GetUInt(eleItem, "count");
+                        if(r.count <= 0)
+                        {
+                            r.count = 1;
+                        }
+
+                        redisList.Add(r);
+                    }
+
+                    Config.redis = redisList.ToArray();
+                }
+
+                {
+                    XmlElement eleMysql = reader.mRootNode.SelectSingleNode("mysql") as XmlElement;
+                    var mysqlNodes = eleMysql.ChildNodes;
+                    List<MysqlConfig> mysqlList = new List<MysqlConfig>();
+                    for(int i = 0; i < mysqlNodes.Count; i ++)
+                    {
+                        XmlElement eleItem = mysqlNodes[i] as XmlElement;
+                        var m = new MysqlConfig();
+
+                        m.id = XMLReader.GetUInt(eleItem, "id");
+                        m.db = XMLReader.GetString(eleItem, "db");
+                        m.ip = XMLReader.GetString(eleItem, "ip");
+                        m.user = XMLReader.GetString(eleItem, "user");
+                        m.pwd = XMLReader.GetString(eleItem, "passwd");
+                        m.port = XMLReader.GetUInt(eleItem, "port");
+                        m.count = XMLReader.GetUInt(eleItem, "count");
+                        if(m.count <= 0)
+                        {
+                            m.count = 1;
+                        }
+
+                        mysqlList.Add(m);
+                    }
+
+                    Config.mysql = mysqlList.ToArray();
+                }
+
                 Config.Me = new ServerNode();
                 Config.Me.ep = (EP)XSFServer.Instance.SID.Type;
 
@@ -546,11 +613,14 @@ namespace XSF
                         if(count <= 0)
                             count = 1;
 
+                        string Ext = XMLReader.GetString(eleItem, "ext");
+
                         for(int c = 0; c < count; c ++)
                         {
                             var node = new ServerNode();
                             node.Name = XMLReader.GetString(eleItem, "name");
                             node.ep = epValue;
+                            node.Ext = Ext;
                             nodeList.Add(node);
                         }
                     }

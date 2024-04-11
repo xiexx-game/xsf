@@ -22,11 +22,11 @@ void ConnectorManager::DoRegist()
     XSFCore::SetMessageExecutor(xsf_pbid::GtA_Gt_SetServerId, new Executor_GtA_Gt_SetServerId());
 }
 
-void ConnectorManager::OnClose(void) 
+void ConnectorManager::DoClose(void) 
 {
     for(auto it = m_Connectors.begin(); it != m_Connectors.end(); it ++)
     {
-        it->second->OnClose();
+        it->second->DoClose();
     }
 }
 

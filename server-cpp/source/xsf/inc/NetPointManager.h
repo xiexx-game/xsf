@@ -18,9 +18,12 @@
 
 namespace xsf
 {
+    struct INetPacker;
+
     struct NetPointManagerInit : public ModuleInit
     {
         uint16 nPort = 0;
+        INetPacker * packer = nullptr;
     };
 
     class NetPoint;
@@ -95,6 +98,8 @@ namespace xsf
         uint16 m_nListenPort = 0;
 
         NetPointList m_WaitList;
+
+        INetPacker * m_Packer = nullptr;
     };
 
 

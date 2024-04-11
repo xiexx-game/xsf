@@ -39,6 +39,15 @@ namespace XSF
             }
         }
 
+        public byte[] ByteArray
+        {
+            get {
+                byte[] data = new byte[Size];
+                Array.Copy(Buffer, data, Size);
+                return data;
+            }
+        }
+
         public void Clear()
         {
             m_Stream.Seek(0, SeekOrigin.Begin);

@@ -20,7 +20,7 @@ namespace CC
 
     public abstract class ICenterConnector : NetConnector
     {
-        public static void CreateModule(int nID, IServerInfoHandler handler)
+        public static void CreateModule(int nID, IServerInfoHandler? handler)
         {
             var connector = new CenterConnector();
             connector.m_Handler = handler;

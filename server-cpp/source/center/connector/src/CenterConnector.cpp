@@ -111,12 +111,14 @@ namespace CC
             if(IsNewAdd)
             {
                 XSF_INFO("【中心服连接器】新增服务器节点, id=%u [%u-%u-%s] status=%u", pInfoFind->ID, sid.S.server, sid.S.index, xsf::EP2CNName(sid.S.type), pInfoFind->Status);
-                m_pHandler->OnServerNew(pInfoFind);
+                if(m_pHandler != nullptr)
+                    m_pHandler->OnServerNew(pInfoFind);
 
                 if(pInfoFind->Status == NodeStatus_Ok)
                 {
                     XSF_INFO("【中心服连接器】收到服务器节点已准备好, id=%u [%u-%u-%s]", pInfoFind->ID, sid.S.server, sid.S.index, xsf::EP2CNName(sid.S.type));
-                    m_pHandler->OnServerOk(pInfoFind);
+                    if(m_pHandler != nullptr)
+                        m_pHandler->OnServerOk(pInfoFind);
                 }
             }
         }
@@ -135,7 +137,8 @@ namespace CC
         sid.ID = nID;
 
         XSF_INFO("【中心服连接器】有服务器节点离线, id=%u [%u-%u-%s]", nID, sid.S.server, sid.S.index, xsf::EP2CNName(sid.S.type));
-        m_pHandler->OnServerLost(nID);
+        if(m_pHandler != nullptr)
+            m_pHandler->OnServerLost(nID);
     }
 
     void CenterConnector::OnNodeOk(uint32 nID)
@@ -149,7 +152,8 @@ namespace CC
             sid.ID = nID;
 
             XSF_INFO("【中心服连接器】收到服务器节点已准备好, id=%u [%u-%u-%s]", nID, sid.S.server, sid.S.index, xsf::EP2CNName(sid.S.type));
-            m_pHandler->OnServerOk(it->second);
+            if(m_pHandler != nullptr)
+                m_pHandler->OnServerOk(it->second);
         }
         else
         {

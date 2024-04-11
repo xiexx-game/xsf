@@ -48,15 +48,22 @@ namespace xsf
 
         virtual void Release(void) { delete this; }
 
+        // 检查本模块是否开启完成
         virtual uint8 OnStartCheck(void) { return ModuleRunCode_OK; }
 
+        // 检查本模块是否关闭完成
         virtual uint8 OnCloseCheck(void) { return ModuleRunCode_OK; }
 
         virtual void OnUpdate(uint32 nDeltaTime) {}
 
+        // 服务器所有模块开启完毕后调用
         virtual void OnOK(void) {}
 
-        virtual void OnClose(void) {}
+        // 服务器所有模块都检测关闭完成后调用
+        virtual void DoClose(void) {}
+
+         // 服务器关服前调用
+        virtual void OnStartClose() {}
 
         virtual void Stop(void) {}
 
@@ -119,6 +126,8 @@ namespace xsf
         virtual void DoStart(void) = 0;
 
         virtual void Stop(void) = 0;
+
+        virtual void SpeedUp(void) = 0;
     };
 
 

@@ -27,7 +27,7 @@ namespace XSF
         {
             if(m_Executor != null)
             {
-                Serilog.Log.Warning("IMessage.SetExecutor m_Executor is not null, message id={0}", ID);
+                Serilog.Log.Error("IMessage.SetExecutor m_Executor is not null, message id={0}", ID);
             }
 
             m_Executor = executor;
@@ -37,7 +37,7 @@ namespace XSF
         {
             if(m_Executor == null)
             {
-                Serilog.Log.Warning("IMessage.Execute m_Executor is null, message id={0}", ID);
+                Serilog.Log.Error("IMessage.Execute m_Executor is null, message id={0}", ID);
                 return;
             }
 
@@ -63,9 +63,8 @@ namespace XSF
         Login,
         Gate,
         Game,
-        Manager,
-        Mail,
-        Robot,
+        DB,
+        Hub,
 
         Max,
     }

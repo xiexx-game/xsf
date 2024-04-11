@@ -239,7 +239,7 @@ namespace xsf
         if(m_nStatus == ServerStatus_Running)
             m_nStatus = ServerStatus_StopCheck0;
         else
-            m_nStatus = ServerStatus_Stop;
+            m_nStatus = ServerStatus_Release;
     }
 
 
@@ -412,7 +412,7 @@ namespace xsf
                     XSF_INFO("模块初始化, id=%u, name=%s", info.pInit->nModuleID, info.pInit->sName);
                     if(!info.pModule->Init(info.pInit))
                     {
-                        m_nStatus = ServerStatus_Stop;
+                        m_nStatus = ServerStatus_Release;
                         return;
                     }
 
@@ -438,7 +438,7 @@ namespace xsf
                             XSF_INFO("模块不等待开始, id=%u, name=%s", m_Modules[i]->GetModuleID(), m_Modules[i]->GetModuleName());
                             if(!m_Modules[i]->Start())
                             {
-                                m_nStatus = ServerStatus_Stop;
+                                m_nStatus = ServerStatus_Release;
                                 return;
                             }
                         }
@@ -469,7 +469,7 @@ namespace xsf
                         XSF_INFO("模块等待开始, id=%u, name=%s", m_Modules[i]->GetModuleID(), m_Modules[i]->GetModuleName());
                         if(!m_Modules[i]->Start())
                         {
-                            m_nStatus = ServerStatus_Stop;
+                            m_nStatus = ServerStatus_Release;
                             return;
                         }
                     }
@@ -505,7 +505,7 @@ namespace xsf
                         break;
 
                     case ModuleRunCode_Error:
-                        m_nStatus = ServerStatus_Stop;
+                        m_nStatus = ServerStatus_Release;
                         break;
                     
                     default:
@@ -555,7 +555,7 @@ namespace xsf
                     if(m_Modules[i] != nullptr)
                     {
                         XSF_INFO("模块开始关闭, id=%u, name=%s", m_Modules[i]->GetModuleID(), m_Modules[i]->GetModuleName());
-                        m_Modules[i]->OnClose();
+                        m_Modules[i]->OnStartClose();
                     }
                 }
 
@@ -587,14 +587,27 @@ namespace xsf
                 }
                 else
                 {
-                    m_nStatus = ServerStatus_Stop;
+                    m_nStatus = ServerStatus_Close;
                 }
             }
             break;
 
-        case ServerStatus_Stop:
+        case ServerStatus_Close:
             {
-                XSF_INFO("==== 所有模块都已正常关闭 ====");
+                XSF_INFO("==== 所有模块都已正常关闭，执行最后关闭操作 ====");
+                for(uint16 i = 0; i < m_nMaxModuleID; i ++)
+                {
+                    if(m_Modules[i] != nullptr)
+                    {
+                        m_Modules[i].DoClose();
+                    }
+                }
+            }
+            break;
+
+        case ServerStatus_Release:
+            {
+                XSF_INFO("==== 开始释放所有模块 ====");
                 for(uint16 i = 0; i < m_nMaxModuleID; i ++)
                 {
                     if(m_Modules[i] != nullptr)

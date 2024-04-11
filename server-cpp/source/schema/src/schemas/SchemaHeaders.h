@@ -17,6 +17,7 @@
 #include "SchemaGlobal.h"
 #include "SchemaItem.h"
 #include "SchemaTestData.h"
+#include "SchemaDBSql.h"
 //SCHEMA_END
 
 
