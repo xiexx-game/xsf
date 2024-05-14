@@ -10,6 +10,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 using XSF;
+using TMPro;
+using System.Collections.Generic;
 
 public sealed class UIStartup
 {
@@ -23,6 +25,13 @@ public sealed class UIStartup
 
     private bool m_bUpdate;
 
+    private UIMessageBox MessageBox;
+
+    private TextMeshProUGUI m_Info;
+
+    private int m_nBGIndex;
+    private List<GameObject> m_Backgrounds;
+
     public void Init()
     {
         m_UIRoot = XSFMain.Instance.UIStartup;
@@ -33,12 +42,45 @@ public sealed class UIStartup
         m_fTotal = 0;
         m_fCurProgress = 0;
         m_bUpdate = false;
+
+        m_Info = m_UIRootT.Find("Info").GetComponent<TextMeshProUGUI>();
+
+        MessageBox = new UIMessageBox();
+        MessageBox.Init(m_UIRootT.Find("MessageBox"));
+
+        m_Backgrounds = new List<GameObject>();
+        m_Backgrounds.Add(m_UIRootT.Find("background1").gameObject);
+        m_Backgrounds.Add(m_UIRootT.Find("background2").gameObject);
+    }
+
+    public void SetInfoText(string text)
+    {
+        m_Info.text = text;
+    }
+
+    public void ShowMessageBox(IMessageBoxHandler handler)
+    {
+        MessageBox.Show(handler);
     }
 
     public void SetProgress(float value)
     {
-        m_fTotal += value;
+        m_fTotal = value;
         m_bUpdate = true;
+    }
+
+    public void ShowNextBg()
+    {
+        m_Backgrounds[m_nBGIndex].SetActive(false);
+        m_nBGIndex++;
+        m_Backgrounds[m_nBGIndex].SetActive(true);
+    }
+
+    public void ResetProgress()
+    {
+        m_fTotal = 0.0f;
+        m_fCurProgress = 0.0f;
+        m_Progress.value = 0.0f;
     }
 
     public void Update()
@@ -48,25 +90,32 @@ public sealed class UIStartup
             return;
         }
 
-        m_fCurProgress += Time.deltaTime;
+        m_fCurProgress += 10 * Time.deltaTime;
+
+        //Debug.Log($"m_fCurProgress={m_fCurProgress}, m_fTotal={m_fTotal}");
 
         if(m_fCurProgress >= m_fTotal)
         {
+            //Debug.Log("m_fCurProgress >= m_fTotal");
             m_Progress.value = m_fTotal;
             m_bUpdate = false;
+
             if(m_fTotal > 1.0f)
             {
-                GameObject.Destroy(m_UIRoot);
-                m_UIRoot = null;
-                m_UIRootT = null;
-                m_Progress = null;
-
-                XSFStartup.Instance.OnAllStepDone();
+                XSFEvent.Instance.Fire((uint)EventID.StartupStepDone);
             } 
         }
         else
         {
             m_Progress.value = m_fCurProgress;
         }
+    }
+
+    public void Destory()
+    {
+        GameObject.Destroy(m_UIRoot);
+        m_UIRoot = null;
+        m_UIRootT = null;
+        m_Progress = null;
     }
 }

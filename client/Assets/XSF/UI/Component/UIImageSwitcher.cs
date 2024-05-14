@@ -10,16 +10,15 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.U2D;
-
-using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
+using YooAsset;
+using System.Collections;
 
 namespace XSF
 {
     public class UIImageSwitcher : MonoBehaviour
     {
         private Image image;
-        private AsyncOperationHandle<SpriteAtlas> handle;
+        private AssetHandle handle;
 
         private string m_sAtlasLabel;
         private string m_sSpriteName;
@@ -34,40 +33,42 @@ namespace XSF
             m_sAtlasLabel = sAtlasLabel;
             m_sSpriteName = sSpriteName;
 
-            if (handle.IsValid())
+            if (handle != null)
             {
                 // 如果已有异步加载操作在进行中，则先取消该操作
-                Addressables.Release(handle);
+                handle.Release();
+                handle = null;
             }
 
-            handle = Addressables.LoadAssetAsync<SpriteAtlas>(sAtlasLabel);
-            handle.Completed += OnAtlasLoaded;
+            StopAllCoroutines();
+
+            StartCoroutine(LoadSprite());
         }
 
-        void OnAtlasLoaded(AsyncOperationHandle<SpriteAtlas> handle)
+        IEnumerator LoadSprite()
         {
-            if (handle.Status == AsyncOperationStatus.Succeeded)
+            var package = YooAssets.GetPackage(XSFConfig.Instance.YooAssetPackage);
+            handle = package.LoadAssetAsync<SpriteAtlas>("Atlas_" + m_sAtlasLabel);
+            yield return handle;
+            var atlas = handle.AssetObject as SpriteAtlas;
+            var sprite = atlas.GetSprite(m_sSpriteName);
+            if(sprite == null)
             {
-                SpriteAtlas atlas = handle.Result;
-
-                // 在图集中查找对应名称的Sprite
-                Sprite sprite = atlas.GetSprite(m_sSpriteName);
-                if (sprite != null)
-                {
-                    image.sprite = sprite;
-                }
-                else
-                {
-                    Debug.LogError("UIImageSwitcher.OnAtlasLoaded sprite not found, name=" + m_sSpriteName);
-                }
+                Debug.LogError("UIImageSwitcher LoadSprite sprite not exist, name=" + m_sSpriteName);
+            }
+            else
+            {
+                image.sprite = sprite;
+                Debug.Log($"UIImageSwitcher LoadSprite Sprite name is {sprite.name}");
             }
         }
 
         void OnDestroy()
         {
-            if (handle.IsValid())
+            if (handle != null)
             {
-                Addressables.Release(handle);
+                handle.Release();
+                handle = null;
             }
         }
     }

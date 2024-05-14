@@ -11,15 +11,6 @@
 using UnityEngine;
 using XSF;
 
-public enum StartupStepID
-{
-    None = 0,
-    AASUpdate,
-    Schema,
-    ShowFirstUI,
-    Max,
-}
-
 public abstract class StartupStep : IEventSink
 {
     public abstract void Start();
@@ -27,6 +18,11 @@ public abstract class StartupStep : IEventSink
     public virtual void End()
     {
         
+    }
+
+    public virtual void Update()
+    {
+
     }
 
     public void Subscribe(EventID nEventID, uint nObjectID)
@@ -47,4 +43,6 @@ public abstract class StartupStep : IEventSink
     }
 
     public bool IsDone { get; protected set; }
+
+    public virtual float CurrentProgress { get { return 1.0f; } }
 }

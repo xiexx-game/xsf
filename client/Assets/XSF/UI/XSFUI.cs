@@ -29,11 +29,15 @@ namespace XSF
 
         public IUIHelper Helper { get; private set; }
 
-        public void Init(IUIHelper helper, GameObject uiRoot)
+        public void SetInitData(IUIHelper helper, GameObject uiRoot)
         {
             Helper = helper;
 
             Root = uiRoot;
+        }
+
+        public void Init()
+        {
             UIRootT = Root.transform.Find("Root");
 
             XSFUpdate.Instance.Add(this);

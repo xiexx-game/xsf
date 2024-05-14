@@ -10,6 +10,6 @@
 
 public enum EventID
 {
-    AllStartupStepDone = 10000,
-    LoadingDone,
+    StartupStepDone = 10000,
+    AllStartupStepDone = 10001,
 }

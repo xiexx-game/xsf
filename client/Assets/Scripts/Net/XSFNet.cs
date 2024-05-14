@@ -13,7 +13,7 @@ using XSF;
 
 namespace XsfNet
 {
-    public sealed class XSFNet : Singleton<XSFNet>, IUpdateNode, IEventSink
+    public sealed class XSFNet : Singleton<XSFNet>, IXSFModule, IEventSink, IUpdateNode
     {
         public NetClient mClient { get; private set; }
 
@@ -27,20 +27,27 @@ namespace XsfNet
 
         public uint RTT { get; private set; }
 
-        public bool Init()
+        public void Init()
         {
             MessagePool.Instance.Init();
             XSFEvent.Instance.Subscribe(this, (uint)ClientEventID.NetError, 0);
 
             m_nClientID = 1;
-
-            return true;
         }
 
         public void Start()
         {
-            MessagePool.Instance.Init();
+            
         }
+
+        // 热更完成后调用
+        public void OnContentUpdateDone() {}
+
+        // 登录完成后调用
+        public void OnLogin() {}
+
+        // 登出时调用
+        public void OnLogout() {}
 
         public void Release()
         {

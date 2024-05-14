@@ -13,6 +13,7 @@ using UnityEngine;
 using XSF;
 using XsfNet;
 using XsfUI;
+using YooAsset;
 
 public sealed class XSFMain : MonoSingleton<XSFMain>
 {
@@ -26,6 +27,7 @@ public sealed class XSFMain : MonoSingleton<XSFMain>
     {
         None = 0,
         Init,
+        Start,
         Run,
         Error,
     }
@@ -48,10 +50,17 @@ public sealed class XSFMain : MonoSingleton<XSFMain>
             {
                 case MainStatus.Init:
                     {
-                        XSFCore.Init();
-                        XSFStartup.Instance.Init();
-                        XSFUI.Instance.Init(new UIHelper(), XSFMain.Instance.UIRoot);
-                        XSFNet.Instance.Init();
+                        YooAssets.Initialize();
+
+                        XSFCore.Init(new Game());
+                        
+                        m_nStatus = MainStatus.Start;
+                    }
+                    break;
+
+                case MainStatus.Start:
+                    {
+                        XSFCore.Start();
                         m_nStatus = MainStatus.Run;
                     }
                     break;
@@ -110,6 +119,8 @@ public sealed class XSFMain : MonoSingleton<XSFMain>
     {
         XSFNet.Instance.Release();
         XSFCore.Release();
+
+        YooAssets.Destroy();
 
         Debug.Log("App Quit");
     }

@@ -51,11 +51,6 @@ public sealed class UIAtlasTest : UIBase
 		}
 	}
 
-
-	// Button1
-
-
-
 	// Button1
 	private void OnButton1Click(GameObject go)
 	{

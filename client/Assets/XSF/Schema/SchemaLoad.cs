@@ -14,6 +14,12 @@ using UnityEngine;
 
 namespace XSF
 {
+    public struct SchemaLoadEvent
+    {
+        public int Total;
+        public int Left;
+    }
+
     public sealed class SchemaLoad : ISchema
     {
         struct SchemaLoadInfo
@@ -24,11 +30,12 @@ namespace XSF
             public bool IsColTable;
         }
 
+        private SchemaLoadEvent m_LoadEvent;
         private List<SchemaLoadInfo> m_LoadInfos;
 
         public SchemaLoad()
         {
-
+            m_LoadEvent = new SchemaLoadEvent();
         }
 
         public int ID { get { return 0; } }
@@ -63,6 +70,8 @@ namespace XSF
                 }
             }
 
+            m_LoadEvent.Total = m_LoadEvent.Left = m_LoadInfos.Count;
+
             return true;
         }
 
@@ -80,6 +89,9 @@ namespace XSF
             XSFSchema.Instance.LoadWithSchema(nID, sName, nType, info.IsColTable);
 
             Debug.Log("Load schema done, schema=" + sName);
+
+            m_LoadEvent.Left = m_LoadInfos.Count;
+            XSFEvent.Instance.Fire(XSFCore.SCHEMA_EVENT_ID, 0, m_LoadEvent);
 
             if (m_LoadInfos.Count > 0)
                 return true;

@@ -12,17 +12,28 @@ using System;
 using UnityEngine;
 using System.Diagnostics;
 using System.Collections.Generic;
-using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace XSF
 {
     public static class XSFCore
     {
-        private static Queue<GameObject> AASGoList;
+        public const int YOO_OFFSET = 64;
 
-        public static void Init()
+        private static List<IXSFModule> m_Modules;
+
+        public static void ModuleRegist(IXSFModule module)
         {
+            m_Modules.Add(module);
+        }
+
+        public static void Init(IModuleRegister Register)
+        {
+            m_Modules = new List<IXSFModule>();
+
+            Register.SetInitData();
+
+            UnityEngine.Debug.Log("XSF.Init start");
+
             int seed = DateTime.Now.GetHashCode();
             UnityEngine.Random.InitState(seed);
 
@@ -33,40 +44,76 @@ namespace XSF
             XSFUpdate.Instance.Init();
             XSFCoroutine.Instance.Init();
             XSFEvent.Instance.Init();
+            XSFUI.Instance.Init();
 
-            AASGoList = new Queue<GameObject>();
+            Register.DoRegist();
+
+            for(int i = 0; i < m_Modules.Count; i ++)
+            {
+                m_Modules[i].Init();
+            }
         }
 
-        public static void ReleaseAASGo(GameObject gameObject)
+        // 在所有模块Init后调用
+        public static void Start()
         {
-            AASGoList.Enqueue(gameObject);
+            for(int i = 0; i < m_Modules.Count; i ++)
+            {
+                m_Modules[i].Start();
+            }
+        }
+
+        // 热更完成后调用
+        public static void OnContentUpdateDone()
+        {
+            for(int i = 0; i < m_Modules.Count; i ++)
+            {
+                m_Modules[i].OnContentUpdateDone();
+            }
+        }
+
+        // 登录完成后调用
+        public static void OnLogin()
+        {
+            for(int i = 0; i < m_Modules.Count; i ++)
+            {
+                m_Modules[i].OnLogin();
+            }
+        }
+
+        // 登出时调用
+        public static void OnLogout()
+        {
+            for(int i = 0; i < m_Modules.Count; i ++)
+            {
+                m_Modules[i].OnLogout();
+            }
         }
 
         public static void Release()
         {
             UnityEngine.Debug.Log("XSF.Release start");
 
-            try
-            {
-                XSFUpdate.Instance.Release();
-            }
-            catch (Exception e)
-            {
-                UnityEngine.Debug.LogError($"XSF.Release catch exception, message={e.Message}, stack={e.StackTrace}");
-            }
+            XSFUpdate.Instance.Release();
 
+            for(int i = 0; i < m_Modules.Count; i ++)
+            {
+                try
+                {
+                    m_Modules[i].Release();
+                }
+                catch (Exception e)
+                {
+                    UnityEngine.Debug.LogError($"XSF.Release catch exception, message={e.Message}, stack={e.StackTrace}");
+                }
+            }
+            
             XSFLog.Instance.Release();
         }
 
         public static void Update()
         {
             XSFUpdate.Instance.Update();
-
-            if (AASGoList.Count > 0)
-            {
-                GameObject go = AASGoList.Dequeue();
-                Addressables.ReleaseInstance(go);
-            }
         }
 
         public static void FixedUpdate()

@@ -10,9 +10,7 @@
 
 using UnityEngine;
 using System.Collections.Generic;
-
-using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
+using YooAsset;
 
 namespace XSF
 {
@@ -46,7 +44,7 @@ namespace XSF
         public virtual uint EventObjID { get; }
         public virtual string SortingLayerName { get; }
 
-        private AsyncOperationHandle<GameObject> m_Handle;
+        private AssetHandle m_Handle;
 
         private const int MAX_REFRESH = 10;
 
@@ -96,17 +94,12 @@ namespace XSF
 
         private void LoadUI()
         {
-            m_Handle = Addressables.InstantiateAsync(Name);
-            m_Handle.Completed += (op) =>
+            var package = YooAssets.GetPackage(XSFConfig.Instance.YooAssetPackage);
+            m_Handle = package.LoadAssetAsync<GameObject>(Name);
+            m_Handle.Completed += (AssetHandle handle) =>
             {
-                if (op.Status == AsyncOperationStatus.Succeeded)
-                {
-                    OnUILoadCall(op.Result);
-                }
-                else
-                {
-                    Debug.LogError("UIBase.LoadUI error, name=" + Name);
-                }
+                GameObject go = handle.InstantiateSync();
+                OnUILoadCall(go);
             };
         }
 
@@ -174,11 +167,7 @@ namespace XSF
 
             if (RootGo == null)
             {
-                if (m_Handle.IsValid())
-                {
-                    Addressables.Release(m_Handle);
-                    m_Handle = default;
-                }
+                
             }
             else
             {
@@ -211,15 +200,15 @@ namespace XSF
             {
                 OnClose();
 
-                Addressables.ReleaseInstance(RootGo);
+                GameObject.Destroy(RootGo);
                 RootGo = null;
                 RootT = null;
             }
 
-            if (m_Handle.IsValid())
+            if (m_Handle != null)
             {
-                Addressables.Release(m_Handle);
-                m_Handle = default;
+                m_Handle.Release();
+                m_Handle = null;
             }
 
             if (m_FreshQueue != null)

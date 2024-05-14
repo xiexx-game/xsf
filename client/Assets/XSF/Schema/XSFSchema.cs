@@ -10,10 +10,10 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.AddressableAssets;
+
 using System.IO;
 using System;
-using UnityEngine.ResourceManagement.AsyncOperations;
+using YooAsset;
 
 namespace XSF
 {
@@ -29,7 +29,7 @@ namespace XSF
 
         public XSFSchema()
         {
-
+            
         }
 
         // 开始加载配置，通常都是从这里开始出发加载配置
@@ -58,32 +58,31 @@ namespace XSF
 #endif
         }
 
-        AsyncOperationHandle<IList<TextAsset>> m_LoadHandle;
         // 从AAS中加载配置资源
         void LoadScpFromAAS()
         {
             Debug.Log("XSFSchema LoadScpFromAAS start");
             m_ScpContent = new Dictionary<string, string>();
 
-            m_LoadHandle = Addressables.LoadAssetsAsync<TextAsset>("scp", OnPerComplete, true);
-            m_LoadHandle.Completed += op => { OnAssetsLoadDone(); };
-        }
-
-        // 有配置资源加载完了
-        private void OnPerComplete(TextAsset text)
-        {
-            m_ScpContent.Add(text.name, text.text);
+            var package = YooAssets.GetPackage(XSFConfig.Instance.YooAssetPackage);
+            var handle = package.LoadAllAssetsAsync<UnityEngine.TextAsset>("Scp_Load");
+            handle.Completed += OnScpLoadDone;
         }
 
         // 配置资源全部加载完了
-        private void OnAssetsLoadDone()
+        private void OnScpLoadDone(AllAssetsHandle handle)
         {
             Debug.Log("XSFSchema.OnAssetsLoadDone all scp assets load done ....");
 
+            foreach(var assetObj in handle.AllAssetObjects)
+            {    
+                TextAsset textAsset = assetObj as TextAsset;
+                m_ScpContent.Add(assetObj.name, textAsset.text); 
+            }
+
             StartLoadSchema();
 
-            Addressables.Release(m_LoadHandle);
-            m_LoadHandle = default;
+            handle.Release();
         }
 
         // 开始加载配置
@@ -120,21 +119,9 @@ namespace XSF
             {
                 IsUpdateWroking = false;
 
-#if UNITY_EDITOR
-                if (!Helper.LoadScpInFiles)
-                {
-#endif
-                    if (m_LoadHandle.IsValid())
-                        Addressables.Release(m_LoadHandle);
-
-                    m_LoadHandle = default;
-#if UNITY_EDITOR
-                }
-#endif
-
                 Debug.Log("All Schema Load done ...");
 
-                XSFEvent.Instance.Fire(XSFCore.SCHEMA_EVENT_ID);
+                //XSFEvent.Instance.Fire(XSFCore.SCHEMA_EVENT_ID);
             }
         }
         #endregion
