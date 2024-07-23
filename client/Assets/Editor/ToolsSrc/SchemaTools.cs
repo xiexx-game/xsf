@@ -624,10 +624,12 @@ namespace XSFTools
         {
             string CCSID = "";
             string CCSCreate = "";
+            string CCSStatic = "";
             string CCSIndex = "";
 
             string SCSID = "";
             string SCSCreate = "";
+            string SCSStatic = "";
             string SCSIndex = "";
 
             string SCppID = "";
@@ -648,7 +650,8 @@ namespace XSFTools
                 {
                     CCSID += $"\t{cd.Name} = {cd.ID},\n";
 
-                    CCSCreate += $"\t\t\tcase SchemaID.{cd.Name}: return new Schema{cd.Name}();\n";
+                    CCSCreate += $"\t\t\tcase SchemaID.{cd.Name}: {cd.Name} = new Schema{cd.Name}(); return {cd.Name};\n";
+                    CCSStatic += $"\tpublic static Schema{cd.Name} {cd.Name}" + " { get; private set;}\n";
 
                     string sStructHead = $"public class {sStructName}";
                     string sStructContent = File.ReadAllText(CCSStructFile);
@@ -667,7 +670,8 @@ namespace XSFTools
                     {
                         SCSID += $"\t\t{cd.Name} = {cd.ID},\n";
 
-                        SCSCreate += $"\t\t\t\tcase SchemaID.{cd.Name}: return new Schema{cd.Name}();\n";
+                        SCSCreate += $"\t\t\t\tcase SchemaID.{cd.Name}: {cd.Name} = new Schema{cd.Name}(); return {cd.Name};\n";
+                        SCSStatic += $"\t\tpublic static Schema{cd.Name} {cd.Name}" + " { get; private set;}\n";
 
                         string sStructHead = $"public class {sStructName}";
                         string sStructContent = File.ReadAllText(SCSStructFile);
@@ -705,6 +709,7 @@ namespace XSFTools
             {
                 Helper.ReplaceContentByTag(CCSHelperFile, "SCHEMA_ID_BEGIN", "SCHEMA_ID_END", CCSID);
                 Helper.ReplaceContentByTag(CCSHelperFile, "SCHEMA_BEGIN", "SCHEMA_END", CCSCreate);
+                Helper.ReplaceContentByTag(CCSHelperFile, "SCHEMA_STATIC_BEGIN", "SCHEMA_STATIC_END", CCSStatic);
                 Helper.ReplaceContentByTag(CCSIndexFile, "CSV_INDEX_BEGIN", "CSV_INDEX_END", CCSIndex);
             }
 
@@ -712,6 +717,7 @@ namespace XSFTools
             {
                 Helper.ReplaceContentByTag(SCSHelperFile, "SCHEMA_ID_BEGIN", "SCHEMA_ID_END", SCSID);
                 Helper.ReplaceContentByTag(SCSHelperFile, "SCHEMA_BEGIN", "SCHEMA_END", SCSCreate);
+                Helper.ReplaceContentByTag(SCSHelperFile, "SCHEMA_STATIC_BEGIN", "SCHEMA_STATIC_END", SCSStatic);
                 Helper.ReplaceContentByTag(SCSIndexFile, "CSV_INDEX_BEGIN", "CSV_INDEX_END", SCSIndex);
             }
 

@@ -23,8 +23,6 @@ namespace XSF
     {
         [Header("游戏默认帧率")][Range(30, 60)] public int TargetFrameRate = 60;
 
-        [Header("从文件加载配置")] public bool LoadScpInFiles;
-
         [Header("网络心跳间隔（秒）")] public float HeartbeatInterval;
 
         [Header("YooAsset包名")] public string YooAssetPackage = "DefaultPackage";
@@ -46,11 +44,6 @@ namespace XSF
         {
             base.Awake();
 
-#if UNITY_EDITOR
-        
-#else
-            LoadScpInFiles = false;
-#endif
             Application.targetFrameRate = TargetFrameRate;
 
             Application.runInBackground = true;

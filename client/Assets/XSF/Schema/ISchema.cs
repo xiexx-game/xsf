@@ -26,8 +26,6 @@ namespace XSF
         ICSVData GetData(int type);
 
         string GetLocalText(string key);
-
-        bool LoadScpInFiles { get; }
     }
 
     public interface ICSVData

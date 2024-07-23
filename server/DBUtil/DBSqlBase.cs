@@ -53,7 +53,7 @@ namespace DBUtil
 
         internal void Init()
         {
-            var schema = XSFCore.GetSchema((int)SchemaID.DBSql) as SchemaDBSql;
+            var schema = SchemaModule.DBSql;
             Scp = schema.Get((uint)ID);
             if(Scp == null)
             {

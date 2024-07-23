@@ -399,10 +399,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TargetFrameRate: 60
-  LoadScpInFiles: 1
   HeartbeatInterval: 10
   YooAssetPackage: DefaultPackage
-  YooAssetPlayMode: 2
+  YooAssetPlayMode: 0
   YooAssetHostIp: http://8.137.21.7/package
   Decryption: 1
   YAOPackageVersion: 

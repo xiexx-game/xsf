@@ -135,7 +135,7 @@ public class MysqlManager : IModule
 
     public uint MysqlRequest(uint nServerID, ulong nSerialID, uint nDBRequestID, uint nQueueID, byte[] datas)
     {
-        var SqlSchema = XSFCore.GetSchema((int)SchemaID.DBSql) as SchemaDBSql;
+        var SqlSchema = SchemaModule.DBSql;
         var Scp = SqlSchema.Get(nDBRequestID);
         if(Scp == null)
         {

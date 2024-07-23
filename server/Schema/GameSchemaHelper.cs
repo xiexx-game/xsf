@@ -7,7 +7,7 @@
 // 说明：
 //
 //////////////////////////////////////////////////////////////////////////
-
+#pragma warning disable CS8618
 using System;
 using XSF;
 
@@ -39,10 +39,10 @@ namespace XsfScp
             switch ((SchemaID)nId)
             {
                 //SCHEMA_BEGIN
-				case SchemaID.Global: return new SchemaGlobal();
-				case SchemaID.Item: return new SchemaItem();
-				case SchemaID.TestData: return new SchemaTestData();
-				case SchemaID.DBSql: return new SchemaDBSql();
+				case SchemaID.Global: Global = new SchemaGlobal(); return Global;
+				case SchemaID.Item: Item = new SchemaItem(); return Item;
+				case SchemaID.TestData: TestData = new SchemaTestData(); return TestData;
+				case SchemaID.DBSql: DBSql = new SchemaDBSql(); return DBSql;
                 //SCHEMA_END
                 default:
                     throw new XSFSchemaLoadException($"SchemaModule GetSchema schema null, id={(SchemaID)nId}");
@@ -53,6 +53,13 @@ namespace XsfScp
         {
             return CSVData.GetData(type);
         }
+
+        //SCHEMA_STATIC_BEGIN
+		public static SchemaGlobal Global { get; private set;}
+		public static SchemaItem Item { get; private set;}
+		public static SchemaTestData TestData { get; private set;}
+		public static SchemaDBSql DBSql { get; private set;}
+        //SCHEMA_STATIC_END
     }
 }
 

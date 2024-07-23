@@ -59,11 +59,6 @@ namespace XSF
             }
         }
 
-        public static ISchema GetSchema(int nID)
-        {
-            return schemaHelper.GetSchema(nID);
-        }
-
         public static IMessage GetMessage(ushort nID)
         {
             return messageHelper.GetMessage(nID);

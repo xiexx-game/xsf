@@ -32,7 +32,7 @@ MonoBehaviour:
       - CollectPath: Assets/Scp
         CollectorGUID: aa24991b8bc794b64b6577a621860ee2
         CollectorType: 0
-        AddressRuleName: AddressByFileName
+        AddressRuleName: AddressByFolderAndFileName
         PackRuleName: PackDirectory
         FilterRuleName: CollectAll
         AssetTags: 

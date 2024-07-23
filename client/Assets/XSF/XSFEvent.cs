@@ -172,6 +172,8 @@ namespace XSF
                 }
             }
         }
+
+        public void OnFixedUpdate() {}
     }
 }
 

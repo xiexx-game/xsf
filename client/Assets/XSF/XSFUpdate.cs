@@ -17,7 +17,8 @@ namespace XSF
         bool IsUpdateWroking { get; }
 
         void OnUpdate();
-        void OnFixedUpdate() { }
+        
+        void OnFixedUpdate();
     }
 
     public sealed class XSFUpdate : Singleton<XSFUpdate>

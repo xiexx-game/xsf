@@ -41,27 +41,13 @@ namespace XSF
             m_SchemaLoad = new SchemaLoad();
             m_SchemaList[m_SchemaLoad.ID] = m_SchemaLoad;
 
-#if UNITY_EDITOR
-            if (Helper.LoadScpInFiles)
-            {
-                Debug.Log("XSFSchema.StartLoad Load in files");
-                StartLoadSchema();      // 从文件中直接加载配置
-            }
-            else
-            {
-#endif
-                Debug.Log("XSFSchema.StartLoad Load in aas");
-                LoadScpFromAAS();     // 先从AAS中加载配置资源
-
-#if UNITY_EDITOR
-            }
-#endif
+            LoadScp();
         }
 
         // 从AAS中加载配置资源
-        void LoadScpFromAAS()
+        void LoadScp()
         {
-            Debug.Log("XSFSchema LoadScpFromAAS start");
+            Debug.Log("XSFSchema LoadScp start");
             m_ScpContent = new Dictionary<string, string>();
 
             var package = YooAssets.GetPackage(XSFConfig.Instance.YooAssetPackage);
@@ -94,15 +80,6 @@ namespace XSF
             XSFUpdate.Instance.Add(this);
         }
 
-        // 获取一个配置对象
-        public T Get<T>(int id) where T : class, ISchema
-        {
-            if (m_SchemaList == null)
-                return null;
-
-            return m_SchemaList[id] as T;
-        }
-
         #region  UpdateNode
         public bool IsUpdateWroking
         {
@@ -124,6 +101,8 @@ namespace XSF
                 //XSFEvent.Instance.Fire(XSFCore.SCHEMA_EVENT_ID);
             }
         }
+
+        public void OnFixedUpdate() {}
         #endregion
 
         // 找到配置对应的配置对象进行配置加载
@@ -138,35 +117,14 @@ namespace XSF
 
             Debug.Log("XSFSchema.LoadWithSchema load schema, name=" + sName);
 
-            string sContent = null;
-
-#if UNITY_EDITOR
-            if (Helper.LoadScpInFiles)
+            if (m_ScpContent.TryGetValue(sName, out string sContent))
             {
-                string sSuffix = nType == SchemaType.CSV ? "csv" : "xml";
-                string sFilename = $"{Application.dataPath}/Scp/{sName}.{sSuffix}";
-                if (!File.Exists(sFilename))
-                {
-                    throw new XSFSchemaLoadException($"XSFSchema.LoadWithSchema file not exist, id={nID}, Name={sName}");
-                }
-
-                sContent = File.ReadAllText(sFilename);
+                m_ScpContent.Remove(sName);
             }
             else
             {
-#endif
-                if (m_ScpContent.TryGetValue(sName, out sContent))
-                {
-                    m_ScpContent.Remove(sName);
-                }
-                else
-                {
-                    throw new XSFSchemaLoadException($"XSFSchema.LoadWithSchema Schema asset not found, id={nID}, Name={sName}");
-                }
-
-#if UNITY_EDITOR
+                throw new XSFSchemaLoadException($"XSFSchema.LoadWithSchema Schema asset not found, id={nID}, Name={sName}");
             }
-#endif
 
             LoadWithReader(m_SchemaList[nID], nType, sContent, IsColTable);
         }

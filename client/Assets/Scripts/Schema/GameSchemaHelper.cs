@@ -37,10 +37,10 @@ public class GameSchemaHelper : ISchemaHelper
         switch ((SchemaID)nId)
         {
             //SCHEMA_BEGIN
-			case SchemaID.Global: return new SchemaGlobal();
-			case SchemaID.Item: return new SchemaItem();
-			case SchemaID.Language: return new SchemaLanguage();
-			case SchemaID.TestData: return new SchemaTestData();
+			case SchemaID.Global: Global = new SchemaGlobal(); return Global;
+			case SchemaID.Item: Item = new SchemaItem(); return Item;
+			case SchemaID.Language: Language = new SchemaLanguage(); return Language;
+			case SchemaID.TestData: TestData = new SchemaTestData(); return TestData;
 			//SCHEMA_END
             default:
                 throw new XSFSchemaLoadException($"GameSchemaHelper.Get schema id error, id={nId}");
@@ -56,9 +56,13 @@ public class GameSchemaHelper : ISchemaHelper
 
     public string GetLocalText(string key)
     {
-        return XSFSchema.Instance.Get<SchemaLanguage>((int)SchemaID.Language).Get(key);
+        return Language.Get(key);
     }
 
-    public bool LoadScpInFiles 
-    { get { return XSFConfig.Instance.LoadScpInFiles; } }
+    //SCHEMA_STATIC_BEGIN
+	public static SchemaGlobal Global { get; private set;}
+	public static SchemaItem Item { get; private set;}
+	public static SchemaLanguage Language { get; private set;}
+	public static SchemaTestData TestData { get; private set;}
+    //SCHEMA_STATIC_END
 }
