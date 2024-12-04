@@ -1,5 +1,9 @@
 # xsf (Xoen's Simple game Framework)
 
+## 相关版本介绍
+- Unity 2022.3.49fc1
+- YooAsset 2.1.2
+
 ### 框架详细内容请阅读[WIKI文档](https://github.com/xiexx-game/xsf/wiki)
 
 xsf (Xoen's Simple game Framework) is an open source, minimalist game development framework. For many small businesses or organizations, a game framework is the last thing they need to spend their time on. I wanted to provide a simple infrastructure for game development, both client-side and server-side.
